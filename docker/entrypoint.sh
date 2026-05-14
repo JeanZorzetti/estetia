@@ -1,10 +1,10 @@
 #!/bin/sh
 set -e
 
-echo "Running CRM database migrations..."
-node node_modules/prisma/build/index.js migrate deploy
+echo "Syncing CRM database schema..."
+node node_modules/prisma/build/index.js db push --accept-data-loss --skip-generate
 
 echo "Skipping WhatsApp DB push (schema managed by whatsmeow Go service)..."
 
-echo "Starting Sirius CRM..."
+echo "Starting Estetia CRM..."
 exec node server.js
