@@ -1,127 +1,66 @@
-/**
- * Integration Rate Limiting
- *
- * Per-organization rate limits for external integrations:
- * - N8N: 100 requests/hour (webhooks + API calls)
- * - WhatsApp (Evolution API): 50 requests/hour (messages sent)
- * - Google Calendar: 200 requests/hour (API calls)
- *
- * Uses Upstash Redis with sliding window algorithm
- */
+import { redis } from '@/lib/redis'
 
-import { Ratelimit } from '@upstash/ratelimit'
-import { Redis } from '@upstash/redis'
+const SLIDING_WINDOW_SCRIPT = `
+local key = KEYS[1]
+local now = tonumber(ARGV[1])
+local window = tonumber(ARGV[2])
+local limit = tonumber(ARGV[3])
+local windowStart = now - window
+redis.call('ZREMRANGEBYSCORE', key, '-inf', windowStart)
+local count = redis.call('ZCARD', key)
+if count < limit then
+  redis.call('ZADD', key, now, now .. math.random())
+  redis.call('PEXPIRE', key, window)
+  return {1, limit, limit - count - 1, now + window}
+else
+  return {0, limit, 0, now + window}
+end
+`
 
-// Initialize Redis client
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!
-})
+const LIMITS = {
+  n8n:            { max: 100, windowMs: 60 * 60 * 1000, prefix: 'ratelimit:n8n' },
+  whatsapp:       { max: 50,  windowMs: 60 * 60 * 1000, prefix: 'ratelimit:whatsapp' },
+  'whatsapp-official': { max: 80, windowMs: 60 * 60 * 1000, prefix: 'ratelimit:waba' },
+  'google-calendar':   { max: 200, windowMs: 60 * 60 * 1000, prefix: 'ratelimit:calendar' },
+} as const
 
-/**
- * N8N Rate Limiter
- *
- * Limit: 100 requests per hour per organization
- * Covers both webhook sends and API calls to N8N
- */
-export const n8nRateLimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(100, '1 h'),
-  prefix: 'ratelimit:n8n',
-  analytics: true
-})
+type Integration = keyof typeof LIMITS
 
-/**
- * WhatsApp (Evolution API) Rate Limiter
- *
- * Limit: 50 requests per hour per organization
- * Conservative limit to avoid WhatsApp number bans
- */
-export const whatsappRateLimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(50, '1 h'),
-  prefix: 'ratelimit:whatsapp',
-  analytics: true
-})
+async function limit(integration: Integration, organizationId: string) {
+  if (!redis) return { success: true, limit: 999999, remaining: 999999, reset: Date.now() }
 
-/**
- * WhatsApp Official API (Meta Cloud API) Rate Limiter
- *
- * Limit: 80 requests per hour per organization
- * Meta allows higher throughput but we keep conservative to avoid quality flags
- */
-export const whatsappOfficialRateLimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(80, '1 h'),
-  prefix: 'ratelimit:waba',
-  analytics: true
-})
+  const cfg = LIMITS[integration]
+  const key = `${cfg.prefix}:${organizationId}`
 
-/**
- * Google Calendar Rate Limiter
- *
- * Limit: 200 requests per hour per organization
- * Higher limit due to bidirectional sync requirements
- */
-export const googleCalendarRateLimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(200, '1 h'),
-  prefix: 'ratelimit:calendar',
-  analytics: true
-})
+  const result = await redis.eval(
+    SLIDING_WINDOW_SCRIPT,
+    1,
+    key,
+    Date.now(),
+    cfg.windowMs,
+    cfg.max
+  ) as [number, number, number, number]
 
-/**
- * Check rate limit for an integration
- *
- * @param integration - Integration type ('n8n', 'whatsapp', 'google-calendar')
- * @param organizationId - Organization ID to rate limit
- * @returns { success: boolean, limit: number, remaining: number, reset: number }
- */
+  return { success: result[0] === 1, limit: result[1], remaining: result[2], reset: result[3] }
+}
+
+export const n8nRateLimit            = { limit: (id: string) => limit('n8n', id) }
+export const whatsappRateLimit       = { limit: (id: string) => limit('whatsapp', id) }
+export const whatsappOfficialRateLimit = { limit: (id: string) => limit('whatsapp-official', id) }
+export const googleCalendarRateLimit = { limit: (id: string) => limit('google-calendar', id) }
+
 export async function checkRateLimit(
   integration: 'n8n' | 'whatsapp' | 'google-calendar',
   organizationId: string
 ) {
-  let limiter: Ratelimit
-
-  switch (integration) {
-    case 'n8n':
-      limiter = n8nRateLimit
-      break
-    case 'whatsapp':
-      limiter = whatsappRateLimit
-      break
-    case 'google-calendar':
-      limiter = whatsappRateLimit
-      break
-    default:
-      throw new Error(`Unknown integration: ${integration}`)
-  }
-
-  const result = await limiter.limit(organizationId)
-
-  return {
-    success: result.success,
-    limit: result.limit,
-    remaining: result.remaining,
-    reset: result.reset
-  }
+  return limit(integration === 'google-calendar' ? 'google-calendar' : integration, organizationId)
 }
 
-/**
- * Reset rate limit for an organization (admin use only)
- *
- * @param integration - Integration type
- * @param organizationId - Organization ID
- */
 export async function resetRateLimit(
   integration: 'n8n' | 'whatsapp' | 'google-calendar',
   organizationId: string
 ) {
-  const prefix = integration === 'n8n'
-    ? 'ratelimit:n8n'
-    : integration === 'whatsapp'
-    ? 'ratelimit:whatsapp'
-    : 'ratelimit:calendar'
-
+  if (!redis) return
+  const prefix = LIMITS[integration === 'google-calendar' ? 'google-calendar' : integration].prefix
   await redis.del(`${prefix}:${organizationId}`)
 }
