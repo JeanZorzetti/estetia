@@ -1,0 +1,3223 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text // O que a empresa faz (capturado no signup)
+  segment     String?  // Segmento de atuação (ex: "Imobiliárias", "Saúde")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Mercado Pago & Billing
+  mercadoPagoCustomerId     String? // Customer ID no Mercado Pago
+  mercadoPagoSubscriptionId String? // Subscription ID (assinatura)
+  mercadoPagoPreferenceId   String? // Preference ID para checkout
+  tier                      SubscriptionTier @default(FREE) // FREE, STARTER, PRO, BUSINESS
+  plan                      String           @default("FREE") // Deprecated: use tier instead
+
+  // v2.0 Billing enhancements
+  customPricing          Decimal?  @db.Decimal(10, 2) // Grandfathering price
+  customPricingExpiresAt DateTime? // When grandfathering ends
+  grandfatheredDealLimit Int? // FREE clients: custom deal limit (null = use tier limit)
+  grandfatheredAt        DateTime? // When grandfathering was applied
+  billingPeriod          String    @default("MONTHLY") // "MONTHLY" | "ANNUAL"
+  billingStartDate       DateTime? // Start of current billing period
+  whatsappInstances      Int       @default(1) // Base WhatsApp instances
+  failedPaymentAttempts  Int       @default(0) // Retry logic: downgrade after 3 consecutive failures
+
+  // Flag to exclude from revenue metrics (test users with paid tiers)
+  isTestAccount          Boolean   @default(false)
+
+  // Programa de Fundadores (mantido para honrar founders existentes)
+  isFounder     Boolean  @default(false)
+  founderNumber Int?
+  founderSince  DateTime?
+
+  // Trial de 7 dias (PRO completo)
+  trialStartedAt DateTime?
+  trialEndsAt    DateTime?
+  trialStatus    TrialStatus @default(ACTIVE)
+
+  // Programa de Indicação
+  referralDiscount Float @default(0) // % acumulado para o indicador (0–100)
+  referrals        Referral[] @relation("ReferredOrgs")
+
+  // Fase 17 - Ads Integration (CAC Real)
+  googleAdsCustomerId    String?                // Google Ads Customer ID (ex: 123-456-7890)
+  googleAdsRefreshToken  String?   @db.Text     // OAuth2 Refresh Token (encrypted)
+  facebookAdAccountId    String?                // Facebook Ad Account ID (ex: act_123456789)
+  facebookAccessToken    String?   @db.Text     // Facebook Access Token (encrypted)
+  adsIntegrationEnabled  Boolean   @default(false)
+  adsLastSyncAt          DateTime?
+
+  // Facebook Lead Ads — webhook
+  facebookPageAccessToken    String?  @db.Text  // Page Access Token com leads_retrieval (encrypted)
+  facebookPageId             String?            // ID da Página do Facebook selecionada
+  facebookWebhookVerifyToken String?            // Token de verificação do webhook (plain text)
+
+  // Facebook Lead Ads — OAuth flow
+  facebookUserAccessToken  String?  @db.Text   // User Access Token temporário (encrypted)
+  facebookAvailablePages   String?  @db.Text   // JSON: [{ id, name }] páginas disponíveis
+  facebookOAuthState       String?             // Anti-CSRF state temporário
+
+  // Instagram OAuth flow
+  instagramPageAccessToken   String?  @db.Text  // Page Access Token encrypted (AES-256-GCM)
+  instagramBusinessAccountId String?            // Instagram Business Account ID
+  instagramOAuthState        String?            // Anti-CSRF state temporário
+
+  // Omie ERP Integration
+  omieAppKey    String?
+  omieAppSecret String?
+  omieEnabled   Boolean @default(false)
+
+  users                   User[]
+  rolePermissions         RolePermissions[]
+  contacts                Contact[]
+  deals                   Deal[]
+  pipelines               Pipeline[]
+  pipelineStages          PipelineStage[]
+  invites                 Invite[]
+  tags                    Tag[]
+  emailAutomationSettings EmailAutomationSetting[]
+  emailLogs               EmailLog[]
+
+  // Analytics relations
+  dealSnapshots    DealSnapshot[]
+  userActivities   UserActivity[]
+  revenueSnapshots RevenueSnapshot[]
+
+  // API & Webhooks
+  apiKeys     ApiKey[]
+  webhooks    Webhook[]
+  webhookLogs WebhookLog[]
+
+  // Integrations
+  n8nEnabled    Boolean @default(false)
+  n8nBaseUrl    String?
+  n8nApiKey     String? // Encrypted with AES-256-GCM
+  n8nWebhookUrl String?
+
+  evolutionEnabled  Boolean @default(false)
+  evolutionBaseUrl  String?
+  evolutionApiKey   String? // Encrypted
+  evolutionInstance String?
+
+  // WhatsApp Official API (Meta Cloud API)
+  wabaEnabled             Boolean @default(false)
+  wabaPhoneNumberId       String?
+  wabaAccessToken         String? @db.Text // Encrypted with AES-256-GCM
+  wabaBusinessAccountId   String?
+  wabaWebhookVerifyToken  String?
+  wabaGrandfathered       Boolean @default(false) // Starter/Pro orgs that had access before Business-only gate
+
+  googleCalendarEnabled      Boolean @default(false)
+  googleCalendarRefreshToken String? @db.Text // Encrypted
+  googleCalendarEmail        String?
+
+  integrationLogs   IntegrationLog[]
+  calendarEvents    CalendarEvent[]
+  pushSubscriptions PushSubscription[]
+  pwaMetrics        PWAMetric[]
+  notifications     Notification[]
+  adsMetrics        AdsMetric[]
+  facebookLeads     FacebookLead[]
+  omieFinanceiro    OmieFinanceiro[]
+
+  // Estetia IA (desativado nesta sprint)
+  agiConversations   AgiConversation[]
+  agiInsights        AgiInsight[]
+  agiUsage           AgiUsage[]
+  agiSkillExecutions AgiSkillExecution[]
+
+  // A/B Testing
+  experiments Experiment[]
+
+  // Onboarding
+  onboardingProgress OnboardingProgress[]
+
+  // v2.0 Features
+  scrapingCredit        ScrapingCredit?
+  scrapingJobs          ScrapingJob[]
+  addons                Addon[]
+  agiQuota              AgiQuota?
+  leadDistributionRules LeadDistributionRule[]
+
+  // v2.0 Planos & Billing
+  roundRobinConfig RoundRobinConfig?
+  transactions     Transaction[]
+
+  // Chat Center - Conversation Management (Fase 3.1)
+  chatConversations ChatConversation[]
+
+  // Deal Automations
+  dealAutomations DealAutomation[]
+
+  // Mobile App (Capacitor)
+  pushTokens PushToken[]
+  visitLogs  VisitLog[]
+
+  // Products (Catálogo)
+  products Product[]
+
+  // Task Management
+  taskProjects TaskProject[]
+  tasks        Task[]
+
+  // AgaaS — Agent Actions, Config & Quota
+  agentActions AgentAction[]
+  iaConfig     Json?          // Configuração do modo IA (agentes habilitados, thresholds, horários)
+
+  agaasEnabled        Boolean  @default(false)
+  agaasAgentLimit     Int      @default(0)   // 0=free, 1=starter, 3=pro, -1=unlimited
+  agaasMonthlyQuota   Int      @default(0)   // Ações/mês permitidas (0=free)
+  agaasActionsUsed    Int      @default(0)   // Contador reset mensal
+  agaasQuotaResetAt   DateTime?              // Próximo reset
+
+  // RAG Knowledge Base
+  knowledgeDocuments KnowledgeDocument[]
+
+  // Access Tracking
+  accessSessions AccessSession[]
+  pageViewLogs   PageViewLog[]
+
+  // Support Tickets
+  supportTickets SupportTicket[]
+
+  // Instagram Bot
+  instagramPosts InstagramPost[]
+
+  // Estética & Dermatologia (Sprint 1)
+  patients         Patient[]
+  treatments       Treatment[]
+  treatmentSessions TreatmentSession[]
+  procedures       Procedure[]
+  medicalRecords   MedicalRecord[]
+  anamneses        Anamnesis[]
+  consentLogs      ConsentLog[]
+  professionals       Professional[]
+  clinicRooms         ClinicRoom[]
+  waitlistEntries     WaitlistEntry[]
+  anamnesisTemplates  AnamnesisTemplate[]
+  operadoras          Operadora[]
+  convenios           Convenio[]
+  guiasTiss           GuiaTiss[]
+
+  // Sprint clínico: Recall, Fidelidade, Fotos, Pacotes
+  recallRules         RecallRule[]
+  patientPhotos       PatientPhoto[]
+  loyaltyConfig       LoyaltyConfig?
+  loyaltyTransactions LoyaltyTransaction[]
+  sessionPackages     SessionPackage[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String // Password hash
+  jobTitle  String? // Cargo na empresa (ex: "Sócio", "Diretor de Vendas")
+  phone     String? // Telefone principal capturado no signup
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ROI Labs staff flag — ADMIN = admin cliente, isRoiLabsStaff = equipe ROI Labs
+  isRoiLabsStaff Boolean @default(false)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  deals                  Deal[] // Deals managed by this user
+  dealClosings           DealClosing[] @relation("DealClosingCreator")
+  assignedContacts       Contact[] // Contacts assigned via round-robin
+  notes                  Note[]
+  activities             Activity[]
+  emailLogs              EmailLog[]
+  userActivities         UserActivity[] // Analytics tracking
+  pushSubscriptions      PushSubscription[]
+  pwaMetrics             PWAMetric[]
+  notifications          Notification[]
+  notificationPreference NotificationPreference?
+
+  // Estetia IA (desativado nesta sprint)
+  agiConversations   AgiConversation[]
+  agiInsights        AgiInsight[]
+  agiUsage           AgiUsage[]
+  agiSkillExecutions AgiSkillExecution[]
+
+  // Onboarding
+  onboarding OnboardingProgress?
+
+  // Chat Center - Assigned conversations (Fase 3.1)
+  assignedConversations ChatConversation[]
+
+  // Mobile App (Capacitor)
+  pushTokens PushToken[]
+  visitLogs  VisitLog[]
+
+  // Task Management
+  tasksAssigned  Task[]         @relation("TaskAssignee")
+  tasksCreated   Task[]         @relation("TaskCreator")
+  taskComments   TaskComment[]  @relation("TaskCommentAuthor")
+  timeEntries    TimeEntry[]    @relation("TimeEntryUser")
+  taskActivities    TaskActivity[]   @relation("TaskActivityUser")
+  taskAttachments   TaskAttachment[] @relation("TaskAttachmentUploader")
+
+  // Access Tracking
+  accessSessions AccessSession[]
+  pageViewLogs   PageViewLog[]
+
+  locale  String  @default("pt-BR") // "pt-BR" | "en"
+
+  role    Role    @default(USER)
+  orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
+
+  // Pipeline visibility (OWNER sees all; MEMBER can be restricted)
+  pipelineRestricted Boolean  @default(false) // false = no restriction (all visible)
+  allowedPipelineIds String[] // IDs of pipelines this user can see (only used when pipelineRestricted = true)
+
+  // Programa de Indicação
+  referralCode     String?   @unique // Código único para indicações
+  referralsMade    Referral[] @relation("ReferrerUser")
+  referredBy       Referral?  @relation("ReferredUser")
+
+  // Support Tickets
+  createdSupportTickets   SupportTicket[]    @relation("SupportTicketCreator")
+  assignedSupportTickets  SupportTicket[]    @relation("SupportTicketAssignee")
+  supportMessages         SupportMessage[]
+  uploadedAttachments     SupportAttachment[]
+
+  // Instagram Bot
+  instagramPostsCreated  InstagramPost[] @relation("InstagramPostCreator")
+  instagramPostsApproved InstagramPost[] @relation("InstagramPostApprover")
+  instagramPostComments  InstagramPostComment[] @relation("InstagramPostCommentAuthor")
+
+  // Estética & Dermatologia (Sprint 1)
+  professionalProfile Professional?
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrgRole {
+  OWNER
+  GERENTE
+  COORDENADOR
+  SUPERVISOR
+  VENDEDOR
+  MEMBER // legacy — treated as VENDEDOR in UI
+}
+
+// Per-role feature permissions, configured by OWNER per organization
+model RolePermissions {
+  id              String   @id @default(uuid())
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role            OrgRole
+
+  canAccessAgenda Boolean  @default(true)
+  canAccessTasks  Boolean  @default(true)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([organizationId, role])
+  @@index([organizationId])
+}
+
+enum SubscriptionTier {
+  FREE
+  STARTER
+  PRO
+  BUSINESS
+}
+
+// Programa de Indicação
+model Referral {
+  id              String         @id @default(uuid())
+  referrerId      String
+  referredUserId  String?        @unique
+  referredOrgId   String?
+  referredEmail   String?        // Email informado no momento do clique (antes do registro)
+  status          ReferralStatus @default(PENDING)
+  rewardGiven     Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  rewardedAt      DateTime?
+
+  discountAppliedAt DateTime? // Quando o crédito do indicador foi ativado
+
+  referrer        User           @relation("ReferrerUser", fields: [referrerId], references: [id])
+  referredUser    User?          @relation("ReferredUser", fields: [referredUserId], references: [id])
+  referredOrg     Organization?  @relation("ReferredOrgs", fields: [referredOrgId], references: [id])
+}
+
+enum ReferralStatus {
+  PENDING   // Código usado, aguardando registro
+  ACTIVE    // Usuário registrado, não assinou PRO ainda
+  REWARDED  // Usuário assinou plano pago — recompensa concedida ao indicador
+}
+
+enum TrialStatus {
+  ACTIVE    // Trial em andamento
+  EXPIRED   // Trial expirou sem pagamento
+  CONVERTED // Usuário pagou durante ou após trial
+}
+
+model Contact {
+  id            String   @id @default(uuid())
+  name          String
+  email         String?
+  phone         String?
+  company       String?
+  city          String? // Cidade
+  state         String? // Estado (UF)
+  zipCode       String? // CEP
+  street        String? // Rua / Avenida
+  streetNumber  String? // Número
+  complement    String? // Complemento (apto, sala, etc.)
+  profilePicUrl String? // WhatsApp profile picture URL
+  latitude      Float?  // Geolocalização — Sprint 4.3
+  longitude     Float?  // Geolocalização — Sprint 4.3
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  // Round-robin assignment
+  assignedToId String?
+  assignedTo   User?   @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  deals            Deal[]
+  tags             Tag[] // Many-to-Many (Fase 1.2)
+  chatConversation ChatConversation? // One-to-One (Fase 3.1)
+  tasks            Task[] // Task Management
+
+  // Mobile App (Capacitor)
+  visitLogs VisitLog[]
+
+  // Omie ERP integration
+  omieClienteId  String?
+  document       String? // CNPJ/CPF
+  source         String? // "omie" | "facebook_ads" | "manual" | etc
+  omieFinanceiro OmieFinanceiro[]
+
+  // Performance indexes
+  @@index([organizationId])
+  @@index([assignedToId])
+  @@index([omieClienteId])
+}
+
+model Pipeline {
+  id        String   @id @default(uuid())
+  name      String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  stages PipelineStage[]
+  deals  Deal[]
+
+  @@index([organizationId, isDefault])
+}
+
+model PipelineStage {
+  id        String              @id @default(uuid())
+  name      String // "Prospecção", "Qualificação", etc.
+  order     Int // To sort the Kanban columns (1, 2, 3...)
+  type      PipelineStageType   @default(OPEN)
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  pipelineId String
+  pipeline   Pipeline @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+
+  deals Deal[]
+
+  // Performance indexes
+  @@index([pipelineId, order])
+  @@index([organizationId, pipelineId])
+}
+
+model Deal {
+  id        String    @id @default(uuid())
+  title     String // "Venda Software X"
+  value     Decimal?  @db.Decimal(10, 2)
+  closeDate DateTime?
+  dueDate     DateTime? // [NEW] Agenda/Follow-up
+  dueDateNote String?   // Descrição do follow-up
+  order     Int? // [NEW] Manual sorting in column
+
+  // Deal Status (FASE 13 - Analytics)
+  status DealStatus @default(ACTIVE)
+  lostReason   String? // Motivo da perda (ex: "preço", "timing", "concorrente")
+  observations String? // Observações rápidas sobre o deal
+
+  // v2.0: Soft Archive (FREE >50 deals)
+  archived       Boolean   @default(false)
+  archivedReason String? // "PLAN_LIMIT", "USER_ACTION"
+  archivedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  // Relations
+  pipelineId String
+  pipeline   Pipeline @relation(fields: [pipelineId], references: [id])
+
+  stageId String
+  stage   PipelineStage @relation(fields: [stageId], references: [id])
+
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id])
+
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Deal 2.0
+  notes      Note[]
+  tags       Tag[]
+  activities Activity[]
+
+  // Integrations
+  calendarEvents   CalendarEvent[]
+
+  // Deal Automations
+  automationExecutions AutomationExecution[]
+
+  // Task Management
+  tasks Task[]
+
+  // Fechamentos (múltiplas compras por cliente)
+  closings DealClosing[]
+
+  // Performance indexes
+  @@index([organizationId, stageId])
+  @@index([organizationId, status, archived, contactId]) // contacts page filter
+  @@index([contactId])
+  @@index([userId])
+}
+
+model DealClosing {
+  id        String   @id @default(uuid())
+  date      DateTime
+  value     Decimal  @db.Decimal(10, 2)
+  note      String?
+
+  dealId String
+  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  // Quem registrou o fechamento (opcional para registros antigos)
+  userId String?
+  user   User?   @relation("DealClosingCreator", fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([dealId])
+  @@index([userId])
+}
+
+model Invite {
+  id        String   @id @default(uuid())
+  email     String
+  token     String   @unique
+  role      OrgRole  @default(MEMBER)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([email, organizationId])
+}
+
+// [NEW] Deal 2.0 Features
+
+model Note {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  dealId String
+  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String
+  color String // hex or preset name
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  deals    Deal[] // Many-to-Many
+  contacts Contact[] // Many-to-Many (Fase 1.2)
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  type        String // "STAGE_CHANGE", "NOTE_ADDED", "VALUE_CHANGE"
+  description String
+  createdAt   DateTime @default(now())
+
+  dealId String
+  deal   Deal   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+// Email Automation Models
+
+enum EmailAutomationType {
+  WELCOME_EMAIL
+  DEAL_CREATED
+  DEAL_STAGE_CHANGED
+  UPGRADE_NUDGE
+}
+
+model EmailAutomationSetting {
+  id      String              @id @default(uuid())
+  type    EmailAutomationType
+  enabled Boolean             @default(true)
+
+  // Customization (nullable = usa template default)
+  customSubject String?
+  customBody    String? @db.Text
+
+  // Advanced config
+  sendDelayMinutes  Int   @default(0) // 0 = immediate, 60 = 1h, 1440 = 24h
+  triggerConditions Json? // Regras de negócio customizadas
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, type])
+}
+
+enum EmailStatus {
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  BOUNCED
+  FAILED
+}
+
+model EmailLog {
+  id      String              @id @default(uuid())
+  type    EmailAutomationType
+  to      String
+  subject String
+  status  EmailStatus         @default(SENT)
+
+  // Tracking timestamps
+  sentAt      DateTime  @default(now())
+  deliveredAt DateTime?
+  openedAt    DateTime?
+  clickedAt   DateTime?
+
+  // Error handling
+  errorMessage String? @db.Text
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, sentAt])
+  @@index([status])
+}
+
+// Analytics & Data Warehouse Models
+
+model DealSnapshot {
+  id   String   @id @default(uuid())
+  date DateTime // Data do snapshot (sem hora, apenas dia)
+
+  // Métricas agregadas
+  totalDeals   Int // Total de deals ativos neste dia
+  totalValue   Decimal @db.Decimal(12, 2) // Valor total do pipeline
+  avgDealValue Decimal @db.Decimal(12, 2) // Ticket médio
+
+  // Breakdown por stage
+  dealsByStage Json // { "stageId": { count: X, value: Y } }
+
+  // Breakdown por pipeline
+  dealsByPipeline Json // { "pipelineId": { count: X, value: Y } }
+
+  // Conversão
+  dealsCreated Int @default(0) // Deals criados neste dia
+  dealsClosed  Int @default(0) // Deals fechados neste dia
+  dealsLost    Int @default(0) // Deals perdidos neste dia
+
+  createdAt DateTime @default(now())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, date])
+  @@index([organizationId, date])
+}
+
+enum UserActivityType {
+  LOGIN
+  LOGOUT
+  DEAL_CREATED
+  DEAL_UPDATED
+  DEAL_DELETED
+  DEAL_STAGE_CHANGED
+  CONTACT_CREATED
+  CONTACT_UPDATED
+  CONTACT_DELETED
+  PIPELINE_CREATED
+  PIPELINE_DELETED
+  EMAIL_SENT
+  PAGE_VIEW
+  FEATURE_USED
+}
+
+model UserActivity {
+  id   String           @id @default(uuid())
+  type UserActivityType
+
+  // Contexto do evento
+  metadata Json? // Dados adicionais flexíveis
+
+  // IP e User Agent para analytics
+  ipAddress String?
+  userAgent String? @db.Text
+
+  createdAt DateTime @default(now())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@index([userId, createdAt])
+  @@index([type, createdAt])
+}
+
+model RevenueSnapshot {
+  id    String   @id @default(uuid())
+  date  DateTime // Data do snapshot (último dia do mês)
+  month Int // 1-12
+  year  Int // 2024, 2025, etc.
+
+  // Métricas de receita
+  mrr Decimal @db.Decimal(12, 2) // Monthly Recurring Revenue
+  arr Decimal @db.Decimal(12, 2) // Annual Recurring Revenue (MRR * 12)
+
+  // Breakdown de clientes
+  totalOrganizations Int // Total de organizações ativas
+  freeOrganizations  Int // Orgs no plano FREE
+  proOrganizations   Int // Orgs no plano PRO
+
+  // Churn
+  churnedOrganizations Int @default(0) // Orgs que cancelaram neste mês
+  newOrganizations     Int @default(0) // Novas orgs neste mês
+
+  // LTV e CAC (quando integrar ads)
+  avgLtv Decimal? @db.Decimal(12, 2) // Lifetime Value médio
+  avgCac Decimal? @db.Decimal(12, 2) // Customer Acquisition Cost
+
+  // Forecast
+  forecastNext30d Decimal? @db.Decimal(12, 2) // Receita prevista próximos 30 dias
+  forecastNext60d Decimal? @db.Decimal(12, 2)
+  forecastNext90d Decimal? @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+
+  organizationId String? // null = snapshot global de toda a plataforma
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, year, month])
+  @@index([year, month])
+}
+
+// Public API Models
+
+model ApiKey {
+  id           String    @id @default(uuid())
+  name         String // User-friendly name like "Production Key"
+  keyHash      String    @unique // bcrypt hash of the API key
+  keyPrefix    String // First 12 chars for identification (e.g., "sk_live_1234")
+  lastUsed     DateTime?
+  expiresAt    DateTime?
+  requestCount Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([keyPrefix])
+}
+
+model Webhook {
+  id             String   @id @default(uuid())
+  svixAppId      String // Svix application ID
+  svixEndpointId String // Svix endpoint ID
+  url            String // Webhook URL
+  description    String?
+  enabled        Boolean  @default(true)
+  events         Json // ["deal.created", "contact.created"]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  logs           WebhookLog[]
+
+  @@index([organizationId])
+  @@index([svixAppId])
+}
+
+enum WebhookStatus {
+  SUCCESS
+  FAILED
+  PENDING
+  RETRYING
+}
+
+model WebhookLog {
+  id            String        @id @default(uuid())
+  eventType     String // "deal.created", "deal.updated"
+  payload       Json // Event payload sent
+  status        WebhookStatus @default(PENDING)
+  statusCode    Int? // HTTP response code
+  errorMessage  String?       @db.Text
+  attempts      Int           @default(0)
+  svixMessageId String? // Svix message ID for tracking
+  sentAt        DateTime      @default(now())
+
+  webhookId      String
+  webhook        Webhook      @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId, sentAt])
+  @@index([organizationId, eventType, sentAt])
+  @@index([status])
+}
+
+// Integration Models
+
+enum IntegrationType {
+  N8N
+  WHATSAPP
+  WHATSAPP_OFFICIAL
+  GOOGLE_CALENDAR
+}
+
+enum IntegrationStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  RETRYING
+}
+
+enum SyncStatus {
+  PENDING
+  SYNCED
+  FAILED
+}
+
+model IntegrationLog {
+  id     String            @id @default(uuid())
+  type   IntegrationType
+  action String // "webhook:deal.created", "api:listWorkflows", "send_message"
+  status IntegrationStatus @default(PENDING)
+
+  // Request/Response data
+  request      Json?
+  response     Json?
+  errorMessage String? @db.Text
+
+  // Retry tracking
+  attemptCount Int @default(1)
+
+  createdAt DateTime @default(now())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, type, createdAt])
+  @@index([status, createdAt])
+}
+
+model CalendarEvent {
+  id String @id @default(uuid())
+
+  // Google Calendar identifier
+  googleEventId String? @unique
+
+  // Event details
+  title       String
+  description String?  @db.Text
+  startTime   DateTime
+  endTime     DateTime
+  location    String?
+
+  // Sync tracking
+  syncStatus SyncStatus @default(PENDING)
+  lastSyncAt DateTime?
+
+  // Relations
+  dealId String?
+  deal   Deal?   @relation(fields: [dealId], references: [id], onDelete: SetNull)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, startTime])
+  @@index([dealId])
+  @@index([googleEventId])
+}
+
+model PushSubscription {
+  id String @id @default(uuid())
+
+  // Web Push subscription details
+  endpoint String @unique
+  p256dh   String // Public key
+  auth     String // Auth secret
+
+  // User agent and device info (optional)
+  userAgent  String? @db.Text
+  deviceType String? // "desktop", "mobile", "tablet"
+
+  // Status
+  active Boolean @default(true)
+
+  // Timestamps
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  lastUsedAt DateTime?
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([endpoint])
+}
+
+model PWAMetric {
+  id String @id @default(uuid())
+
+  // Event type
+  type PWAMetricType
+
+  // User and device info
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  userAgent  String? @db.Text
+  deviceType String? // "desktop", "mobile", "tablet"
+
+  // Event data (JSON for flexibility)
+  data Json?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, type])
+  @@index([organizationId, createdAt])
+  @@index([userId])
+}
+
+enum PWAMetricType {
+  INSTALL_PROMPT_SHOWN // beforeinstallprompt event
+  INSTALL_PROMPT_ACCEPTED // User clicked "Install"
+  INSTALL_PROMPT_DISMISSED // User clicked "Not now"
+  APP_INSTALLED // appinstalled event
+  PUSH_PERMISSION_GRANTED // User granted push permission
+  PUSH_PERMISSION_DENIED // User denied push permission
+  OFFLINE_SYNC_SUCCESS // Offline queue synced successfully
+  OFFLINE_SYNC_FAILURE // Offline queue sync failed
+  SERVICE_WORKER_UPDATED // SW updated
+}
+
+// Estetia IA Models
+
+model AgiConversation {
+  id String @id @default(uuid())
+
+  // Context
+  dealId     String? // Conversa sobre deal específico
+  pipelineId String? // Conversa sobre pipeline/funil
+  context    String? // "deal", "pipeline", "general", "script_generation"
+
+  // Messages (array de mensagens)
+  messages Json // [{ role: "user"/"assistant", content: "...", timestamp: "..." }]
+
+  // Summary for retrieval
+  summary String? @db.Text
+
+  // Token tracking
+  tokensUsed Int @default(0)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Soft relations (no FK to allow flexibility)
+  // dealId references Deal.id
+  // pipelineId references Pipeline.id
+
+  @@index([organizationId, userId])
+  @@index([dealId])
+  @@index([pipelineId])
+  @@index([createdAt])
+}
+
+enum AgiInsightType {
+  QUALIFICATION_BANT // Qualificação BANT
+  QUALIFICATION_MEDDIC // Qualificação MEDDIC
+  NEXT_STEP_SUGGESTION // Sugestão de próximo passo
+  OBJECTION_HANDLING // Como lidar com objeção
+  SCRIPT_GENERATED // Script de vendas gerado
+  PIPELINE_ANALYSIS // Análise de funil
+  DEAL_RISK_ASSESSMENT // Avaliação de risco do deal
+}
+
+model AgiInsight {
+  id String @id @default(uuid())
+
+  // Type and content
+  type    AgiInsightType
+  title   String // "Lead bem qualificado (BANT: 100/100)"
+  content String         @db.Text // JSON ou texto formatado
+
+  // Confidence score (0-1)
+  confidence Decimal @db.Decimal(3, 2) // 0.00 to 1.00
+
+  // Status
+  applied   Boolean @default(false) // User aplicou a sugestão?
+  dismissed Boolean @default(false) // User descartou?
+
+  // Context
+  dealId     String?
+  pipelineId String?
+
+  // Metadata (estruturado)
+  metadata Json? // { bant_score: 100, criteria: {...}, recommendations: [...] }
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, type])
+  @@index([dealId])
+  @@index([pipelineId])
+  @@index([createdAt])
+}
+
+model AgiUsage {
+  id String @id @default(uuid())
+
+  // Usage tracking
+  date         DateTime // Data (sem hora, agrupado por dia)
+  tokensUsed   Int // Tokens gastos neste dia
+  requestCount Int      @default(0) // Número de requests
+
+  // Plan at the time
+  plan String // FREE ou PRO (snapshot do plano no momento)
+
+  // Monthly tracking
+  year  Int
+  month Int // 1-12
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId, date])
+  @@index([organizationId, year, month])
+  @@index([userId, year, month])
+}
+
+model AgiSkillExecution {
+  id String @id @default(uuid())
+
+  // Skill info
+  skillName String // "qualificacao_bant", "analise_funil", etc.
+
+  // Input/Output
+  input  Json // Parâmetros de entrada
+  output Json? // Resultado
+
+  // Performance
+  executionTime Int? // Milissegundos
+  success       Boolean
+  errorMessage  String? @db.Text
+
+  // Context
+  dealId         String?
+  conversationId String? // Referência à AgiConversation.id
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, skillName])
+  @@index([userId])
+  @@index([success])
+  @@index([createdAt])
+}
+
+enum NotificationType {
+  DEAL_CREATED
+  DEAL_WON
+  DEAL_LOST
+  DEAL_STAGE_CHANGED
+  WHATSAPP_MESSAGE
+  CALENDAR_REMINDER
+  MENTION
+  SYSTEM
+  TASK_ASSIGNED
+  TASK_DUE_SOON
+  TASK_OVERDUE
+  TASK_COMPLETED
+  TASK_COMMENTED
+}
+
+model Notification {
+  id String @id @default(uuid())
+
+  // Notification content
+  type    NotificationType
+  title   String
+  message String           @db.Text
+
+  // Status
+  read   Boolean   @default(false)
+  readAt DateTime?
+
+  // Action link (optional)
+  actionUrl String?
+
+  // Context metadata
+  metadata Json? // { dealId, contactId, etc. }
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@index([organizationId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model NotificationPreference {
+  id String @id @default(uuid())
+
+  // Notification types
+  newDealEnabled          Boolean @default(true)
+  dealWonEnabled          Boolean @default(true)
+  whatsappMessageEnabled  Boolean @default(true)
+  calendarReminderEnabled Boolean @default(true)
+
+  // Task notifications
+  taskAssignedEnabled   Boolean @default(true)
+  taskDueSoonEnabled    Boolean @default(true)
+  taskOverdueEnabled    Boolean @default(true)
+  taskCompletedEnabled  Boolean @default(true)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Password Reset Token
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  email     String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([email])
+}
+
+// Onboarding Progress
+enum OnboardingStatus {
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+}
+
+model OnboardingProgress {
+  id String @id @default(uuid())
+
+  // Progress tracking
+  currentStep    Int      @default(0) // 0-5 (current step index)
+  completedSteps String[] @default([]) // Array of completed step IDs
+
+  // Status
+  status      OnboardingStatus @default(IN_PROGRESS)
+  completedAt DateTime?
+  skippedAt   DateTime?
+
+  // Step-specific data (JSON)
+  stepData Json? // { step1: {...}, step2: {...} }
+
+  // Gamification
+  badges      String[] @default([]) // Earned badges: ["first_contact", "pipeline_master", etc.]
+  totalPoints Int      @default(0) // Gamification points
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+// ============================================================================
+// v2.0 MODULAR PLANS - FEATURES
+// ============================================================================
+
+// ScrapingCredit: Controle de créditos de prospecção
+model ScrapingCredit {
+  id             String   @id @default(uuid())
+  organizationId String   @unique
+  balance        Int      @default(0)
+  monthlyQuota   Int      @default(0) // 0 (STARTER/FREE), 50 (PRO/BUSINESS)
+  usedThisMonth  Int      @default(0)
+  lastRefill     DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+enum ScrapingProvider {
+  OUTSCRAPER
+  APIFY
+  CUSTOM
+}
+
+enum ScrapingSource {
+  GOOGLE_MAPS
+  LINKEDIN
+  CUSTOM
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+// ScrapingJob: Jobs de prospecção automática
+model ScrapingJob {
+  id             String           @id @default(uuid())
+  organizationId String
+  userId         String
+  provider       ScrapingProvider
+  source         ScrapingSource
+  query          String // "restaurantes em São Paulo"
+  filters        Json? // { category: "restaurant", city: "SP" }
+  status         JobStatus        @default(PENDING)
+  creditsUsed    Int              @default(0)
+  resultsCount   Int              @default(0)
+  results        Json? // Array de leads encontrados
+  error          String?          @db.Text
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime         @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, status])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum AddonType {
+  SCRAPING_100
+  SCRAPING_500
+  WHATSAPP_EXTRA_INSTANCE
+}
+
+enum AddonStatus {
+  ACTIVE
+  EXPIRED
+  CONSUMED
+}
+
+// Addon: Add-ons comprados (créditos extras, instâncias WhatsApp)
+model Addon {
+  id             String      @id @default(uuid())
+  organizationId String
+  type           AddonType
+  name           String // "Pacote 100 Leads", "WhatsApp Extra"
+  quantity       Int // 100, 500, 1
+  price          Decimal     @db.Decimal(10, 2)
+  status         AddonStatus @default(ACTIVE)
+  expiresAt      DateTime? // null = não expira
+  purchasedAt    DateTime    @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+// AgiQuota: Controle de quota de IA (FREE: 3/mês, PRO/BUSINESS: ilimitado)
+model AgiQuota {
+  id             String   @id @default(uuid())
+  organizationId String   @unique
+  monthlyLimit   Int // -1 = ilimitado, 0 = sem acesso, 3 = FREE
+  usedThisMonth  Int      @default(0)
+  lastReset      DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+enum DistributionStrategy {
+  ROUND_ROBIN
+  LEAST_BUSY
+  WEIGHTED
+}
+
+// LeadDistributionRule: Regras de distribuição de leads (BUSINESS only)
+model LeadDistributionRule {
+  id             String               @id @default(uuid())
+  organizationId String
+  name           String // "Distribuir leads Google Ads"
+  enabled        Boolean              @default(true)
+  strategy       DistributionStrategy @default(ROUND_ROBIN)
+  filters        Json // { source: "GOOGLE_ADS", tags: ["hot"] }
+  assignees      String[] // Array de userIds
+  currentIndex   Int                  @default(0) // Para round-robin
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([enabled])
+}
+
+// ============================================================================
+// KNOWLEDGE GRAPH - NLP PIPELINE (Chapter 1.3)
+// ============================================================================
+
+// Entity: Represents a node in the knowledge graph
+model Entity {
+  id          String   @id @default(uuid())
+  name        String // Entity name (ex: "CRM", "SPIN Selling")
+  wikidataId  String?  @unique // Wikidata Q-code (ex: "Q16635046")
+  type        String // Category: methodology, technology, industry, persona, etc.
+  description String? // Entity description
+  aliases     String[] @default([]) // Alternative names/synonyms
+  metadata    Json     @default("{}") // Flexible metadata storage
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  subjectRelationships Relationship[]  @relation("SubjectEntity")
+  objectRelationships  Relationship[]  @relation("ObjectEntity")
+  contentLinks         ContentEntity[]
+
+  @@index([type])
+  @@index([name])
+}
+
+// Relationship: Represents edges in the knowledge graph (RDF triples)
+model Relationship {
+  id         String   @id @default(uuid())
+  subjectId  String
+  predicate  String // uses, usedBy, subclassOf, instanceOf, etc.
+  objectId   String
+  confidence Float    @default(1.0) // 0-1, for AI-extracted relationships
+  source     String? // URL or reference of content that originated this
+  lastSeen   DateTime @default(now()) // Freshness tracking
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  subject Entity @relation("SubjectEntity", fields: [subjectId], references: [id], onDelete: Cascade)
+  object  Entity @relation("ObjectEntity", fields: [objectId], references: [id], onDelete: Cascade)
+
+  @@unique([subjectId, predicate, objectId])
+  @@index([subjectId])
+  @@index([objectId])
+  @@index([predicate])
+  @@index([lastSeen])
+}
+
+// EntityExtraction: Tracks NLP pipeline executions
+model EntityExtraction {
+  id                     String  @id @default(uuid())
+  contentType            String // blog_post, documentation, help_article, etc.
+  contentId              String? // ID of the content (if applicable)
+  contentUrl             String? // URL or path to content
+  textSample             String? // First 500 chars of processed text
+  contentHash            String? // SHA-256 hash of content for change detection
+  extractedEntities      Json    @default("[]") // Array of extracted entity data
+  extractedRelationships Json    @default("[]") // Array of extracted relationships
+  modelUsed              String? // LLM model identifier
+  tokensUsed             Int?
+  processingTimeMs       Int?
+  status                 String  @default("pending") // pending, processing, completed, failed
+  error                  String?
+
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  @@index([status])
+  @@index([contentType])
+  @@index([contentId, contentHash]) // For change detection
+}
+
+// ContentEntity: Many-to-many relationship between content and entities
+model ContentEntity {
+  id          String  @id @default(uuid())
+  contentType String // blog_post, help_article, etc.
+  contentId   String // Slug or ID of the content
+  entityId    String
+  relevance   Float   @default(1.0) // How relevant this entity is to the content
+  context     String? // Sentence/paragraph where entity was found
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  @@index([contentId])
+  @@index([entityId])
+}
+
+// ============================================
+// CONVERSATIONAL AI - SPIN/Sandler Memory
+// ============================================
+
+// ConversationSession: Tracks long-term user conversations with SPIN state
+model ConversationSession {
+  id        String  @id @default(uuid())
+  userId    String? // Optional: link to authenticated user
+  sessionId String  @unique // Client-provided session ID (e.g., from cookies)
+
+  // SPIN Selling State
+  spinState String @default("Situation") // Situation, Problem, Implication, NeedPayoff
+
+  // Sandler Selling State
+  sandlerStage String @default("Bonding") // Bonding, UpfrontContract, PainDiscovery, Budget, Decision, Fulfillment
+
+  // Diagnostic Mode
+  diagnosticMode String @default("complete") // express, complete, deep
+
+  // Context tracking
+  identifiedProblems Json? // Array of problems user mentioned
+  identifiedGoals    Json? // Array of goals/needs user expressed
+  entityContext      Json? // Entities extracted from conversation
+  qualificationScore Float @default(0.0) // Lead qualification score (0-100)
+
+  // Metadata
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lastMessageAt DateTime @default(now())
+
+  // Relations
+  messages ConversationMessage[]
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([lastMessageAt])
+}
+
+// ConversationMessage: Individual messages in a conversation
+model ConversationMessage {
+  id        String @id @default(uuid())
+  sessionId String
+  role      String // user, assistant, system
+  content   String @db.Text
+
+  // Metadata for analysis
+  spinIntent        String? // Which SPIN question type this was
+  extractedEntities Json? // Entities detected in this message
+  sentiment         String? // positive, neutral, negative
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  session ConversationSession @relation(fields: [sessionId], references: [sessionId], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// CHAT CENTER - CONVERSATION MANAGEMENT (Fase 3.1)
+// ============================================================================
+
+enum ConversationStatus {
+  OPEN
+  PENDING
+  RESOLVED
+  CLOSED
+}
+
+enum ConversationPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+model ChatConversation {
+  id             String               @id @default(uuid())
+  contactId      String               @unique
+  contact        Contact              @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignedUserId String?
+  assignedUser   User?                @relation(fields: [assignedUserId], references: [id], onDelete: SetNull)
+  status         ConversationStatus   @default(OPEN)
+  priority       ConversationPriority @default(NORMAL)
+  isPinned       Boolean              @default(false)
+  isArchived     Boolean              @default(false)
+  lastMessageAt  DateTime?
+  resolvedAt     DateTime?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  @@index([organizationId, status])
+  @@index([assignedUserId])
+  @@index([organizationId, isPinned])
+  @@index([organizationId, isArchived])
+}
+
+// ============================================================================
+// A/B TESTING MODELS
+// ============================================================================
+
+// Experiment: A/B test configuration
+model Experiment {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  status      String    @default("DRAFT") // DRAFT, RUNNING, PAUSED, COMPLETED
+  startDate   DateTime?
+  endDate     DateTime?
+
+  // Relations
+  variants ExperimentVariant[]
+  events   ExperimentEvent[]
+
+  // Ownership
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Audit
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, status])
+  @@index([status])
+}
+
+// ExperimentVariant: Different versions to test
+model ExperimentVariant {
+  id           String     @id @default(uuid())
+  experimentId String
+  experiment   Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+
+  name          String // "control", "variant_a", "variant_b"
+  componentName String // Component from registry (e.g., "ROICalculator")
+  props         Json // Component props configuration
+  trafficWeight Int    @default(50) // 0-100 (percentage of traffic)
+
+  // Relations
+  events ExperimentEvent[]
+
+  @@unique([experimentId, name])
+  @@index([experimentId])
+}
+
+// ExperimentEvent: Tracked user interactions
+model ExperimentEvent {
+  id           String     @id @default(uuid())
+  experimentId String
+  experiment   Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+
+  variantId String
+  variant   ExperimentVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  // User tracking
+  userId    String? // Optional: logged-in user
+  sessionId String // Consistent identifier (cookie/fingerprint)
+
+  // Event data
+  eventType String // "impression", "interaction", "conversion"
+  metadata  Json? // Additional event data
+
+  // Timestamp
+  timestamp DateTime @default(now())
+
+  @@index([experimentId, variantId, eventType])
+  @@index([sessionId])
+  @@index([timestamp])
+}
+
+// Round-Robin Lead Distribution (Business Feature)
+model RoundRobinConfig {
+  id             String       @id @default(uuid())
+  organizationId String       @unique
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  enabled      Boolean  @default(false)
+  userIds      String[]
+  currentIndex Int      @default(0)
+
+  assignToOwner Boolean @default(false)
+  skipIfOffline Boolean @default(true)
+  notifyUsers   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+}
+
+// Transaction log for payments
+model Transaction {
+  id String @id @default(uuid())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  type      TransactionType
+  amount    Decimal           @db.Decimal(10, 2)
+  feeAmount Decimal?          @db.Decimal(10, 2) // Taxa do gateway (ex: MercadoPago take rate)
+  netAmount Decimal?          @db.Decimal(10, 2) // Valor liquido real
+  currency  String            @default("BRL")
+  status   TransactionStatus @default(PENDING)
+
+  provider          String
+  providerPaymentId String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([type])
+  @@index([status])
+  @@index([providerPaymentId])
+}
+
+enum TransactionType {
+  PLAN_UPGRADE
+  PLAN_DOWNGRADE
+  ADDON_PURCHASE
+  REFUND
+  CREDIT_ADJUSTMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+enum DealStatus {
+  ACTIVE    // Deal ativo no pipeline
+  WON       // Deal ganho/fechado
+  LOST      // Deal perdido
+}
+
+enum PipelineStageType {
+  OPEN  // Stage intermediário (em progresso)
+  WON   // Stage de ganho (deal fechado com sucesso)
+  LOST  // Stage de perda (deal perdido/cancelado)
+}
+
+// ============================================================================
+// DEAL AUTOMATIONS
+// ============================================================================
+
+enum AutomationTrigger {
+  DEAL_CREATED
+  DEAL_MOVED
+  DEAL_WON
+  DEAL_LOST
+  DEAL_IDLE
+}
+
+enum ExecutionStatus {
+  SUCCESS
+  FAILED
+  SKIPPED
+}
+
+model DealAutomation {
+  id             String            @id @default(uuid())
+  organizationId String
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  enabled        Boolean           @default(true)
+  triggerType    AutomationTrigger
+  triggerConfig  Json              @default("{}")
+  conditions     Json              @default("[]")
+  actions        Json              @default("[]")
+  executionCount Int               @default(0)
+  lastExecutedAt DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  executions     AutomationExecution[]
+
+  @@index([organizationId, enabled])
+  @@index([organizationId, triggerType])
+}
+
+model AutomationExecution {
+  id           String           @id @default(uuid())
+  automationId String
+  automation   DealAutomation   @relation(fields: [automationId], references: [id], onDelete: Cascade)
+  dealId       String
+  deal         Deal             @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  status       ExecutionStatus
+  actionsRun   Int              @default(0)
+  error        String?
+  metadata     Json?
+  executedAt   DateTime         @default(now())
+
+  @@index([automationId])
+  @@index([dealId])
+}
+
+// Facebook Lead Ads — leads recebidos via webhook em tempo real
+model FacebookLead {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Identificadores da Meta
+  leadgenId  String   @unique // leadgen_id recebido no webhook
+  pageId     String
+  formId     String
+  adId       String?
+  adgroupId  String?
+  campaignId String?
+
+  // Dados do lead (preenchidos após fetch na Graph API)
+  name      String?
+  email     String?
+  phone     String?
+  rawFields Json?   // Todos os campos do formulário (para campos customizados)
+
+  // Rastreamento
+  fetchedAt  DateTime? // Quando os dados foram buscados na Graph API
+  contactId  String?   // ID do Contact criado no CRM (se criado)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, createdAt])
+  @@index([organizationId, formId])
+  @@index([contactId])
+}
+
+// Fase 17: Métricas de Ads (Google Ads, Facebook Ads, manual)
+model AdsMetric {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  source         String  // "google_ads" | "facebook_ads" | "manual"
+  date           DateTime
+
+  // Dados de campanha
+  campaignId     String?
+  campaignName   String?
+
+  // Métricas de gasto e resultado
+  spend          Decimal @db.Decimal(12, 2)
+  impressions    Int     @default(0)
+  clicks         Int     @default(0)
+  conversions    Int     @default(0) // Novos clientes/signups atribuídos
+
+  // Métricas derivadas (calculadas ao salvar)
+  cpc            Decimal @db.Decimal(10, 4) @default(0) // Cost per click
+  cpa            Decimal @db.Decimal(12, 2) @default(0) // Cost per acquisition (CAC por campanha)
+
+  notes          String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([organizationId, source, date, campaignId])
+  @@index([organizationId, date])
+  @@index([organizationId, source])
+}
+
+// ============================================================================
+// MOBILE APP (Capacitor) — Fase 18
+// ============================================================================
+
+enum PushPlatform {
+  IOS
+  ANDROID
+  WEB
+}
+
+model PushToken {
+  id             String       @id @default(uuid())
+  userId         String
+  organizationId String
+  token          String       @db.Text
+  platform       PushPlatform @default(WEB)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, token])
+  @@index([organizationId])
+}
+
+model VisitLog {
+  id             String   @id @default(uuid())
+  organizationId String
+  userId         String
+  contactId      String?
+  latitude       Float
+  longitude      Float
+  address        String?
+  notes          String?
+  visitedAt      DateTime @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact        Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, visitedAt])
+  @@index([userId])
+}
+
+// ============================================================================
+// PRODUCTS (Catálogo de Produtos)
+// ============================================================================
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  sku         String?
+  price       Decimal  @db.Decimal(10, 2)
+  stock       Int?
+  category    String?
+  isActive    Boolean  @default(true)
+  imageUrl    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  deals Deal[]
+
+  @@index([organizationId])
+  @@index([organizationId, isActive])
+}
+
+// ============================================================================
+// AGENT ACTIONS (AgaaS — Auditoria de Agentes Autônomos)
+// ============================================================================
+
+model AgentAction {
+  id             String   @id @default(uuid())
+  organizationId String
+  agentName      String   // "LeadQualifier", "FollowUpCoordinator", etc.
+  actionType     String   // "UPDATE_DEAL", "SEND_WHATSAPP", "CREATE_NOTE", etc.
+  entityType     String   // "Deal", "Contact", "WhatsAppMessage"
+  entityId       String
+  reasoning      String   @db.Text
+  confidence     Float    // 0.0 - 1.0
+  input          Json
+  output         Json?
+  status         String   @default("PENDING") // PENDING, NEEDS_APPROVAL, SUCCESS, FAILED
+  reviewedBy     String?  // userId que aprovou/rejeitou
+  reviewedAt     DateTime?
+  createdAt      DateTime @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@index([entityType, entityId])
+  @@index([status])
+}
+
+// ============================================================================
+// TASK MANAGEMENT (estilo ClickUp)
+// ============================================================================
+
+enum TaskStatusType {
+  OPEN
+  IN_PROGRESS
+  DONE
+  CLOSED
+}
+
+enum TaskPriority {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum DependencyType {
+  BLOCKS
+  BLOCKED_BY
+  RELATED
+}
+
+enum TaskVisibility {
+  PUBLIC      // Todos os membros da org podem ver
+  PRIVATE     // Apenas criador e responsável (assignee) podem ver
+  ADMINS_ONLY // Apenas OWNER e ADMIN podem ver
+}
+
+enum RecurrenceFrequency {
+  DAILY
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+  CUSTOM
+}
+
+// TaskProject: Agrupamento de tarefas (como espaços no ClickUp)
+model TaskProject {
+  id          String    @id @default(uuid())
+  name        String
+  description String?   @db.Text
+  color       String    @default("#6366f1")
+  icon        String?
+  archived    Boolean   @default(false)
+  order       Int       @default(0)
+  // Empty array = visible to all roles (default). Non-empty = only listed roles can see.
+  allowedRoles OrgRole[] @default([])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  statuses TaskStatus[]
+  tasks    Task[]
+  labels   TaskLabel[]
+
+  @@index([organizationId])
+  @@index([organizationId, archived])
+}
+
+// TaskStatus: Colunas customizáveis por projeto
+model TaskStatus {
+  id        String         @id @default(uuid())
+  name      String
+  color     String
+  type      TaskStatusType @default(OPEN)
+  order     Int            @default(0)
+  isDefault Boolean        @default(false)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  projectId String
+  project   TaskProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  tasks Task[]
+
+  @@index([projectId, order])
+}
+
+// TaskLabel: Etiquetas por projeto
+model TaskLabel {
+  id    String @id @default(uuid())
+  name  String
+  color String
+
+  projectId String
+  project   TaskProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  tasks Task[]
+
+  @@index([projectId])
+}
+
+// Task: Modelo principal de tarefa
+model Task {
+  id               String       @id @default(uuid())
+  title            String
+  description      String?      @db.Text
+  priority         TaskPriority @default(NONE)
+  order            Int          @default(0)
+  dueDate          DateTime?
+  startDate        DateTime?
+  completedAt      DateTime?
+  estimatedMinutes Int?
+  archived         Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  // Projeto e status
+  projectId String
+  project   TaskProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  statusId String
+  status   TaskStatus @relation(fields: [statusId], references: [id])
+
+  // Atribuição
+  assigneeId String?
+  assignee   User?   @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+
+  creatorId String
+  creator   User   @relation("TaskCreator", fields: [creatorId], references: [id])
+
+  // Subtarefas (hierarquia)
+  parentId String?
+  parent   Task?   @relation("TaskSubtasks", fields: [parentId], references: [id], onDelete: Cascade)
+  subtasks Task[]  @relation("TaskSubtasks")
+
+  // Integração CRM
+  dealId    String?
+  deal      Deal?    @relation(fields: [dealId], references: [id], onDelete: SetNull)
+
+  contactId String?
+  contact   Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  // Visibilidade (controle de acesso)
+  visibility TaskVisibility @default(PUBLIC)
+
+  // Organização
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Relações
+  labels           TaskLabel[]
+  comments         TaskComment[]
+  checklists       TaskChecklist[]
+  attachments      TaskAttachment[]
+  timeEntries      TimeEntry[]
+  activities       TaskActivity[]
+  dependenciesFrom TaskDependency[] @relation("DependencyFrom")
+  dependenciesTo   TaskDependency[] @relation("DependencyTo")
+  recurrence       TaskRecurrence?
+
+  @@index([organizationId, projectId])
+  @@index([organizationId, assigneeId])
+  @@index([organizationId, dueDate])
+  @@index([projectId, statusId, order])
+  @@index([parentId])
+  @@index([dealId])
+  @@index([contactId])
+}
+
+// TaskComment: Comentários em tarefas
+model TaskComment {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("TaskCommentAuthor", fields: [userId], references: [id])
+
+  @@index([taskId, createdAt])
+}
+
+// TaskChecklist: Lista de checagem
+model TaskChecklist {
+  id    String @id @default(uuid())
+  title String
+  order Int    @default(0)
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  items TaskChecklistItem[]
+
+  @@index([taskId])
+}
+
+// TaskChecklistItem: Item individual de checklist
+model TaskChecklistItem {
+  id          String    @id @default(uuid())
+  title       String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  order       Int       @default(0)
+  assigneeId  String?
+
+  checklistId String
+  checklist   TaskChecklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
+
+  @@index([checklistId, order])
+}
+
+// TimeEntry: Registro de tempo em tarefas
+model TimeEntry {
+  id          String    @id @default(uuid())
+  description String?
+  startTime   DateTime
+  endTime     DateTime?
+  durationMs  Int?
+  billable    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("TimeEntryUser", fields: [userId], references: [id])
+
+  @@index([taskId])
+  @@index([userId, startTime])
+}
+
+// TaskDependency: Dependências entre tarefas
+model TaskDependency {
+  id   String         @id @default(uuid())
+  type DependencyType @default(BLOCKS)
+
+  fromTaskId String
+  fromTask   Task   @relation("DependencyFrom", fields: [fromTaskId], references: [id], onDelete: Cascade)
+
+  toTaskId String
+  toTask   Task   @relation("DependencyTo", fields: [toTaskId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([fromTaskId, toTaskId])
+  @@index([fromTaskId])
+  @@index([toTaskId])
+}
+
+// TaskRecurrence: Recorrência de tarefas
+model TaskRecurrence {
+  id                 String              @id @default(uuid())
+  frequency          RecurrenceFrequency
+  interval           Int                 @default(1)
+  daysOfWeek         Int[]
+  dayOfMonth         Int?
+  endDate            DateTime?
+  maxOccurrences     Int?
+  occurrencesCreated Int                 @default(0)
+  nextRunAt          DateTime?
+  enabled            Boolean             @default(true)
+
+  taskId String @unique
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([nextRunAt, enabled])
+}
+
+// TaskActivity: Log de atividades da tarefa
+model TaskActivity {
+  id          String   @id @default(uuid())
+  type        String
+  description String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation("TaskActivityUser", fields: [userId], references: [id])
+
+  @@index([taskId, createdAt])
+}
+
+// TaskAttachment: Arquivos anexados a tarefas (armazenados no MinIO)
+model TaskAttachment {
+  id           String   @id @default(uuid())
+  fileName     String
+  fileSize     Int
+  mimeType     String
+  storageKey   String
+  uploadedAt   DateTime @default(now())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  uploadedById String
+  uploadedBy   User   @relation("TaskAttachmentUploader", fields: [uploadedById], references: [id])
+
+  @@index([taskId])
+}
+
+// AccessSession: Registra cada sessão de login/logout para calcular tempo médio logado
+model AccessSession {
+  id        String    @id @default(uuid())
+  loginAt   DateTime  @default(now())
+  logoutAt  DateTime? // null = sessão ainda ativa
+  durationS Int?      // duração em segundos (preenchido no logout ou expiração)
+
+  ipAddress String?
+  userAgent String? @db.Text
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, loginAt])
+  @@index([organizationId, loginAt])
+}
+
+// PageViewLog: Registra cada visualização de página para calcular top páginas por org
+model PageViewLog {
+  id        String   @id @default(uuid())
+  path      String   // ex: "/dashboard", "/contacts", "/pipeline/abc"
+  pageTitle String?  // título legível da página
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@index([organizationId, path])
+  @@index([userId, createdAt])
+}
+
+// ============================================================================
+// SUPPORT TICKETS — Sistema de suporte ROI Labs (Fase suporte)
+// ============================================================================
+
+enum TicketStatus {
+  OPEN          // Cliente abriu, aguarda staff
+  IN_PROGRESS   // Staff respondeu, conversa ativa
+  WAITING_USER  // Staff respondeu, aguarda cliente
+  RESOLVED      // Staff marcou como resolvido
+  CLOSED        // Cliente confirmou ou auto-close
+}
+
+enum TicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum TicketCategory {
+  BUG
+  QUESTION
+  FEATURE_REQUEST
+  BILLING
+  ONBOARDING
+  OTHER
+}
+
+enum TicketMessageAuthorType {
+  USER   // Cliente final
+  STAFF  // ROI Labs
+  SYSTEM // Mensagens automáticas
+}
+
+model SupportTicket {
+  id              String          @id @default(uuid())
+  subject         String
+  description     String          @db.Text
+  status          TicketStatus    @default(OPEN)
+  priority        TicketPriority  @default(NORMAL)
+  category        TicketCategory  @default(QUESTION)
+
+  organizationId  String
+  organization    Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  createdByUserId String
+  createdByUser   User            @relation("SupportTicketCreator", fields: [createdByUserId], references: [id])
+
+  assignedStaffId String?
+  assignedStaff   User?           @relation("SupportTicketAssignee", fields: [assignedStaffId], references: [id])
+
+  firstResponseAt DateTime?
+  resolvedAt      DateTime?
+  closedAt        DateTime?
+  lastMessageAt   DateTime?
+  unreadByUser    Boolean         @default(false)
+  unreadByStaff   Boolean         @default(true)
+
+  lastEmailSentAt DateTime?
+
+  messages        SupportMessage[]
+  attachments     SupportAttachment[]
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([organizationId, status])
+  @@index([assignedStaffId, status])
+  @@index([status, priority, createdAt])
+}
+
+model SupportMessage {
+  id          String                  @id @default(uuid())
+  ticketId    String
+  ticket      SupportTicket           @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  authorType  TicketMessageAuthorType
+  authorId    String?
+  author      User?                   @relation(fields: [authorId], references: [id])
+
+  content     String                  @db.Text
+  isInternal  Boolean                 @default(false)
+
+  attachments SupportAttachment[]
+
+  createdAt   DateTime                @default(now())
+
+  @@index([ticketId, createdAt])
+}
+
+model SupportAttachment {
+  id           String          @id @default(uuid())
+  ticketId     String?
+  ticket       SupportTicket?  @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  messageId    String?
+  message      SupportMessage? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  fileName     String
+  fileSize     Int
+  mimeType     String
+  storageKey   String
+  uploadedById String
+  uploadedBy   User            @relation(fields: [uploadedById], references: [id])
+
+  createdAt    DateTime        @default(now())
+
+  @@index([ticketId])
+  @@index([messageId])
+}
+
+
+model InstagramPost {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  type           String       // feed | carousel | stories
+  caption        String
+  hashtags       String
+  altText        String
+  imageUrls      String[]
+  slides         String[]
+  scheduledFor   DateTime
+  status         String       @default("draft")   // draft | scheduled | awaiting_approval | posted | failed | cancelled
+  postedAt       DateTime?
+  error          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Autoria e aprovação
+  createdById    String?
+  createdBy      User?        @relation("InstagramPostCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  approvedById   String?
+  approvedBy     User?        @relation("InstagramPostApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  approvedAt     DateTime?
+
+  // Recorrência
+  recurrenceRule       String?
+  recurrenceEndDate    DateTime?
+  recurrenceParentId   String?
+  recurrenceParent     InstagramPost?  @relation("InstagramRecurrence", fields: [recurrenceParentId], references: [id], onDelete: Cascade)
+  recurrenceChildren   InstagramPost[] @relation("InstagramRecurrence")
+
+  comments       InstagramPostComment[]
+
+  @@index([organizationId, status, scheduledFor])
+  @@index([recurrenceParentId])
+}
+
+model InstagramPostComment {
+  id        String        @id @default(uuid())
+  postId    String
+  post      InstagramPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation("InstagramPostCommentAuthor", fields: [userId], references: [id], onDelete: Cascade)
+  content   String        @db.Text
+  resolved  Boolean       @default(false)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([postId, createdAt])
+}
+
+model OmieFinanceiro {
+  id             String   @id @default(uuid())
+  omieId         String   @unique // codigo_lancamento_omie
+  status         String   // "RECEBIDO" | "VENCIDO" | "A_VENCER"
+  valor          Float
+  vencimento     DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  contactId      String
+  contact        Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([contactId])
+}
+
+// ── RAG Knowledge Base ─────────────────────────────────────────────────────
+
+model KnowledgeDocument {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  title          String
+  content        String   @db.Text
+  contentType    String   // "script" | "faq" | "process" | "playbook" | "custom"
+  agentIds       String[] @default([]) // [] = global; non-empty = only these agent IDs
+  metadata       Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  chunks KnowledgeChunk[]
+
+  @@index([organizationId])
+}
+
+model KnowledgeChunk {
+  id          String                        @id @default(uuid())
+  documentId  String
+  document    KnowledgeDocument             @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkIndex  Int
+  text        String                        @db.Text
+  embedding   Unsupported("vector(1536)")?
+  createdAt   DateTime                      @default(now())
+
+  @@index([documentId])
+}
+
+// ============================================================
+// DOMÍNIO ESTÉTICA & DERMATOLOGIA (Sprint 1 — 2026-05-12)
+// Novos models de domínio clínico. Os models legados (Contact,
+// Deal) são mantidos intocados; a migração é aditiva.
+// ============================================================
+
+enum TreatmentType {
+  BOTOX
+  PREENCHIMENTO
+  LASER
+  PEELING
+  HARMONIZACAO_FACIAL
+  LIMPEZA_PELE
+  MICROAGULHAMENTO
+  CRIOLIPOLISE
+  RADIOFREQUENCIA
+  LUZ_PULSADA
+  DEPILACAO_LASER
+  SKINBOOSTER
+  FIOS_PDO
+  BICHECTOMIA
+  RINOPLASTIA_NONCIRURGICA
+  OUTROS
+}
+
+enum TreatmentStatus {
+  AVALIACAO
+  ORCAMENTO_ENVIADO
+  AGENDADO
+  EM_ANDAMENTO
+  FINALIZADO
+  RETORNO
+  CANCELADO
+}
+
+enum SessionStatus {
+  AGENDADA
+  CONFIRMADA
+  REALIZADA
+  NO_SHOW
+  REMARCADA
+  CANCELADA
+}
+
+enum ConsentType {
+  LGPD_DADOS_SAUDE
+  USO_FOTO_MARKETING
+  AUTORIZACAO_PROCEDIMENTO
+  TERMO_RISCO
+  TERMO_MENOR_IDADE
+}
+
+enum MedicalCouncil {
+  CRM
+  CRO
+  CRBM
+  CRF
+  COREN
+  CFBM
+  CREFITO
+  CRP
+}
+
+enum RoomType {
+  CONSULTA
+  PROCEDIMENTO
+  LASER
+  PEELING
+  RECUPERACAO
+}
+
+// Paciente — análogo semântico de Contact no domínio clínico.
+// Não substitui Contact; usa legacyContactId para soft-link.
+model Patient {
+  id                   String   @id @default(uuid())
+  organizationId       String
+  organization         Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Identificação
+  nome                 String
+  cpf                  String?  // Armazenado criptografado (AES-256-GCM via lib/encryption.ts)
+  dataNascimento       DateTime?
+  sexo                 String?  // "M" | "F" | "NB" | "NI"
+  telefone             String?
+  email                String?
+  fotoPerfil           String?  // URL (bucket criptografado)
+  origem               String?  // "instagram" | "indicacao" | "google" | "walk_in" | "outros"
+
+  // Saúde
+  alergias             String[] @default([])
+  medicacoesUso        String[] @default([])
+  contraindicacoes     String[] @default([])
+  observacoesMedicas   String?  @db.Text
+
+  // Tags para filtros clínicos (ex: "VIP", "Particular", "Convênio X")
+  tags                 String[] @default([])
+
+  // LGPD & consentimento
+  consentLgpd          Json?    // { aceitoEm, ip, versaoDoc }
+  dadosSensiveis       Boolean  @default(false) // true quando anamnese/prontuário existem
+
+  // Atribuição
+  profissionalAssignedId String?
+  profissionalAssigned   Professional? @relation(fields: [profissionalAssignedId], references: [id])
+
+  // Soft-link legado
+  legacyContactId      String?  // FK para Contact.id quando paciente veio de migração
+
+  // Timestamps
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  // Relações
+  treatments           Treatment[]
+  anamneses            Anamnesis[]
+  medicalRecords       MedicalRecord[]
+  consentLogs          ConsentLog[]
+  waitlistEntries      WaitlistEntry[]
+  guiasTiss            GuiaTiss[]
+  photos               PatientPhoto[]
+  loyaltyTransactions  LoyaltyTransaction[]
+  sessionPackages      SessionPackage[]
+
+  @@index([organizationId])
+  @@index([organizationId, email])
+  @@index([organizationId, telefone])
+  @@index([legacyContactId])
+}
+
+// Tratamento — análogo semântico de Deal no domínio clínico.
+model Treatment {
+  id                       String          @id @default(uuid())
+  organizationId           String
+  organization             Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  pacienteId               String
+  paciente                 Patient         @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  tipoTratamento           TreatmentType   @default(OUTROS)
+  descricaoCustomizada     String?         // quando tipo = OUTROS
+  status                   TreatmentStatus @default(AVALIACAO)
+
+  valorTotal               Decimal?        @db.Decimal(10, 2)
+  sessoesPrevistas         Int             @default(1)
+  sessoesRealizadas        Int             @default(0)
+
+  profissionalResponsavelId String?
+  profissionalResponsavel   Professional?  @relation(fields: [profissionalResponsavelId], references: [id])
+
+  contraindicacoesVerificadas Boolean      @default(false)
+  fotosAntes               String[]        @default([]) // URLs (bucket criptografado)
+  fotosDepois              String[]        @default([]) // URLs (bucket criptografado)
+
+  observacoes              String?         @db.Text
+  dataInicio               DateTime?
+  dataFim                  DateTime?
+  proximoRetorno           DateTime?
+
+  // Soft-link legado
+  legacyDealId             String?         // FK para Deal.id quando treatment veio de migração
+
+  createdAt                DateTime        @default(now())
+  updatedAt                DateTime        @updatedAt
+
+  procedureId              String?
+  procedure                Procedure?  @relation(fields: [procedureId], references: [id])
+
+  sessions                 TreatmentSession[]
+  anamneses                Anamnesis[]
+
+  @@index([organizationId])
+  @@index([organizationId, pacienteId])
+  @@index([organizationId, status])
+  @@index([legacyDealId])
+  @@index([procedureId])
+}
+
+// Sessão de tratamento — agenda clínica individual.
+model TreatmentSession {
+  id                String        @id @default(uuid())
+  organizationId    String
+  organization      Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  treatmentId       String
+  treatment         Treatment     @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
+
+  dataAgendada      DateTime
+  dataRealizada     DateTime?
+  duracaoMinutos    Int?
+
+  status            SessionStatus @default(AGENDADA)
+
+  profissionalId    String?
+  profissional      Professional? @relation(fields: [profissionalId], references: [id])
+
+  salaId            String?
+  sala              ClinicRoom?   @relation(fields: [salaId], references: [id])
+
+  observacoes       String?       @db.Text
+  // JSON: [{ produto: string, qtd: number, lote: string, validade: string }]
+  produtosAplicados Json?
+
+  // No-show prediction (preenchido pelo ml-api)
+  noShowScore       Int?          // 0–100
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([organizationId])
+  @@index([organizationId, dataAgendada])
+  @@index([treatmentId])
+  @@index([profissionalId])
+}
+
+// Catálogo de procedimentos da clínica.
+model Procedure {
+  id                        String   @id @default(uuid())
+  organizationId            String
+  organization              Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  nome                      String
+  categoria                 String?  // "facial" | "corporal" | "capilar" | "outros"
+  descricao                 String?  @db.Text
+  duracaoMinutos            Int      @default(60)
+  valorPadrao               Decimal? @db.Decimal(10, 2)
+
+  // Informações clínicas
+  contraindicacoesGerais    Json?    // string[]
+  preCuidados               String?  @db.Text
+  posCuidados               String?  @db.Text
+  exigeAnamneseEspecifica   Boolean  @default(false)
+  anamneseTemplateId        String?  // FK para AnamnesisTemplate.id (quando implementado)
+
+  profissionaisHabilitadosIds String[] @default([]) // User IDs
+
+  ativo                     Boolean  @default(true)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  treatments                Treatment[]
+
+  @@index([organizationId])
+  @@index([organizationId, ativo])
+}
+
+// Prontuário básico — registro de atendimento clínico.
+model MedicalRecord {
+  id                   String       @id @default(uuid())
+  organizationId       String
+  organization         Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  pacienteId           String
+  paciente             Patient      @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  profissionalId       String?
+  profissional         Professional? @relation(fields: [profissionalId], references: [id])
+
+  dataAtendimento      DateTime     @default(now())
+  queixaPrincipal      String?      @db.Text
+  historiaClinica      String?      @db.Text
+  examesAvaliados      Json?        // [{ tipo, resultado, data }]
+  avaliacaoFisica      String?      @db.Text
+  hipoteseDiagnostica  String?      @db.Text
+  planoTratamento      String?      @db.Text
+
+  // Acesso criptografado — conteúdo sensível
+  dadosCriptografados  String?      @db.Text // JSON criptografado com AES-256-GCM
+
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+
+  @@index([organizationId, pacienteId])
+  @@index([organizationId, dataAtendimento])
+}
+
+// Anamnese — formulário clínico estruturado vinculado ao paciente/tratamento.
+model Anamnesis {
+  id                String       @id @default(uuid())
+  organizationId    String
+  organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  pacienteId        String
+  paciente          Patient      @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  treatmentId       String?
+  treatment         Treatment?   @relation(fields: [treatmentId], references: [id])
+
+  profissionalId    String?
+  profissional      Professional? @relation(fields: [profissionalId], references: [id])
+
+  // Respostas criptografadas (dados de saúde — LGPD Art. 11)
+  respostas         String       @db.Text // JSON criptografado com AES-256-GCM
+  templateHash      String?      // Hash SHA-256 do template usado (versionamento)
+
+  // Assinatura digital
+  assinaturaDigital String?      // Hash SHA-256 da assinatura (base64 canvas)
+  assinadoEm        DateTime?
+  assinadoIp        String?
+
+  preenchidoPor     String       @default("profissional") // "profissional" | "paciente" | "recepcao"
+
+  createdAt         DateTime     @default(now())
+
+  @@index([organizationId, pacienteId])
+  @@index([treatmentId])
+}
+
+// Registro imutável de consentimentos LGPD e clínicos.
+model ConsentLog {
+  id               String      @id @default(uuid())
+  organizationId   String
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  pacienteId       String
+  paciente         Patient     @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  tipo             ConsentType
+  versaoDocumento  String      // Hash SHA-256 do texto do termo
+  aceitoEm         DateTime    @default(now())
+  revokedAt        DateTime?
+  ipAddress        String?
+  userAgent        String?
+  // JSON: { metodo: "click"|"assinatura_digital"|"voz", evidencia: string }
+  evidencia        Json?
+
+  @@index([organizationId, pacienteId])
+  @@index([organizationId, tipo])
+}
+
+// Profissional clínico — extensão do User com dados regulatórios.
+model Professional {
+  id                      String         @id @default(uuid())
+  organizationId          String
+  organization            Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  userId                  String?        @unique
+  user                    User?          @relation(fields: [userId], references: [id])
+
+  nome                    String
+  conselho                MedicalCouncil?
+  numeroConselho          String?
+  ufConselho              String?
+  conselhoValidadoEm      DateTime?
+  conselhoStatus          String?        // "ativo" | "inativo" | "pendente" | "nao_aplicavel"
+
+  especialidades          String[]       @default([])
+  bio                     String?        @db.Text
+  fotoUrl                 String?
+  // JSON: { segunda: [{inicio:"08:00", fim:"18:00"}], ... }
+  cargaHoraria            Json?
+  procedimentosHabilitadosIds String[]   @default([]) // Procedure IDs
+
+  ativo                   Boolean        @default(true)
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+
+  // Relações
+  patientsAssigned        Patient[]
+  treatmentsResponsavel   Treatment[]
+  sessions                TreatmentSession[]
+  medicalRecords          MedicalRecord[]
+  anamneses               Anamnesis[]
+
+  @@index([organizationId])
+  @@index([organizationId, ativo])
+}
+
+// Sala/cadeira de atendimento da clínica.
+model ClinicRoom {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  nome           String
+  tipo           RoomType     @default(PROCEDIMENTO)
+  equipamentos   String[]     @default([])
+  // JSON cron de disponibilidade: { segunda: [{inicio:"08:00",fim:"18:00"}], ... }
+  disponibilidade Json?
+
+  ativo          Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  sessions       TreatmentSession[]
+
+  @@index([organizationId])
+}
+
+// Template de anamnese — formulário customizável por procedimento.
+model AnamnesisTemplate {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  nome           String
+  procedimento   String?      // Nome do procedimento ao qual se aplica
+  descricao      String?      @db.Text
+
+  // JSON: { version: number, sections: [{ titulo, campos: [{ id, tipo, label, obrigatorio, opcoes? }] }] }
+  template       Json
+  versao         Int          @default(1)
+  templateHash   String       // SHA-256 do JSON do template (versionamento)
+
+  ativo          Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId])
+  @@index([organizationId, ativo])
+}
+
+// Log imutável de acesso a prontuário — LGPD Art. 46 (segurança dos dados).
+model MedicalAccessLog {
+  id             String   @id @default(uuid())
+  organizationId String
+
+  userId         String?  // quem acessou (null = sistema)
+  pacienteId     String
+  recordType     String   // "MedicalRecord" | "Anamnesis" | "ConsentLog"
+  recordId       String
+  action         String   // "VIEW" | "CREATE" | "UPDATE" | "EXPORT" | "DELETE"
+
+  ipAddress      String?
+  userAgent      String?
+  metadata       Json?    // contexto adicional
+
+  createdAt      DateTime @default(now())
+
+  @@index([organizationId, pacienteId])
+  @@index([organizationId, userId])
+  @@index([createdAt])
+}
+
+// Lista de espera — slot livre é ofertado automaticamente.
+model WaitlistEntry {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  pacienteId     String
+  paciente       Patient      @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+
+  procedimento   String?
+  profissionalId String?
+  // JSON: [{ diaSemana: 1, inicio: "09:00", fim: "12:00" }]
+  preferencias   Json?
+
+  status         String       @default("ativa") // "ativa" | "ofertada" | "aceita" | "expirada"
+  ofertaExpiresAt DateTime?
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId, status])
+  @@index([pacienteId])
+}
+
+// ─── Sprint 4: Convênios & Integrações Regulatórias ──────────────────────────
+
+// Operadora de saúde / plano de convênio
+model Operadora {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  nome           String
+  codigoAns      String?      // Código ANS (6 dígitos)
+  cnpj           String?
+  tipo           String       @default("CONVENIO") // "CONVENIO" | "PARTICULAR" | "CORTESIA"
+
+  // Contato / faturamento
+  contatoNome    String?
+  contatoEmail   String?
+  contatoTelefone String?
+  prazoRepasseDias Int?       // dias corridos para repasse
+
+  ativo          Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  convenios      Convenio[]
+  guias          GuiaTiss[]
+
+  @@index([organizationId])
+  @@index([organizationId, ativo])
+}
+
+// Tabela de valores negociados por procedimento com cada operadora
+model Convenio {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  operadoraId    String
+  operadora      Operadora @relation(fields: [operadoraId], references: [id], onDelete: Cascade)
+
+  procedureId    String?  // FK para Procedure (null = todos)
+  codigoTuss     String?  // Código TUSS do procedimento
+  descricaoTuss  String?
+  valorNegociado Decimal? @db.Decimal(10, 2)
+  porcentagemCo  Float?   // co-participação do paciente (%)
+
+  vigenciaInicio DateTime?
+  vigenciaFim    DateTime?
+  ativo          Boolean  @default(true)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId, operadoraId])
+  @@index([codigoTuss])
+}
+
+// Guia TISS — registro de guia enviada a operadora
+model GuiaTiss {
+  id             String     @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  operadoraId    String
+  operadora      Operadora  @relation(fields: [operadoraId], references: [id])
+
+  pacienteId     String
+  paciente       Patient    @relation(fields: [pacienteId], references: [id])
+
+  sessionId      String?    // FK para TreatmentSession
+  tipo           TipoGuia   @default(CONSULTA)
+  status         StatusGuia @default(RASCUNHO)
+
+  // Dados TISS
+  numeroGuia     String?    // gerado ao enviar
+  codigoTuss     String?
+  valorProcedimento Decimal? @db.Decimal(10, 2)
+  valorTotal     Decimal?   @db.Decimal(10, 2)
+  dataExecucao   DateTime?
+
+  // XML / resposta
+  xmlEnviado     String?    @db.Text
+  xmlResposta    String?    @db.Text
+  motivoGlosa    String?    @db.Text
+  loteId         String?    // lote de faturamento
+
+  // NFS-e
+  nfseNumero     String?
+  nfseStatus     String?    // "pending" | "issued" | "cancelled" | "error"
+  nfsePayload    Json?
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([organizationId, status])
+  @@index([organizationId, operadoraId])
+  @@index([pacienteId])
+}
+
+enum TipoGuia {
+  CONSULTA
+  SADT          // Serviço Auxiliar de Diagnóstico e Terapia
+  INTERNACAO
+  SP_SADT       // Solicitação/Autorização prévia
+  HONORARIOS
+}
+
+enum StatusGuia {
+  RASCUNHO
+  ENVIADA
+  AUTORIZADA
+  NEGADA
+  GLOSADA
+  PAGA
+  CANCELADA
+}
+
+// ============================================================================
+// RECALL AUTOMÁTICO
+// ============================================================================
+
+model RecallRule {
+  id             String        @id @default(uuid())
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  nome           String?
+  procedimentoId String?
+  intervaloDias  Int
+  canal          RecallChannel @default(WHATSAPP)
+  template       String        @db.Text
+  ativo          Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  logs           RecallLog[]
+
+  @@index([organizationId, ativo])
+}
+
+enum RecallChannel {
+  WHATSAPP
+  EMAIL
+  SMS
+}
+
+model RecallLog {
+  id           String          @id @default(uuid())
+  recallRuleId String
+  recallRule   RecallRule      @relation(fields: [recallRuleId], references: [id], onDelete: Cascade)
+  patientId    String
+  enviadoEm    DateTime        @default(now())
+  status       RecallLogStatus
+  canal        RecallChannel
+  respondeu    Boolean         @default(false)
+  agendou      Boolean         @default(false)
+
+  @@index([patientId])
+  @@index([recallRuleId])
+}
+
+enum RecallLogStatus {
+  ENVIADO
+  ENTREGUE
+  LIDO
+  ERRO
+}
+
+// ============================================================================
+// FOTOS BEFORE/AFTER
+// ============================================================================
+
+model PatientPhoto {
+  id                     String     @id @default(uuid())
+  organizationId         String
+  organization           Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  patientId              String
+  patient                Patient    @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  treatmentSessionId     String?
+  url                    String
+  tipo                   PhotoType
+  anguloPadronizado      String?
+  areaCorpo              String?
+  consentimentoConcedido Boolean    @default(false)
+  createdAt              DateTime   @default(now())
+
+  @@index([patientId, createdAt])
+  @@index([organizationId])
+}
+
+enum PhotoType {
+  BEFORE
+  AFTER
+  EVOLUTION
+}
+
+// ============================================================================
+// PROGRAMA DE FIDELIDADE
+// ============================================================================
+
+model LoyaltyConfig {
+  id             String       @id @default(uuid())
+  organizationId String       @unique
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  pontosPorReal  Float        @default(1)
+  regrasResgate  Json         @default("{}")
+  ativo          Boolean      @default(true)
+}
+
+model LoyaltyTransaction {
+  id          String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  patientId   String
+  patient     Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  pontos      Int
+  tipo        LoyaltyType
+  descricao   String?
+  createdAt   DateTime     @default(now())
+
+  @@index([patientId, createdAt])
+  @@index([organizationId])
+}
+
+enum LoyaltyType {
+  GANHO
+  RESGATE
+  EXPIRACAO
+}
+
+// ============================================================================
+// PACOTES DE SESSÃO
+// ============================================================================
+
+model SessionPackage {
+  id                  String        @id @default(uuid())
+  organizationId      String
+  organization        Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  patientId           String
+  patient             Patient       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  procedimentoId      String?
+  sessoesTotais       Int
+  sessoesUtilizadas   Int           @default(0)
+  intervaloMinimoDias Int           @default(7)
+  status              PackageStatus @default(ATIVO)
+  expiraEm            DateTime?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@index([patientId, status])
+  @@index([organizationId])
+}
+
+enum PackageStatus {
+  ATIVO
+  CONCLUIDO
+  EXPIRADO
+  CANCELADO
+}

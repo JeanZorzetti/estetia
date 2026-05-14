@@ -1,0 +1,33 @@
+﻿import { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ locale: string }> }
+): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'marketing.pricing.meta' })
+  const baseUrl = 'https://estetiacrm.com.br'
+  const alternates = buildLocaleAlternates(locale, '/pricing')
+
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates,
+    openGraph: {
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+      url: alternates.canonical,
+      images: [{ url: `${baseUrl}/og-image.png`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('ogTitle'),
+      description: t('ogDescription'),
+    },
+  }
+}
+
+export default function PricingLayout({ children }: { children: React.ReactNode }) {
+  return children
+}

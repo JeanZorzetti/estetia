@@ -1,0 +1,276 @@
+﻿'use client'
+
+import { useState, useMemo, useEffect } from 'react'
+import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X, RotateCw, Sun, Moon, LifeBuoy } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useTheme } from 'next-themes'
+import { useAppBar } from '@/components/mobile/app-bar-context'
+
+interface SettingsTab {
+  id: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  href: string
+  badge?: string
+  description: string
+}
+
+const tabs: SettingsTab[] = [
+  {
+    id: 'general',
+    label: 'Geral',
+    icon: Settings,
+    href: '/dashboard/settings',
+    description: 'Perfil e configurações da conta',
+  },
+  {
+    id: 'team',
+    label: 'Time',
+    icon: Users,
+    href: '/dashboard/settings/team',
+    description: 'Gerencie membros e convites',
+  },
+  {
+    id: 'notifications',
+    label: 'Notificações',
+    icon: Bell,
+    href: '/dashboard/settings/notifications',
+    description: 'Preferências de notificação',
+  },
+  {
+    id: 'api',
+    label: 'API Keys',
+    icon: Key,
+    href: '/dashboard/settings/api',
+    description: 'Chaves de API para integrações',
+  },
+  {
+    id: 'webhooks',
+    label: 'Webhooks',
+    icon: Webhook,
+    href: '/dashboard/settings/webhooks',
+    description: 'Configure webhooks para eventos',
+  },
+  {
+    id: 'integrations',
+    label: 'Integrações',
+    icon: Zap,
+    href: '/dashboard/settings/integrations',
+    description: 'N8N, WhatsApp e Google Calendar',
+  },
+  {
+    id: 'round-robin',
+    label: 'Round-Robin',
+    icon: RotateCw,
+    href: '/dashboard/settings/round-robin',
+    description: 'Distribuição automática de leads',
+  },
+  {
+    id: 'help',
+    label: 'Ajuda',
+    icon: BookOpen,
+    href: '/help',
+    description: 'Central de ajuda e documentação',
+  },
+  {
+    id: 'support',
+    label: 'Suporte',
+    icon: LifeBuoy,
+    href: '/dashboard/support',
+    description: 'Tickets e chat com a equipe',
+  },
+]
+
+interface SettingsLayoutProps {
+  children: React.ReactNode
+  organizationName?: string
+}
+
+export function SettingsLayout({ children, organizationName }: SettingsLayoutProps) {
+  const pathname = usePathname()
+  const [searchQuery, setSearchQuery] = useState('')
+  const { theme, setTheme } = useTheme()
+  const isDark = theme === 'dark'
+
+  // Filter tabs based on search query
+  const filteredTabs = useMemo(() => {
+    if (!searchQuery) return tabs
+    const query = searchQuery.toLowerCase()
+    return tabs.filter(
+      (tab) =>
+        tab.label.toLowerCase().includes(query) ||
+        tab.description.toLowerCase().includes(query)
+    )
+  }, [searchQuery])
+
+  // Determine active tab
+  const activeTabId = useMemo(() => {
+    const currentTab = tabs.find((tab) => {
+      if (tab.href === '/dashboard/settings') {
+        return pathname === '/dashboard/settings'
+      }
+      return pathname?.startsWith(tab.href)
+    })
+    return currentTab?.id || 'general'
+  }, [pathname])
+
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { setConfig } = useAppBar()
+
+  useEffect(() => {
+    const activeTab = tabs.find(t => t.id === activeTabId)
+    setConfig({
+      title: activeTab?.label ?? 'Configurações',
+      showBack: activeTabId !== 'general',
+    })
+    return () => setConfig(null)
+  }, [activeTabId])
+
+  return (
+    <div className="flex-1 flex h-full relative">
+      {/* Mobile sidebar toggle — float above bottom nav */}
+      <div className="md:hidden fixed bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] right-4 z-50">
+        <Button
+          size="icon"
+          variant="default"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="h-12 w-12 rounded-full shadow-lg"
+        >
+          {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </Button>
+      </div>
+
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Navegação Lateral */}
+      <aside className={cn(
+        "w-64 border-r border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-white/[0.01] backdrop-blur-xl p-6 space-y-6 overflow-y-auto",
+        "fixed top-[var(--app-bar-height)] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] left-0 z-40 transition-transform duration-200 md:relative md:inset-auto md:translate-x-0",
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
+        {/* Header */}
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Configurações</h2>
+          {organizationName && (
+            <p className="text-xs text-zinc-500">{organizationName}</p>
+          )}
+        </div>
+
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+          <Input
+            type="text"
+            placeholder="Buscar configuração..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 h-9 bg-white dark:bg-white/5 border-zinc-200 dark:border-white/10 focus:border-[#0a1f3d] dark:focus:border-[#0a1f3d]"
+          />
+        </div>
+
+        {/* Navigation Tabs */}
+        <nav className="space-y-1">
+          {filteredTabs.map((tab) => {
+            const Icon = tab.icon
+            const isActive = activeTabId === tab.id
+            const isExternal = tab.href.startsWith('/help')
+
+            const content = (
+              <div
+                className={cn(
+                  'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group cursor-pointer',
+                  isActive
+                    ? 'bg-[#eef2f9] dark:bg-[#1a3560]/10 text-[#0a1f3d] dark:text-[#489fb5]'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-zinc-100'
+                )}
+              >
+                <Icon
+                  className={cn(
+                    'h-5 w-5 transition-colors',
+                    isActive
+                      ? 'text-[#0a1f3d] dark:text-[#489fb5]'
+                      : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'
+                  )}
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium truncate">{tab.label}</span>
+                    {tab.badge && (
+                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-[#489fb5]/8 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">
+                        {tab.badge}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500 truncate mt-0.5">
+                    {tab.description}
+                  </p>
+                </div>
+              </div>
+            )
+
+            if (isExternal) {
+              return (
+                <a
+                  key={tab.id}
+                  href={tab.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {content}
+                </a>
+              )
+            }
+
+            return (
+              <Link key={tab.id} href={tab.href} onClick={() => setSidebarOpen(false)}>
+                {content}
+              </Link>
+            )
+          })}
+        </nav>
+
+        {/* Empty State for Search */}
+        {searchQuery && filteredTabs.length === 0 && (
+          <div className="text-center py-8">
+            <Search className="h-8 w-8 text-zinc-300 dark:text-zinc-700 mx-auto mb-2" />
+            <p className="text-sm text-zinc-500 dark:text-zinc-500">
+              Nenhuma configuração encontrada
+            </p>
+          </div>
+        )}
+
+        {/* Theme Toggle */}
+        <div className="pt-4 border-t border-zinc-200 dark:border-white/5">
+          <button
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200"
+          >
+            {isDark
+              ? <Sun className="h-5 w-5 text-zinc-400" />
+              : <Moon className="h-5 w-5 text-zinc-400" />
+            }
+            <div className="flex-1 text-left">
+              <div className="text-sm font-medium">Tema</div>
+              <div className="text-xs text-zinc-500 mt-0.5">{isDark ? 'Modo claro' : 'Modo escuro'}</div>
+            </div>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
+        {children}
+      </main>
+    </div>
+  )
+}

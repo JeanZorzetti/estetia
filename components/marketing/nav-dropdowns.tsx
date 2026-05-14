@@ -1,0 +1,133 @@
+'use client'
+
+import React from 'react'
+import Link from 'next/link'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { ChevronDown, Calculator } from 'lucide-react'
+
+const FERRAMENTAS_KEYS = [
+  { href: '/ferramentas/calculadora-roi', tKey: 'roi_general' },
+  { href: '/ferramentas/calculadora-no-show', tKey: 'no_show' },
+  { href: '/ferramentas/calculadora-ltv', tKey: 'ltv' },
+  { href: '/ferramentas/calculadora-precificacao', tKey: 'pricing' },
+  { href: '/ferramentas/avaliacao-maturidade-digital', tKey: 'maturity' },
+]
+
+function DropdownMenu({ label, children }: { label: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false)
+  const [offsetX, setOffsetX] = useState(0)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const handleEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    setOpen(true)
+  }
+
+  const handleLeave = () => {
+    timeoutRef.current = setTimeout(() => setOpen(false), 150)
+  }
+
+  const updatePosition = useCallback(() => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const dropdownWidth = 240
+    const centeredLeft = rect.left + rect.width / 2 - dropdownWidth / 2
+    const margin = 16
+    const clamped = Math.max(margin, Math.min(centeredLeft, window.innerWidth - dropdownWidth - margin))
+    setOffsetX(clamped - centeredLeft)
+  }, [])
+
+  useEffect(() => {
+    if (open) updatePosition()
+  }, [open, updatePosition])
+
+  useEffect(() => {
+    if (!open) return
+    window.addEventListener('resize', updatePosition)
+    return () => window.removeEventListener('resize', updatePosition)
+  }, [open, updatePosition])
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [])
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground whitespace-nowrap"
+      >
+        {label}
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div
+          className="absolute top-full left-1/2 pt-2 z-50"
+          style={{ transform: `translateX(calc(-50% + ${offsetX}px))` }}
+        >
+          <div className="min-w-[240px] rounded-xl border bg-popover/95 backdrop-blur-xl shadow-xl p-2 animate-in fade-in-0 zoom-in-95 duration-150">
+            {children}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DropdownItem({ href, icon: Icon, label, onClick }: {
+  href: string
+  icon?: React.ElementType
+  label: string
+  onClick?: () => void
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+    >
+      {Icon && <Icon className="h-4 w-4 shrink-0" />}
+      {label}
+    </Link>
+  )
+}
+
+import { useTranslations } from 'next-intl'
+
+export function NavDropdowns() {
+  const tNav = useTranslations('marketing.home.nav')
+
+  return (
+    <DropdownMenu label={tNav('tools')}>
+      {FERRAMENTAS_KEYS.map((tool) => (
+        <DropdownItem
+          key={tool.href}
+          href={tool.href}
+          icon={Calculator}
+          label={tNav(`tools_labels.${tool.tKey}` as any)}
+        />
+      ))}
+    </DropdownMenu>
+  )
+}
+
+export function SolucoesLink() {
+  const tNav = useTranslations('marketing.home.nav')
+  return (
+    <Link
+      href="/solucoes"
+      className="px-3 py-1.5 text-sm font-medium text-[#0A1F3D]/70 hover:text-[#0A1F3D] whitespace-nowrap rounded-lg hover:bg-[#0A1F3D]/5 transition-colors"
+    >
+      {tNav('solutions')}
+    </Link>
+  )
+}

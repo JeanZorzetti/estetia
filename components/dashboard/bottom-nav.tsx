@@ -1,0 +1,248 @@
+﻿'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { cn } from '@/lib/utils'
+import {
+  Home,
+  Users,
+  MessageSquare,
+  CalendarDays,
+  MoreHorizontal,
+  BarChart3,
+  Mail,
+  Zap,
+  TrendingDown,
+  TrendingUp,
+  Settings,
+  CreditCard,
+  Package,
+  CheckSquare,
+  RotateCw,
+  Gift,
+} from 'lucide-react'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+
+type NavItem = {
+  title: string
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+  badge?: number
+}
+
+// Os 4 itens fixos que ocupam a bottom bar. O 5º slot é o "Mais".
+const primaryItems: NavItem[] = [
+  { title: 'Pipeline', href: '/dashboard', icon: Home },
+  { title: 'Contatos', href: '/dashboard/contacts', icon: Users },
+  { title: 'Chat', href: '/dashboard/chat', icon: MessageSquare },
+  { title: 'Agenda', href: '/dashboard/agenda', icon: CalendarDays },
+]
+
+// Grupos exibidos dentro do bottom sheet quando o usuário toca "Mais"
+const moreGroups: { label: string; items: NavItem[] }[] = [
+  {
+    label: 'CRM',
+    items: [
+      { title: 'Tarefas', href: '/dashboard/tasks', icon: CheckSquare },
+      { title: 'Produtos', href: '/dashboard/products', icon: Package },
+    ],
+  },
+  {
+    label: 'Analytics',
+    items: [
+      { title: 'Dashboard', href: '/dashboard/analytics', icon: BarChart3 },
+      { title: 'Neg. Perdidos', href: '/dashboard/analytics/lost-deals', icon: TrendingDown },
+      { title: 'Campanhas & CAC', href: '/dashboard/marketing/campaigns', icon: TrendingUp },
+    ],
+  },
+  {
+    label: 'Automações',
+    items: [
+      { title: 'Emails', href: '/dashboard/email-automations', icon: Mail },
+      { title: 'Deals', href: '/dashboard/automations', icon: Zap },
+    ],
+  },
+  {
+    label: 'Conta',
+    items: [
+      { title: 'Indique e Ganhe', href: '/indique', icon: Gift },
+      { title: 'Planos', href: '/dashboard/billing/plans', icon: CreditCard },
+      { title: 'Configurações', href: '/dashboard/settings', icon: Settings },
+      { title: 'Round-Robin', href: '/dashboard/settings/round-robin', icon: RotateCw },
+    ],
+  },
+]
+
+function isItemActive(pathname: string, href: string) {
+  if (href === '/dashboard') return pathname === '/dashboard' || pathname.endsWith('/dashboard')
+  return pathname === href || pathname.startsWith(href + '/')
+}
+
+function NavButton({
+  item,
+  active,
+  onClick,
+}: {
+  item: NavItem
+  active: boolean
+  onClick?: () => void
+}) {
+  const Icon = item.icon
+  return (
+    <Link
+      href={item.href}
+      onClick={onClick}
+      className={cn(
+        'group relative flex h-full min-w-[44px] flex-1 flex-col items-center justify-center gap-0.5 px-2 text-[10px] font-medium transition-colors',
+        active
+          ? 'text-[#0a1f3d] dark:text-[#489fb5]'
+          : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-200',
+      )}
+    >
+      <div className="relative">
+        <Icon
+          className={cn(
+            'h-5 w-5 transition-transform duration-200',
+            active && 'scale-110',
+          )}
+        />
+        {item.badge != null && item.badge > 0 && (
+          <span className="absolute -top-1.5 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-0.5 text-[9px] font-bold text-destructive-foreground">
+            {item.badge > 99 ? '99+' : item.badge}
+          </span>
+        )}
+      </div>
+      <span className="truncate [@media(max-height:500px)]:hidden">{item.title}</span>
+      {active && (
+        <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-[#1a3560]" />
+      )}
+    </Link>
+  )
+}
+
+export function BottomNav() {
+  const pathname = usePathname()
+  const [moreOpen, setMoreOpen] = useState(false)
+  const [unreadChat, setUnreadChat] = useState(0)
+
+  useEffect(() => {
+    // Fetch unread chat count — lightweight endpoint
+    const fetchUnread = async () => {
+      try {
+        const res = await fetch('/api/conversations/unread-count', { credentials: 'same-origin' })
+        if (res.ok) {
+          const data = await res.json()
+          const count = data.count ?? 0
+          setUnreadChat(count)
+          // Update app icon badge
+          const { setAppBadge } = await import('@/lib/mobile/badge')
+          setAppBadge(count)
+        }
+      } catch {}
+    }
+
+    fetchUnread()
+    // Refresh every 30s when tab is visible
+    const interval = setInterval(() => {
+      if (!document.hidden) fetchUnread()
+    }, 30_000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Items with dynamic badges
+  const itemsWithBadges: NavItem[] = primaryItems.map(item =>
+    item.href === '/dashboard/chat' ? { ...item, badge: unreadChat } : item
+  )
+
+  // Considera "Mais" ativo quando a rota atual não casa com nenhum primary item
+  const moreActive =
+    !primaryItems.some(item => isItemActive(pathname, item.href)) &&
+    moreGroups.some(g => g.items.some(i => isItemActive(pathname, i.href)))
+
+  return (
+    <nav
+      aria-label="Navegação principal mobile"
+      className={cn(
+        'fixed bottom-0 left-0 right-0 z-40 flex h-14 border-t border-border/60 bg-background/95 backdrop-blur-md md:hidden',
+        'pb-[env(safe-area-inset-bottom)]',
+      )}
+    >
+      {itemsWithBadges.map(item => (
+        <NavButton
+          key={item.href}
+          item={item}
+          active={isItemActive(pathname, item.href)}
+        />
+      ))}
+
+      <Sheet open={moreOpen} onOpenChange={setMoreOpen}>
+        <SheetTrigger asChild>
+          <button
+            type="button"
+            className={cn(
+              'group relative flex h-full min-w-[44px] flex-1 flex-col items-center justify-center gap-0.5 px-2 text-[10px] font-medium transition-colors',
+              moreActive
+                ? 'text-[#0a1f3d] dark:text-[#489fb5]'
+                : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-200',
+            )}
+            aria-label="Mais opções"
+          >
+            <MoreHorizontal
+              className={cn('h-5 w-5 transition-transform duration-200', moreActive && 'scale-110')}
+            />
+            <span className="[@media(max-height:500px)]:hidden">Mais</span>
+            {moreActive && (
+              <span className="absolute top-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-[#1a3560]" />
+            )}
+          </button>
+        </SheetTrigger>
+        <SheetContent
+          side="bottom"
+          className="max-h-[85vh] overflow-y-auto rounded-t-2xl pb-[env(safe-area-inset-bottom)]"
+        >
+          <SheetHeader className="pb-4">
+            <SheetTitle>Mais opções</SheetTitle>
+          </SheetHeader>
+          <div className="space-y-6">
+            {moreGroups.map(group => (
+              <div key={group.label}>
+                <h3 className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {group.label}
+                </h3>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {group.items.map(item => {
+                    const Icon = item.icon
+                    const active = isItemActive(pathname, item.href)
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMoreOpen(false)}
+                        className={cn(
+                          'flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-xl border border-border/50 bg-muted/30 px-2 py-3 text-center text-xs font-medium transition-all active:scale-[0.97]',
+                          active
+                            ? 'border-[#0a1f3d]/50 bg-[#1a3560]/10 text-[#0a1f3d] dark:text-[#489fb5]'
+                            : 'text-foreground hover:bg-muted/60',
+                        )}
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span className="leading-tight">{item.title}</span>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
+    </nav>
+  )
+}

@@ -1,0 +1,91 @@
+{
+  "pagina": "Home",
+  "meta_titulo": "Boulevard | Booking and Scheduling Software for Salons, Spas, Medspas",
+  "navegacao_topo": {
+    "menus": [
+      "Solutions",
+      "Features",
+      "Pricing",
+      "Resources"
+    ],
+    "botoes_acao": [
+      "We're Hiring",
+      "Login",
+      "Get a Demo"
+    ]
+  },
+  "secao_hero": {
+    "aviso_topo": "Introducing Boulevard ePrescribe for medspas. Send prescriptions seamlessly within Boulevard.",
+    "titulo_principal": "The tech behind your touch",
+    "subtitulo": "Meet the fastest growing client experience platform, trusted by thousands of appointment-based self-care businesses nationwide.",
+    "cta": "Get a Demo"
+  },
+  "secao_solucoes": {
+    "titulo": "See why Boulevard is different",
+    "categorias_atendidas": [
+      "Salon",
+      "Medspa",
+      "Spa",
+      "Barber",
+      "Nail",
+      "Massage"
+    ],
+    "cta": "Start Product Tour"
+  },
+  "secao_funcionalidades": [
+    {
+      "titulo": "Precision Scheduling™",
+      "descricao": "Give clients a modern, simple self-booking experience and optimize your calendar with Precision Scheduling™."
+    },
+    {
+      "titulo": "All-in-one POS",
+      "descricao": "Elevate your checkout with an all-in-one POS system designed for beauty and wellness brands, not storefronts or cafes."
+    },
+    {
+      "titulo": "Marketing & loyalty programs",
+      "descricao": "Keep the spark alive and drive retention with built-in marketing, messages, memberships, and loyalty programs."
+    }
+  ],
+  "prova_social_e_premios": {
+    "estatistica": "Helping 40,000+ self-care professionals level up their business",
+    "premios": [
+      "Capterra - Best Value 2025",
+      "Software Advice - Best Customer Support",
+      "G2 - Best Value 2025"
+    ]
+  },
+  "chamada_final_cta": {
+    "titulo": "Switch to a complete platform you actually enjoy using",
+    "subtitulo": "See what's possible with Boulevard",
+    "cta": "Get a Demo"
+  },
+  "rodape": {
+    "colunas": {
+      "Solutions": [
+        "Medspa", "Salon", "Spa", "Barber", "Massage", "Nail Salon", 
+        "Multi-Locations", "Franchises", "Enterprises"
+      ],
+      "Features": [
+        "Self-booking", "Client Profiles", "Loyalty", "Payments", "Customer Support",
+        "Scheduling", "Forms & Charts", "ePrescribe", "APIs", "Integrations",
+        "Data Security", "Marketing", "Messages", "Memberships", "Capital", 
+        "Reports", "Boulevard AI"
+      ],
+      "Company": [
+        "About", "Careers", "Pricing", "Newsroom", "Login"
+      ],
+      "Resources": [
+        "Why Boulevard?", "Success Stories", "Customer Love", "Support Center",
+        "Blog", "Guides", "Tools", "Videos", "Podcast", "ROI Calculator"
+      ]
+    },
+    "newsletter": {
+      "texto": "Get our monthly newsletter and marketing tips, straight to your inbox",
+      "termo_privacidade": "By submitting this form, you indicate that you have read and agreed to Boulevard's Privacy Policy."
+    },
+    "redes_sociais": [
+      "Facebook", "Instagram", "TikTok", "LinkedIn", "YouTube"
+    ],
+    "direitos_autorais": "© 2025 Boulevard Labs, Inc. All Rights Reserved."
+  }
+}

@@ -1,0 +1,315 @@
+﻿'use client'
+
+import { useState, useCallback, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  type DropResult,
+} from '@hello-pangea/dnd'
+import { ChevronDown, ChevronRight, Plus, MessageSquare, ListChecks, Link2, GripVertical } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import type { TaskLite, TaskStatusLite } from './task-types'
+import { TaskPriorityIcon } from './task-priority-icon'
+import { TaskAssigneeAvatar } from './task-assignee-avatar'
+import { TaskDueDate } from './task-due-date'
+import { TaskLabels } from './task-labels'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { InlineEditTitle } from './inline-edit-title'
+
+interface TaskListViewProps {
+  tasks: TaskLite[]
+  statuses: TaskStatusLite[]
+  projectId?: string
+  sortActive?: boolean
+  onTaskClick?: (task: TaskLite) => void
+  onToggleComplete?: (task: TaskLite) => Promise<void>
+  onAddTask?: (statusId: string) => void
+  onTaskMove?: (taskId: string, statusId: string, order: number) => Promise<void>
+}
+
+export function TaskListView({
+  tasks,
+  statuses,
+  projectId,
+  sortActive = false,
+  onTaskClick,
+  onToggleComplete,
+  onAddTask,
+  onTaskMove,
+}: TaskListViewProps) {
+  const router = useRouter()
+  const tCommon = useTranslations('common')
+  const t = useTranslations('components.tasks')
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
+  const [optimisticTasks, setOptimisticTasks] = useState<TaskLite[] | null>(null)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  const toggleCollapse = useCallback((statusId: string) => {
+    setCollapsed((prev) => ({ ...prev, [statusId]: !prev[statusId] }))
+  }, [])
+
+  const workingTasks = optimisticTasks || tasks
+
+  const handleDragEnd = useCallback(
+    async (result: DropResult) => {
+      const { destination, source, draggableId } = result
+      if (!destination) return
+      if (
+        destination.droppableId === source.droppableId &&
+        destination.index === source.index
+      ) {
+        return
+      }
+
+      const targetStatusId = destination.droppableId
+      const targetGroup = workingTasks
+        .filter((t) => t.statusId === targetStatusId && t.id !== draggableId)
+        .sort((a, b) => a.order - b.order)
+
+      // Compute new order based on position in target group
+      let newOrder: number
+      if (targetGroup.length === 0) {
+        newOrder = 0
+      } else if (destination.index === 0) {
+        newOrder = targetGroup[0].order - 1
+      } else if (destination.index >= targetGroup.length) {
+        newOrder = targetGroup[targetGroup.length - 1].order + 1
+      } else {
+        const before = targetGroup[destination.index - 1].order
+        const after = targetGroup[destination.index].order
+        newOrder = (before + after) / 2
+      }
+
+      // Optimistic update
+      const next = workingTasks.map((t) =>
+        t.id === draggableId ? { ...t, statusId: targetStatusId, order: newOrder } : t
+      )
+      setOptimisticTasks(next)
+
+      try {
+        await onTaskMove?.(draggableId, targetStatusId, newOrder)
+        setOptimisticTasks(null)
+      } catch {
+        // Rollback
+        setOptimisticTasks(null)
+      }
+    },
+    [workingTasks, onTaskMove]
+  )
+
+  if (!isMounted) return null
+
+  return (
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className="flex flex-col gap-2">
+        {statuses.map((status) => {
+          const groupTasks = sortActive
+            ? workingTasks.filter((t) => t.statusId === status.id)
+            : workingTasks
+                .filter((t) => t.statusId === status.id)
+                .sort((a, b) => a.order - b.order)
+          const isCollapsed = collapsed[status.id]
+
+          return (
+            <div
+              key={status.id}
+              className="rounded-xl border border-border/50 bg-card overflow-hidden"
+            >
+              {/* Group Header */}
+              <div className="flex w-full items-center justify-between gap-2 px-4 py-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <button
+                    onClick={() => toggleCollapse(status.id)}
+                    className="flex items-center gap-3 min-w-0 flex-1 hover:opacity-80 transition-opacity text-left"
+                  >
+                    {isCollapsed ? (
+                      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    )}
+                    <div
+                      className="h-2 w-2 shrink-0 rounded-full"
+                      style={{ backgroundColor: status.color }}
+                    />
+                    {projectId ? (
+                      <InlineEditTitle
+                        value={status.name}
+                        onSave={async (name) => {
+                          const res = await fetch(
+                            `/api/task-projects/${projectId}/statuses/${status.id}`,
+                            {
+                              method: 'PATCH',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ name }),
+                            }
+                          )
+                          if (!res.ok) throw new Error('fail')
+                          router.refresh()
+                        }}
+                        className="text-sm font-semibold uppercase tracking-wide text-foreground"
+                      />
+                    ) : (
+                      <h3 className="text-sm font-semibold uppercase tracking-wide text-foreground truncate">
+                        {status.name}
+                      </h3>
+                    )}
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground shrink-0">
+                      {groupTasks.length}
+                    </span>
+                  </button>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 px-2 text-xs shrink-0"
+                  onClick={() => onAddTask?.(status.id)}
+                >
+                  <Plus className="mr-1 h-3 w-3" />
+                  {tCommon('buttons.add')}
+                </Button>
+              </div>
+
+              {/* Task Rows */}
+              {!isCollapsed && (
+                <Droppable droppableId={status.id} type="TASK">
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className={cn(
+                        'divide-y divide-border/30 border-t border-border/30 transition-colors',
+                        snapshot.isDraggingOver && 'bg-[#1a3560]/5'
+                      )}
+                    >
+                      {groupTasks.length === 0 && !snapshot.isDraggingOver ? (
+                        <div className="px-4 py-6 text-center text-xs text-muted-foreground">
+                          {t('noTasks')}
+                        </div>
+                      ) : (
+                        groupTasks.map((task, index) => (
+                          <Draggable
+                            key={task.id}
+                            draggableId={task.id}
+                            index={index}
+                          >
+                            {(prov, snap) => (
+                              <div
+                                ref={prov.innerRef}
+                                {...prov.draggableProps}
+                                className={cn(
+                                  'transition-shadow duration-150',
+                                  snap.isDragging && 'bg-background shadow-lg ring-1 ring-primary/20 rounded-lg z-50'
+                                )}
+                              >
+                                <TaskRow
+                                  task={task}
+                                  dragHandleProps={prov.dragHandleProps}
+                                  onClick={() => !snap.isDragging && onTaskClick?.(task)}
+                                  onToggleComplete={onToggleComplete}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))
+                      )}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </DragDropContext>
+  )
+}
+
+interface TaskRowProps {
+  task: TaskLite
+  dragHandleProps?: any
+  onClick?: () => void
+  onToggleComplete?: (task: TaskLite) => Promise<void>
+}
+
+function TaskRow({ task, dragHandleProps, onClick, onToggleComplete }: TaskRowProps) {
+  const isCompleted = !!task.completedAt
+
+  return (
+    <div
+      className={cn(
+        'group flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2.5 hover:bg-muted/30 transition-colors',
+        isCompleted && 'opacity-60'
+      )}
+    >
+      {/* Drag handle */}
+      <div
+        {...dragHandleProps}
+        className="shrink-0 cursor-grab opacity-0 transition-opacity group-hover:opacity-100 active:cursor-grabbing"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <GripVertical className="h-3.5 w-3.5 text-muted-foreground" />
+      </div>
+
+      <div onClick={(e) => e.stopPropagation()}>
+        <Checkbox
+          checked={isCompleted}
+          onCheckedChange={() => onToggleComplete?.(task)}
+        />
+      </div>
+
+      <TaskPriorityIcon priority={task.priority} />
+
+      <button
+        onClick={onClick}
+        className="flex min-w-0 flex-1 items-center gap-2 text-left"
+      >
+        <span
+          className={cn(
+            'truncate text-sm text-foreground',
+            isCompleted && 'line-through text-muted-foreground'
+          )}
+        >
+          {task.title}
+        </span>
+
+        {(task.dealId || task.contactId) && (
+          <Link2 className="h-3 w-3 shrink-0 text-muted-foreground" />
+        )}
+      </button>
+
+      {/* Meta icons */}
+      <div className="hidden items-center gap-3 text-[11px] text-muted-foreground md:flex">
+        {(task._count?.subtasks ?? 0) > 0 && (
+          <span className="flex items-center gap-0.5">
+            <ListChecks className="h-3 w-3" />
+            {task._count!.subtasks}
+          </span>
+        )}
+        {(task._count?.comments ?? 0) > 0 && (
+          <span className="flex items-center gap-0.5">
+            <MessageSquare className="h-3 w-3" />
+            {task._count!.comments}
+          </span>
+        )}
+      </div>
+
+      {task.labels && task.labels.length > 0 && (
+        <div className="hidden md:block">
+          <TaskLabels labels={task.labels} maxVisible={2} />
+        </div>
+      )}
+
+      <TaskDueDate dueDate={task.dueDate} completedAt={task.completedAt} compact />
+      <TaskAssigneeAvatar user={task.assignee} size="sm" />
+    </div>
+  )
+}

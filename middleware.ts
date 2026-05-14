@@ -1,0 +1,83 @@
+import createMiddleware from 'next-intl/middleware'
+import { routing } from './i18n/routing'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { maybeRefreshSession } from '@/lib/auth'
+
+const intlMiddleware = createMiddleware(routing)
+
+export async function middleware(request: NextRequest) {
+    const pathname = request.nextUrl.pathname
+
+    // 1. Redirect malformed URLs (SEO fix)
+    const malformedPatterns = ['/mês', '/mes', '/month']
+    if (malformedPatterns.some(pattern => pathname.includes(pattern))) {
+        return NextResponse.redirect(new URL('/', request.url))
+    }
+
+    // 2. Strip /en prefix for locale-agnostic auth checks
+    const pathnameWithoutLocale = pathname.replace(/^\/en/, '') || '/'
+
+    const sessionCookie = request.cookies.get('session')?.value
+
+    // 3. Protected routes — redirect to login if no session
+    if (
+        pathnameWithoutLocale.startsWith('/dashboard') ||
+        pathnameWithoutLocale.startsWith('/IA')
+    ) {
+        if (!sessionCookie) {
+            const isEnglish = pathname.startsWith('/en')
+            const loginPath = isEnglish ? '/en/login' : '/login'
+            const loginUrl = new URL(loginPath, request.url)
+            loginUrl.searchParams.set('callbackUrl', pathname)
+            return NextResponse.redirect(loginUrl)
+        }
+    }
+
+    // 4. Auth routes — redirect to dashboard if already logged in
+    if (
+        pathnameWithoutLocale.startsWith('/login') ||
+        pathnameWithoutLocale.startsWith('/register')
+    ) {
+        if (sessionCookie) {
+            return NextResponse.redirect(new URL('/dashboard', request.url))
+        }
+    }
+
+    // 5. Run next-intl middleware (locale detection, hreflang cookies)
+    const response = intlMiddleware(request)
+    const res = response ?? NextResponse.next()
+
+    // 6. Inject pathname header for server components
+    res.headers.set('x-pathname', pathname)
+
+    // 7. Sliding-window JWT refresh — only re-encrypt when token is within 6h of expiry.
+    //    Fix: we apply the refreshed cookie onto the FINAL response (was previously lost
+    //    because updateSession returned its own NextResponse that got discarded).
+    const refreshResult = await maybeRefreshSession(request)
+    if ('invalid' in refreshResult && refreshResult.invalid) {
+        // Skip redirect loop: if we're already on /login or /register, just clear the cookie and continue
+        const isAuthPage = pathnameWithoutLocale.startsWith('/login') || pathnameWithoutLocale.startsWith('/register')
+        const redirect = isAuthPage ? NextResponse.next() : NextResponse.redirect(new URL('/login', request.url))
+        redirect.cookies.set('session', '', { expires: new Date(0), path: '/' })
+        return redirect
+    }
+    if (refreshResult.refreshed) {
+        res.cookies.set({
+            name: 'session',
+            value: refreshResult.cookieValue,
+            httpOnly: true,
+            expires: refreshResult.expires,
+            sameSite: 'lax',
+            path: '/',
+        })
+    }
+
+    return res
+}
+
+export const config = {
+    matcher: [
+        '/((?!api|_next/static|_next/image|favicon.ico|icons|images|audio|avatars|downloads|manifest.json|sw.js|sw-push.js|llms.txt|openapi.json|google[\\w-]*\\.html|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.ico|.*\\.webp|.*\\.txt|.*\\.xml).*)',
+    ],
+}
