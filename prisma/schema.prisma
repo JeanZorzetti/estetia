@@ -219,6 +219,10 @@ model Organization {
   loyaltyConfig       LoyaltyConfig?
   loyaltyTransactions LoyaltyTransaction[]
   sessionPackages     SessionPackage[]
+
+  // Marketing Clínico
+  patientReferrals    PatientReferral[]
+  marketingCampaigns  MarketingCampaign[]
 }
 
 model User {
@@ -2631,6 +2635,10 @@ model Patient {
   loyaltyTransactions  LoyaltyTransaction[]
   sessionPackages      SessionPackage[]
 
+  // Marketing Clínico — Indicações
+  indicacoesFeitas     PatientReferral[] @relation("PatientIndicador")
+  indicacoesRecebidas  PatientReferral[] @relation("PatientIndicado")
+
   @@index([organizationId])
   @@index([organizationId, email])
   @@index([organizationId, telefone])
@@ -3220,4 +3228,88 @@ enum PackageStatus {
   CONCLUIDO
   EXPIRADO
   CANCELADO
+}
+
+// ============================================================================
+// MARKETING CLÍNICO — INDICAÇÕES PACIENTE → PACIENTE
+// ============================================================================
+
+model PatientReferral {
+  id              String   @id @default(uuid())
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  indicadorId     String
+  indicador       Patient      @relation("PatientIndicador", fields: [indicadorId], references: [id], onDelete: Cascade)
+
+  indicadoId      String?
+  indicado        Patient?     @relation("PatientIndicado", fields: [indicadoId], references: [id], onDelete: SetNull)
+
+  // Pré-cadastro antes do paciente se registrar
+  nomeIndicado     String?
+  telefoneIndicado String?
+
+  status          PatientReferralStatus @default(PENDENTE)
+  observacoes     String?  @db.Text
+
+  // Recompensa
+  recompensaTipo        String?   // "pontos_fidelidade" | "desconto_proximo" | "outro"
+  recompensaValor       Decimal?  @db.Decimal(10, 2)
+  recompensaConcedidaEm DateTime?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([organizationId, status])
+  @@index([organizationId, createdAt])
+  @@index([indicadorId])
+}
+
+enum PatientReferralStatus {
+  PENDENTE
+  CONVERTIDO
+  RECOMPENSADO
+  CANCELADO
+}
+
+// ============================================================================
+// MARKETING CLÍNICO — CAMPANHAS DE MENSAGEM EM MASSA
+// ============================================================================
+
+model MarketingCampaign {
+  id              String   @id @default(uuid())
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  nome            String
+  canal           MarketingChannel
+  segmento        Json     @default("{}")
+  mensagem        String   @db.Text
+
+  status          MarketingCampaignStatus @default(RASCUNHO)
+  agendadoPara    DateTime?
+  enviadoEm       DateTime?
+
+  totalDestinatarios Int @default(0)
+  totalEnviados      Int @default(0)
+  totalFalhas        Int @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([organizationId, status])
+  @@index([organizationId, createdAt])
+}
+
+enum MarketingChannel {
+  WHATSAPP
+  EMAIL
+}
+
+enum MarketingCampaignStatus {
+  RASCUNHO
+  AGENDADA
+  ENVIANDO
+  ENVIADA
+  CANCELADA
 }
