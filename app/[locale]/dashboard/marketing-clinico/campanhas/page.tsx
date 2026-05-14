@@ -24,12 +24,16 @@ export default async function CampanhasPage() {
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
   const mesLabel = now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
 
+  const safe = async <T,>(fn: () => Promise<T>, fallback: T): Promise<T> => {
+    try { return await fn() } catch { return fallback }
+  }
+
   const [campaigns, adsGasto] = await Promise.all([
-    prisma.marketingCampaign.findMany({
+    safe(() => prisma.marketingCampaign.findMany({
       where: { organizationId },
       orderBy: { createdAt: 'desc' },
       take: 100,
-    }),
+    }), []),
     prisma.adsMetric.aggregate({
       where: { organizationId, date: { gte: startOfMonth } },
       _sum: { spend: true },

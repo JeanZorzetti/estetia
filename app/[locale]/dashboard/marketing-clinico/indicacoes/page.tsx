@@ -25,8 +25,12 @@ export default async function IndicacoesPage() {
   const now = new Date()
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
+  const safe = async <T,>(fn: () => Promise<T>, fallback: T): Promise<T> => {
+    try { return await fn() } catch { return fallback }
+  }
+
   const [referrals, pendentes, convertidas, recompensadas] = await Promise.all([
-    prisma.patientReferral.findMany({
+    safe(() => prisma.patientReferral.findMany({
       where: { organizationId },
       include: {
         indicador: { select: { id: true, nome: true } },
@@ -34,10 +38,10 @@ export default async function IndicacoesPage() {
       },
       orderBy: { createdAt: 'desc' },
       take: 100,
-    }),
-    prisma.patientReferral.count({ where: { organizationId, status: 'PENDENTE' } }),
-    prisma.patientReferral.count({ where: { organizationId, status: 'CONVERTIDO', updatedAt: { gte: startOfMonth } } }),
-    prisma.patientReferral.count({ where: { organizationId, status: 'RECOMPENSADO', updatedAt: { gte: startOfMonth } } }),
+    }), []),
+    safe(() => prisma.patientReferral.count({ where: { organizationId, status: 'PENDENTE' } }), 0),
+    safe(() => prisma.patientReferral.count({ where: { organizationId, status: 'CONVERTIDO', updatedAt: { gte: startOfMonth } } }), 0),
+    safe(() => prisma.patientReferral.count({ where: { organizationId, status: 'RECOMPENSADO', updatedAt: { gte: startOfMonth } } }), 0),
   ])
 
   const kpis = [

@@ -21,6 +21,10 @@ export default async function MarketingClinicoPage() {
   const now = new Date()
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
+  const safe = async <T,>(fn: () => Promise<T>, fallback: T): Promise<T> => {
+    try { return await fn() } catch { return fallback }
+  }
+
   const [
     campaignsCount,
     campaignsEnviadasMes,
@@ -31,8 +35,8 @@ export default async function MarketingClinicoPage() {
     referralsConvertidas,
     referralsTotal,
   ] = await Promise.all([
-    prisma.marketingCampaign.count({ where: { organizationId } }),
-    prisma.marketingCampaign.count({ where: { organizationId, status: 'ENVIADA', enviadoEm: { gte: startOfMonth } } }),
+    safe(() => prisma.marketingCampaign.count({ where: { organizationId } }), 0),
+    safe(() => prisma.marketingCampaign.count({ where: { organizationId, status: 'ENVIADA', enviadoEm: { gte: startOfMonth } } }), 0),
     prisma.loyaltyConfig.findUnique({ where: { organizationId }, select: { ativo: true } }),
     prisma.loyaltyTransaction.aggregate({ where: { organizationId, pontos: { gt: 0 } }, _sum: { pontos: true } }),
     prisma.loyaltyTransaction.groupBy({
@@ -42,9 +46,9 @@ export default async function MarketingClinicoPage() {
       orderBy: { _sum: { pontos: 'desc' } },
       take: 1,
     }),
-    prisma.patientReferral.count({ where: { organizationId, status: 'PENDENTE' } }),
-    prisma.patientReferral.count({ where: { organizationId, status: 'CONVERTIDO', updatedAt: { gte: startOfMonth } } }),
-    prisma.patientReferral.count({ where: { organizationId } }),
+    safe(() => prisma.patientReferral.count({ where: { organizationId, status: 'PENDENTE' } }), 0),
+    safe(() => prisma.patientReferral.count({ where: { organizationId, status: 'CONVERTIDO', updatedAt: { gte: startOfMonth } } }), 0),
+    safe(() => prisma.patientReferral.count({ where: { organizationId } }), 0),
   ])
 
   const taxaConversao = referralsTotal > 0
