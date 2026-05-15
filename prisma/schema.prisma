@@ -2738,6 +2738,10 @@ model TreatmentSession {
   // No-show prediction (preenchido pelo ml-api)
   noShowScore       Int?          // 0–100
 
+  // Google Calendar bidirectional sync
+  googleEventId     String?       @unique
+  googleSyncStatus  String?       // "SYNCED" | "PENDING" | "FAILED"
+
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
 
