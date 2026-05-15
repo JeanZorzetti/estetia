@@ -142,6 +142,28 @@ export default async function BillingPage() {
         </Button>
       </div>
 
+      {/* NEW: Modular Plan Builder CTA */}
+      <Link
+        href="/dashboard/billing/calculadora"
+        className="group block rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-5 hover:border-primary/50 transition-all duration-200 hover:shadow-md"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-6 h-6" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-semibold text-base tracking-tight">Personalize seu plano</h3>
+              <Badge variant="secondary" className="text-xs bg-primary/15 text-primary border-0">Novo</Badge>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Adicione ou remova módulos individualmente. Pague exatamente pelo que sua clínica usa.
+            </p>
+          </div>
+          <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all flex-shrink-0" />
+        </div>
+      </Link>
+
       {/* Trial status banner */}
       {tier === SubscriptionTier.FREE && trialActive && (
         <div className={`rounded-xl border px-4 py-3 flex items-center gap-3 ${

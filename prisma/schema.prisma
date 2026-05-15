@@ -36,6 +36,17 @@ model Organization {
   whatsappInstances      Int       @default(1) // Base WhatsApp instances
   failedPaymentAttempts  Int       @default(0) // Retry logic: downgrade after 3 consecutive failures
 
+  // v3.0 Modular Pricing — Custom plan composition
+  customPlanModules      Json?     // { "prontuario": true, "whatsapp_evolution": true, ... }
+  customPlanPriceCents   Int?      // total mensal em centavos
+  customPlanLockedUntil  DateTime? // anti-churn: trocas só após N dias
+  includedUsers          Int       @default(2)
+  extraUsers             Int       @default(0)
+  includedRooms          Int       @default(1)
+  extraRooms             Int       @default(0)
+  includedProfs          Int       @default(1)
+  extraProfs             Int       @default(0)
+
   // Flag to exclude from revenue metrics (test users with paid tiers)
   isTestAccount          Boolean   @default(false)
 
@@ -3320,4 +3331,27 @@ enum MarketingCampaignStatus {
   ENVIANDO
   ENVIADA
   CANCELADA
+}
+
+// ============================================================================
+// PRICING MODULAR (v3.0) — catálogo de módulos selecionáveis
+// ============================================================================
+
+model PricingModule {
+  id             String   @id @default(uuid())
+  slug           String   @unique  // "prontuario", "whatsapp_evolution", "tiss"
+  category       String   // "BASE" | "CLINICO" | "COMUNICACAO" | "GESTAO" | "IA" | "ADDON"
+  nome           String
+  descricao      String   @db.Text
+  features       String[] @default([])  // bullet list visível na UI
+  priceCents     Int      // 3900 = R$ 39
+  iconLucide     String   // "Stethoscope", "MessageCircle"
+  exclusiveGroup String?  // "ia_tier" (Lite/Pro/Scale são mutex)
+  required       Boolean  @default(false)  // true só para Base
+  ordem          Int      @default(0)
+  ativo          Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([category, ordem])
 }
