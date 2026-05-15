@@ -2898,6 +2898,8 @@ model ClinicRoom {
   nome           String
   tipo           RoomType     @default(PROCEDIMENTO)
   equipamentos   String[]     @default([])
+  cor            String?      // hex color for agenda visual
+  capacidade     Int?         // max simultaneous occupancy
   // JSON cron de disponibilidade: { segunda: [{inicio:"08:00",fim:"18:00"}], ... }
   disponibilidade Json?
 
