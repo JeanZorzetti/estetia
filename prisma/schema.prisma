@@ -81,6 +81,12 @@ model Organization {
   omieAppSecret String?
   omieEnabled   Boolean @default(false)
 
+  // LGPD — Encarregado de Dados (DPO) — Art. 41
+  dpoName     String?
+  dpoEmail    String?
+  dpoPhone    String?
+  dpoCpf      String?
+
   users                   User[]
   rolePermissions         RolePermissions[]
   contacts                Contact[]
