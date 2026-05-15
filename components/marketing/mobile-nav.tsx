@@ -128,7 +128,7 @@ export function MobileNav() {
                     </CollapsibleSection>
 
                     <Link
-                        href="/pricing"
+                        href={"/precos" as any}
                         onClick={() => setOpen(false)}
                         className="text-sm font-medium transition-colors hover:text-primary"
                     >

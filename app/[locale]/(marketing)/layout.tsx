@@ -39,7 +39,7 @@ export default function MarketingLayout({
             <SolucoesLink />
             <NavDropdowns />
             <Link
-              href="/pricing"
+              href={"/precos" as any}
               className="px-3 py-1.5 text-sm font-medium text-[#0A1F3D]/70 hover:text-[#0A1F3D] whitespace-nowrap rounded-lg hover:bg-[#0A1F3D]/5 transition-colors"
             >
               {t('pricing')}

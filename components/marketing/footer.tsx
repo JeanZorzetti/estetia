@@ -25,7 +25,7 @@ const FOOTER_LINKS = {
     ],
     'Empresa': [
         { label: 'Sobre nós', href: '/about' },
-        { label: 'Preços', href: '/pricing' },
+        { label: 'Preços', href: '/precos' },
         { label: 'Changelog', href: '/changelog' },
         { label: 'Contato', href: '/contact' },
         { label: 'Login', href: '/login' },
