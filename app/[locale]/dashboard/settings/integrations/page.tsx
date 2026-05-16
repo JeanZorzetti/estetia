@@ -61,6 +61,9 @@ export default async function IntegrationsPage() {
           pagseguroToken: true,
           pagarmeApiKey: true,
           stripeSecretKey: true,
+          enotasApiKey: true,
+          nfeioApiKey: true,
+          plugnotasApiKey: true,
         },
       },
     },
@@ -115,6 +118,9 @@ export default async function IntegrationsPage() {
     pagseguro: !!org.pagseguroToken,
     pagarme: !!org.pagarmeApiKey,
     stripe: !!org.stripeSecretKey,
+    enotas: !!org.enotasApiKey,
+    nfeio: !!org.nfeioApiKey,
+    plugnotas: !!org.plugnotasApiKey,
   }
 
   // Aggregate upvote counts (only for visible "soon" integrations)

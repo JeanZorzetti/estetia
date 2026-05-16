@@ -413,7 +413,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     cardBgColor: '#7C3AED',
     href: '/dashboard/settings/integrations/enotas',
     isBrazilian: true,
-    status: 'soon',
+    docsUrl: 'https://enotas.com.br/docs',
   },
   {
     id: 'nfeio',
@@ -424,7 +424,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     cardBgColor: '#6366F1',
     href: '/dashboard/settings/integrations/nfeio',
     isBrazilian: true,
-    status: 'soon',
+    docsUrl: 'https://nfe.io/docs/',
   },
   {
     id: 'plugnotas',
@@ -435,7 +435,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     cardBgColor: '#0EA5E9',
     href: '/dashboard/settings/integrations/plugnotas',
     isBrazilian: true,
-    status: 'soon',
+    docsUrl: 'https://docs.plugnotas.com.br/',
   },
 
   // === CONVÊNIOS & TISS (5) ===
