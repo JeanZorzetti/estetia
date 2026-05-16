@@ -249,7 +249,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siMailchimp),
     cardBgColor: `#${siMailchimp.hex}`,
     href: '/dashboard/settings/integrations/mailchimp',
-    status: 'soon',
   },
   {
     id: 'brevo',
@@ -259,7 +258,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siBrevo),
     cardBgColor: `#${siBrevo.hex}`,
     href: '/dashboard/settings/integrations/brevo',
-    status: 'soon',
   },
   {
     id: 'activecampaign',
@@ -269,7 +267,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('activecampaign.svg', '#356AE6', 'ActiveCampaign'),
     cardBgColor: '#356AE6',
     href: '/dashboard/settings/integrations/activecampaign',
-    status: 'soon',
   },
   {
     id: 'mailerlite',
@@ -279,7 +276,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('mailerlite.svg', '#09C269', 'MailerLite'),
     cardBgColor: '#09C269',
     href: '/dashboard/settings/integrations/mailerlite',
-    status: 'soon',
   },
   {
     id: 'rd-station',
@@ -290,7 +286,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     cardBgColor: '#19B4FE',
     href: '/dashboard/settings/integrations/rd-station',
     isBrazilian: true,
-    status: 'soon',
   },
 
   // === ANÚNCIOS (5) ===
@@ -329,7 +324,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siTiktok),
     cardBgColor: `#${siTiktok.hex}`,
     href: '/dashboard/settings/integrations/tiktok-ads',
-    status: 'soon',
   },
   {
     id: 'linkedin-ads',
@@ -339,7 +333,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('linkedin-ads.svg', '#0A66C2', 'LinkedIn'),
     cardBgColor: '#0A66C2',
     href: '/dashboard/settings/integrations/linkedin-ads',
-    status: 'soon',
   },
 
   // === PAGAMENTOS (5) ===

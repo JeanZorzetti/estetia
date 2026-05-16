@@ -51,6 +51,13 @@ export default async function IntegrationsPage() {
           makeWebhookUrl: true,
           contaazulRefreshToken: true,
           blingRefreshToken: true,
+          mailchimpApiKey: true,
+          brevoApiKey: true,
+          activecampaignApiKey: true,
+          mailerliteApiKey: true,
+          rdStationRefreshToken: true,
+          tiktokAdsAccessToken: true,
+          linkedinAdsAccessToken: true,
         },
       },
     },
@@ -95,6 +102,13 @@ export default async function IntegrationsPage() {
     make: !!org.makeWebhookUrl,
     contaazul: !!org.contaazulRefreshToken,
     bling: !!org.blingRefreshToken,
+    mailchimp: !!org.mailchimpApiKey,
+    brevo: !!org.brevoApiKey,
+    activecampaign: !!org.activecampaignApiKey,
+    mailerlite: !!org.mailerliteApiKey,
+    'rd-station': !!org.rdStationRefreshToken,
+    'tiktok-ads': !!org.tiktokAdsAccessToken,
+    'linkedin-ads': !!org.linkedinAdsAccessToken,
   }
 
   // Aggregate upvote counts (only for visible "soon" integrations)
