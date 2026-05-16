@@ -242,7 +242,14 @@ export async function updateMemberRole(targetUserId: string, newRole: OrgRole) {
 
 export async function updateRolePermissions(
     role: OrgRole,
-    perms: { canAccessAgenda: boolean; canAccessTasks: boolean }
+    perms: {
+        canAccessAgenda: boolean
+        canAccessTasks: boolean
+        canAccessProntuario?: boolean
+        canScheduleAppointments?: boolean
+        canValidateCouncil?: boolean
+        canManageProfessionals?: boolean
+    }
 ) {
     const owner = await checkOwner()
 
@@ -250,18 +257,19 @@ export async function updateRolePermissions(
         throw new Error("Função não configurável")
     }
 
+    const data = {
+        canAccessAgenda: perms.canAccessAgenda,
+        canAccessTasks: perms.canAccessTasks,
+        canAccessProntuario: perms.canAccessProntuario ?? false,
+        canScheduleAppointments: perms.canScheduleAppointments ?? true,
+        canValidateCouncil: perms.canValidateCouncil ?? false,
+        canManageProfessionals: perms.canManageProfessionals ?? false,
+    }
+
     await prisma.rolePermissions.upsert({
         where: { organizationId_role: { organizationId: owner.organizationId, role } },
-        update: {
-            canAccessAgenda: perms.canAccessAgenda,
-            canAccessTasks: perms.canAccessTasks,
-        },
-        create: {
-            organizationId: owner.organizationId,
-            role,
-            canAccessAgenda: perms.canAccessAgenda,
-            canAccessTasks: perms.canAccessTasks,
-        }
+        update: data,
+        create: { organizationId: owner.organizationId, role, ...data }
     })
 
     // Invalidate cached dashboard user for every member with this role so feature flags refresh
@@ -271,6 +279,22 @@ export async function updateRolePermissions(
     })
     for (const u of affected) updateTag(`user:${u.email}`)
 
+    revalidatePath("/dashboard/settings/team")
+    return { success: true }
+}
+
+export async function updateMemberCategoria(userId: string, categoria: 'CLINICO' | 'ADMINISTRATIVO' | 'PROPRIETARIO') {
+    const actor = await getActor()
+
+    const target = await prisma.user.findUnique({ where: { id: userId } })
+    if (!target || target.organizationId !== actor.organizationId) {
+        throw new Error("Usuário não encontrado na organização")
+    }
+    if (!canManageRole(actor.orgRole, target.orgRole)) {
+        throw new Error("Sem permissão para alterar categoria")
+    }
+
+    await prisma.user.update({ where: { id: userId }, data: { categoria } })
     revalidatePath("/dashboard/settings/team")
     return { success: true }
 }

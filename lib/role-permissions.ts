@@ -45,16 +45,46 @@ export function assignableRoles(actor: OrgRole): OrgRole[] {
 export type RoleFeatures = {
   canAccessAgenda: boolean
   canAccessTasks: boolean
+  canAccessProntuario: boolean
+  canScheduleAppointments: boolean
+  canValidateCouncil: boolean
+  canManageProfessionals: boolean
 }
 
 const OWNER_FEATURES: RoleFeatures = {
   canAccessAgenda: true,
   canAccessTasks: true,
+  canAccessProntuario: true,
+  canScheduleAppointments: true,
+  canValidateCouncil: true,
+  canManageProfessionals: true,
 }
 
 const DEFAULT_ROLE_FEATURES: RoleFeatures = {
   canAccessAgenda: true,
   canAccessTasks: true,
+  canAccessProntuario: false,
+  canScheduleAppointments: true,
+  canValidateCouncil: false,
+  canManageProfessionals: false,
+}
+
+function rowToFeatures(row: {
+  canAccessAgenda: boolean
+  canAccessTasks: boolean
+  canAccessProntuario: boolean
+  canScheduleAppointments: boolean
+  canValidateCouncil: boolean
+  canManageProfessionals: boolean
+}): RoleFeatures {
+  return {
+    canAccessAgenda: row.canAccessAgenda,
+    canAccessTasks: row.canAccessTasks,
+    canAccessProntuario: row.canAccessProntuario,
+    canScheduleAppointments: row.canScheduleAppointments,
+    canValidateCouncil: row.canValidateCouncil,
+    canManageProfessionals: row.canManageProfessionals,
+  }
 }
 
 // Fetches features for a role within an org. OWNER always has all features.
@@ -67,18 +97,14 @@ export async function getRoleFeatures(organizationId: string, role: OrgRole): Pr
   })
 
   if (!row) return DEFAULT_ROLE_FEATURES
-
-  return {
-    canAccessAgenda: row.canAccessAgenda,
-    canAccessTasks: row.canAccessTasks,
-  }
+  return rowToFeatures(row)
 }
 
 // Fetch all role permissions for an org as a map.
 // Missing roles fall back to defaults.
 export async function getAllRolePermissions(organizationId: string): Promise<Record<OrgRole, RoleFeatures>> {
   const rows = await prisma.rolePermissions.findMany({ where: { organizationId } })
-  const byRole = new Map(rows.map((r) => [r.role, { canAccessAgenda: r.canAccessAgenda, canAccessTasks: r.canAccessTasks }]))
+  const byRole = new Map(rows.map((r) => [r.role, rowToFeatures(r)]))
 
   return {
     OWNER: OWNER_FEATURES,

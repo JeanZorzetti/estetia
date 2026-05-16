@@ -300,8 +300,9 @@ model User {
 
   locale  String  @default("pt-BR") // "pt-BR" | "en"
 
-  role    Role    @default(USER)
-  orgRole OrgRole @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
+  role      Role          @default(USER)
+  orgRole   OrgRole       @default(OWNER) // Defaulting to OWNER for now so existing users don't lose access. Ideally MEMBER.
+  categoria UserCategoria @default(ADMINISTRATIVO)
 
   // Pipeline visibility (OWNER sees all; MEMBER can be restricted)
   pipelineRestricted Boolean  @default(false) // false = no restriction (all visible)
@@ -341,6 +342,12 @@ enum OrgRole {
   MEMBER // legacy — treated as VENDEDOR in UI
 }
 
+enum UserCategoria {
+  CLINICO        // tem Professional (médico, dentista, etc.)
+  ADMINISTRATIVO // recepção, financeiro, gestão
+  PROPRIETARIO   // dono/sócio sem atendimento clínico direto
+}
+
 // Per-role feature permissions, configured by OWNER per organization
 model RolePermissions {
   id              String   @id @default(uuid())
@@ -348,8 +355,12 @@ model RolePermissions {
   organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   role            OrgRole
 
-  canAccessAgenda Boolean  @default(true)
-  canAccessTasks  Boolean  @default(true)
+  canAccessAgenda            Boolean  @default(true)
+  canAccessTasks             Boolean  @default(true)
+  canAccessProntuario        Boolean  @default(false)
+  canScheduleAppointments    Boolean  @default(true)
+  canValidateCouncil         Boolean  @default(false)
+  canManageProfessionals     Boolean  @default(false)
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -563,12 +574,18 @@ model DealClosing {
 }
 
 model Invite {
-  id        String   @id @default(uuid())
-  email     String
-  token     String   @unique
-  role      OrgRole  @default(MEMBER)
-  expiresAt DateTime
-  createdAt DateTime @default(now())
+  id            String        @id @default(uuid())
+  email         String
+  token         String        @unique
+  role          OrgRole       @default(MEMBER)
+  expiresAt     DateTime
+  createdAt     DateTime      @default(now())
+  accepted      Boolean       @default(false)
+  acceptedAt    DateTime?
+
+  // Equipe Clínica v2
+  categoria     UserCategoria @default(ADMINISTRATIVO)
+  prefilledData Json?         // dados pré-cadastrados pelo admin (nome, conselho, etc.)
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
