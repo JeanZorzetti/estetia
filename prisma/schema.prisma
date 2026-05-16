@@ -130,6 +130,36 @@ model Organization {
   evolutionApiKey   String? // Encrypted
   evolutionInstance String?
 
+  // WhatsApp Z-API (Brazilian provider, BYO)
+  zapiEnabled       Boolean @default(false)
+  zapiInstanceId    String?
+  zapiInstanceToken String? @db.Text // Encrypted
+  zapiClientToken   String? @db.Text // Encrypted (security token)
+
+  // Instagram DM (separado do Instagram Bot/Posts)
+  instagramDmEnabled       Boolean @default(false)
+  instagramDmPageId        String?
+  instagramDmWebhookVerify String?
+
+  // SMTP customizado (BYO email provider)
+  smtpEnabled   Boolean @default(false)
+  smtpHost      String?
+  smtpPort      Int?    @default(587)
+  smtpUsername  String?
+  smtpPassword  String? @db.Text // Encrypted
+  smtpFromEmail String?
+  smtpFromName  String?
+  smtpUseTLS    Boolean @default(true)
+
+  // Webhooks genéricos (Zapier/Make/n8n inbound)
+  webhookEnabled Boolean @default(false)
+  webhookSecret  String? // HMAC secret
+
+  // PABX (telefonia via webhook genérico)
+  pabxEnabled       Boolean @default(false)
+  pabxProvider      String? // "intelbras" | "yealink" | "asterisk" | "generic"
+  pabxWebhookSecret String?
+
   // WhatsApp Official API (Meta Cloud API)
   wabaEnabled             Boolean @default(false)
   wabaPhoneNumberId       String?
@@ -880,7 +910,13 @@ enum IntegrationType {
   N8N
   WHATSAPP
   WHATSAPP_OFFICIAL
+  WHATSAPP_EVOLUTION
+  WHATSAPP_ZAPI
+  INSTAGRAM_DM
   GOOGLE_CALENDAR
+  SMTP
+  WEBHOOK_GENERIC
+  PABX
 }
 
 enum IntegrationStatus {
