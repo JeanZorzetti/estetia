@@ -119,9 +119,9 @@ export default function RoundRobinSettingsPage() {
           </Link>
         </div>
         <div>
-          <h1 className="text-2xl font-bold">Distribuição Round-Robin</h1>
+          <h1 className="text-2xl font-bold">Distribuição de Atendimentos</h1>
           <p className="text-muted-foreground">
-            Distribua leads automaticamente entre sua equipe
+            Distribua novos pacientes automaticamente entre os profissionais
           </p>
         </div>
 
@@ -130,8 +130,8 @@ export default function RoundRobinSettingsPage() {
             <Building2 className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">Recurso Exclusivo Business</h3>
             <p className="text-muted-foreground text-center max-w-md mb-4">
-              O round-robin de leads está disponível apenas no plano Business.
-              Faça upgrade para automatizar a distribuição de leads.
+              A distribuição automática de novos pacientes está disponível apenas no plano Business.
+              Faça upgrade para automatizar o encaminhamento entre profissionais.
             </p>
             <Button asChild>
               <a href="/dashboard/billing/plans">Ver Planos</a>
@@ -153,9 +153,9 @@ export default function RoundRobinSettingsPage() {
         </Link>
       </div>
       <div>
-        <h1 className="text-2xl font-bold">Distribuição Round-Robin</h1>
+        <h1 className="text-2xl font-bold">Distribuição de Atendimentos</h1>
         <p className="text-muted-foreground">
-          Distribua leads automaticamente entre os membros da equipe
+          Distribua novos pacientes automaticamente entre os profissionais da clínica
         </p>
       </div>
 
@@ -163,9 +163,9 @@ export default function RoundRobinSettingsPage() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Ativar Round-Robin</CardTitle>
+              <CardTitle>Ativar distribuição automática</CardTitle>
               <CardDescription>
-                Distribuir leads automaticamente entre os usuários selecionados
+                Encaminhar novos pacientes em rotação entre os profissionais selecionados
               </CardDescription>
             </div>
             <Switch
@@ -184,10 +184,10 @@ export default function RoundRobinSettingsPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                Usuários na Rotação
+                Profissionais na Rotação
               </CardTitle>
               <CardDescription>
-                Selecione os usuários que receberão leads via round-robin
+                Selecione os profissionais que receberão novos pacientes em rodízio
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -232,9 +232,9 @@ export default function RoundRobinSettingsPage() {
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">Pular usuários inativos</p>
+                  <p className="font-medium">Pular profissionais inativos</p>
                   <p className="text-sm text-muted-foreground">
-                    Não atribuir leads a usuários sem atividade recente
+                    Não atribuir novos pacientes a profissionais sem atividade recente
                   </p>
                 </div>
                 <Switch
@@ -247,9 +247,9 @@ export default function RoundRobinSettingsPage() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">Notificar usuários</p>
+                  <p className="font-medium">Notificar profissionais</p>
                   <p className="text-sm text-muted-foreground">
-                    Enviar notificação quando um lead for atribuído
+                    Enviar notificação quando um novo paciente for atribuído
                   </p>
                 </div>
                 <Switch

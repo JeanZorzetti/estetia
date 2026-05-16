@@ -12,6 +12,7 @@ import {
   MessageCircle, Repeat2, Megaphone,
   DollarSign, BarChart3, ShieldCheck,
   Users, UserCheck, DoorOpen, Plug, CreditCard,
+  Building2,
   // UI & account icons
   Settings, LogOut, Sparkles, LifeBuoy, Gift,
   // ── B2B icons kept for reference (not used in clinical nav) ──
@@ -64,10 +65,13 @@ const navSections: NavSection[] = [
   {
     title: 'Configurações',
     items: [
+      { title: 'Visão geral',   href: '/dashboard/settings',               icon: Settings },
+      { title: 'Clínica',       href: '/dashboard/settings/clinica/dados', icon: Building2 },
       { title: 'Equipe',        href: '/dashboard/settings/team',          icon: Users },
       { title: 'Profissionais', href: '/dashboard/settings/profissionais', icon: UserCheck },
       { title: 'Salas',         href: '/dashboard/settings/salas',         icon: DoorOpen },
       { title: 'Integrações',   href: '/dashboard/settings/integrations',  icon: Plug },
+      { title: 'LGPD',          href: '/dashboard/settings/lgpd',          icon: ShieldCheck },
       { title: 'Cobrança',      href: '/dashboard/billing',                icon: CreditCard },
     ],
   },

@@ -1,17 +1,36 @@
 'use client'
 
-import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { ProfileForm } from '@/components/settings/profile-form'
-import { QuickActions } from '@/components/settings/quick-actions'
-import { ViewModeToggle, ViewMode } from '@/components/settings/view-mode-toggle'
-import { User, Users, Key, Webhook, Zap, Bell, BookOpen, CreditCard, ChevronRight } from 'lucide-react'
-import Link from 'next/link'
-import { cn } from '@/lib/utils'
-import { toast } from 'sonner'
-import { useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useAppBar } from '@/components/mobile/app-bar-context'
+import { Badge } from '@/components/ui/badge'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { ProfileForm } from '@/components/settings/profile-form'
+import { SettingsSection } from '@/components/settings/settings-section'
+import { SettingsCard } from '@/components/settings/settings-card'
+import { HubSearchBar } from '@/components/settings/hub-search-bar'
+import {
+  Building2,
+  FileText,
+  Palette,
+  Clock,
+  Stethoscope,
+  Users,
+  UserCheck,
+  DoorOpen,
+  RotateCw,
+  Gift,
+  Bell,
+  ClipboardList,
+  Zap,
+  Mail,
+  ShieldCheck,
+  CreditCard,
+  Key,
+  Webhook,
+  User as UserIcon,
+  BookOpen,
+  type LucideIcon,
+} from 'lucide-react'
 
 interface SettingsClientProps {
   user: {
@@ -24,35 +43,294 @@ interface SettingsClientProps {
   }
 }
 
+interface CardDef {
+  href?: string
+  external?: boolean
+  drawer?: 'profile'
+  icon: LucideIcon
+  iconColor: string
+  iconBg: string
+  title: string
+  description: string
+  badge?: React.ReactNode
+}
+
+interface SectionDef {
+  label: string
+  description?: string
+  icon: LucideIcon
+  iconColor: string
+  iconBg: string
+  cards: CardDef[]
+}
+
 export function SettingsClient({ user }: SettingsClientProps) {
-  const [viewMode, setViewMode] = useState<ViewMode>('expanded')
   const { setConfig } = useAppBar()
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     setConfig({ title: 'Configurações' })
     return () => setConfig(null)
-  }, [])
+  }, [setConfig])
 
-  const handleExportData = () => {
-    toast.promise(
-      new Promise((resolve) => setTimeout(resolve, 2000)),
+  const sections: SectionDef[] = useMemo(
+    () => [
       {
-        loading: 'Exportando dados...',
-        success: 'Dados exportados com sucesso!',
-        error: 'Erro ao exportar dados',
-      }
-    )
-  }
+        label: 'Clínica',
+        description: 'Dados jurídicos, identidade e operação da sua clínica',
+        icon: Building2,
+        iconColor: 'text-teal-500',
+        iconBg: 'bg-teal-500/10',
+        cards: [
+          {
+            href: '/dashboard/settings/clinica/dados',
+            icon: FileText,
+            iconColor: 'text-teal-500',
+            iconBg: 'bg-teal-500/10',
+            title: 'Dados & Documentos',
+            description: 'CNPJ, razão social, endereço',
+          },
+          {
+            href: '/dashboard/settings/clinica/identidade',
+            icon: Palette,
+            iconColor: 'text-teal-500',
+            iconBg: 'bg-teal-500/10',
+            title: 'Identidade Visual',
+            description: 'Logo, cor da marca e slogan',
+          },
+          {
+            href: '/dashboard/settings/clinica/horarios',
+            icon: Clock,
+            iconColor: 'text-teal-500',
+            iconBg: 'bg-teal-500/10',
+            title: 'Horários de Funcionamento',
+            description: 'Janela global de agendamento',
+          },
+          {
+            href: '/dashboard/settings/clinica/responsavel-tecnico',
+            icon: Stethoscope,
+            iconColor: 'text-teal-500',
+            iconBg: 'bg-teal-500/10',
+            title: 'Responsável Técnico',
+            description: 'RT clínico-administrativo (Anvisa)',
+          },
+        ],
+      },
+      {
+        label: 'Equipe & Acessos',
+        description: 'Gerencie quem trabalha na sua clínica',
+        icon: Users,
+        iconColor: 'text-emerald-500',
+        iconBg: 'bg-emerald-500/10',
+        cards: [
+          {
+            href: '/dashboard/settings/team',
+            icon: Users,
+            iconColor: 'text-emerald-500',
+            iconBg: 'bg-emerald-500/10',
+            title: 'Equipe Clínica',
+            description: 'Membros, convites e permissões',
+          },
+          {
+            href: '/dashboard/settings/profissionais',
+            icon: UserCheck,
+            iconColor: 'text-emerald-500',
+            iconBg: 'bg-emerald-500/10',
+            title: 'Profissionais',
+            description: 'Cadastro de médicos e terapeutas',
+          },
+          {
+            href: '/dashboard/settings/salas',
+            icon: DoorOpen,
+            iconColor: 'text-emerald-500',
+            iconBg: 'bg-emerald-500/10',
+            title: 'Salas',
+            description: 'Salas e equipamentos',
+          },
+        ],
+      },
+      {
+        label: 'Pacientes & Atendimento',
+        description: 'Fluxos automáticos e templates clínicos',
+        icon: Stethoscope,
+        iconColor: 'text-blue-500',
+        iconBg: 'bg-blue-500/10',
+        cards: [
+          {
+            href: '/dashboard/settings/round-robin',
+            icon: RotateCw,
+            iconColor: 'text-blue-500',
+            iconBg: 'bg-blue-500/10',
+            title: 'Distribuição de Atendimentos',
+            description: 'Rotação automática entre profissionais',
+          },
+          {
+            href: '/dashboard/loyalty',
+            icon: Gift,
+            iconColor: 'text-blue-500',
+            iconBg: 'bg-blue-500/10',
+            title: 'Programa de Fidelidade',
+            description: 'Pontos, regras e resgates',
+          },
+          {
+            href: '/dashboard/recall',
+            icon: Bell,
+            iconColor: 'text-blue-500',
+            iconBg: 'bg-blue-500/10',
+            title: 'Recall Automático',
+            description: 'Lembretes de retorno',
+          },
+          {
+            href: '/dashboard/anamnese',
+            icon: ClipboardList,
+            iconColor: 'text-blue-500',
+            iconBg: 'bg-blue-500/10',
+            title: 'Templates de Anamnese',
+            description: 'Modelos por procedimento',
+          },
+        ],
+      },
+      {
+        label: 'Comunicação & Automação',
+        description: 'Integrações com canais externos',
+        icon: Zap,
+        iconColor: 'text-amber-500',
+        iconBg: 'bg-amber-500/10',
+        cards: [
+          {
+            href: '/dashboard/settings/integrations',
+            icon: Zap,
+            iconColor: 'text-amber-500',
+            iconBg: 'bg-amber-500/10',
+            title: 'Integrações',
+            description: 'WhatsApp, Instagram, Google, ERP',
+            badge: (
+              <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4">
+                Marketplace
+              </Badge>
+            ),
+          },
+          {
+            href: '/dashboard/settings/notifications',
+            icon: Mail,
+            iconColor: 'text-amber-500',
+            iconBg: 'bg-amber-500/10',
+            title: 'Notificações Pessoais',
+            description: 'Suas preferências de notificação',
+          },
+        ],
+      },
+      {
+        label: 'Compliance & LGPD',
+        description: 'Privacidade, retenção e auditoria',
+        icon: ShieldCheck,
+        iconColor: 'text-red-500',
+        iconBg: 'bg-red-500/10',
+        cards: [
+          {
+            href: '/dashboard/settings/lgpd',
+            icon: ShieldCheck,
+            iconColor: 'text-red-500',
+            iconBg: 'bg-red-500/10',
+            title: 'LGPD & Privacidade',
+            description: 'DPO, retenção e direitos dos titulares',
+          },
+          {
+            href: '/dashboard/settings/lgpd/consent-audit',
+            icon: ClipboardList,
+            iconColor: 'text-red-500',
+            iconBg: 'bg-red-500/10',
+            title: 'Auditoria de Consentimentos',
+            description: 'Histórico completo de consentimentos',
+          },
+        ],
+      },
+      {
+        label: 'Conta & Billing',
+        description: 'Sua conta, plano e recursos para desenvolvedores',
+        icon: CreditCard,
+        iconColor: 'text-purple-500',
+        iconBg: 'bg-purple-500/10',
+        cards: [
+          {
+            drawer: 'profile',
+            icon: UserIcon,
+            iconColor: 'text-purple-500',
+            iconBg: 'bg-purple-500/10',
+            title: 'Meu Perfil',
+            description: 'Nome, e-mail e dados pessoais',
+          },
+          {
+            href: '/dashboard/billing',
+            icon: CreditCard,
+            iconColor: 'text-purple-500',
+            iconBg: 'bg-purple-500/10',
+            title: 'Plano & Faturamento',
+            description: 'Assinatura, pagamentos e notas',
+            badge:
+              user.organization?.tier && user.organization.tier !== 'FREE' ? (
+                <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4">
+                  {user.organization.tier}
+                </Badge>
+              ) : undefined,
+          },
+          {
+            href: '/dashboard/settings/api',
+            icon: Key,
+            iconColor: 'text-purple-500',
+            iconBg: 'bg-purple-500/10',
+            title: 'API Keys',
+            description: 'Chaves de acesso programático',
+          },
+          {
+            href: '/dashboard/settings/webhooks',
+            icon: Webhook,
+            iconColor: 'text-purple-500',
+            iconBg: 'bg-purple-500/10',
+            title: 'Webhooks',
+            description: 'Notificações para sistemas externos',
+          },
+          {
+            href: '/help',
+            external: true,
+            icon: BookOpen,
+            iconColor: 'text-purple-500',
+            iconBg: 'bg-purple-500/10',
+            title: 'Ajuda & Suporte',
+            description: 'Central de ajuda e tutoriais',
+          },
+        ],
+      },
+    ],
+    [user.organization?.tier]
+  )
 
-  const isCompact = viewMode === 'compact'
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return sections
+
+    return sections
+      .map((section) => ({
+        ...section,
+        cards: section.cards.filter(
+          (c) =>
+            c.title.toLowerCase().includes(q) ||
+            c.description.toLowerCase().includes(q) ||
+            section.label.toLowerCase().includes(q)
+        ),
+      }))
+      .filter((section) => section.cards.length > 0)
+  }, [sections, query])
+
+  const [profileOpen, setProfileOpen] = useState(false)
 
   return (
-    <div className="px-4 py-4 md:p-8 md:pt-6 space-y-6">
-      {/* Header com Quick Actions */}
+    <div className="px-4 py-4 md:p-8 md:pt-6 space-y-8 max-w-5xl">
+      {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
               Configurações
             </h1>
             {user.organization && (
@@ -60,248 +338,95 @@ export function SettingsClient({ user }: SettingsClientProps) {
                 {user.organization.name}
               </Badge>
             )}
-            {user.organization?.tier === 'PRO' && (
+            {user.organization?.tier && user.organization.tier !== 'FREE' && (
               <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0">
-                PRO
-              </Badge>
-            )}
-            {user.organization?.tier === 'BUSINESS' && (
-              <Badge className="bg-gradient-to-r from-amber-500 to-orange-600 text-white border-0">
-                BUSINESS
+                {user.organization.tier}
               </Badge>
             )}
           </div>
-          <p className="text-zinc-500 dark:text-zinc-400">
-            Gerencie suas preferências e dados da conta
+          <p className="text-sm text-muted-foreground">
+            Tudo que sua clínica precisa para operar com excelência
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <ViewModeToggle value={viewMode} onChange={setViewMode} />
-          <QuickActions onExportData={handleExportData} />
-        </div>
+        <HubSearchBar value={query} onChange={setQuery} />
       </div>
 
-      <div className="grid gap-8 max-w-3xl">
-        {/* SEÇÃO: CONTA */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-            Conta
-          </h3>
-          <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm">
-            <CardHeader className={cn(
-              'flex flex-row items-center gap-4 relative overflow-hidden',
-              isCompact && 'pb-3'
-            )}>
-              <div className="h-10 w-10 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(99,102,241,0.2)]">
-                <User className="h-5 w-5" />
-              </div>
-              <div className="flex flex-col gap-1 flex-1">
-                <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                  Perfil
-                </CardTitle>
-                {!isCompact && (
-                  <CardDescription className="text-zinc-500 text-xs">
-                    Atualize suas informações pessoais
-                  </CardDescription>
-                )}
-              </div>
-            </CardHeader>
-            {!isCompact && (
-              <CardContent className="pt-0">
-                <ProfileForm initialData={{ name: user.name || '', email: user.email, organizationName: user.organization?.name || '' }} />
-              </CardContent>
-            )}
-          </Card>
+      {filtered.length === 0 ? (
+        <div className="rounded-xl border border-border/50 bg-muted/20 py-16 text-center">
+          <p className="text-sm text-muted-foreground">Nenhuma configuração encontrada</p>
+          <p className="text-xs text-muted-foreground/60 mt-1">Tente outro termo de busca</p>
         </div>
+      ) : (
+        <div className="space-y-8">
+          {filtered.map((section) => (
+            <SettingsSection
+              key={section.label}
+              label={section.label}
+              description={section.description}
+              icon={section.icon}
+              iconColor={section.iconColor}
+              iconBg={section.iconBg}
+            >
+              {section.cards.map((card) => {
+                if (card.drawer === 'profile') {
+                  return (
+                    <Sheet key={card.title} open={profileOpen} onOpenChange={setProfileOpen}>
+                      <SheetTrigger asChild>
+                        <button type="button" className="text-left">
+                          <div
+                            className="group flex items-center gap-3 rounded-xl border border-border/60 bg-card p-4 h-full transition-all duration-200 ease-out hover:border-primary/40 hover:shadow-sm hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                          >
+                            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ring-1 ring-border/40 ${card.iconBg} ${card.iconColor}`}>
+                              <card.icon className="h-5 w-5" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <h3 className="text-sm font-semibold tracking-tight text-foreground truncate">
+                                {card.title}
+                              </h3>
+                              <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
+                                {card.description}
+                              </p>
+                            </div>
+                          </div>
+                        </button>
+                      </SheetTrigger>
+                      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+                        <SheetHeader>
+                          <SheetTitle>Meu Perfil</SheetTitle>
+                        </SheetHeader>
+                        <div className="mt-6">
+                          <ProfileForm
+                            initialData={{
+                              name: user.name ?? '',
+                              email: user.email,
+                              organizationName: user.organization?.name ?? '',
+                            }}
+                          />
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  )
+                }
 
-        {/* SEÇÃO: ASSINATURA */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-            Assinatura
-          </h3>
-
-          <Link href="/dashboard/settings/billing">
-            <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-purple-300 dark:hover:border-purple-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
-              <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
-                <div className="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
-                  <CreditCard className="h-5 w-5" />
-                </div>
-                <div className="flex flex-col gap-1 flex-1">
-                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                    Assinatura & Pagamento
-                    {user.organization?.tier && user.organization.tier !== 'FREE' && (
-                      <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/20">
-                        {user.organization.tier}
-                      </span>
-                    )}
-                  </CardTitle>
-                  {!isCompact && (
-                    <CardDescription className="text-zinc-500 text-xs">
-                      Gerencie seu plano e histórico de pagamentos
-                    </CardDescription>
-                  )}
-                </div>
-                <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-purple-500 group-hover:translate-x-1 transition-all duration-200" />
-              </CardHeader>
-            </Card>
-          </Link>
+                return (
+                  <SettingsCard
+                    key={card.title}
+                    href={card.href}
+                    external={card.external}
+                    icon={card.icon}
+                    iconColor={card.iconColor}
+                    iconBg={card.iconBg}
+                    title={card.title}
+                    description={card.description}
+                    badge={card.badge}
+                  />
+                )
+              })}
+            </SettingsSection>
+          ))}
         </div>
-
-        {/* SEÇÃO: TIME & COLABORAÇÃO */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-            Time & Colaboração
-          </h3>
-
-          <Link href="/dashboard/settings/team">
-            <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
-              <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
-                <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
-                  <Users className="h-5 w-5" />
-                </div>
-                <div className="flex flex-col gap-1 flex-1">
-                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                    Time
-                  </CardTitle>
-                  {!isCompact && (
-                    <CardDescription className="text-zinc-500 text-xs">
-                      Gerencie membros e convites
-                    </CardDescription>
-                  )}
-                </div>
-                <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all duration-200" />
-              </CardHeader>
-            </Card>
-          </Link>
-
-          <Link href="/dashboard/settings/notifications">
-            <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
-              <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
-                <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
-                  <Bell className="h-5 w-5" />
-                </div>
-                <div className="flex flex-col gap-1 flex-1">
-                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                    Notificações
-                  </CardTitle>
-                  {!isCompact && (
-                    <CardDescription className="text-zinc-500 text-xs">
-                      Configure suas preferências de notificação
-                    </CardDescription>
-                  )}
-                </div>
-                <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
-              </CardHeader>
-            </Card>
-          </Link>
-        </div>
-
-        {/* SEÇÃO: DESENVOLVEDORES */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-            Desenvolvedores
-          </h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Link href="/dashboard/settings/api">
-              <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-purple-300 dark:hover:border-purple-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
-                <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
-                  <div className="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
-                    <Key className="h-5 w-5" />
-                  </div>
-                  <div className="flex flex-col gap-1 flex-1">
-                    <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                      API Keys
-                    </CardTitle>
-                    {!isCompact && (
-                      <CardDescription className="text-zinc-500 text-xs">
-                        Gerencie chaves de API
-                      </CardDescription>
-                    )}
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-purple-500 group-hover:translate-x-1 transition-all duration-200" />
-                </CardHeader>
-              </Card>
-            </Link>
-
-            <Link href="/dashboard/settings/webhooks">
-              <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
-                <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
-                  <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
-                    <Webhook className="h-5 w-5" />
-                  </div>
-                  <div className="flex flex-col gap-1 flex-1">
-                    <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                      Webhooks
-                    </CardTitle>
-                    {!isCompact && (
-                      <CardDescription className="text-zinc-500 text-xs">
-                        Configure webhooks para eventos
-                      </CardDescription>
-                    )}
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
-                </CardHeader>
-              </Card>
-            </Link>
-          </div>
-        </div>
-
-        {/* SEÇÃO: INTEGRAÇÕES */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-            Integrações
-          </h3>
-
-          <Link href="/dashboard/settings/integrations">
-            <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-amber-300 dark:hover:border-amber-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
-              <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
-                <div className="h-10 w-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
-                  <Zap className="h-5 w-5" />
-                </div>
-                <div className="flex flex-col gap-1 flex-1">
-                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                    Integrações
-                  </CardTitle>
-                  {!isCompact && (
-                    <CardDescription className="text-zinc-500 text-xs">
-                      N8N, WhatsApp e Google Calendar
-                    </CardDescription>
-                  )}
-                </div>
-                <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all duration-200" />
-              </CardHeader>
-            </Card>
-          </Link>
-        </div>
-
-        {/* SEÇÃO: RECURSOS */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-            Recursos
-          </h3>
-          <a href="/help" target="_blank" rel="noopener noreferrer">
-            <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-green-300 dark:hover:border-green-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
-              <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
-                <div className="h-10 w-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500 ring-1 ring-white/5 shadow-[0_0_10px_rgba(34,197,94,0.2)]">
-                  <BookOpen className="h-5 w-5" />
-                </div>
-                <div className="flex flex-col gap-1 flex-1">
-                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                    Ajuda e Suporte
-                  </CardTitle>
-                  {!isCompact && (
-                    <CardDescription className="text-zinc-500 text-xs">
-                      Central de ajuda, tutoriais e guias completos
-                    </CardDescription>
-                  )}
-                </div>
-                <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-green-500 group-hover:translate-x-1 transition-all duration-200" />
-              </CardHeader>
-            </Card>
-          </a>
-        </div>
-      </div>
+      )}
     </div>
   )
 }

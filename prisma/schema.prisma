@@ -98,6 +98,33 @@ model Organization {
   dpoPhone    String?
   dpoCpf      String?
 
+  // LGPD — retenção de dados
+  lgpdRetentionMonths Int? @default(60) // anonimizar pacientes inativos após N meses
+
+  // Identificação jurídica (recibos, NF-Se, TISS, contratos)
+  cnpj               String?
+  razaoSocial        String?
+  inscricaoEstadual  String?
+  inscricaoMunicipal String?
+
+  // Identidade visual
+  logoUrl     String? // URL ou base64 do logo
+  brandColor  String? // hex (#RRGGBB)
+  slogan      String? // headline curta
+
+  // Endereço completo (JSON: { rua, numero, complemento, bairro, cidade, uf, cep })
+  enderecoCompleto Json?
+
+  // Horários globais da clínica (JSON: { seg: [{inicio,fim}], ... dom: [] })
+  horarioFuncionamento Json?
+
+  // Responsável Técnico (RT — obrigação sanitária Anvisa)
+  rtNome           String?
+  rtConselho       MedicalCouncil?
+  rtNumeroConselho String?
+  rtUfConselho     String?
+  rtCpf            String?
+
   users                   User[]
   rolePermissions         RolePermissions[]
   contacts                Contact[]
