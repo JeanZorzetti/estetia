@@ -10,6 +10,7 @@ import {
   type IntegrationCategory,
 } from './integration-registry'
 import { IntegrationCard } from './integration-card'
+import { CategorySectionHeader } from './category-section-header'
 
 interface OrgStatus {
   configured: Record<string, boolean>
@@ -20,13 +21,16 @@ interface Props {
   upvoteCounts?: Record<string, number>
 }
 
+const GRID_COLS = 'grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-3'
+
 export function IntegrationGrid({ orgStatus, upvoteCounts = {} }: Props) {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<IntegrationCategory | 'todas'>('todas')
   const [hideSoon, setHideSoon] = useState(false)
 
+  const q = query.trim().toLowerCase()
+
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
     return INTEGRATIONS.filter((i) => {
       if (category !== 'todas' && i.category !== category) return false
       if (hideSoon && i.status === 'soon') return false
@@ -36,13 +40,16 @@ export function IntegrationGrid({ orgStatus, upvoteCounts = {} }: Props) {
         i.shortDescription.toLowerCase().includes(q)
       )
     })
-  }, [query, category, hideSoon])
+  }, [q, category, hideSoon])
 
   const totalCount = INTEGRATIONS.length
   const stableCount = INTEGRATIONS.filter((i) => i.status !== 'soon').length
 
+  const showGrouped = category === 'todas' && !q
+
   return (
     <div className="space-y-5">
+      {/* Search + controls */}
       <div className="space-y-3">
         <div className="flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 max-w-md">
@@ -62,7 +69,7 @@ export function IntegrationGrid({ orgStatus, upvoteCounts = {} }: Props) {
               onChange={(e) => setHideSoon(e.target.checked)}
               className="h-3.5 w-3.5 rounded border-border"
             />
-            Esconder "Em breve"
+            Esconder &quot;Em breve&quot;
           </label>
 
           <div className="text-xs text-muted-foreground tabular-nums">
@@ -70,6 +77,7 @@ export function IntegrationGrid({ orgStatus, upvoteCounts = {} }: Props) {
           </div>
         </div>
 
+        {/* Category pills */}
         <div className="flex flex-wrap gap-1.5 overflow-x-auto pb-1">
           {CATEGORIES.map((cat) => (
             <button
@@ -91,14 +99,42 @@ export function IntegrationGrid({ orgStatus, upvoteCounts = {} }: Props) {
         </div>
       </div>
 
+      {/* Grid content */}
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-border/50 bg-muted/20 py-12 text-center">
           <Search className="h-8 w-8 text-muted-foreground/40 mb-3" />
           <p className="text-sm text-muted-foreground">Nenhuma integração encontrada</p>
           <p className="text-xs text-muted-foreground/60 mt-1">Tente outro termo de busca</p>
         </div>
+      ) : showGrouped ? (
+        // Grouped by category with section headers
+        <div className="space-y-8">
+          {CATEGORIES.filter((c) => c.id !== 'todas').map((cat) => {
+            const items = filtered.filter((i) => i.category === cat.id)
+            if (items.length === 0) return null
+            return (
+              <section key={cat.id} className="space-y-3">
+                <CategorySectionHeader
+                  category={cat.id as IntegrationCategory}
+                  count={items.length}
+                />
+                <div className={GRID_COLS}>
+                  {items.map((integration) => (
+                    <IntegrationCard
+                      key={integration.id}
+                      integration={integration}
+                      configured={orgStatus.configured[integration.id] ?? false}
+                      upvoteCount={upvoteCounts[integration.id]}
+                    />
+                  ))}
+                </div>
+              </section>
+            )
+          })}
+        </div>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        // Flat grid for specific category filter or search
+        <div className={GRID_COLS}>
           {filtered.map((integration) => (
             <IntegrationCard
               key={integration.id}
