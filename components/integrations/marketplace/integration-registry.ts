@@ -368,7 +368,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     cardBgColor: '#FFC107',
     href: '/dashboard/settings/integrations/pagseguro',
     isBrazilian: true,
-    status: 'soon',
+    docsUrl: 'https://dev.pagbank.uol.com.br/reference',
   },
   {
     id: 'pagarme',
@@ -379,7 +379,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     cardBgColor: '#65A300',
     href: '/dashboard/settings/integrations/pagarme',
     isBrazilian: true,
-    status: 'soon',
+    docsUrl: 'https://docs.pagar.me/reference',
   },
   {
     id: 'stripe',
@@ -389,7 +389,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siStripe),
     cardBgColor: `#${siStripe.hex}`,
     href: '/dashboard/settings/integrations/stripe',
-    status: 'soon',
+    docsUrl: 'https://stripe.com/docs/api',
   },
 
   // === NF-Se (4) ===

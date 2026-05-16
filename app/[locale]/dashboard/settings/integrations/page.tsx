@@ -58,6 +58,9 @@ export default async function IntegrationsPage() {
           rdStationRefreshToken: true,
           tiktokAdsAccessToken: true,
           linkedinAdsAccessToken: true,
+          pagseguroToken: true,
+          pagarmeApiKey: true,
+          stripeSecretKey: true,
         },
       },
     },
@@ -109,6 +112,9 @@ export default async function IntegrationsPage() {
     'rd-station': !!org.rdStationRefreshToken,
     'tiktok-ads': !!org.tiktokAdsAccessToken,
     'linkedin-ads': !!org.linkedinAdsAccessToken,
+    pagseguro: !!org.pagseguroToken,
+    pagarme: !!org.pagarmeApiKey,
+    stripe: !!org.stripeSecretKey,
   }
 
   // Aggregate upvote counts (only for visible "soon" integrations)
