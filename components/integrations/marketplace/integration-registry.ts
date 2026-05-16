@@ -146,7 +146,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siViber),
     cardBgColor: `#${siViber.hex}`,
     href: '/dashboard/settings/integrations/viber',
-    status: 'soon',
   },
   {
     id: 'webchat',
@@ -156,7 +155,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('webchat.svg', '#8B5CF6', 'Chat no Site'),
     cardBgColor: '#8B5CF6',
     href: '/dashboard/settings/integrations/webchat',
-    status: 'soon',
   },
 
   // === TELEFONIA (4) ===
@@ -570,7 +568,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     cardBgColor: '#06B6D4',
     href: '/dashboard/settings/integrations/contaazul',
     isBrazilian: true,
-    status: 'soon',
+    docsUrl: 'https://developers.contaazul.com/',
   },
   {
     id: 'bling',
@@ -581,7 +579,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     cardBgColor: '#005FFF',
     href: '/dashboard/settings/integrations/bling',
     isBrazilian: true,
-    status: 'soon',
+    docsUrl: 'https://developer.bling.com.br/',
   },
 
   // === PRODUTIVIDADE & FORMS (8) ===
@@ -603,7 +601,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('slack.svg', '#FFFFFF', 'Slack', false),
     cardBgColor: '#FFFFFF',
     href: '/dashboard/settings/integrations/slack',
-    status: 'soon',
+    docsUrl: 'https://api.slack.com/messaging/webhooks',
   },
   {
     id: 'teams',
@@ -613,7 +611,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('teams.svg', '#FFFFFF', 'Microsoft Teams', false),
     cardBgColor: '#FFFFFF',
     href: '/dashboard/settings/integrations/teams',
-    status: 'soon',
+    docsUrl: 'https://learn.microsoft.com/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using',
   },
   {
     id: 'notion',
@@ -623,7 +621,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siNotion),
     cardBgColor: `#${siNotion.hex}`,
     href: '/dashboard/settings/integrations/notion',
-    status: 'soon',
+    docsUrl: 'https://developers.notion.com/',
   },
   {
     id: 'trello',
@@ -633,7 +631,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siTrello),
     cardBgColor: `#${siTrello.hex}`,
     href: '/dashboard/settings/integrations/trello',
-    status: 'soon',
+    docsUrl: 'https://developer.atlassian.com/cloud/trello/rest/',
   },
   {
     id: 'asana',
@@ -643,7 +641,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siAsana),
     cardBgColor: `#${siAsana.hex}`,
     href: '/dashboard/settings/integrations/asana',
-    status: 'soon',
+    docsUrl: 'https://developers.asana.com/',
   },
   {
     id: 'typeform',
@@ -653,7 +651,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siTypeform),
     cardBgColor: `#${siTypeform.hex}`,
     href: '/dashboard/settings/integrations/typeform',
-    status: 'soon',
+    docsUrl: 'https://www.typeform.com/developers/',
   },
   {
     id: 'jotform',
@@ -663,7 +661,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('jotform.svg', '#FF6100', 'JotForm'),
     cardBgColor: '#FF6100',
     href: '/dashboard/settings/integrations/jotform',
-    status: 'soon',
+    docsUrl: 'https://api.jotform.com/docs/',
   },
 
   // === WEBHOOKS & AUTOMAÇÃO (4) ===
@@ -694,7 +692,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siZapier),
     cardBgColor: `#${siZapier.hex}`,
     href: '/dashboard/settings/integrations/zapier',
-    status: 'soon',
+    docsUrl: 'https://zapier.com/help/create/code-webhooks/trigger-zaps-from-webhooks',
   },
   {
     id: 'make',
@@ -704,7 +702,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siMake),
     cardBgColor: '#6D00CC',
     href: '/dashboard/settings/integrations/make',
-    status: 'soon',
+    docsUrl: 'https://www.make.com/en/help/tools/webhooks',
   },
 
   // === VALIDAÇÕES (1) ===

@@ -206,6 +206,170 @@ model Organization {
   telegramBotToken String? @db.Text // Encrypted
   telegramChatId   String?
 
+  // Viber Business (Sprint 1 — Mensageria)
+  viberEnabled    Boolean @default(false)
+  viberAuthToken  String? @db.Text // Encrypted
+  viberSenderName String?
+
+  // Webchat (widget de chat embedável no site da clínica)
+  webchatEnabled        Boolean @default(false)
+  webchatWidgetSecret   String? @db.Text // Token público para identificar a clínica no widget
+  webchatAllowedOrigins String? // CSV de origins permitidos (CORS)
+
+  // Sprint 2 — Telefonia
+  twilioVoiceEnabled    Boolean @default(false)
+  twilioAccountSid      String?
+  twilioAuthToken       String? @db.Text // Encrypted
+  twilioFromNumber      String?
+
+  ringcentralEnabled      Boolean @default(false)
+  ringcentralClientId     String?
+  ringcentralClientSecret String? @db.Text // Encrypted
+  ringcentralJwtToken     String? @db.Text // Encrypted (JWT auth flow)
+
+  callgearEnabled  Boolean @default(false)
+  callgearApiKey   String? @db.Text // Encrypted
+
+  // Sprint 3 — Calendários
+  outlookCalendarEnabled      Boolean @default(false)
+  outlookCalendarRefreshToken String? @db.Text // Encrypted
+  outlookCalendarEmail        String?
+
+  appleCalendarEnabled    Boolean @default(false)
+  appleCalendarFeedSecret String? // UUID para gerar URL .ics privada
+
+  // Sprint 4 — E-mail Marketing
+  mailchimpEnabled    Boolean @default(false)
+  mailchimpApiKey     String? @db.Text // Encrypted
+  mailchimpListId     String?
+  mailchimpServer     String? // ex: "us21" — prefix do datacenter
+
+  brevoEnabled Boolean @default(false)
+  brevoApiKey  String? @db.Text // Encrypted
+  brevoListId  String?
+
+  activecampaignEnabled Boolean @default(false)
+  activecampaignApiKey  String? @db.Text // Encrypted
+  activecampaignUrl     String? // Custom account URL
+
+  mailerliteEnabled Boolean @default(false)
+  mailerliteApiKey  String? @db.Text // Encrypted
+  mailerliteGroupId String?
+
+  rdStationEnabled      Boolean @default(false)
+  rdStationClientId     String?
+  rdStationClientSecret String? @db.Text // Encrypted
+  rdStationRefreshToken String? @db.Text // Encrypted
+
+  // Sprint 5 — Anúncios
+  tiktokAdsEnabled      Boolean @default(false)
+  tiktokAdsAccessToken  String? @db.Text // Encrypted
+  tiktokAdsAdvertiserId String?
+  tiktokAdsPixelId      String?
+
+  linkedinAdsEnabled      Boolean @default(false)
+  linkedinAdsAccessToken  String? @db.Text // Encrypted
+  linkedinAdsAccountId    String?
+
+  // Sprint 6 — Pagamentos
+  pagseguroEnabled     Boolean @default(false)
+  pagseguroToken       String? @db.Text // Encrypted
+  pagseguroEnvironment String? @default("sandbox")
+
+  pagarmeEnabled     Boolean @default(false)
+  pagarmeApiKey      String? @db.Text // Encrypted
+  pagarmeRecipientId String?
+
+  stripeEnabled        Boolean @default(false)
+  stripeSecretKey      String? @db.Text // Encrypted
+  stripeWebhookSecret  String? @db.Text // Encrypted
+
+  // Sprint 7 — NF-Se
+  enotasEnabled   Boolean @default(false)
+  enotasApiKey    String? @db.Text // Encrypted
+  enotasCompanyId String?
+
+  nfeioEnabled    Boolean @default(false)
+  nfeioApiKey     String? @db.Text // Encrypted
+  nfeioCompanyId  String?
+
+  plugnotasEnabled Boolean @default(false)
+  plugnotasApiKey  String? @db.Text // Encrypted
+  plugnotasCnpj    String?
+
+  // Sprint 8 — Convênios & TISS (shells — credenciais para integração futura)
+  unimedEnabled         Boolean @default(false)
+  unimedCredentialsJson String? @db.Text // Encrypted JSON (varia por singular Unimed)
+
+  amilEnabled         Boolean @default(false)
+  amilCredentialsJson String? @db.Text // Encrypted
+
+  bradescoSaudeEnabled         Boolean @default(false)
+  bradescoSaudeCredentialsJson String? @db.Text // Encrypted
+
+  medtissEnabled Boolean @default(false)
+  medtissApiKey  String? @db.Text // Encrypted
+
+  hapvidaEnabled         Boolean @default(false)
+  hapvidaCredentialsJson String? @db.Text // Encrypted
+
+  // Sprint 9 — Telemedicina
+  doctoraliaEnabled Boolean @default(false)
+  doctoraliaApiKey  String? @db.Text // Encrypted
+
+  conexaEnabled Boolean @default(false)
+  conexaApiKey  String? @db.Text // Encrypted
+
+  memedEnabled  Boolean @default(false)
+  memedApiKey   String? @db.Text // Encrypted
+
+  whitebookEnabled Boolean @default(false)
+  whitebookApiKey  String? @db.Text // Encrypted
+
+  // Sprint 10 — ERP / Produtividade / Webhooks
+  contaazulEnabled      Boolean @default(false)
+  contaazulClientId     String?
+  contaazulClientSecret String? @db.Text // Encrypted
+  contaazulRefreshToken String? @db.Text // Encrypted
+
+  blingEnabled      Boolean @default(false)
+  blingClientId     String?
+  blingClientSecret String? @db.Text // Encrypted
+  blingRefreshToken String? @db.Text // Encrypted
+
+  slackEnabled    Boolean @default(false)
+  slackWebhookUrl String? @db.Text // Encrypted
+
+  teamsEnabled    Boolean @default(false)
+  teamsWebhookUrl String? @db.Text // Encrypted
+
+  notionEnabled    Boolean @default(false)
+  notionApiKey     String? @db.Text // Encrypted
+  notionDatabaseId String?
+
+  trelloEnabled  Boolean @default(false)
+  trelloApiKey   String?
+  trelloToken    String? @db.Text // Encrypted
+  trelloBoardId  String?
+
+  asanaEnabled     Boolean @default(false)
+  asanaApiKey      String? @db.Text // Encrypted
+  asanaProjectId   String?
+
+  typeformEnabled Boolean @default(false)
+  typeformApiKey  String? @db.Text // Encrypted
+  typeformFormId  String?
+
+  jotformEnabled Boolean @default(false)
+  jotformApiKey  String? @db.Text // Encrypted
+  jotformFormId  String?
+
+  zapierEnabled    Boolean @default(false)
+  zapierWebhookUrl String? @db.Text // Encrypted
+
+  makeEnabled    Boolean @default(false)
+  makeWebhookUrl String? @db.Text // Encrypted
+
   // Zoom (tele-consulta via OAuth Server-to-Server)
   zoomEnabled      Boolean @default(false)
   zoomAccountId    String?
@@ -995,6 +1159,17 @@ enum IntegrationType {
   FOCUS_NFE
   TELEGRAM
   ZOOM
+  SLACK
+  TEAMS
+  NOTION
+  TRELLO
+  ASANA
+  TYPEFORM
+  JOTFORM
+  ZAPIER
+  MAKE
+  CONTAAZUL
+  BLING
 }
 
 enum IntegrationStatus {
