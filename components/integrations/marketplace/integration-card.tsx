@@ -9,8 +9,18 @@ interface Props {
   upvoteCount?: number
 }
 
+function isWhiteCard(hex: string): boolean {
+  const h = hex.replace('#', '').toLowerCase()
+  if (h === 'ffffff' || h === 'fff') return true
+  const r = parseInt(h.slice(0, 2), 16) / 255
+  const g = parseInt(h.slice(2, 4), 16) / 255
+  const b = parseInt(h.slice(4, 6), 16) / 255
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.9
+}
+
 export function IntegrationCard({ integration, configured, upvoteCount }: Props) {
   const isSoon = integration.status === 'soon'
+  const isLight = isWhiteCard(integration.cardBgColor)
 
   return (
     <Link
@@ -24,7 +34,8 @@ export function IntegrationCard({ integration, configured, upvoteCount }: Props)
           'aspect-square rounded-xl flex items-center justify-center relative overflow-hidden',
           'transition-transform duration-200 ease-out',
           'group-hover:scale-[1.03] group-hover:shadow-lg group-focus-visible:scale-[1.03]',
-          isSoon && 'opacity-70 grayscale-[30%]'
+          isSoon && 'opacity-70 grayscale-[30%]',
+          isLight && 'ring-1 ring-border'
         )}
         style={{ backgroundColor: integration.cardBgColor }}
       >

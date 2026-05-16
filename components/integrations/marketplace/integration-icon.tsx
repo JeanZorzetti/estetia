@@ -3,29 +3,34 @@ import { cn } from '@/lib/utils'
 
 export interface BrandIcon {
   type: 'brand'
-  /** Inline SVG path data from simple-icons (e.g. siMailchimp.path) */
   path: string
-  /** Brand hex color (e.g. "#FFE01B"). Used as background tint. */
   hex: string
-  /** Brand name for accessibility */
   title: string
 }
 
 export interface LucideIconRef {
   type: 'lucide'
   Component: LucideIcon
-  /** Tailwind classes for icon color (e.g. "text-emerald-500") */
   colorClass: string
-  /** Tailwind classes for bg tint (e.g. "bg-emerald-500/10") */
   bgClass: string
 }
 
-export type IntegrationIconDef = BrandIcon | LucideIconRef
+export interface CustomImageIcon {
+  type: 'image'
+  /** Path relative to public/, e.g. "/logos/integrations/asaas.svg" */
+  src: string
+  /** Brand hex color — used for cardBgColor compatibility */
+  hex: string
+  title: string
+  /** true => apply CSS filter to render white/black; false => preserve original colors */
+  monochrome?: boolean
+}
+
+export type IntegrationIconDef = BrandIcon | LucideIconRef | CustomImageIcon
 
 interface Props {
   icon: IntegrationIconDef
   size?: 'sm' | 'md' | 'lg' | 'xl'
-  /** When true, renders icon white over a solid brand color background */
   inverted?: boolean
   className?: string
 }
@@ -37,7 +42,6 @@ const SIZES = {
   xl: { box: 'h-20 w-20', icon: 'h-12 w-12' },
 } as const
 
-/** Returns true if a hex color is perceptually light (luminance > 0.5) */
 function isLightColor(hex: string): boolean {
   const h = hex.replace('#', '')
   const r = parseInt(h.slice(0, 2), 16) / 255
@@ -50,9 +54,41 @@ function isLightColor(hex: string): boolean {
 export function IntegrationIcon({ icon, size = 'md', inverted = false, className }: Props) {
   const s = SIZES[size]
 
+  if (icon.type === 'image') {
+    const monochrome = icon.monochrome !== false
+    const filterStyle = inverted && monochrome
+      ? { filter: isLightColor(icon.hex) ? 'brightness(0)' : 'brightness(0) invert(1)' }
+      : {}
+
+    return (
+      <div className={cn('flex shrink-0 items-center justify-center', s.box, className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={icon.src}
+          alt={icon.title}
+          className={cn(s.icon, 'object-contain')}
+          style={filterStyle}
+          onError={(e) => {
+            const el = e.currentTarget
+            el.style.display = 'none'
+            const fallback = el.nextElementSibling as HTMLElement | null
+            if (fallback) fallback.style.display = 'flex'
+          }}
+        />
+        {/* Fallback: initial letter if img fails */}
+        <span
+          className="hidden items-center justify-center text-white font-bold text-sm"
+          style={{ display: 'none' }}
+          aria-label={icon.title}
+        >
+          {icon.title.charAt(0).toUpperCase()}
+        </span>
+      </div>
+    )
+  }
+
   if (icon.type === 'brand') {
     if (inverted) {
-      // Solid brand background + white icon
       const fillColor = isLightColor(icon.hex) ? '#000000' : '#ffffff'
       return (
         <div
