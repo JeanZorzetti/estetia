@@ -951,3 +951,14 @@ body.dragging * {
   cursor: grabbing !important;
   user-select: none !important;
 } */
+
+/* =============================================
+   ANALYTICS CLINICO — Print styles
+   ============================================= */
+@media print {
+  .no-print { display: none !important; }
+  nav, aside, header, .sidebar, [data-sidebar] { display: none !important; }
+  body { color: black !important; background: white !important; }
+  .print-header { display: block !important; }
+}
+.print-header { display: none; }
