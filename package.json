@@ -144,6 +144,7 @@
     "recharts": "^3.7.0",
     "resend": "^6.6.0",
     "schema-dts": "^1.1.5",
+    "simple-icons": "^16.19.0",
     "simple-statistics": "^7.8.8",
     "sonner": "^2.0.7",
     "svix": "^1.84.1",

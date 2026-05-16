@@ -18,30 +18,24 @@ export default async function IntegrationsPage() {
         select: {
           id: true,
           tier: true,
-          wabaEnabled: true,
           wabaPhoneNumberId: true,
-          evolutionEnabled: true,
           evolutionBaseUrl: true,
-          zapiEnabled: true,
           zapiInstanceId: true,
-          instagramDmEnabled: true,
           instagramDmPageId: true,
-          googleCalendarEnabled: true,
+          telegramBotToken: true,
           googleCalendarEmail: true,
-          smtpEnabled: true,
           smtpHost: true,
-          adsIntegrationEnabled: true,
           googleAdsCustomerId: true,
           facebookAdAccountId: true,
           instagramBusinessAccountId: true,
-          omieEnabled: true,
+          asaasApiKey: true,
+          mpPaymentAccessToken: true,
+          focusnfeToken: true,
           omieAppKey: true,
-          n8nEnabled: true,
           n8nBaseUrl: true,
-          webhookEnabled: true,
           webhookSecret: true,
-          pabxEnabled: true,
           pabxProvider: true,
+          zoomAccountId: true,
         },
       },
     },
@@ -56,34 +50,32 @@ export default async function IntegrationsPage() {
     'whatsapp-evolution': !!org.evolutionBaseUrl,
     'whatsapp-zapi': !!org.zapiInstanceId,
     'instagram-dm': !!org.instagramDmPageId,
+    telegram: !!org.telegramBotToken,
     'google-calendar': !!org.googleCalendarEmail,
     smtp: !!org.smtpHost,
     'google-ads': !!org.googleAdsCustomerId,
     'facebook-ads': !!org.facebookAdAccountId,
     'instagram-posts': !!org.instagramBusinessAccountId,
+    asaas: !!org.asaasApiKey,
+    'mercadopago-checkout': !!org.mpPaymentAccessToken,
+    'focus-nfe': !!org.focusnfeToken,
     omie: !!org.omieAppKey,
     n8n: !!org.n8nBaseUrl,
     'webhook-generic': !!org.webhookSecret,
     pabx: !!org.pabxProvider,
+    zoom: !!org.zoomAccountId,
     'cfm-validator': true,
   }
 
-  const enabled: Record<string, boolean> = {
-    'whatsapp-oficial': org.wabaEnabled,
-    'whatsapp-evolution': org.evolutionEnabled,
-    'whatsapp-zapi': org.zapiEnabled,
-    'instagram-dm': org.instagramDmEnabled,
-    'google-calendar': org.googleCalendarEnabled,
-    smtp: org.smtpEnabled,
-    'google-ads': org.adsIntegrationEnabled && !!org.googleAdsCustomerId,
-    'facebook-ads': org.adsIntegrationEnabled && !!org.facebookAdAccountId,
-    'instagram-posts': !!org.instagramBusinessAccountId,
-    omie: org.omieEnabled,
-    n8n: org.n8nEnabled,
-    'webhook-generic': org.webhookEnabled,
-    pabx: org.pabxEnabled,
-    'cfm-validator': true,
-  }
+  // Aggregate upvote counts (only for visible "soon" integrations)
+  const upvoteRows = await prisma.integrationUpvote.groupBy({
+    by: ['integrationId'],
+    _count: { integrationId: true },
+  })
+  const upvoteCounts: Record<string, number> = {}
+  upvoteRows.forEach((r) => {
+    upvoteCounts[r.integrationId] = r._count.integrationId
+  })
 
   return (
     <div className="flex-1 space-y-6 p-6">
@@ -111,7 +103,7 @@ export default async function IntegrationsPage() {
         </Link>
       </div>
 
-      <IntegrationGrid orgStatus={{ configured, enabled }} />
+      <IntegrationGrid orgStatus={{ configured }} upvoteCounts={upvoteCounts} />
     </div>
   )
 }

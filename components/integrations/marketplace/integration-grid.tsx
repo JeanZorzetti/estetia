@@ -13,40 +13,61 @@ import { IntegrationCard } from './integration-card'
 
 interface OrgStatus {
   configured: Record<string, boolean>
-  enabled: Record<string, boolean>
 }
 
 interface Props {
   orgStatus: OrgStatus
+  upvoteCounts?: Record<string, number>
 }
 
-export function IntegrationGrid({ orgStatus }: Props) {
+export function IntegrationGrid({ orgStatus, upvoteCounts = {} }: Props) {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<IntegrationCategory | 'todas'>('todas')
+  const [hideSoon, setHideSoon] = useState(false)
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     return INTEGRATIONS.filter((i) => {
       if (category !== 'todas' && i.category !== category) return false
+      if (hideSoon && i.status === 'soon') return false
       if (!q) return true
       return (
         i.name.toLowerCase().includes(q) ||
         i.shortDescription.toLowerCase().includes(q)
       )
     })
-  }, [query, category])
+  }, [query, category, hideSoon])
+
+  const totalCount = INTEGRATIONS.length
+  const stableCount = INTEGRATIONS.filter((i) => i.status !== 'soon').length
 
   return (
     <div className="space-y-5">
       <div className="space-y-3">
-        <div className="relative max-w-md">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Buscar integração..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="pl-9 h-9"
-          />
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="relative flex-1 max-w-md">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Buscar integração..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="pl-9 h-9"
+            />
+          </div>
+
+          <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={hideSoon}
+              onChange={(e) => setHideSoon(e.target.checked)}
+              className="h-3.5 w-3.5 rounded border-border"
+            />
+            Esconder "Em breve"
+          </label>
+
+          <div className="text-xs text-muted-foreground tabular-nums">
+            {stableCount} disponíveis · {totalCount - stableCount} em breve
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-1.5 overflow-x-auto pb-1">
@@ -83,7 +104,7 @@ export function IntegrationGrid({ orgStatus }: Props) {
               key={integration.id}
               integration={integration}
               configured={orgStatus.configured[integration.id] ?? false}
-              enabled={orgStatus.enabled[integration.id] ?? false}
+              upvoteCount={upvoteCounts[integration.id]}
             />
           ))}
         </div>

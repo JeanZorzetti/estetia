@@ -187,6 +187,33 @@ model Organization {
   pabxProvider      String? // "intelbras" | "yealink" | "asterisk" | "generic"
   pabxWebhookSecret String?
 
+  // Asaas (pagamentos PIX/boleto/cartão/recorrência)
+  asaasEnabled     Boolean @default(false)
+  asaasApiKey      String? @db.Text // Encrypted
+  asaasEnvironment String? @default("sandbox") // "sandbox" | "production"
+
+  // MercadoPago Checkout (cobrança das clínicas para pacientes — separado da assinatura SaaS)
+  mpPaymentEnabled     Boolean @default(false)
+  mpPaymentAccessToken String? @db.Text // Encrypted
+
+  // Focus NFe (emissão de notas fiscais de serviço)
+  focusnfeEnabled     Boolean @default(false)
+  focusnfeToken       String? @db.Text // Encrypted
+  focusnfeEnvironment String? @default("homologacao") // "homologacao" | "producao"
+
+  // Telegram (bot para notificações)
+  telegramEnabled  Boolean @default(false)
+  telegramBotToken String? @db.Text // Encrypted
+  telegramChatId   String?
+
+  // Zoom (tele-consulta via OAuth Server-to-Server)
+  zoomEnabled      Boolean @default(false)
+  zoomAccountId    String?
+  zoomClientId     String?
+  zoomClientSecret String? @db.Text // Encrypted
+
+  integrationUpvotes IntegrationUpvote[]
+
   // WhatsApp Official API (Meta Cloud API)
   wabaEnabled             Boolean @default(false)
   wabaPhoneNumberId       String?
@@ -383,6 +410,9 @@ model User {
 
   // Estética & Dermatologia (Sprint 1)
   professionalProfile Professional?
+
+  // Integration marketplace — upvotes em integrações "Em breve"
+  integrationUpvotes IntegrationUpvote[]
 }
 
 enum Role {
@@ -648,6 +678,22 @@ model Invite {
   organization   Organization @relation(fields: [organizationId], references: [id])
 
   @@unique([email, organizationId])
+}
+
+// Integration Marketplace — upvotes para integrações "Em breve"
+model IntegrationUpvote {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  integrationId  String   // matches registry id (e.g., "asaas", "typeform")
+  notes          String?  @db.Text
+  createdAt      DateTime @default(now())
+
+  @@unique([userId, integrationId])
+  @@index([integrationId, createdAt])
 }
 
 // [NEW] Deal 2.0 Features
@@ -944,6 +990,11 @@ enum IntegrationType {
   SMTP
   WEBHOOK_GENERIC
   PABX
+  ASAAS
+  MERCADOPAGO_CHECKOUT
+  FOCUS_NFE
+  TELEGRAM
+  ZOOM
 }
 
 enum IntegrationStatus {
