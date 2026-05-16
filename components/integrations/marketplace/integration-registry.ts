@@ -217,7 +217,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('outlook-calendar.svg', '#FFFFFF', 'Microsoft Outlook', false),
     cardBgColor: '#FFFFFF',
     href: '/dashboard/settings/integrations/outlook-calendar',
-    status: 'soon',
+    docsUrl: 'https://learn.microsoft.com/pt-br/graph/api/resources/calendar',
   },
   {
     id: 'apple-calendar',
@@ -227,7 +227,7 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: brand(siApple),
     cardBgColor: '#555555',
     href: '/dashboard/settings/integrations/apple-calendar',
-    status: 'soon',
+    docsUrl: 'https://support.apple.com/pt-br/guide/calendar/icl1025/mac',
   },
 
   // === E-MAIL & MARKETING (6) ===

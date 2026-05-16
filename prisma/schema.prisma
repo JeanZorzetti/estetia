@@ -1170,6 +1170,8 @@ enum IntegrationType {
   MAKE
   CONTAAZUL
   BLING
+  OUTLOOK_CALENDAR
+  APPLE_CALENDAR
 }
 
 enum IntegrationStatus {
