@@ -13,30 +13,35 @@ export interface OutlookEvent {
   attendees?: Array<{ emailAddress: { address: string; name?: string }; type: 'required' | 'optional' }>
 }
 
-export function getMicrosoftAuthUrl(state: string) {
-  const tenant = process.env.MICROSOFT_TENANT_ID ?? 'common'
+interface OrgCredentials {
+  clientId: string
+  clientSecret: string
+  tenantId: string
+  redirectUri: string
+}
+
+export function getMicrosoftAuthUrl(state: string, creds: OrgCredentials) {
   const params = new URLSearchParams({
-    client_id: process.env.MICROSOFT_CLIENT_ID!,
+    client_id: creds.clientId,
     response_type: 'code',
-    redirect_uri: process.env.MICROSOFT_REDIRECT_URI!,
+    redirect_uri: creds.redirectUri,
     scope: 'offline_access Calendars.ReadWrite User.Read',
     state,
     response_mode: 'query',
   })
-  return `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?${params.toString()}`
+  return `https://login.microsoftonline.com/${creds.tenantId}/oauth2/v2.0/authorize?${params.toString()}`
 }
 
-export async function exchangeMicrosoftCode(code: string) {
-  const tenant = process.env.MICROSOFT_TENANT_ID ?? 'common'
+export async function exchangeMicrosoftCode(code: string, creds: OrgCredentials) {
   const res = await fetch(
-    `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/token`,
+    `https://login.microsoftonline.com/${creds.tenantId}/oauth2/v2.0/token`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
-        client_id: process.env.MICROSOFT_CLIENT_ID!,
-        client_secret: process.env.MICROSOFT_CLIENT_SECRET!,
-        redirect_uri: process.env.MICROSOFT_REDIRECT_URI!,
+        client_id: creds.clientId,
+        client_secret: creds.clientSecret,
+        redirect_uri: creds.redirectUri,
         grant_type: 'authorization_code',
         code,
       }),
@@ -46,16 +51,15 @@ export async function exchangeMicrosoftCode(code: string) {
   return res.json() as Promise<{ access_token: string; refresh_token: string; expires_in: number }>
 }
 
-async function getAccessToken(refreshToken: string): Promise<string> {
-  const tenant = process.env.MICROSOFT_TENANT_ID ?? 'common'
+async function getAccessToken(refreshToken: string, creds: OrgCredentials): Promise<string> {
   const res = await fetch(
-    `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/token`,
+    `https://login.microsoftonline.com/${creds.tenantId}/oauth2/v2.0/token`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
-        client_id: process.env.MICROSOFT_CLIENT_ID!,
-        client_secret: process.env.MICROSOFT_CLIENT_SECRET!,
+        client_id: creds.clientId,
+        client_secret: creds.clientSecret,
         refresh_token: refreshToken,
         grant_type: 'refresh_token',
         scope: 'offline_access Calendars.ReadWrite User.Read',
@@ -69,11 +73,12 @@ async function getAccessToken(refreshToken: string): Promise<string> {
 
 async function graphRequest<T = unknown>(
   refreshToken: string,
+  creds: OrgCredentials,
   path: string,
   method = 'GET',
   body?: unknown
 ): Promise<T> {
-  const accessToken = await getAccessToken(refreshToken)
+  const accessToken = await getAccessToken(refreshToken, creds)
   const res = await fetch(`${GRAPH_BASE}${path}`, {
     method,
     headers: {
@@ -90,59 +95,82 @@ async function graphRequest<T = unknown>(
   return res.json() as Promise<T>
 }
 
-export async function getOutlookProfile(refreshToken: string) {
+export async function getOutlookProfile(refreshToken: string, creds: OrgCredentials) {
   return graphRequest<{ displayName: string; mail: string; userPrincipalName: string }>(
-    refreshToken,
-    '/me'
+    refreshToken, creds, '/me'
   )
 }
 
-export async function createOutlookEvent(refreshToken: string, event: OutlookEvent) {
+export async function createOutlookEvent(
+  refreshToken: string,
+  creds: OrgCredentials,
+  event: OutlookEvent
+) {
   return graphRequest<{ id: string; webLink: string }>(
-    refreshToken,
-    '/me/calendar/events',
-    'POST',
-    event
+    refreshToken, creds, '/me/calendar/events', 'POST', event
   )
 }
 
-export async function deleteOutlookEvent(refreshToken: string, eventId: string) {
-  return graphRequest(refreshToken, `/me/calendar/events/${eventId}`, 'DELETE')
+export async function deleteOutlookEvent(
+  refreshToken: string,
+  creds: OrgCredentials,
+  eventId: string
+) {
+  return graphRequest(refreshToken, creds, `/me/calendar/events/${eventId}`, 'DELETE')
 }
 
-export async function listUpcomingOutlookEvents(refreshToken: string, maxResults = 10) {
+export async function listUpcomingOutlookEvents(
+  refreshToken: string,
+  creds: OrgCredentials,
+  maxResults = 10
+) {
   const now = new Date().toISOString()
   const path = `/me/calendar/events?$filter=start/dateTime ge '${now}'&$orderby=start/dateTime&$top=${maxResults}&$select=id,subject,start,end,webLink`
-  return graphRequest<{ value: OutlookEvent[] }>(refreshToken, path)
+  return graphRequest<{ value: OutlookEvent[] }>(refreshToken, creds, path)
 }
 
-// Hook: sync an agendamento as an Outlook Calendar event
-export async function syncAgendamentoToOutlook(
+// Hook: sync a calendar event to Outlook using the org's own Azure app credentials
+export async function syncEventToOutlook(
   organizationId: string,
-  agendamento: {
-    id: string
+  event: {
     titulo: string
     inicio: Date
     fim: Date
-    pacienteNome?: string
+    descricao?: string
     local?: string
   }
 ) {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },
-    select: { outlookCalendarEnabled: true, outlookCalendarRefreshToken: true },
+    select: {
+      outlookCalendarEnabled: true,
+      outlookCalendarRefreshToken: true,
+      outlookClientId: true,
+      outlookClientSecret: true,
+      outlookTenantId: true,
+    },
   })
-  if (!org?.outlookCalendarEnabled || !org.outlookCalendarRefreshToken) return
+  if (
+    !org?.outlookCalendarEnabled ||
+    !org.outlookCalendarRefreshToken ||
+    !org.outlookClientId ||
+    !org.outlookClientSecret ||
+    !org.outlookTenantId
+  ) return
+
+  const creds: OrgCredentials = {
+    clientId: org.outlookClientId,
+    clientSecret: decrypt(org.outlookClientSecret),
+    tenantId: org.outlookTenantId,
+    redirectUri: `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/outlook-calendar/callback`,
+  }
 
   const refreshToken = decrypt(org.outlookCalendarRefreshToken)
-  const event: OutlookEvent = {
-    subject: agendamento.titulo,
-    body: agendamento.pacienteNome
-      ? { contentType: 'text', content: `Paciente: ${agendamento.pacienteNome}` }
-      : undefined,
-    start: { dateTime: agendamento.inicio.toISOString(), timeZone: 'America/Sao_Paulo' },
-    end: { dateTime: agendamento.fim.toISOString(), timeZone: 'America/Sao_Paulo' },
-    location: agendamento.local ? { displayName: agendamento.local } : undefined,
-  }
-  await createOutlookEvent(refreshToken, event)
+  await createOutlookEvent(refreshToken, creds, {
+    subject: event.titulo,
+    body: event.descricao ? { contentType: 'text', content: event.descricao } : undefined,
+    start: { dateTime: event.inicio.toISOString(), timeZone: 'America/Sao_Paulo' },
+    end: { dateTime: event.fim.toISOString(), timeZone: 'America/Sao_Paulo' },
+    location: event.local ? { displayName: event.local } : undefined,
+  })
 }

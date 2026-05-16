@@ -20,9 +20,11 @@ export default async function OutlookCalendarPage({
     select: {
       organization: {
         select: {
-          outlookCalendarEnabled: true,
           outlookCalendarRefreshToken: true,
           outlookCalendarEmail: true,
+          outlookClientId: true,
+          outlookTenantId: true,
+          outlookClientSecret: true,
         },
       },
     },
@@ -31,6 +33,13 @@ export default async function OutlookCalendarPage({
   if (!user?.organization) return <div>Organização não encontrada</div>
 
   const org = user.organization
+
+  const errorMessages: Record<string, string> = {
+    access_denied: 'Acesso negado pelo usuário.',
+    invalid_state: 'Erro de segurança — tente novamente.',
+    missing_credentials: 'Salve as credenciais Azure antes de conectar.',
+    connection_failed: 'Falha na autenticação Microsoft — verifique Client ID, Secret e Tenant ID.',
+  }
 
   return (
     <div className="flex-1 space-y-6 p-6">
@@ -50,20 +59,17 @@ export default async function OutlookCalendarPage({
       )}
       {params.error && (
         <div className="rounded-lg border border-red-500/30 bg-red-500/5 p-4 text-sm text-red-700 dark:text-red-300">
-          Erro ao conectar:{' '}
-          {params.error === 'access_denied'
-            ? 'Acesso negado pelo usuário.'
-            : params.error === 'invalid_state'
-              ? 'Erro de segurança — tente novamente.'
-              : 'Falha na autenticação Microsoft.'}
+          {errorMessages[params.error] ?? 'Erro desconhecido — tente novamente.'}
         </div>
       )}
 
       <OutlookCalendarForm
         initial={{
-          enabled: org.outlookCalendarEnabled,
           email: org.outlookCalendarEmail ?? null,
           hasRefreshToken: !!org.outlookCalendarRefreshToken,
+          hasAzureCreds: !!(org.outlookClientId && org.outlookClientSecret && org.outlookTenantId),
+          clientId: org.outlookClientId ?? null,
+          tenantId: org.outlookTenantId ?? null,
         }}
       />
     </div>

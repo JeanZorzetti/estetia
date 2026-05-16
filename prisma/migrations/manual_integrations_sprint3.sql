@@ -4,7 +4,10 @@
 ALTER TABLE "Organization"
   ADD COLUMN IF NOT EXISTS "outlookCalendarEnabled"      BOOLEAN  NOT NULL DEFAULT false,
   ADD COLUMN IF NOT EXISTS "outlookCalendarRefreshToken" TEXT,
-  ADD COLUMN IF NOT EXISTS "outlookCalendarEmail"        TEXT;
+  ADD COLUMN IF NOT EXISTS "outlookCalendarEmail"        TEXT,
+  ADD COLUMN IF NOT EXISTS "outlookClientId"             TEXT,
+  ADD COLUMN IF NOT EXISTS "outlookClientSecret"         TEXT,
+  ADD COLUMN IF NOT EXISTS "outlookTenantId"             TEXT;
 
 ALTER TABLE "Organization"
   ADD COLUMN IF NOT EXISTS "appleCalendarEnabled"    BOOLEAN NOT NULL DEFAULT false,

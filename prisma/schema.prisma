@@ -234,6 +234,10 @@ model Organization {
   outlookCalendarEnabled      Boolean @default(false)
   outlookCalendarRefreshToken String? @db.Text // Encrypted
   outlookCalendarEmail        String?
+  // BYOA: usuário traz suas próprias credenciais do app Azure
+  outlookClientId             String?
+  outlookClientSecret         String? @db.Text // Encrypted
+  outlookTenantId             String?
 
   appleCalendarEnabled    Boolean @default(false)
   appleCalendarFeedSecret String? // UUID para gerar URL .ics privada
