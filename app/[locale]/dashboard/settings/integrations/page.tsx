@@ -64,6 +64,21 @@ export default async function IntegrationsPage() {
           enotasApiKey: true,
           nfeioApiKey: true,
           plugnotasApiKey: true,
+          unimedEnabled: true,
+          unimedCredentialsJson: true,
+          amilEnabled: true,
+          amilCredentialsJson: true,
+          bradescoSaudeEnabled: true,
+          bradescoSaudeCredentialsJson: true,
+          medtissEnabled: true,
+          medtissApiKey: true,
+          hapvidaEnabled: true,
+          hapvidaCredentialsJson: true,
+          // Sprint 9 — Telemedicina
+          doctoraliaApiKey: true,
+          conexaApiKey: true,
+          memedApiKey: true,
+          whitebookApiKey: true,
         },
       },
     },
@@ -121,6 +136,16 @@ export default async function IntegrationsPage() {
     enotas: !!org.enotasApiKey,
     nfeio: !!org.nfeioApiKey,
     plugnotas: !!org.plugnotasApiKey,
+    unimed: !!org.unimedCredentialsJson,
+    amil: !!org.amilCredentialsJson,
+    'bradesco-saude': !!org.bradescoSaudeCredentialsJson,
+    medtiss: !!org.medtissApiKey,
+    hapvida: !!org.hapvidaCredentialsJson,
+    // Sprint 9 — Telemedicina
+    doctoralia: !!org.doctoraliaApiKey,
+    conexa: !!org.conexaApiKey,
+    memed: !!org.memedApiKey,
+    whitebook: !!org.whitebookApiKey,
   }
 
   // Aggregate upvote counts (only for visible "soon" integrations)

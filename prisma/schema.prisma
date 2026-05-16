@@ -318,14 +318,17 @@ model Organization {
   hapvidaCredentialsJson String? @db.Text // Encrypted
 
   // Sprint 9 — Telemedicina
-  doctoraliaEnabled Boolean @default(false)
-  doctoraliaApiKey  String? @db.Text // Encrypted
+  doctoraliaEnabled  Boolean @default(false)
+  doctoraliaApiKey   String? @db.Text // Encrypted
+  doctoraliaClinicId String? // Facility ID na Docplanner API
 
-  conexaEnabled Boolean @default(false)
-  conexaApiKey  String? @db.Text // Encrypted
+  conexaEnabled  Boolean @default(false)
+  conexaApiKey   String? @db.Text // Encrypted
+  conexaClinicId String? // Clinic ID na Conexa API
 
-  memedEnabled  Boolean @default(false)
-  memedApiKey   String? @db.Text // Encrypted
+  memedEnabled   Boolean @default(false)
+  memedApiKey    String? @db.Text // Encrypted
+  memedPublicKey String? // Public key para embed do widget
 
   whitebookEnabled Boolean @default(false)
   whitebookApiKey  String? @db.Text // Encrypted

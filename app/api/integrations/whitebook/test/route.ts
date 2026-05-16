@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { decrypt } from '@/lib/encryption'
-import { validateMemedCredentials } from '@/lib/integrations/memed-client'
+import { validateWhitebookCredentials } from '@/lib/integrations/whitebook-client'
 
 export async function POST() {
   const session = await getSession()
@@ -12,22 +12,19 @@ export async function POST() {
     where: { email: session.user.email },
     select: {
       organization: {
-        select: { memedApiKey: true, memedPublicKey: true },
+        select: { whitebookApiKey: true },
       },
     },
   })
 
   const org = user?.organization
-  if (!org?.memedApiKey) {
+  if (!org?.whitebookApiKey) {
     return NextResponse.json({ error: 'API key não configurada' }, { status: 400 })
   }
 
   try {
-    const apiKey = decrypt(org.memedApiKey)
-    const account = await validateMemedCredentials({
-      apiKey,
-      publicKey: org.memedPublicKey ?? undefined,
-    })
+    const apiKey = decrypt(org.whitebookApiKey)
+    const account = await validateWhitebookCredentials({ apiKey })
     return NextResponse.json({ ok: true, account })
   } catch (err) {
     return NextResponse.json(

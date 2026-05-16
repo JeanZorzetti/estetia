@@ -13,13 +13,12 @@ export async function POST(req: NextRequest) {
   })
   if (!user?.organizationId) return NextResponse.json({ error: 'Org not found' }, { status: 404 })
 
-  const { enabled, apiKey, clinicId } = await req.json()
+  const { enabled, apiKey } = await req.json()
 
   const data: Record<string, unknown> = {}
-  if (typeof enabled === 'boolean') data.doctoraliaEnabled = enabled
-  if (typeof clinicId === 'string') data.doctoraliaClinicId = clinicId.trim() || null
+  if (typeof enabled === 'boolean') data.whitebookEnabled = enabled
   if (typeof apiKey === 'string' && apiKey && !apiKey.startsWith('•')) {
-    data.doctoraliaApiKey = encrypt(apiKey)
+    data.whitebookApiKey = encrypt(apiKey)
   }
 
   await prisma.organization.update({ where: { id: user.organizationId }, data })
