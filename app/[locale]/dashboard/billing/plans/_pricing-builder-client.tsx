@@ -13,6 +13,29 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Loader2 } from 'lucide-react'
 
+function validarCPF(cpf: string): boolean {
+  if (/^(\d)\1{10}$/.test(cpf)) return false
+  let sum = 0
+  for (let i = 0; i < 9; i++) sum += parseInt(cpf[i]) * (10 - i)
+  let r = 11 - (sum % 11); if (r >= 10) r = 0
+  if (r !== parseInt(cpf[9])) return false
+  sum = 0
+  for (let i = 0; i < 10; i++) sum += parseInt(cpf[i]) * (11 - i)
+  r = 11 - (sum % 11); if (r >= 10) r = 0
+  return r === parseInt(cpf[10])
+}
+
+function validarCNPJ(cnpj: string): boolean {
+  if (/^(\d)\1{13}$/.test(cnpj)) return false
+  const calc = (c: string, w: number[]) =>
+    w.reduce((s, v, i) => s + parseInt(c[i]) * v, 0)
+  const w1 = [5,4,3,2,9,8,7,6,5,4,3,2]
+  const w2 = [6,5,4,3,2,9,8,7,6,5,4,3,2]
+  const d1 = 11 - (calc(cnpj, w1) % 11); const v1 = d1 >= 10 ? 0 : d1
+  const d2 = 11 - (calc(cnpj, w2) % 11); const v2 = d2 >= 10 ? 0 : d2
+  return v1 === parseInt(cnpj[12]) && v2 === parseInt(cnpj[13])
+}
+
 interface Props {
   modules: PricingModuleData[]
   initialSlugs: string[]
@@ -89,6 +112,14 @@ export default function PricingBuilderClient({
   const handleModalConfirm = async () => {
     if (!pendingState) return
     const cleaned = cpfCnpj.replace(/\D/g, '')
+    if (cleaned.length === 11 && !validarCPF(cleaned)) {
+      toast.error('CPF inválido — verifique os dígitos')
+      return
+    }
+    if (cleaned.length === 14 && !validarCNPJ(cleaned)) {
+      toast.error('CNPJ inválido — verifique os dígitos')
+      return
+    }
     if (cleaned.length !== 11 && cleaned.length !== 14) {
       toast.error('Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido')
       return
