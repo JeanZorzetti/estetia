@@ -28,6 +28,11 @@ function getAsaasConfig(): AsaasConfig {
   return { apiKey, environment }
 }
 
+const BILLING_SUCCESS_URL =
+  process.env.NEXT_PUBLIC_APP_URL
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+    : 'https://doc-crm-estetia.7c17iw.easypanel.host/dashboard'
+
 function todayStr(): string {
   return new Date().toISOString().slice(0, 10)
 }
@@ -135,6 +140,7 @@ export async function createOrgSubscription(
     cycle: cycle === 'YEARLY' ? 'YEARLY' : 'MONTHLY',
     description: `Estetia CRM — plano modular`,
     externalReference: orgId,
+    successUrl: BILLING_SUCCESS_URL,
   })
 
   await prisma.organization.update({
@@ -230,6 +236,7 @@ export async function updateOrgSubscription(
     cycle: cycle === 'YEARLY' ? 'YEARLY' : 'MONTHLY',
     description: 'Estetia CRM — plano modular (atualizado)',
     externalReference: orgId,
+    successUrl: BILLING_SUCCESS_URL,
   })
 
   // Charge proration immediately if upgrading

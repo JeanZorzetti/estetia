@@ -105,6 +105,7 @@ export interface CreateSubscriptionInput {
   cycle: 'MONTHLY' | 'YEARLY'
   description?: string
   externalReference?: string
+  successUrl?: string
 }
 
 export async function createSubscription(
