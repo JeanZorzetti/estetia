@@ -76,6 +76,17 @@ export async function getCustomer(config: AsaasConfig, customerId: string): Prom
   return asaasRequest<AsaasCustomer>(config, `/customers/${customerId}`)
 }
 
+export async function updateCustomer(
+  config: AsaasConfig,
+  customerId: string,
+  input: Partial<CreateCustomerInput>,
+): Promise<AsaasCustomer> {
+  return asaasRequest<AsaasCustomer>(config, `/customers/${customerId}`, {
+    method: 'PUT',
+    body: JSON.stringify(input),
+  })
+}
+
 export interface AsaasSubscription {
   id: string
   customer: string

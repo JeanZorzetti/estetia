@@ -12,6 +12,8 @@ import { prisma } from '@/lib/prisma'
 import { calculatePrice } from '@/lib/pricing/calculator'
 import {
   createCustomer,
+  updateCustomer,
+  getCustomer,
   createSubscription,
   deleteSubscription,
   createPayment,
@@ -57,24 +59,32 @@ async function loadCatalog() {
   }))
 }
 
-/** Ensures a Asaas customer exists for the org. Creates if absent. */
+/** Ensures an Asaas customer exists for the org with a valid cpfCnpj. Creates or patches as needed. */
 export async function ensureCustomer(orgId: string, cpfCnpj?: string): Promise<string> {
   const org = await prisma.organization.findUniqueOrThrow({
     where: { id: orgId },
     select: { asaasCustomerId: true, name: true, cnpj: true },
   })
 
-  if (org.asaasCustomerId) return org.asaasCustomerId
-
   const resolvedCpfCnpj = cpfCnpj ?? org.cnpj ?? undefined
   if (!resolvedCpfCnpj) throw new Error('CPF ou CNPJ é obrigatório para criar a assinatura Asaas')
 
-  // Persist cpfCnpj if not already saved
-  if (cpfCnpj && !org.cnpj) {
-    await prisma.organization.update({ where: { id: orgId }, data: { cnpj: cpfCnpj } })
+  // Persist cpfCnpj if not already saved in org
+  if (resolvedCpfCnpj && !org.cnpj) {
+    await prisma.organization.update({ where: { id: orgId }, data: { cnpj: resolvedCpfCnpj } })
   }
 
   const config = getAsaasConfig()
+
+  if (org.asaasCustomerId) {
+    // Customer already exists — check if it has cpfCnpj, patch if missing
+    const existing = await getCustomer(config, org.asaasCustomerId).catch(() => null)
+    if (!existing?.cpfCnpj) {
+      await updateCustomer(config, org.asaasCustomerId, { cpfCnpj: resolvedCpfCnpj })
+    }
+    return org.asaasCustomerId
+  }
+
   const customer = await createCustomer(config, {
     name: org.name,
     cpfCnpj: resolvedCpfCnpj,
