@@ -17,6 +17,7 @@ import {
   createSubscription,
   deleteSubscription,
   getSubscriptionPayments,
+  updatePayment,
   createPayment,
   type AsaasConfig,
 } from '@/lib/integrations/asaas-client'
@@ -155,9 +156,13 @@ export async function createOrgSubscription(
     },
   })
 
-  // Fetch the first pending payment to get the credit card checkout URL
+  // Fetch first pending payment, set successUrl and return checkout link
   const payments = await getSubscriptionPayments(config, subscription.id).catch(() => [])
-  const invoiceUrl = payments[0]?.invoiceUrl ?? undefined
+  const firstPayment = payments[0]
+  if (firstPayment?.id) {
+    await updatePayment(config, firstPayment.id, { successUrl: BILLING_SUCCESS_URL }).catch(() => {})
+  }
+  const invoiceUrl = firstPayment?.invoiceUrl ?? undefined
 
   return {
     asaasSubscriptionId: subscription.id,
@@ -270,7 +275,11 @@ export async function updateOrgSubscription(
   })
 
   const payments = await getSubscriptionPayments(config, newSubscription.id).catch(() => [])
-  const invoiceUrl = payments[0]?.invoiceUrl ?? undefined
+  const firstPayment = payments[0]
+  if (firstPayment?.id) {
+    await updatePayment(config, firstPayment.id, { successUrl: BILLING_SUCCESS_URL }).catch(() => {})
+  }
+  const invoiceUrl = firstPayment?.invoiceUrl ?? undefined
 
   return {
     newSubscriptionId: newSubscription.id,

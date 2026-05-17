@@ -151,6 +151,7 @@ export interface CreatePaymentInput {
   dueDate: string // YYYY-MM-DD
   description?: string
   externalReference?: string
+  successUrl?: string
 }
 
 export async function createPayment(
@@ -159,6 +160,17 @@ export async function createPayment(
 ): Promise<AsaasPayment> {
   return asaasRequest<AsaasPayment>(config, '/payments', {
     method: 'POST',
+    body: JSON.stringify(input),
+  })
+}
+
+export async function updatePayment(
+  config: AsaasConfig,
+  paymentId: string,
+  input: Partial<CreatePaymentInput>,
+): Promise<AsaasPayment> {
+  return asaasRequest<AsaasPayment>(config, `/payments/${paymentId}`, {
+    method: 'PUT',
     body: JSON.stringify(input),
   })
 }
