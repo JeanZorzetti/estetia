@@ -66,12 +66,20 @@ async function loadCatalog() {
   }))
 }
 
-/** Ensures an Asaas customer exists for the org with a valid cpfCnpj. Creates or patches as needed. */
+/** Ensures an Asaas customer exists for the org with cpfCnpj and email. Creates or patches as needed. */
 export async function ensureCustomer(orgId: string, cpfCnpj?: string): Promise<string> {
   const org = await prisma.organization.findUniqueOrThrow({
     where: { id: orgId },
     select: { asaasCustomerId: true, name: true, cnpj: true },
   })
+
+  // Fetch owner email from the org's users
+  const owner = await prisma.user.findFirst({
+    where: { organizationId: orgId, orgRole: { in: ['OWNER', 'GERENTE'] } },
+    select: { email: true },
+    orderBy: { createdAt: 'asc' },
+  })
+  const email = owner?.email ?? undefined
 
   const resolvedCpfCnpj = cpfCnpj ?? org.cnpj ?? undefined
   if (!resolvedCpfCnpj) throw new Error('CPF ou CNPJ é obrigatório para criar a assinatura Asaas')
@@ -84,10 +92,13 @@ export async function ensureCustomer(orgId: string, cpfCnpj?: string): Promise<s
   const config = getAsaasConfig()
 
   if (org.asaasCustomerId) {
-    // Customer already exists — check if it has cpfCnpj, patch if missing
+    // Customer already exists — patch cpfCnpj and email if missing
     const existing = await getCustomer(config, org.asaasCustomerId).catch(() => null)
-    if (!existing?.cpfCnpj) {
-      await updateCustomer(config, org.asaasCustomerId, { cpfCnpj: resolvedCpfCnpj })
+    if (!existing?.cpfCnpj || !existing?.email) {
+      await updateCustomer(config, org.asaasCustomerId, {
+        ...(!existing?.cpfCnpj ? { cpfCnpj: resolvedCpfCnpj } : {}),
+        ...(!existing?.email && email ? { email } : {}),
+      })
     }
     return org.asaasCustomerId
   }
@@ -95,6 +106,7 @@ export async function ensureCustomer(orgId: string, cpfCnpj?: string): Promise<s
   const customer = await createCustomer(config, {
     name: org.name,
     cpfCnpj: resolvedCpfCnpj,
+    email,
     externalReference: orgId,
   })
 
@@ -141,7 +153,6 @@ export async function createOrgSubscription(
     cycle: cycle === 'YEARLY' ? 'YEARLY' : 'MONTHLY',
     description: `Estetia CRM — plano modular`,
     externalReference: orgId,
-    successUrl: BILLING_SUCCESS_URL,
   })
 
   await prisma.organization.update({
@@ -160,7 +171,9 @@ export async function createOrgSubscription(
   const payments = await getSubscriptionPayments(config, subscription.id).catch(() => [])
   const firstPayment = payments[0]
   if (firstPayment?.id) {
-    await updatePayment(config, firstPayment.id, { successUrl: BILLING_SUCCESS_URL }).catch(() => {})
+    await updatePayment(config, firstPayment.id, {
+      callback: { successUrl: BILLING_SUCCESS_URL, autoRedirect: true },
+    }).catch(() => {})
   }
   const invoiceUrl = firstPayment?.invoiceUrl ?? undefined
 
@@ -241,7 +254,6 @@ export async function updateOrgSubscription(
     cycle: cycle === 'YEARLY' ? 'YEARLY' : 'MONTHLY',
     description: 'Estetia CRM — plano modular (atualizado)',
     externalReference: orgId,
-    successUrl: BILLING_SUCCESS_URL,
   })
 
   // Charge proration immediately if upgrading
@@ -277,7 +289,9 @@ export async function updateOrgSubscription(
   const payments = await getSubscriptionPayments(config, newSubscription.id).catch(() => [])
   const firstPayment = payments[0]
   if (firstPayment?.id) {
-    await updatePayment(config, firstPayment.id, { successUrl: BILLING_SUCCESS_URL }).catch(() => {})
+    await updatePayment(config, firstPayment.id, {
+      callback: { successUrl: BILLING_SUCCESS_URL, autoRedirect: true },
+    }).catch(() => {})
   }
   const invoiceUrl = firstPayment?.invoiceUrl ?? undefined
 

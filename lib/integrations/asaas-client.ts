@@ -98,14 +98,13 @@ export interface AsaasSubscription {
 }
 
 export interface CreateSubscriptionInput {
-  customer: string   // customer ID
+  customer: string
   billingType: 'BOLETO' | 'CREDIT_CARD' | 'PIX'
   value: number      // total em R$ (não centavos)
   nextDueDate: string // YYYY-MM-DD
   cycle: 'MONTHLY' | 'YEARLY'
   description?: string
   externalReference?: string
-  successUrl?: string
 }
 
 export async function createSubscription(
@@ -151,7 +150,7 @@ export interface CreatePaymentInput {
   dueDate: string // YYYY-MM-DD
   description?: string
   externalReference?: string
-  successUrl?: string
+  callback?: { successUrl: string; autoRedirect?: boolean }
 }
 
 export async function createPayment(
