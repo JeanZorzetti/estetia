@@ -304,20 +304,9 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
 
       {/* Header / Logo */}
       <div className="flex h-16 items-center px-3 border-b border-white/5 flex-shrink-0">
-        <Link href="/dashboard" className="flex items-center gap-3 group">
-          <div className="relative w-8 h-8 flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
-            <Logo variant="icon" priority width={32} height={32} className="object-contain" />
-          </div>
-          <div
-            className={cn(
-              'flex flex-col whitespace-pre transition-opacity duration-150',
-              open ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
-            )}
-          >
-            <span className="text-sm font-bold text-[#0a1f3d] dark:text-[#c5a059]">
-              Estetia
-            </span>
-            <span className="text-[10px] text-muted-foreground tracking-wider">CRM</span>
+        <Link href="/dashboard" className="flex items-center group">
+          <div className="relative w-10 h-10 flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+            <Logo variant="icon" priority width={40} height={40} className="object-contain" />
           </div>
         </Link>
       </div>
