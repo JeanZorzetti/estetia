@@ -30,6 +30,7 @@ export default async function PlansPage() {
         extraUsers: true,
         extraRooms: true,
         extraProfs: true,
+        cnpj: true,
       },
     }),
     prisma.pricingModule.findMany({
@@ -131,6 +132,7 @@ export default async function PlansPage() {
           activeModules={activeModules}
           currentTotalCents={currentTotalCents ?? undefined}
           hasSubscription={hasSubscription}
+          orgCnpj={org?.cnpj ?? null}
         />
       </div>
 

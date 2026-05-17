@@ -14,14 +14,14 @@ export async function POST(req: Request) {
   if (!user?.organizationId) return NextResponse.json({ error: 'Org not found' }, { status: 400 })
   if (user.orgRole === 'MEMBER') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  let body: { modules: string[]; cycle: 'MONTHLY' | 'YEARLY' }
+  let body: { modules: string[]; cycle: 'MONTHLY' | 'YEARLY'; cpfCnpj?: string }
   try {
     body = await req.json()
   } catch {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
   }
 
-  const { modules, cycle = 'MONTHLY' } = body
+  const { modules, cycle = 'MONTHLY', cpfCnpj } = body
   if (!Array.isArray(modules) || modules.length === 0) {
     return NextResponse.json({ error: 'modules é obrigatório' }, { status: 400 })
   }
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         monthlyTotal: result.monthlyTotal,
       })
     } else {
-      const result = await createOrgSubscription(user.organizationId, modules, cycle)
+      const result = await createOrgSubscription(user.organizationId, modules, cycle, cpfCnpj)
       return NextResponse.json({
         ok: true,
         action: 'created',

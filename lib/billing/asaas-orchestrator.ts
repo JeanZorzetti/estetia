@@ -58,7 +58,7 @@ async function loadCatalog() {
 }
 
 /** Ensures a Asaas customer exists for the org. Creates if absent. */
-export async function ensureCustomer(orgId: string): Promise<string> {
+export async function ensureCustomer(orgId: string, cpfCnpj?: string): Promise<string> {
   const org = await prisma.organization.findUniqueOrThrow({
     where: { id: orgId },
     select: { asaasCustomerId: true, name: true, cnpj: true },
@@ -66,10 +66,18 @@ export async function ensureCustomer(orgId: string): Promise<string> {
 
   if (org.asaasCustomerId) return org.asaasCustomerId
 
+  const resolvedCpfCnpj = cpfCnpj ?? org.cnpj ?? undefined
+  if (!resolvedCpfCnpj) throw new Error('CPF ou CNPJ é obrigatório para criar a assinatura Asaas')
+
+  // Persist cpfCnpj if not already saved
+  if (cpfCnpj && !org.cnpj) {
+    await prisma.organization.update({ where: { id: orgId }, data: { cnpj: cpfCnpj } })
+  }
+
   const config = getAsaasConfig()
   const customer = await createCustomer(config, {
     name: org.name,
-    cpfCnpj: org.cnpj ?? undefined,
+    cpfCnpj: resolvedCpfCnpj,
     externalReference: orgId,
   })
 
@@ -92,9 +100,10 @@ export async function createOrgSubscription(
   orgId: string,
   modules: string[],
   cycle: 'MONTHLY' | 'YEARLY',
+  cpfCnpj?: string,
 ): Promise<SubscribeResult> {
   const [customerId, catalog] = await Promise.all([
-    ensureCustomer(orgId),
+    ensureCustomer(orgId, cpfCnpj),
     loadCatalog(),
   ])
 
