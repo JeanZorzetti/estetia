@@ -176,7 +176,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('twilio-voice.svg', '#F22F46', 'Twilio'),
     cardBgColor: '#F22F46',
     href: '/dashboard/settings/integrations/twilio-voice',
-    status: 'soon',
   },
   {
     id: 'ringcentral',
@@ -186,7 +185,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('ringcentral.svg', '#FF6B00', 'RingCentral'),
     cardBgColor: '#FF6B00',
     href: '/dashboard/settings/integrations/ringcentral',
-    status: 'soon',
   },
   {
     id: 'callgear',
@@ -196,7 +194,6 @@ export const INTEGRATIONS: IntegrationMeta[] = [
     icon: image('callgear.svg', '#3B82F6', 'CallGear'),
     cardBgColor: '#3B82F6',
     href: '/dashboard/settings/integrations/callgear',
-    status: 'soon',
   },
 
   // === CALENDÁRIOS (3) ===
