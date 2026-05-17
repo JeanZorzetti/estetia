@@ -121,6 +121,17 @@ export async function deleteSubscription(config: AsaasConfig, subscriptionId: st
   await asaasRequest<unknown>(config, `/subscriptions/${subscriptionId}`, { method: 'DELETE' })
 }
 
+export async function getSubscriptionPayments(
+  config: AsaasConfig,
+  subscriptionId: string,
+): Promise<AsaasPayment[]> {
+  const res = await asaasRequest<{ data: AsaasPayment[] }>(
+    config,
+    `/subscriptions/${subscriptionId}/payments`,
+  )
+  return res.data ?? []
+}
+
 export interface AsaasPayment {
   id: string
   customer: string

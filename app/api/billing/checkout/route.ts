@@ -39,6 +39,7 @@ export async function POST(req: Request) {
         action: 'updated',
         newSubscriptionId: result.newSubscriptionId,
         prorationR$: result.prorationR$,
+        invoiceUrl: result.invoiceUrl,
         monthlyTotal: result.monthlyTotal,
       })
     } else {
@@ -47,6 +48,7 @@ export async function POST(req: Request) {
         ok: true,
         action: 'created',
         asaasSubscriptionId: result.asaasSubscriptionId,
+        invoiceUrl: result.invoiceUrl,
         monthlyTotal: result.monthlyTotal,
       })
     }

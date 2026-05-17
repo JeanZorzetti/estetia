@@ -16,6 +16,7 @@ import {
   getCustomer,
   createSubscription,
   deleteSubscription,
+  getSubscriptionPayments,
   createPayment,
   type AsaasConfig,
 } from '@/lib/integrations/asaas-client'
@@ -148,8 +149,13 @@ export async function createOrgSubscription(
     },
   })
 
+  // Fetch the first pending payment to get the credit card checkout URL
+  const payments = await getSubscriptionPayments(config, subscription.id).catch(() => [])
+  const invoiceUrl = payments[0]?.invoiceUrl ?? undefined
+
   return {
     asaasSubscriptionId: subscription.id,
+    invoiceUrl,
     monthlyTotal: monthlyR$,
   }
 }
@@ -158,6 +164,7 @@ export interface UpdateResult {
   newSubscriptionId: string
   prorationR$: number
   prorationPaymentId?: string
+  invoiceUrl?: string
   monthlyTotal: number
 }
 
@@ -245,10 +252,14 @@ export async function updateOrgSubscription(
     },
   })
 
+  const payments = await getSubscriptionPayments(config, newSubscription.id).catch(() => [])
+  const invoiceUrl = payments[0]?.invoiceUrl ?? undefined
+
   return {
     newSubscriptionId: newSubscription.id,
     prorationR$,
     prorationPaymentId,
+    invoiceUrl,
     monthlyTotal: newMonthlyR$,
   }
 }

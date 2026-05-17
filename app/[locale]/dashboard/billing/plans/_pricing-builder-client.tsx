@@ -83,6 +83,12 @@ export default function PricingBuilderClient({
 
       setPendingState(null)
 
+      if (data.invoiceUrl) {
+        toast.success('Redirecionando para o pagamento...')
+        setTimeout(() => { window.location.href = data.invoiceUrl }, 800)
+        return
+      }
+
       if (data.action === 'updated') {
         const msg = data.prorationR$ > 0
           ? `Plano atualizado! Cobrança proporcional de ${formatBRL(data.prorationR$ * 100)} gerada para hoje.`
