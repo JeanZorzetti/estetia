@@ -2,6 +2,7 @@
 
 import { Card } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Badge } from '@/components/ui/badge'
 import { Check } from 'lucide-react'
 import { resolveIcon } from './icon-resolver'
 import { formatBRL } from '@/lib/pricing/calculator'
@@ -16,12 +17,13 @@ interface ModuleCardProps {
   iconLucide: string
   selected: boolean
   required?: boolean
+  isActive?: boolean  // already contracted (dashboard mode)
   onToggle: () => void
 }
 
 export function ModuleCheckboxCard({
   slug, nome, descricao, features, priceCents, iconLucide,
-  selected, required, onToggle,
+  selected, required, isActive, onToggle,
 }: ModuleCardProps) {
   const Icon = resolveIcon(iconLucide)
 
@@ -45,7 +47,14 @@ export function ModuleCheckboxCard({
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
-              <h3 className="font-semibold text-sm tracking-tight leading-snug">{nome}</h3>
+              <div className="flex items-center gap-2 min-w-0">
+                <h3 className="font-semibold text-sm tracking-tight leading-snug truncate">{nome}</h3>
+                {isActive && (
+                  <Badge variant="secondary" className="text-xs px-1.5 py-0 text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 flex-shrink-0">
+                    Ativo
+                  </Badge>
+                )}
+              </div>
               <Checkbox
                 checked={selected || required}
                 disabled={required}

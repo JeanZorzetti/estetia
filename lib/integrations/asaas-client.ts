@@ -45,3 +45,106 @@ export interface AsaasAccountInfo {
 export async function getMyAccount(config: AsaasConfig): Promise<AsaasAccountInfo> {
   return asaasRequest<AsaasAccountInfo>(config, '/myAccount')
 }
+
+// ─── Billing Modular ──────────────────────────────────────────────────────────
+
+export interface AsaasCustomer {
+  id: string
+  name: string
+  email?: string
+  cpfCnpj?: string
+}
+
+export interface CreateCustomerInput {
+  name: string
+  email?: string
+  cpfCnpj?: string
+  externalReference?: string // orgId
+}
+
+export async function createCustomer(
+  config: AsaasConfig,
+  input: CreateCustomerInput,
+): Promise<AsaasCustomer> {
+  return asaasRequest<AsaasCustomer>(config, '/customers', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  })
+}
+
+export async function getCustomer(config: AsaasConfig, customerId: string): Promise<AsaasCustomer> {
+  return asaasRequest<AsaasCustomer>(config, `/customers/${customerId}`)
+}
+
+export interface AsaasSubscription {
+  id: string
+  customer: string
+  billingType: string
+  value: number
+  nextDueDate: string
+  cycle: string
+  status: string
+}
+
+export interface CreateSubscriptionInput {
+  customer: string   // customer ID
+  billingType: 'BOLETO' | 'CREDIT_CARD' | 'PIX'
+  value: number      // total em R$ (não centavos)
+  nextDueDate: string // YYYY-MM-DD
+  cycle: 'MONTHLY' | 'YEARLY'
+  description?: string
+  externalReference?: string
+}
+
+export async function createSubscription(
+  config: AsaasConfig,
+  input: CreateSubscriptionInput,
+): Promise<AsaasSubscription> {
+  return asaasRequest<AsaasSubscription>(config, '/subscriptions', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  })
+}
+
+export async function deleteSubscription(config: AsaasConfig, subscriptionId: string): Promise<void> {
+  await asaasRequest<unknown>(config, `/subscriptions/${subscriptionId}`, { method: 'DELETE' })
+}
+
+export interface AsaasPayment {
+  id: string
+  customer: string
+  value: number
+  netValue?: number
+  status: string
+  invoiceUrl?: string
+  bankSlipUrl?: string
+  pixQrCodeUrl?: string
+}
+
+export interface CreatePaymentInput {
+  customer: string
+  billingType: 'BOLETO' | 'CREDIT_CARD' | 'PIX'
+  value: number
+  dueDate: string // YYYY-MM-DD
+  description?: string
+  externalReference?: string
+}
+
+export async function createPayment(
+  config: AsaasConfig,
+  input: CreatePaymentInput,
+): Promise<AsaasPayment> {
+  return asaasRequest<AsaasPayment>(config, '/payments', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  })
+}
+
+export async function getPaymentInvoiceUrl(config: AsaasConfig, paymentId: string): Promise<string | null> {
+  try {
+    const payment = await asaasRequest<AsaasPayment>(config, `/payments/${paymentId}`)
+    return payment.invoiceUrl ?? payment.bankSlipUrl ?? payment.pixQrCodeUrl ?? null
+  } catch {
+    return null
+  }
+}

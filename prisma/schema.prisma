@@ -192,6 +192,15 @@ model Organization {
   asaasApiKey      String? @db.Text // Encrypted
   asaasEnvironment String? @default("sandbox") // "sandbox" | "production"
 
+  // Asaas Billing Modular (SaaS subscription)
+  asaasCustomerId         String? // Customer ID criado no Asaas para billing SaaS
+  asaasSubscriptionId     String? // Subscription ID ativa no Asaas
+  billingCycle            String?  @default("MONTHLY") // "MONTHLY" | "YEARLY"
+  billingNextDueDate      DateTime? // Próxima data de vencimento
+  billingActiveModules    Json?    // ["base","prontuario","whatsapp_evolution","ia_pro"]
+  billingMonthlyTotal     Decimal? @db.Decimal(10,2) // Total mensal em R$
+  billingYearlyTotal      Decimal? @db.Decimal(10,2) // Total anual em R$
+
   // MercadoPago Checkout (cobrança das clínicas para pacientes — separado da assinatura SaaS)
   mpPaymentEnabled     Boolean @default(false)
   mpPaymentAccessToken String? @db.Text // Encrypted

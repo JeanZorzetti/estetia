@@ -18,13 +18,19 @@ interface Props {
   onCta?: () => void
   ctaDisabled?: boolean
   showAnnualToggle?: boolean
+  mode?: 'signup' | 'dashboard'
+  currentTotalCents?: number  // what the org currently pays (dashboard mode)
 }
 
 export function PriceSidebar({
   result, loading, billingPeriod, onBillingChange,
-  ctaLabel = 'Começar 7 dias grátis',
+  ctaLabel,
   ctaHref, onCta, ctaDisabled, showAnnualToggle = true,
+  mode = 'signup', currentTotalCents,
 }: Props) {
+  const resolvedCtaLabel = ctaLabel ?? (mode === 'dashboard' ? 'Atualizar assinatura' : 'Começar 7 dias grátis')
+  const newTotal = result?.totalCents ?? 0
+  const diff = currentTotalCents != null ? newTotal - currentTotalCents : null
   return (
     <Card className="border-border/60 sticky top-6">
       <CardContent className="p-6 flex flex-col gap-5">
@@ -42,16 +48,29 @@ export function PriceSidebar({
         )}
 
         <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Seu Estetia</p>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
+            {mode === 'dashboard' ? 'Novo total' : 'Seu Estetia'}
+          </p>
           {loading ? (
             <div className="h-12 w-32 bg-muted animate-pulse rounded" />
           ) : (
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold tracking-tighter tabular-nums">
-                {formatBRL(result?.totalCents ?? 0)}
+                {formatBRL(newTotal)}
               </span>
               <span className="text-sm text-muted-foreground">/mês</span>
             </div>
+          )}
+          {mode === 'dashboard' && currentTotalCents != null && !loading && diff !== null && diff !== 0 && (
+            <p className={cn(
+              'text-xs mt-1 font-medium',
+              diff > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400',
+            )}>
+              {diff > 0 ? `+${formatBRL(diff)} vs. plano atual (${formatBRL(currentTotalCents)}/mês)` : `${formatBRL(diff)} vs. plano atual (${formatBRL(currentTotalCents)}/mês)`}
+            </p>
+          )}
+          {mode === 'dashboard' && currentTotalCents != null && !loading && diff === 0 && (
+            <p className="text-xs mt-1 text-muted-foreground">Mesmo valor do plano atual</p>
           )}
           {billingPeriod === 'ANNUAL' && result && result.annualDiscountCents > 0 && (
             <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">
@@ -109,13 +128,13 @@ export function PriceSidebar({
           <a href={ctaHref} className="w-full">
             <Button className="w-full" disabled={ctaDisabled} size="lg">
               <Sparkles className="w-4 h-4 mr-2" />
-              {ctaLabel}
+              {resolvedCtaLabel}
             </Button>
           </a>
         ) : (
           <Button className="w-full" onClick={onCta} disabled={ctaDisabled} size="lg">
             <Sparkles className="w-4 h-4 mr-2" />
-            {ctaLabel}
+            {resolvedCtaLabel}
           </Button>
         )}
       </CardContent>

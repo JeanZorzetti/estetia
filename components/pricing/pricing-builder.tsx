@@ -17,6 +17,9 @@ interface Props {
   ctaHref?: string
   onCta?: (state: BuilderState) => void
   ctaDisabled?: boolean
+  mode?: 'signup' | 'dashboard'
+  activeModules?: string[]       // currently contracted (dashboard mode) — shows "Ativo" badge
+  currentTotalCents?: number     // current monthly total in cents (dashboard mode)
 }
 
 export interface BuilderState {
@@ -51,6 +54,9 @@ export function PricingBuilder({
   ctaHref,
   onCta,
   ctaDisabled,
+  mode = 'signup',
+  activeModules,
+  currentTotalCents,
 }: Props) {
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(initialSelectedSlugs)
   const [extraUsers, setExtraUsers] = useState(initialExtras.users)
@@ -142,6 +148,7 @@ export function PricingBuilder({
                   priceCents={m.priceCents}
                   iconLucide={m.iconLucide}
                   selected={selectedSlugs.includes(m.slug)}
+                  isActive={activeModules?.includes(m.slug)}
                   onToggle={() => toggle(m.slug)}
                 />
               ))}
@@ -178,6 +185,7 @@ export function PricingBuilder({
                 priceCents={n8nModule.priceCents}
                 iconLucide={n8nModule.iconLucide}
                 selected={selectedSlugs.includes(n8nModule.slug)}
+                isActive={activeModules?.includes(n8nModule.slug)}
                 onToggle={() => toggle(n8nModule.slug)}
               />
             </div>
@@ -215,6 +223,8 @@ export function PricingBuilder({
           ctaHref={ctaHref}
           onCta={onCta ? handleCta : undefined}
           ctaDisabled={ctaDisabled}
+          mode={mode}
+          currentTotalCents={currentTotalCents}
         />
       </div>
     </div>

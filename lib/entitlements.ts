@@ -527,6 +527,62 @@ export function getQuota(tier: SubscriptionTier, quota: string): number {
   return typeof value === 'number' ? value : 0
 }
 
+// ─── Modular Billing Entitlements ──────────────────────────────────────────────
+
+export interface ModularEntitlements {
+  // Clinical
+  canUseProntuario: boolean
+  canUseProcedimentos: boolean
+  canUseGaleria: boolean
+  canUseRecall: boolean
+  // Communication
+  canUseWhatsAppEvolution: boolean
+  canUseWhatsAppWaba: boolean
+  canUseMarketing: boolean
+  canUseInstagramBot: boolean
+  // Management
+  canUseTiss: boolean
+  canUseFinanceiro: boolean
+  canUseOmie: boolean
+  canUseAnalyticsAvancado: boolean
+  // IA
+  aiAgentsLimit: number   // 0 = disabled
+  aiActionsLimit: number  // 0 = disabled
+  canUseN8n: boolean
+  // Extras
+  maxExtraUsers: number
+  maxExtraRooms: number
+  maxExtraProfs: number
+}
+
+/**
+ * Maps active billing module slugs → feature entitlements.
+ * Used when billingActiveModules is set (modular billing path).
+ */
+export function getEntitlementsFromModules(modules: string[]): ModularEntitlements {
+  const has = (slug: string) => modules.includes(slug)
+  return {
+    canUseProntuario: has('prontuario'),
+    canUseProcedimentos: has('procedimentos'),
+    canUseGaleria: has('galeria'),
+    canUseRecall: has('recall'),
+    canUseWhatsAppEvolution: has('whatsapp_evolution'),
+    canUseWhatsAppWaba: has('whatsapp_waba'),
+    canUseMarketing: has('marketing'),
+    canUseInstagramBot: has('instagram_bot'),
+    canUseTiss: has('tiss'),
+    canUseFinanceiro: has('financeiro'),
+    canUseOmie: has('omie'),
+    canUseAnalyticsAvancado: has('analytics_avancado'),
+    aiAgentsLimit: has('ia_scale') ? 10 : has('ia_pro') ? 3 : has('ia_lite') ? 1 : 0,
+    aiActionsLimit: has('ia_scale') ? 5000 : has('ia_pro') ? 1000 : has('ia_lite') ? 200 : 0,
+    canUseN8n: has('n8n'),
+    maxExtraUsers: 50,
+    maxExtraRooms: 20,
+    maxExtraProfs: 20,
+  }
+}
+
 /**
  * Retorna o tier mínimo necessário para uma feature
  */

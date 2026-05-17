@@ -1,314 +1,207 @@
-'use client'
-
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
+import { redirect } from 'next/navigation'
+import { getSession } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+import { ScenarioCard } from '@/components/pricing/scenario-card'
+import { CompetitorComparison } from '@/components/pricing/competitor-comparison'
+import { FaqPricing } from '@/components/pricing/faq-pricing'
 import { Badge } from '@/components/ui/badge'
-import { Check, X, Loader2, Sparkles, Zap, Building2, Crown, Bot } from 'lucide-react'
-import { toast } from 'sonner'
-import { PLAN_LIMITS, PLAN_PRICING, PLAN_PRICING_ANNUAL, PLAN_NAMES, PLAN_DESCRIPTIONS } from '@/lib/entitlements'
-import { SubscriptionTier } from '@prisma/client'
+import { Sparkles, ShieldCheck, RefreshCw, Calendar } from 'lucide-react'
+import PricingBuilderClient from './_pricing-builder-client'
 
-interface PlanFeature {
-  name: string
-  free: string | boolean
-  starter: string | boolean
-  pro: string | boolean
-  business: string | boolean
-}
+export default async function PlansPage() {
+  const session = await getSession()
+  if (!session?.user?.email) redirect('/login')
 
-const features: PlanFeature[] = [
-  { name: 'Contatos', free: '250', starter: '1.000', pro: '5.000', business: 'Ilimitado' },
-  { name: 'Negócios (Deals)', free: '100', starter: '500', pro: '2.500', business: 'Ilimitado' },
-  { name: 'Pipelines', free: '1', starter: '5', pro: '15', business: '50' },
-  { name: 'Usuários', free: '2', starter: '5', pro: '15', business: '50' },
-  { name: 'WhatsApp Oficial (Meta)', free: false, starter: false, pro: false, business: 'API Oficial Meta' },
-  { name: 'Automações de Email', free: false, starter: '5', pro: '15', business: '50' },
-  { name: 'Integrações', free: false, starter: 'Básicas', pro: 'Avançadas', business: 'Todas' },
-  { name: 'Analytics Avançado', free: false, starter: false, pro: true, business: true },
-  { name: 'Relatórios Customizados', free: false, starter: false, pro: false, business: true },
-  { name: 'Distribuição Round-Robin', free: false, starter: false, pro: false, business: true },
-  { name: 'Suporte (Tickets + Chat)', free: 'Tickets + WhatsApp*', starter: 'Tickets + WhatsApp*', pro: 'Tickets + WhatsApp', business: 'Tickets + WhatsApp' },
-  { name: 'Agentes IA (Sofia)', free: false, starter: '1 agente', pro: '3 agentes', business: '5 agentes' },
-  { name: 'Ações autônomas/mês', free: false, starter: '200', pro: '1.000', business: '3.000' },
-  { name: 'Aprovação de ações IA', free: false, starter: true, pro: true, business: true },
-]
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { organizationId: true },
+  })
+  if (!user?.organizationId) redirect('/login')
 
-export default function PlansPage() {
-  const router = useRouter()
-  const [currentTier, setCurrentTier] = useState<SubscriptionTier | null>(null)
-  const [customPricing, setCustomPricing] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [processing, setProcessing] = useState<SubscriptionTier | null>(null)
-  const [isAnnual, setIsAnnual] = useState(false)
+  const [org, modules] = await Promise.all([
+    prisma.organization.findUnique({
+      where: { id: user.organizationId },
+      select: {
+        billingActiveModules: true,
+        billingCycle: true,
+        billingMonthlyTotal: true,
+        billingNextDueDate: true,
+        asaasSubscriptionId: true,
+        extraUsers: true,
+        extraRooms: true,
+        extraProfs: true,
+      },
+    }),
+    prisma.pricingModule.findMany({
+      where: { ativo: true },
+      orderBy: [{ category: 'asc' }, { ordem: 'asc' }],
+    }),
+  ])
 
-  useEffect(() => {
-    fetchCurrentPlan()
-  }, [])
+  const activeModules = (org?.billingActiveModules as string[] | null) ?? []
+  const currentTotalCents = org?.billingMonthlyTotal
+    ? Math.round(Number(org.billingMonthlyTotal) * 100)
+    : null
+  const billingCycle = (org?.billingCycle ?? 'MONTHLY') as 'MONTHLY' | 'YEARLY'
+  const hasSubscription = !!org?.asaasSubscriptionId
 
-  const fetchCurrentPlan = async () => {
-    try {
-      const res = await fetch('/api/entitlements')
-      if (res.ok) {
-        const data = await res.json()
-        setCurrentTier(data.tier)
-        setCustomPricing(data.customPricing ?? null)
-      }
-    } catch (error) {
-      console.error('Error fetching plan:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const modulesTyped = modules.map(m => ({
+    slug: m.slug,
+    category: m.category as 'BASE' | 'CLINICO' | 'COMUNICACAO' | 'GESTAO' | 'IA' | 'ADDON',
+    nome: m.nome,
+    descricao: m.descricao,
+    features: m.features as string[],
+    priceCents: m.priceCents,
+    iconLucide: m.iconLucide,
+    exclusiveGroup: m.exclusiveGroup,
+    required: m.required,
+    ordem: m.ordem,
+  }))
 
-  const handleUpgrade = async (tier: SubscriptionTier) => {
-    if (tier === currentTier || tier === SubscriptionTier.FREE) return
+  const initialSlugs = activeModules.length > 0
+    ? activeModules
+    : ['base', 'prontuario', 'whatsapp_evolution']
 
-    setProcessing(tier)
-
-    try {
-      const res = await fetch('/api/mercadopago/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: tier, billingPeriod: isAnnual ? 'ANNUAL' : 'MONTHLY' }),
-      })
-
-      const data = await res.json()
-
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl
-      } else {
-        toast.error(data.error || 'Erro ao iniciar checkout')
-      }
-    } catch (error) {
-      toast.error('Erro ao processar upgrade')
-    } finally {
-      setProcessing(null)
-    }
-  }
-
-  const getPlanIcon = (tier: SubscriptionTier) => {
-    switch (tier) {
-      case SubscriptionTier.FREE:
-        return <Sparkles className="h-5 w-5" />
-      case SubscriptionTier.STARTER:
-        return <Zap className="h-5 w-5" />
-      case SubscriptionTier.PRO:
-        return <Crown className="h-5 w-5" />
-      case SubscriptionTier.BUSINESS:
-        return <Building2 className="h-5 w-5" />
-    }
-  }
-
-  const TIER_ORDER: Record<SubscriptionTier, number> = {
-    [SubscriptionTier.FREE]: 0,
-    [SubscriptionTier.STARTER]: 1,
-    [SubscriptionTier.PRO]: 2,
-    [SubscriptionTier.BUSINESS]: 3,
-  }
-
-  const getButtonText = (tier: SubscriptionTier) => {
-    if (processing === tier) return <Loader2 className="h-4 w-4 animate-spin" />
-    if (tier === currentTier) return 'Plano Atual'
-    if (tier === SubscriptionTier.FREE) return 'Plano Gratuito'
-    if (currentTier && TIER_ORDER[tier] < TIER_ORDER[currentTier]) return 'Fazer Downgrade'
-    return 'Fazer Upgrade'
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    )
+  const initialExtras = {
+    users: org?.extraUsers ?? 0,
+    rooms: org?.extraRooms ?? 0,
+    profs: org?.extraProfs ?? 0,
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Planos e Preços</h1>
-        <p className="text-muted-foreground">
-          Escolha o plano ideal para o seu negócio. Faça upgrade ou downgrade a qualquer momento.
+    <div className="min-h-screen bg-background">
+      {/* HERO */}
+      <div className="border-b border-border/40 bg-gradient-to-b from-muted/30 to-background">
+        <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col items-center text-center gap-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">
+            <Sparkles className="w-3.5 h-3.5" />
+            {hasSubscription ? 'Gerencie sua assinatura' : 'Monte seu plano modular'}
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter max-w-3xl">
+            {hasSubscription ? (
+              <>Sua assinatura.<br /><span className="text-primary">Atualize a qualquer momento.</span></>
+            ) : (
+              <>Monte o seu Estetia.<br /><span className="text-primary">Pague só pelo que usar.</span></>
+            )}
+          </h1>
+          <p className="text-base text-muted-foreground max-w-xl leading-relaxed">
+            {hasSubscription
+              ? 'Adicione ou remova módulos abaixo. Mudanças entram em vigor imediatamente com cobrança proporcional.'
+              : 'Marque os módulos que sua clínica precisa, ajuste capacidade e veja o total atualizar em tempo real.'}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
+            {hasSubscription ? (
+              <>
+                {org?.billingNextDueDate && (
+                  <span className="inline-flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4" />
+                    Próximo vencimento: {new Date(org.billingNextDueDate).toLocaleDateString('pt-BR')}
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-1.5">
+                  <RefreshCw className="w-4 h-4" />
+                  Ciclo {billingCycle === 'YEARLY' ? 'anual' : 'mensal'}
+                </span>
+                {currentTotalCents != null && (
+                  <Badge variant="secondary" className="text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-400">
+                    Plano atual: R$ {(currentTotalCents / 100).toFixed(2)}/mês
+                  </Badge>
+                )}
+              </>
+            ) : (
+              <>
+                <span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-4 h-4" /> 7 dias grátis</span>
+                <span>·</span>
+                <span>Sem fidelidade</span>
+                <span>·</span>
+                <span>Cancele a qualquer momento</span>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* BUILDER */}
+      <div className="max-w-6xl mx-auto px-6 py-14">
+        <PricingBuilderClient
+          modules={modulesTyped}
+          initialSlugs={initialSlugs}
+          initialExtras={initialExtras}
+          initialBilling={billingCycle}
+          activeModules={activeModules}
+          currentTotalCents={currentTotalCents ?? undefined}
+          hasSubscription={hasSubscription}
+        />
+      </div>
+
+      {/* SCENARIOS */}
+      <div className="border-t border-border/40 bg-muted/20">
+        <div className="max-w-6xl mx-auto px-6 py-14">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold tracking-tighter mb-2">Exemplos de combinações reais</h2>
+            <p className="text-sm text-muted-foreground">Veja o quanto outras clínicas pagam por mês com o Estetia</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <ScenarioCard
+              icon="LayoutDashboard"
+              title="Clínica solo"
+              subtitle="Esteticista recém-aberta — 1 profissional, sem convênios"
+              modules={['Plataforma Base', 'Prontuário', 'Procedimentos', 'WhatsApp Evolution']}
+              totalCents={16600}
+            />
+            <ScenarioCard
+              icon="Sparkles"
+              title="Clínica média"
+              subtitle="3 profissionais, foco em harmonização e marketing forte"
+              modules={[
+                'Base + Prontuário + Procedimentos',
+                'Fotos + Pacotes + Recall',
+                'WhatsApp + Marketing Clínico',
+                'Financeiro',
+                '+ 2 profissionais e 1 usuário',
+              ]}
+              totalCents={36200}
+              highlight
+            />
+            <ScenarioCard
+              icon="Brain"
+              title="Dermatologia com convênios"
+              subtitle="Atende particular + convênios, com IA e analytics"
+              modules={[
+                'Base + Clínico completo',
+                'WhatsApp Cloud API + Marketing',
+                'TISS + Omie ERP',
+                'Estetia IA Pro + Analytics',
+                '+ 5 profissionais',
+              ]}
+              totalCents={66000}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* COMPARISON */}
+      <div className="max-w-6xl mx-auto px-6 py-14">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold tracking-tighter mb-2">Por que o Estetia é diferente</h2>
+          <p className="text-sm text-muted-foreground">Comparativo com os principais sistemas de gestão de clínicas no Brasil</p>
+        </div>
+        <CompetitorComparison />
+        <p className="text-xs text-muted-foreground text-center mt-4">
+          Comparativo baseado em informações públicas dos sites dos concorrentes em maio/2026. Sujeito a alterações.
         </p>
       </div>
 
-      {/* Referral Banner */}
-      <Card className="border-primary/20 bg-primary/5">
-        <CardContent className="flex items-center justify-between gap-4 py-4 flex-wrap">
-          <div className="flex items-center gap-3">
-            <Zap className="w-6 h-6 text-primary shrink-0" />
-            <div>
-              <p className="font-semibold">Indique e ganhe até 100% de desconto recorrente</p>
-              <p className="text-sm text-muted-foreground">
-                Cada indicação ativa = 15% off na sua mensalidade. 7 indicações = mensalidade zerada.
-              </p>
-            </div>
+      {/* FAQ */}
+      <div className="border-t border-border/40 bg-muted/20">
+        <div className="max-w-3xl mx-auto px-6 py-14">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold tracking-tighter mb-2">Perguntas frequentes</h2>
+            <p className="text-sm text-muted-foreground">Tudo que você precisa saber antes de começar</p>
           </div>
-          <Button asChild variant="outline" className="shrink-0">
-            <Link href="/dashboard/billing">
-              Ver programa de indicação
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Toggle Mensal/Anual */}
-      <div className="flex items-center justify-center gap-3">
-        <span className={`text-sm font-medium ${!isAnnual ? 'text-foreground' : 'text-muted-foreground'}`}>
-          Mensal
-        </span>
-        <button
-          onClick={() => setIsAnnual(!isAnnual)}
-          className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors ${
-            isAnnual ? 'bg-primary' : 'bg-muted'
-          }`}
-          aria-label="Alternar entre mensal e anual"
-        >
-          <span
-            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${
-              isAnnual ? 'translate-x-8' : 'translate-x-1'
-            }`}
-          />
-        </button>
-        <span className={`text-sm font-medium ${isAnnual ? 'text-foreground' : 'text-muted-foreground'}`}>
-          Anual
-        </span>
-        {isAnnual && (
-          <Badge variant="secondary" className="text-green-600 bg-green-50">20% OFF</Badge>
-        )}
+          <FaqPricing />
+        </div>
       </div>
-
-      {/* Cards dos Planos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {Object.values(SubscriptionTier).map((tier) => {
-          const isProWithCustom = tier === SubscriptionTier.PRO && customPricing !== null
-          const monthlyPrice = isProWithCustom ? customPricing! : PLAN_PRICING[tier]
-          const annualMonthly = isProWithCustom ? customPricing! * 0.8 : PLAN_PRICING_ANNUAL[tier] / 12
-          const displayPrice = isAnnual ? annualMonthly : monthlyPrice
-
-          return (
-            <Card
-              key={tier}
-              className={`relative ${
-                currentTier === tier
-                  ? 'border-primary ring-2 ring-primary/20'
-                  : ''
-              }`}
-            >
-              {currentTier === tier && (
-                <Badge className="absolute -top-2 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground">
-                  Atual
-                </Badge>
-              )}
-
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                  {getPlanIcon(tier)}
-                </div>
-                <CardTitle className="text-lg">{PLAN_NAMES[tier]}</CardTitle>
-                <CardDescription>{PLAN_DESCRIPTIONS[tier]}</CardDescription>
-              </CardHeader>
-
-              <CardContent className="pb-3">
-                <div className="flex items-baseline gap-1">
-                  {isProWithCustom && !isAnnual && (
-                    <span className="text-lg line-through text-muted-foreground mr-1">
-                      R$ {PLAN_PRICING[tier].toFixed(2)}
-                    </span>
-                  )}
-                  <span className="text-3xl font-bold">
-                    R$ {displayPrice.toFixed(2)}
-                  </span>
-                  {tier !== SubscriptionTier.FREE && (
-                    <span className="text-muted-foreground">/mês</span>
-                  )}
-                </div>
-                {isProWithCustom && !isAnnual && (
-                  <p className="text-xs text-green-500 font-medium mt-1">
-                    Preço especial aplicado
-                  </p>
-                )}
-                {isAnnual && tier !== SubscriptionTier.FREE && (
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Cobrado R$ {(isProWithCustom ? customPricing! * 0.8 * 12 : PLAN_PRICING_ANNUAL[tier]).toFixed(2)}/ano
-                  </p>
-                )}
-              </CardContent>
-
-              <CardFooter>
-                <Button
-                  className="w-full"
-                  variant={currentTier === tier ? 'secondary' : 'default'}
-                  disabled={processing !== null || currentTier === tier || tier === SubscriptionTier.FREE}
-                  onClick={() => handleUpgrade(tier)}
-                >
-                  {getButtonText(tier)}
-                </Button>
-              </CardFooter>
-            </Card>
-          )
-        })}
-      </div>
-
-      {/* Tabela Comparativa */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Compare os Planos</CardTitle>
-          <CardDescription>
-            Veja todos os recursos disponíveis em cada plano
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-medium">Recurso</th>
-                  <th className="text-center py-3 px-4 font-medium">Gratuito</th>
-                  <th className="text-center py-3 px-4 font-medium">Starter</th>
-                  <th className="text-center py-3 px-4 font-medium">Pro</th>
-                  <th className="text-center py-3 px-4 font-medium">Business</th>
-                </tr>
-              </thead>
-              <tbody>
-                {features.map((feature, index) => (
-                  <tr key={index} className="border-b last:border-0">
-                    <td className="py-3 px-4">{feature.name}</td>
-                    <td className="text-center py-3 px-4">
-                      {renderFeatureValue(feature.free)}
-                    </td>
-                    <td className="text-center py-3 px-4">
-                      {renderFeatureValue(feature.starter)}
-                    </td>
-                    <td className="text-center py-3 px-4">
-                      {renderFeatureValue(feature.pro)}
-                    </td>
-                    <td className="text-center py-3 px-4">
-                      {renderFeatureValue(feature.business)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="text-xs text-muted-foreground mt-4">
-            * Suporte via WhatsApp disponível por tempo limitado nos planos Gratuito e Starter.
-          </p>
-        </CardContent>
-      </Card>
-
     </div>
   )
-}
-
-function renderFeatureValue(value: string | boolean) {
-  if (value === true) {
-    return <Check className="h-4 w-4 text-green-500 mx-auto" />
-  }
-  if (value === false) {
-    return <X className="h-4 w-4 text-muted-foreground mx-auto" />
-  }
-  return <span className="text-muted-foreground">{value}</span>
 }
