@@ -128,7 +128,7 @@ export async function createOrgSubscription(
 
   const subscription = await createSubscription(config, {
     customer: customerId,
-    billingType: 'PIX',
+    billingType: 'CREDIT_CARD',
     value: monthlyR$,
     nextDueDate: nextDue,
     cycle: cycle === 'YEARLY' ? 'YEARLY' : 'MONTHLY',
@@ -212,7 +212,7 @@ export async function updateOrgSubscription(
   const nextDue = cycle === 'YEARLY' ? nextYearStr() : nextMonthStr()
   const newSubscription = await createSubscription(config, {
     customer: org.asaasCustomerId,
-    billingType: 'PIX',
+    billingType: 'CREDIT_CARD',
     value: newMonthlyR$,
     nextDueDate: nextDue,
     cycle: cycle === 'YEARLY' ? 'YEARLY' : 'MONTHLY',
@@ -225,7 +225,7 @@ export async function updateOrgSubscription(
   if (prorationR$ > 0) {
     const proPayment = await createPayment(config, {
       customer: org.asaasCustomerId,
-      billingType: 'PIX',
+      billingType: 'CREDIT_CARD',
       value: prorationR$,
       dueDate: todayStr(),
       description: `Estetia — cobrança proporcional (${remainingDaysText(org.billingNextDueDate)})`,
