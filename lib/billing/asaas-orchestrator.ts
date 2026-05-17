@@ -172,6 +172,7 @@ export interface UpdateResult {
 export async function updateOrgSubscription(
   orgId: string,
   newModules: string[],
+  extras?: { users: number; rooms: number; profs: number },
 ): Promise<UpdateResult> {
   const org = await prisma.organization.findUniqueOrThrow({
     where: { id: orgId },
@@ -190,7 +191,11 @@ export async function updateOrgSubscription(
   const cycle = (org.billingCycle ?? 'MONTHLY') as 'MONTHLY' | 'YEARLY'
 
   const result = calculatePrice(
-    { selectedSlugs: newModules, billingPeriod: cycle === 'YEARLY' ? 'ANNUAL' : 'MONTHLY' },
+    {
+      selectedSlugs: newModules,
+      extras,
+      billingPeriod: cycle === 'YEARLY' ? 'ANNUAL' : 'MONTHLY',
+    },
     catalog,
   )
   const newMonthlyR$ = result.totalCents / 100
@@ -249,6 +254,11 @@ export async function updateOrgSubscription(
       billingActiveModules: newModules,
       billingMonthlyTotal: newMonthlyR$,
       billingYearlyTotal: cycle === 'YEARLY' ? newMonthlyR$ * 12 : null,
+      ...(extras != null ? {
+        extraUsers: extras.users,
+        extraRooms: extras.rooms,
+        extraProfs: extras.profs,
+      } : {}),
     },
   })
 

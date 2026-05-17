@@ -14,14 +14,19 @@ export async function POST(req: Request) {
   if (!user?.organizationId) return NextResponse.json({ error: 'Org not found' }, { status: 400 })
   if (user.orgRole === 'MEMBER') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  let body: { modules: string[]; cycle: 'MONTHLY' | 'YEARLY'; cpfCnpj?: string }
+  let body: {
+    modules: string[]
+    cycle: 'MONTHLY' | 'YEARLY'
+    cpfCnpj?: string
+    extras?: { users: number; rooms: number; profs: number }
+  }
   try {
     body = await req.json()
   } catch {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
   }
 
-  const { modules, cycle = 'MONTHLY', cpfCnpj } = body
+  const { modules, cycle = 'MONTHLY', cpfCnpj, extras } = body
   if (!Array.isArray(modules) || modules.length === 0) {
     return NextResponse.json({ error: 'modules é obrigatório' }, { status: 400 })
   }
@@ -33,7 +38,7 @@ export async function POST(req: Request) {
 
   try {
     if (org?.asaasSubscriptionId) {
-      const result = await updateOrgSubscription(user.organizationId, modules)
+      const result = await updateOrgSubscription(user.organizationId, modules, extras)
       return NextResponse.json({
         ok: true,
         action: 'updated',

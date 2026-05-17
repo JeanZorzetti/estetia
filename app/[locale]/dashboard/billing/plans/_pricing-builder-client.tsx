@@ -71,6 +71,11 @@ export default function PricingBuilderClient({
           modules: state.selectedSlugs,
           cycle: state.billingPeriod === 'ANNUAL' ? 'YEARLY' : 'MONTHLY',
           cpfCnpj: cpfCnpjValue.replace(/\D/g, '') || undefined,
+          extras: {
+            users: state.extraUsers,
+            rooms: state.extraRooms,
+            profs: state.extraProfs,
+          },
         }),
       })
 
