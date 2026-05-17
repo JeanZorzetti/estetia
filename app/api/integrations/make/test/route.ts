@@ -15,6 +15,7 @@ export async function POST() {
     },
   })
   const org = user?.organization
+  const orgId = org?.id ?? ''
   if (!org?.makeWebhookUrl) {
     return NextResponse.json({ error: 'Webhook URL não configurado' }, { status: 400 })
   }
@@ -23,11 +24,31 @@ export async function POST() {
     await dispatchToMake(org.makeWebhookUrl, {
       event: 'test.connection',
       occurredAt: new Date().toISOString(),
-      organizationId: org.id,
+      organizationId: orgId,
       data: { source: 'Estetia CRM', message: 'Teste de conexão Make' },
     })
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'MAKE',
+        action: 'test:connection',
+        status: 'SUCCESS',
+        request: {} as never,
+        response: { ok: true } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json({ ok: true, result: { sent: true } })
   } catch (err) {
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'MAKE',
+        action: 'test:connection',
+        status: 'FAILED',
+        request: {} as never,
+        response: { error: err instanceof Error ? err.message : String(err) } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Falha no dispatch' },
       { status: 502 }

@@ -142,5 +142,45 @@ export async function POST(req: Request) {
     },
   })
 
+  // ── Integrations: Slack / Teams (best-effort, never breaks the flow) ──
+  const org = await prisma.organization.findUnique({
+    where: { id: user.organizationId },
+    select: {
+      slackEnabled: true,
+      slackWebhookUrl: true,
+      teamsEnabled: true,
+      teamsWebhookUrl: true,
+    },
+  })
+
+  if (org?.slackEnabled && org.slackWebhookUrl) {
+    try {
+      const { sendSlackMessage, buildAppointmentBlocks } = await import('@/lib/integrations/slack-client')
+      await sendSlackMessage(org.slackWebhookUrl, {
+        text: `Novo agendamento — ${session.treatment.paciente.nome}`,
+        blocks: buildAppointmentBlocks({
+          patient: session.treatment.paciente.nome,
+          professional: session.profissional?.nome ?? '—',
+          procedure: session.treatment.procedure?.nome ?? '—',
+          date: new Date(session.dataAgendada).toLocaleDateString('pt-BR'),
+          time: new Date(session.dataAgendada).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+        }),
+      })
+    } catch { /* best-effort */ }
+  }
+
+  if (org?.teamsEnabled && org.teamsWebhookUrl) {
+    try {
+      const { sendTeamsCard, buildAppointmentCard } = await import('@/lib/integrations/teams-client')
+      await sendTeamsCard(org.teamsWebhookUrl, buildAppointmentCard({
+        patient: session.treatment.paciente.nome,
+        professional: session.profissional?.nome ?? '—',
+        procedure: session.treatment.procedure?.nome ?? '—',
+        date: new Date(session.dataAgendada).toLocaleDateString('pt-BR'),
+        time: new Date(session.dataAgendada).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+      }))
+    } catch { /* best-effort */ }
+  }
+
   return NextResponse.json({ session }, { status: 201 })
 }

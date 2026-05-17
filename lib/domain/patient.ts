@@ -1,5 +1,10 @@
 import { prisma } from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
+import { createMailchimpClient } from '@/lib/integrations/mailchimp-client'
+import { createBrevoClient } from '@/lib/integrations/brevo-client'
+import { createActiveCampaignClient } from '@/lib/integrations/activecampaign-client'
+import { createMailerLiteClient } from '@/lib/integrations/mailerlite-client'
+import { createRDStationClient } from '@/lib/integrations/rd-station-client'
 
 export type PatientWithRelations = Prisma.PatientGetPayload<{
   include: {
@@ -73,12 +78,133 @@ export async function createPatient(
   organizationId: string,
   data: Omit<Prisma.PatientCreateInput, 'organization'>
 ) {
-  return prisma.patient.create({
+  const patient = await prisma.patient.create({
     data: {
       ...data,
       organization: { connect: { id: organizationId } },
     },
   })
+
+  // Fire-and-forget: sync to email-marketing providers — never blocks patient creation
+  syncPatientToEmailMarketing(organizationId, patient).catch(() => null)
+
+  return patient
+}
+
+async function syncPatientToEmailMarketing(
+  organizationId: string,
+  patient: { nome: string; email?: string | null; telefone?: string | null }
+) {
+  if (!patient.email) return
+
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+    select: {
+      mailchimpEnabled: true,
+      mailchimpApiKey: true,
+      mailchimpListId: true,
+      mailchimpServer: true,
+      brevoEnabled: true,
+      brevoApiKey: true,
+      brevoListId: true,
+      activecampaignEnabled: true,
+      activecampaignApiKey: true,
+      activecampaignUrl: true,
+      mailerliteEnabled: true,
+      mailerliteApiKey: true,
+      mailerliteGroupId: true,
+      rdStationEnabled: true,
+      rdStationClientId: true,
+      rdStationClientSecret: true,
+      rdStationRefreshToken: true,
+    },
+  })
+
+  if (!org) return
+
+  const [firstName, ...rest] = patient.nome.trim().split(' ')
+  const lastName = rest.join(' ')
+  const phone = patient.telefone ?? undefined
+
+  const tasks: Promise<unknown>[] = []
+
+  if (org.mailchimpEnabled && org.mailchimpApiKey && org.mailchimpListId && org.mailchimpServer) {
+    tasks.push(
+      createMailchimpClient(org.mailchimpApiKey, org.mailchimpServer)
+        .addOrUpdateContact(org.mailchimpListId, {
+          email: patient.email,
+          firstName,
+          lastName,
+          phone,
+          tags: ['estetia-crm'],
+        })
+        .catch(() => null)
+    )
+  }
+
+  if (org.brevoEnabled && org.brevoApiKey && org.brevoListId) {
+    tasks.push(
+      createBrevoClient(org.brevoApiKey)
+        .addOrUpdateContact(org.brevoListId, {
+          email: patient.email,
+          firstName,
+          lastName,
+          phone,
+        })
+        .catch(() => null)
+    )
+  }
+
+  if (org.activecampaignEnabled && org.activecampaignApiKey && org.activecampaignUrl) {
+    tasks.push(
+      createActiveCampaignClient(org.activecampaignApiKey, org.activecampaignUrl)
+        .addOrUpdateContact({
+          email: patient.email,
+          firstName,
+          lastName,
+          phone,
+          tags: ['estetia-crm'],
+        })
+        .catch(() => null)
+    )
+  }
+
+  if (org.mailerliteEnabled && org.mailerliteApiKey && org.mailerliteGroupId) {
+    tasks.push(
+      createMailerLiteClient(org.mailerliteApiKey)
+        .addOrUpdateSubscriber(org.mailerliteGroupId, {
+          email: patient.email,
+          firstName,
+          lastName,
+          phone,
+        })
+        .catch(() => null)
+    )
+  }
+
+  if (
+    org.rdStationEnabled &&
+    org.rdStationClientId &&
+    org.rdStationClientSecret &&
+    org.rdStationRefreshToken
+  ) {
+    tasks.push(
+      createRDStationClient(
+        org.rdStationClientId,
+        org.rdStationClientSecret,
+        org.rdStationRefreshToken
+      )
+        .upsertContact({
+          email: patient.email,
+          name: patient.nome,
+          mobile_phone: phone,
+          tags: ['estetia-crm'],
+        })
+        .catch(() => null)
+    )
+  }
+
+  await Promise.allSettled(tasks)
 }
 
 export async function updatePatient(

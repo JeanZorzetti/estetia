@@ -12,12 +12,13 @@ export async function POST() {
     where: { email: session.user.email },
     select: {
       organization: {
-        select: { zoomAccountId: true, zoomClientId: true, zoomClientSecret: true },
+        select: { id: true, zoomAccountId: true, zoomClientId: true, zoomClientSecret: true },
       },
     },
   })
 
   const org = user?.organization
+  const orgId = org?.id ?? ''
   if (!org?.zoomAccountId || !org.zoomClientId || !org.zoomClientSecret) {
     return NextResponse.json({ error: 'Credenciais Zoom incompletas' }, { status: 400 })
   }
@@ -29,8 +30,28 @@ export async function POST() {
       clientId: org.zoomClientId,
       clientSecret,
     })
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'ZOOM',
+        action: 'test:connection',
+        status: 'SUCCESS',
+        request: {} as never,
+        response: { ok: true } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json({ ok: true, user: me })
   } catch (err) {
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'ZOOM',
+        action: 'test:connection',
+        status: 'FAILED',
+        request: {} as never,
+        response: { error: err instanceof Error ? err.message : String(err) } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Erro ao testar' },
       { status: 502 }

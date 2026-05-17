@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
       email: true,
       organization: {
         select: {
+          id: true,
           smtpHost: true,
           smtpPort: true,
           smtpUsername: true,
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json().catch(() => ({}))
   const org = user.organization
+  const orgId = org.id ?? ''
 
   // Use body credentials if present, otherwise load from DB
   const host = body.host || org.smtpHost
@@ -55,6 +57,28 @@ export async function POST(req: NextRequest) {
   const config: SmtpConfig = { host, port, username, password, fromEmail, fromName, useTLS }
   const result = await sendTestEmail(config, user.email)
 
-  if (!result.ok) return NextResponse.json({ error: result.error }, { status: 502 })
+  if (!result.ok) {
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'SMTP',
+        action: 'test:connection',
+        status: 'FAILED',
+        request: {} as never,
+        response: { error: result.error } as never,
+      },
+    }).catch(() => {})
+    return NextResponse.json({ error: result.error }, { status: 502 })
+  }
+  await prisma.integrationLog.create({
+    data: {
+      organizationId: orgId,
+      type: 'SMTP',
+      action: 'test:connection',
+      status: 'SUCCESS',
+      request: {} as never,
+      response: { ok: true, messageId: result.messageId } as never,
+    },
+  }).catch(() => {})
   return NextResponse.json({ ok: true, messageId: result.messageId })
 }

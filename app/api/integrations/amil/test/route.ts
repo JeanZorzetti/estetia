@@ -1,2 +1,3 @@
 import { makeStubTestHandler } from '@/lib/integrations/settings-handlers'
-export const POST = makeStubTestHandler('amilCredentialsJson')
+
+export const POST = makeStubTestHandler('amilCredentialsJson', 'AMIL')

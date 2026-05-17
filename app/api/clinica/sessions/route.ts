@@ -91,7 +91,10 @@ export async function POST(req: NextRequest) {
     },
     include: {
       treatment: {
-        include: { paciente: { select: { id: true, nome: true, telefone: true } } },
+        include: {
+          paciente: { select: { id: true, nome: true, telefone: true } },
+          procedure: { select: { id: true, nome: true } },
+        },
       },
       profissional: { select: { id: true, nome: true } },
       sala: { select: { id: true, nome: true } },
@@ -104,6 +107,46 @@ export async function POST(req: NextRequest) {
       where: { id: treatmentId, organizationId: user.organizationId },
       data: { status: 'AGENDADO' },
     })
+  }
+
+  // ── Integrations: Slack / Teams (best-effort, never breaks the flow) ──
+  const org = await prisma.organization.findUnique({
+    where: { id: user.organizationId },
+    select: {
+      slackEnabled: true,
+      slackWebhookUrl: true,
+      teamsEnabled: true,
+      teamsWebhookUrl: true,
+    },
+  })
+
+  if (org?.slackEnabled && org.slackWebhookUrl) {
+    try {
+      const { sendSlackMessage, buildAppointmentBlocks } = await import('@/lib/integrations/slack-client')
+      await sendSlackMessage(org.slackWebhookUrl, {
+        text: `Novo agendamento — ${newSession.treatment.paciente.nome}`,
+        blocks: buildAppointmentBlocks({
+          patient: newSession.treatment.paciente.nome,
+          professional: newSession.profissional?.nome ?? '—',
+          procedure: newSession.treatment.procedure?.nome ?? '—',
+          date: new Date(newSession.dataAgendada).toLocaleDateString('pt-BR'),
+          time: new Date(newSession.dataAgendada).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+        }),
+      })
+    } catch { /* best-effort */ }
+  }
+
+  if (org?.teamsEnabled && org.teamsWebhookUrl) {
+    try {
+      const { sendTeamsCard, buildAppointmentCard } = await import('@/lib/integrations/teams-client')
+      await sendTeamsCard(org.teamsWebhookUrl, buildAppointmentCard({
+        patient: newSession.treatment.paciente.nome,
+        professional: newSession.profissional?.nome ?? '—',
+        procedure: newSession.treatment.procedure?.nome ?? '—',
+        date: new Date(newSession.dataAgendada).toLocaleDateString('pt-BR'),
+        time: new Date(newSession.dataAgendada).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+      }))
+    } catch { /* best-effort */ }
   }
 
   return NextResponse.json({ session: newSession }, { status: 201 })

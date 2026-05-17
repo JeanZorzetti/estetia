@@ -41,7 +41,7 @@ export function makeSettingsHandler(spec: Spec) {
  * Generic test handler that just verifies a sensitive credential is set.
  * For integrations without a real API to ping, returns ok if column has value.
  */
-export function makeStubTestHandler(credentialColumn: string) {
+export function makeStubTestHandler(credentialColumn: string, integrationType?: string) {
   return async function POST() {
     const session = await getSession()
     if (!session?.user?.email) {
@@ -49,11 +49,32 @@ export function makeStubTestHandler(credentialColumn: string) {
     }
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      select: { organization: { select: { [credentialColumn]: true } as Record<string, true> } },
+      select: {
+        organization: {
+          select: {
+            id: true,
+            [credentialColumn]: true,
+          } as Record<string, true>,
+        },
+      },
     })
-    const val = (user?.organization as Record<string, unknown> | undefined)?.[credentialColumn]
+    const org = user?.organization as (Record<string, unknown> & { id?: string }) | undefined
+    const val = org?.[credentialColumn]
+    const orgId = org?.id ?? ''
     if (!val) {
       return NextResponse.json({ error: 'Credencial não configurada' }, { status: 400 })
+    }
+    if (integrationType && orgId) {
+      await prisma.integrationLog.create({
+        data: {
+          organizationId: orgId,
+          type: integrationType as never,
+          action: 'test:connection',
+          status: 'SUCCESS',
+          request: {} as never,
+          response: { stored: true } as never,
+        },
+      }).catch(() => {})
     }
     return NextResponse.json({
       ok: true,

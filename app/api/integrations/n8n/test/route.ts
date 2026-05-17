@@ -23,6 +23,8 @@ export async function POST(request: Request) {
             return await apiError(ERR.USER_NOT_FOUND, 404)
         }
 
+        const orgId = user.organization.id
+
         // Check PRO or BUSINESS plan requirement
         if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
             return NextResponse.json(
@@ -65,12 +67,32 @@ export async function POST(request: Request) {
 
         if (result.success) {
             logger.info({ organizationId, baseUrl }, 'N8N connection test successful')
+            await prisma.integrationLog.create({
+                data: {
+                    organizationId: orgId,
+                    type: 'N8N',
+                    action: 'test:connection',
+                    status: 'SUCCESS',
+                    request: {} as never,
+                    response: { ok: true } as never,
+                },
+            }).catch(() => {})
             return NextResponse.json({
                 success: true,
                 message: 'Conexão estabelecida com sucesso'
             })
         } else {
             logger.warn({ organizationId, baseUrl, error: result.error }, 'N8N connection test failed')
+            await prisma.integrationLog.create({
+                data: {
+                    organizationId: orgId,
+                    type: 'N8N',
+                    action: 'test:connection',
+                    status: 'FAILED',
+                    request: {} as never,
+                    response: { error: result.error || 'Falha ao conectar com N8N' } as never,
+                },
+            }).catch(() => {})
             return NextResponse.json({
                 success: false,
                 error: result.error || 'Falha ao conectar com N8N'

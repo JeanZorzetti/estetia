@@ -12,19 +12,41 @@ export async function POST() {
     where: { email: session.user.email },
     select: {
       organization: {
-        select: { trelloApiKey: true, trelloToken: true, trelloBoardId: true },
+        select: { id: true, trelloApiKey: true, trelloToken: true, trelloBoardId: true },
       },
     },
   })
-  const { trelloApiKey, trelloToken, trelloBoardId } = user?.organization ?? {}
+  const org = user?.organization
+  const orgId = org?.id ?? ''
+  const { trelloApiKey, trelloToken, trelloBoardId } = org ?? {}
   if (!trelloApiKey || !trelloToken || !trelloBoardId) {
     return NextResponse.json({ error: 'API key, token e Board ID obrigatórios' }, { status: 400 })
   }
 
   try {
     const board = await getTrelloBoard(trelloApiKey, trelloToken, trelloBoardId)
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'TRELLO',
+        action: 'test:connection',
+        status: 'SUCCESS',
+        request: {} as never,
+        response: { ok: true, boardName: board.name } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json({ ok: true, result: { boardName: board.name, url: board.url } })
   } catch (err) {
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'TRELLO',
+        action: 'test:connection',
+        status: 'FAILED',
+        request: {} as never,
+        response: { error: err instanceof Error ? err.message : String(err) } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Falha ao consultar Trello' },
       { status: 502 }

@@ -15,12 +15,14 @@ export async function POST(request: Request) {
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      select: { organizationId: true, organization: { select: { tier: true } } }
+      select: { organizationId: true, organization: { select: { id: true, tier: true } } }
     })
 
     if (!user?.organization) {
       return await apiError(ERR.USER_NOT_FOUND, 404)
     }
+
+    const orgId = user.organization.id ?? ''
 
     if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
       return NextResponse.json({ error: 'Plano PRO necessário' }, { status: 403 })
@@ -39,12 +41,32 @@ export async function POST(request: Request) {
     const result = await client.testConnection()
 
     if (result.success) {
+      await prisma.integrationLog.create({
+        data: {
+          organizationId: orgId,
+          type: 'WHATSAPP_OFFICIAL',
+          action: 'test:connection',
+          status: 'SUCCESS',
+          request: {} as never,
+          response: { ok: true } as never,
+        },
+      }).catch(() => {})
       return NextResponse.json({
         success: true,
         info: result.info
       })
     }
 
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'WHATSAPP_OFFICIAL',
+        action: 'test:connection',
+        status: 'FAILED',
+        request: {} as never,
+        response: { error: result.error || 'Falha na conexão com a API Meta' } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json(
       { success: false, error: result.error || 'Falha na conexão com a API Meta' },
       { status: 400 }

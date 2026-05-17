@@ -10,9 +10,10 @@ export async function POST() {
   }
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { organization: { select: { slackWebhookUrl: true } } },
+    select: { organization: { select: { id: true, slackWebhookUrl: true } } },
   })
   const url = user?.organization?.slackWebhookUrl
+  const orgId = user?.organization?.id ?? ''
   if (!url) return NextResponse.json({ error: 'Webhook URL não configurado' }, { status: 400 })
 
   try {
@@ -23,8 +24,28 @@ export async function POST() {
         { type: 'section', text: { type: 'mrkdwn', text: 'Conexão estabelecida com sucesso ✅' } },
       ],
     })
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'SLACK',
+        action: 'test:connection',
+        status: 'SUCCESS',
+        request: {} as never,
+        response: { ok: true } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json({ ok: true, result: { sent: true } })
   } catch (err) {
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'SLACK',
+        action: 'test:connection',
+        status: 'FAILED',
+        request: {} as never,
+        response: { error: err instanceof Error ? err.message : String(err) } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Falha ao enviar' },
       { status: 502 }

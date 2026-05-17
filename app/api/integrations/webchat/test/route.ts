@@ -9,15 +9,27 @@ export async function POST() {
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { organization: { select: { webchatWidgetSecret: true } } },
+    select: { organization: { select: { id: true, webchatWidgetSecret: true } } },
   })
 
-  const secret = user?.organization?.webchatWidgetSecret
+  const org = user?.organization
+  const orgId = org?.id ?? ''
+  const secret = org?.webchatWidgetSecret
   if (!secret) {
     return NextResponse.json({ error: 'Widget não gerado ainda' }, { status: 400 })
   }
 
   const origin = process.env.NEXT_PUBLIC_APP_URL ?? 'https://estetiacrm.com.br'
   const snippet = buildEmbedSnippet(secret, origin)
+  await prisma.integrationLog.create({
+    data: {
+      organizationId: orgId,
+      type: 'WEBCHAT',
+      action: 'test:connection',
+      status: 'SUCCESS',
+      request: {} as never,
+      response: { ok: true } as never,
+    },
+  }).catch(() => {})
   return NextResponse.json({ ok: true, snippet })
 }

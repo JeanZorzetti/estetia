@@ -11,11 +11,13 @@ export async function POST() {
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     select: {
-      organization: { select: { notionApiKey: true, notionDatabaseId: true } },
+      organization: { select: { id: true, notionApiKey: true, notionDatabaseId: true } },
     },
   })
-  const apiKey = user?.organization?.notionApiKey
-  const databaseId = user?.organization?.notionDatabaseId
+  const org = user?.organization
+  const orgId = org?.id ?? ''
+  const apiKey = org?.notionApiKey
+  const databaseId = org?.notionDatabaseId
   if (!apiKey || !databaseId) {
     return NextResponse.json({ error: 'API key e Database ID são obrigatórios' }, { status: 400 })
   }
@@ -23,8 +25,28 @@ export async function POST() {
   try {
     const db = await getNotionDatabase(apiKey, databaseId)
     const title = db.title?.[0]?.plain_text ?? 'Database'
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'NOTION',
+        action: 'test:connection',
+        status: 'SUCCESS',
+        request: {} as never,
+        response: { ok: true, databaseTitle: title } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json({ ok: true, result: { databaseTitle: title } })
   } catch (err) {
+    await prisma.integrationLog.create({
+      data: {
+        organizationId: orgId,
+        type: 'NOTION',
+        action: 'test:connection',
+        status: 'FAILED',
+        request: {} as never,
+        response: { error: err instanceof Error ? err.message : String(err) } as never,
+      },
+    }).catch(() => {})
     return NextResponse.json(
       { error: err instanceof Error ? err.message : 'Falha ao consultar Notion' },
       { status: 502 }
