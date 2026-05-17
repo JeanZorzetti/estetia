@@ -109,14 +109,6 @@ export default async function SupportPage({ searchParams }: Props) {
           </p>
           <div className="flex flex-col items-center gap-3">
             <NewTicketDialog />
-            <a
-              href="https://wa.me/5562998015884?text=Olá! Preciso de ajuda com o Estetia CRM."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-green-600 hover:text-green-700 font-medium"
-            >
-              🟢 Urgente? Fale pelo WhatsApp
-            </a>
           </div>
         </div>
       ) : (
@@ -152,20 +144,6 @@ export default async function SupportPage({ searchParams }: Props) {
         </div>
       )}
 
-      {/* WhatsApp CTA footer */}
-      <div className="mt-8 p-4 rounded-xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900">
-        <p className="text-sm text-green-800 dark:text-green-300">
-          <strong>Problema urgente?</strong> Além dos tickets, você pode nos chamar diretamente pelo WhatsApp para questões críticas.
-        </p>
-        <a
-          href="https://wa.me/5562998015884?text=Olá! Tenho um problema urgente com o Estetia CRM."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block mt-2 text-sm text-green-700 dark:text-green-400 font-medium hover:underline"
-        >
-          Abrir WhatsApp →
-        </a>
-      </div>
     </div>
   )
 }

@@ -338,8 +338,6 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
           )}
           */}
 
-          <WhatsAppFounderButton open={open} />
-
           {navSections.map((section, idx) => (
             <div key={section.title}>
               {idx > 0 && <Separator className="my-3" />}
