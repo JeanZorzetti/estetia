@@ -165,6 +165,7 @@ export async function createOrgSubscription(
       billingActiveModules: modules,
       billingMonthlyTotal: monthlyR$,
       billingYearlyTotal: cycle === 'YEARLY' ? monthlyR$ * 12 : null,
+      trialStatus: 'CONVERTED',
     },
   })
 
@@ -286,6 +287,7 @@ export async function updateOrgSubscription(
       billingActiveModules: newModules,
       billingMonthlyTotal: newMonthlyR$,
       billingYearlyTotal: cycle === 'YEARLY' ? newMonthlyR$ * 12 : null,
+      trialStatus: 'CONVERTED',
       ...(extras != null ? {
         extraUsers: extras.users,
         extraRooms: extras.rooms,
