@@ -74,16 +74,29 @@ export async function POST(request: Request) {
     }
 
     case 'SUBSCRIPTION_DELETED': {
-      if (org) {
-        await prisma.organization.update({
+      // Only clear org billing fields if the deleted subscription is still the active one.
+      // During updates we cancel the old subscription then create a new one — the webhook for
+      // the cancelled old sub arrives async and would otherwise wipe the newly-created sub.
+      const deletedSubId = subscription?.id as string | undefined
+      let skipped = false
+      if (org && deletedSubId) {
+        const current = await prisma.organization.findUnique({
           where: { id: org.id },
-          data: {
-            asaasSubscriptionId: null,
-            billingActiveModules: Prisma.JsonNull,
-            billingMonthlyTotal: null,
-            billingNextDueDate: null,
-          },
-        }).catch(() => {})
+          select: { asaasSubscriptionId: true },
+        })
+        if (current?.asaasSubscriptionId === deletedSubId) {
+          await prisma.organization.update({
+            where: { id: org.id },
+            data: {
+              asaasSubscriptionId: null,
+              billingActiveModules: Prisma.JsonNull,
+              billingMonthlyTotal: null,
+              billingNextDueDate: null,
+            },
+          }).catch(() => {})
+        } else {
+          skipped = true
+        }
       }
       await prisma.integrationLog.create({
         data: {
@@ -91,8 +104,8 @@ export async function POST(request: Request) {
           type: 'ASAAS',
           action: 'webhook:SUBSCRIPTION_DELETED',
           status: 'SUCCESS',
-          request: JSON.stringify({ event, subscriptionId: subscription?.id }),
-          response: JSON.stringify({ orgId: org?.id }),
+          request: JSON.stringify({ event, subscriptionId: deletedSubId }),
+          response: JSON.stringify({ orgId: org?.id, skipped, reason: skipped ? 'stale_delete_after_replacement' : undefined }),
         },
       }).catch(() => {})
       break
