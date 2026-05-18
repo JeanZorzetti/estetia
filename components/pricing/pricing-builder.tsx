@@ -5,6 +5,7 @@ import { ModuleCheckboxCard } from './module-checkbox-card'
 import { MutexRadioGroup } from './mutex-radio-group'
 import { ExtrasSliders } from './extras-sliders'
 import { PriceSidebar } from './price-sidebar'
+import { BasePlatformCard } from './base-platform-card'
 import { calculatePrice, type CalculateResult } from '@/lib/pricing/calculator'
 import type { PricingModuleData } from '@/lib/pricing/modules'
 
@@ -82,6 +83,8 @@ export function PricingBuilder({
     return out
   }, [modules])
 
+  const baseModule = useMemo(() => modules.find(m => m.slug === 'base'), [modules])
+
   const iaOptions = useMemo(
     () => modules.filter(m => m.exclusiveGroup === 'ia_tier').sort((a, b) => a.ordem - b.ordem),
     [modules],
@@ -131,6 +134,22 @@ export function PricingBuilder({
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8">
       {/* Left: module selection */}
       <div className="flex flex-col gap-10">
+        {/* Base platform — always included, surfaced explicitly so users understand what's in it */}
+        {baseModule && (
+          <section>
+            <div className="mb-5">
+              <h2 className="text-2xl font-bold tracking-tighter">Fundação obrigatória</h2>
+              <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
+                Toda assinatura começa aqui. Veja exatamente o que está incluso na sua mensalidade base antes de escolher os módulos clínicos.
+              </p>
+            </div>
+            <BasePlatformCard
+              module={baseModule}
+              isActive={activeModules?.includes('base')}
+            />
+          </section>
+        )}
+
         {['CLINICO', 'COMUNICACAO', 'GESTAO'].map(cat => (
           <section key={cat}>
             <div className="mb-5">

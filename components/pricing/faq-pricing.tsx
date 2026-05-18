@@ -14,8 +14,12 @@ const FAQS = [
     a: 'Você cria sua conta e pode testar gratuitamente todos os módulos selecionados por 7 dias. Não cobramos nada nesse período e você pode cancelar a qualquer momento. Não pedimos cartão de crédito no signup.',
   },
   {
-    q: 'Por que existe uma Plataforma Base obrigatória?',
-    a: 'A Base de R$ 39/mês inclui pacientes, agenda, LGPD, 2 usuários e suporte. É o mínimo necessário para uma clínica operar — todo o restante é opcional. Isso garante que você sempre tenha um sistema funcional mesmo sem nenhum add-on.',
+    q: 'O que é a Plataforma Base de R$ 39/mês?',
+    a: 'A Base é a fundação obrigatória do sistema. Ela entrega a infraestrutura compartilhada que todos os outros módulos precisam para funcionar: login, gestão de 2 usuários, cadastro ilimitado de pacientes, agenda básica (1 profissional + 1 sala), LGPD completa (consentimentos, audit log, direito ao esquecimento), dashboard com KPIs gerais e suporte por e-mail. Pense nela como o sistema operacional sobre o qual você instala os módulos clínicos.',
+  },
+  {
+    q: 'Posso assinar só a Plataforma Base por R$ 39?',
+    a: 'Tecnicamente sim, mas não recomendamos — a Base sozinha não opera uma clínica. Ela não inclui prontuário eletrônico, controle de procedimentos, fotos, pacotes, WhatsApp ou recall. Para conseguir atender pacientes de verdade você precisa adicionar pelo menos um módulo clínico (Prontuário R$ 29 ou Procedimentos R$ 19). O combo mais leve fica em R$ 58/mês (Base + Prontuário). Por isso a Base não é vendida isoladamente como "plano" — ela é o componente obrigatório de qualquer assinatura.',
   },
   {
     q: 'Como vocês cobram por mais usuários?',
@@ -43,7 +47,7 @@ const FAQS = [
   },
   {
     q: 'Vocês têm versão grátis?',
-    a: 'Oferecemos 7 dias grátis para testar todos os módulos. Após o trial, o valor mínimo é R$ 39/mês (Plataforma Base). Se você é uma clínica iniciante, podemos conversar sobre preços especiais — entre em contato.',
+    a: 'Oferecemos 7 dias grátis para testar todos os módulos. Após o trial, a assinatura mais leve fica em R$ 58/mês (Plataforma Base R$ 39 + Procedimentos R$ 19, combo mínimo para uma clínica iniciante operar). Se quiser prontuário eletrônico junto, o combo Base + Prontuário fica em R$ 68/mês. Se você está começando agora, podemos conversar sobre preços especiais — entre em contato.',
   },
 ]
 
