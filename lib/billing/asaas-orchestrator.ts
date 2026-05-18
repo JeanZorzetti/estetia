@@ -92,13 +92,13 @@ export async function ensureCustomer(orgId: string, cpfCnpj?: string): Promise<s
   const config = getAsaasConfig()
 
   if (org.asaasCustomerId) {
-    // Customer already exists — patch cpfCnpj and email if missing
+    // Customer already exists — always patch missing cpfCnpj or email
     const existing = await getCustomer(config, org.asaasCustomerId).catch(() => null)
-    if (!existing?.cpfCnpj || !existing?.email) {
-      await updateCustomer(config, org.asaasCustomerId, {
-        ...(!existing?.cpfCnpj ? { cpfCnpj: resolvedCpfCnpj } : {}),
-        ...(!existing?.email && email ? { email } : {}),
-      })
+    const patch: Record<string, string> = {}
+    if (!existing?.cpfCnpj) patch.cpfCnpj = resolvedCpfCnpj
+    if (!existing?.email && email) patch.email = email
+    if (Object.keys(patch).length > 0) {
+      await updateCustomer(config, org.asaasCustomerId, patch)
     }
     return org.asaasCustomerId
   }
@@ -198,6 +198,9 @@ export async function updateOrgSubscription(
   newModules: string[],
   extras?: { users: number; rooms: number; profs: number },
 ): Promise<UpdateResult> {
+  // Ensure customer exists and has email + cpfCnpj before proceeding
+  await ensureCustomer(orgId)
+
   const org = await prisma.organization.findUniqueOrThrow({
     where: { id: orgId },
     select: {
