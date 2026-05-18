@@ -153,6 +153,7 @@ export async function createOrgSubscription(
     cycle: cycle === 'YEARLY' ? 'YEARLY' : 'MONTHLY',
     description: `Estetia CRM — plano modular`,
     externalReference: orgId,
+    callback: { successUrl: BILLING_SUCCESS_URL, autoRedirect: true },
   })
 
   await prisma.organization.update({
@@ -257,6 +258,7 @@ export async function updateOrgSubscription(
     cycle: cycle === 'YEARLY' ? 'YEARLY' : 'MONTHLY',
     description: 'Estetia CRM — plano modular (atualizado)',
     externalReference: orgId,
+    callback: { successUrl: BILLING_SUCCESS_URL, autoRedirect: true },
   })
 
   // Charge proration immediately if upgrading
@@ -269,6 +271,7 @@ export async function updateOrgSubscription(
       dueDate: todayStr(),
       description: `Estetia — cobrança proporcional (${remainingDaysText(org.billingNextDueDate)})`,
       externalReference: `proration_${orgId}`,
+      callback: { successUrl: BILLING_SUCCESS_URL, autoRedirect: true },
     }).catch(() => undefined)
     prorationPaymentId = proPayment?.id
   }

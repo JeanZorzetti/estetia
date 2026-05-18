@@ -105,6 +105,7 @@ export interface CreateSubscriptionInput {
   cycle: 'MONTHLY' | 'YEARLY'
   description?: string
   externalReference?: string
+  callback?: { successUrl: string; autoRedirect?: boolean }
 }
 
 export async function createSubscription(
