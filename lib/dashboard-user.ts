@@ -65,7 +65,7 @@ export function getDashboardUser(email: string) {
 
 // Call this whenever org.tier, trialEndsAt, trialStatus, role, or RolePermissions change
 export async function revalidateDashboardUser(email: string) {
-  const { updateTag } = await import('next/cache')
-  updateTag(`user:${email}`)
-  updateTag(`org-trial:${email}`)
+  const { revalidateTag } = await import('next/cache')
+  revalidateTag(`user:${email}`)
+  revalidateTag(`org-trial:${email}`)
 }
