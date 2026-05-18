@@ -43,10 +43,10 @@ export function AgiQuotaDisplay() {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-3">
-            A IA está disponível no plano PRO
+            Adicione o módulo de IA à sua assinatura para liberar este recurso.
           </p>
           <Button asChild size="sm" className="w-full">
-            <Link href="/settings/billing">Fazer Upgrade</Link>
+            <Link href="/dashboard/billing/plans">Ver módulos</Link>
           </Button>
         </CardContent>
       </Card>
@@ -109,8 +109,8 @@ export function AgiQuotaDisplay() {
               Quota excedida
             </p>
             <Button asChild size="sm" className="w-full">
-              <Link href="/settings/billing">
-                Upgrade para ilimitado
+              <Link href="/dashboard/billing/plans">
+                Ver planos com cota ilimitada
               </Link>
             </Button>
           </div>
@@ -148,10 +148,10 @@ export function ScrapingCreditsDisplay() {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-3">
-            Prospecção automática disponível no plano PRO
+            Adicione o módulo de Prospecção à sua assinatura para liberar este recurso.
           </p>
           <Button asChild size="sm" className="w-full">
-            <Link href="/settings/billing">Fazer Upgrade</Link>
+            <Link href="/dashboard/billing/plans">Ver módulos</Link>
           </Button>
         </CardContent>
       </Card>

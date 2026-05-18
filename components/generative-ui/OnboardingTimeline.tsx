@@ -207,7 +207,7 @@ export function OnboardingTimeline({
                 Quer implementação mais rápida com suporte dedicado?{' '}
               </span>
               <span className="font-medium text-primary cursor-pointer hover:underline">
-                Conheça o plano PRO →
+                Ver todos os módulos →
               </span>
             </motion.div>
           )}

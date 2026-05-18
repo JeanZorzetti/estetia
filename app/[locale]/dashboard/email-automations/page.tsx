@@ -78,15 +78,15 @@ Equipe Estetia CRM`
       subject: 'Você está perto do limite de negócios! 📊',
       body: `Olá {{userName}},
 
-Você está utilizando {{currentDeals}} de {{maxDeals}} negócios do seu plano FREE.
+Você está utilizando {{currentDeals}} de {{maxDeals}} negócios do seu plano atual.
 
-Está na hora de fazer upgrade para o plano PRO e desbloquear:
+Adicione mais módulos à sua assinatura para desbloquear:
 ✨ Negócios ilimitados
 ✨ Múltiplos pipelines
 ✨ Analytics avançado
 ✨ Automações personalizadas
 
-Faça upgrade agora: {{upgradeUrl}}
+Veja os módulos disponíveis: {{upgradeUrl}}
 
 Continue crescendo com a gente!
 

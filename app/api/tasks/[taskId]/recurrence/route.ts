@@ -66,7 +66,7 @@ export async function PUT(
       await requireFeature(user.organizationId, 'recurringTasks')
     } catch {
       return NextResponse.json(
-        { error: 'Tarefas recorrentes requerem o plano PRO ou superior.' },
+        { error: 'Tarefas recorrentes não estão disponíveis no seu plano atual.' },
         { status: 403 }
       )
     }

@@ -68,12 +68,11 @@ export async function POST(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    // Feature gate: Time tracking requires PRO+
     try {
       await requireFeature(user.organizationId, 'timeTracking')
     } catch {
       return NextResponse.json(
-        { error: 'Time tracking requer o plano PRO ou superior.' },
+        { error: 'Time tracking não está disponível no seu plano atual.' },
         { status: 403 }
       )
     }

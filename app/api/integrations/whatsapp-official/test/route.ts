@@ -25,7 +25,10 @@ export async function POST(request: Request) {
     const orgId = user.organization.id ?? ''
 
     if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
-      return NextResponse.json({ error: 'Plano PRO necessário' }, { status: 403 })
+      return NextResponse.json(
+        { error: 'Adicione o módulo WhatsApp Oficial à sua assinatura para liberar este recurso.' },
+        { status: 403 },
+      )
     }
 
     const { phoneNumberId, accessToken } = await request.json()

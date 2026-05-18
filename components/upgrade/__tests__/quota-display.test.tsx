@@ -41,8 +41,8 @@ describe('AgiQuotaDisplay Component', () => {
     render(<AgiQuotaDisplay />)
 
     expect(screen.getByText('Sem acesso')).toBeInTheDocument()
-    expect(screen.getByText(/A IA está disponível no plano PRO/i)).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /fazer upgrade/i })).toBeInTheDocument()
+    expect(screen.getByText(/Adicione o módulo de IA/i)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /ver módulos/i })).toBeInTheDocument()
   })
 
   it('should show unlimited badge for PRO tier', () => {
@@ -129,7 +129,7 @@ describe('ScrapingCreditsDisplay Component', () => {
     render(<ScrapingCreditsDisplay />)
 
     expect(screen.getByText('Sem acesso')).toBeInTheDocument()
-    expect(screen.getByText(/Prospecção automática disponível no plano PRO/i)).toBeInTheDocument()
+    expect(screen.getByText(/Adicione o módulo de Prospecção/i)).toBeInTheDocument()
   })
 
   it('should show credits for PRO tier', () => {

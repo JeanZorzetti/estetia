@@ -93,7 +93,7 @@ export function CalculadoraROI({
   const INTERRUPCOES_POR_DIA_SEM_CRM = 12 // Trocas entre ferramentas (WhatsApp, Email, Planilha, Tel)
   const TEMPO_RECUPERACAO_INTERRUPCAO_MIN = 23 // Gloria Mark, UC Irvine 2023
   const CUSTO_HORA_VENDEDOR = 85 // R$ por hora (baseado em salário médio B2B Brasil)
-  const CUSTO_SIRIUS_MENSAL = 49 // Plano PRO por usuário
+  const CUSTO_SIRIUS_MENSAL = 49 // Custo médio por usuário/mês
   const DIAS_UTEIS_MES = 22
 
   // Cálculos por cenário - Modelo Empírico Direto

@@ -56,8 +56,8 @@ export function TrialBanner({ trialEndsAt, trialStatus, tier, hasModularSubscrip
         {urgent ? <Clock className="h-4 w-4 shrink-0" /> : <Zap className="h-4 w-4 shrink-0" />}
         <span>
           {daysLeft === 0
-            ? 'Último dia do trial PRO. Faça upgrade para não perder o acesso.'
-            : `Trial PRO: ${daysLeft} dia${daysLeft !== 1 ? 's' : ''} restante${daysLeft !== 1 ? 's' : ''}.`
+            ? 'Último dia do trial. Faça upgrade para não perder o acesso.'
+            : `Trial: ${daysLeft} dia${daysLeft !== 1 ? 's' : ''} restante${daysLeft !== 1 ? 's' : ''}.`
           }
         </span>
       </div>

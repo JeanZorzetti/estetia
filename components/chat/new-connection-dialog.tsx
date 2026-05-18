@@ -47,8 +47,13 @@ export function NewConnectionDialog({ open, onOpenChange }: NewConnectionDialogP
       const data = await res.json()
 
       if (!res.ok) {
-        if (res.status === 403 && data.requiredTier) {
-          toast.error('Faça upgrade para o plano PRO para usar o Chat Center')
+        if (res.status === 403) {
+          toast.error('Adicione o módulo WhatsApp à sua assinatura para usar o Chat Center.', {
+            action: {
+              label: 'Ver planos',
+              onClick: () => router.push('/dashboard/billing/plans'),
+            },
+          })
           return
         }
         throw new Error(data.error || 'Erro ao criar conexão')

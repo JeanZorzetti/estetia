@@ -58,13 +58,13 @@ export default async function TimeTrackingPage() {
             Time Tracking indisponível
           </h2>
           <p className="mt-2 max-w-md text-sm text-muted-foreground">
-            O controle de tempo requer o plano PRO ou superior.
+            Esse recurso está sendo reorganizado no nosso novo modelo de planos modulares.
           </p>
           <Link
-            href="/dashboard/billing"
+            href="/dashboard/billing/plans"
             className="mt-6 inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90"
           >
-            Fazer upgrade
+            Ver módulos
           </Link>
         </div>
       </div>

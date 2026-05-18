@@ -187,7 +187,7 @@ const NavLink = memo(function NavLink({
           )}
         >
           <Lock className="h-2.5 w-2.5" strokeWidth={2.5} />
-          Pro
+          Add-on
         </span>
       )}
 

@@ -327,16 +327,16 @@ export const helpArticles: HelpArticle[] = [
     slug: "multiplos-pipelines",
     category: "Pipeline e Negócios",
     categorySlug: "pipeline-negocios",
-    description: "Como gerenciar diferentes fluxos de venda com múltiplos pipelines (recurso PRO)",
+    description: "Como gerenciar diferentes fluxos de venda com múltiplos pipelines (módulo pago)",
     titleEn: "Creating Multiple Pipelines",
-    descriptionEn: "How to manage different sales flows with multiple pipelines (PRO feature)",
+    descriptionEn: "How to manage different sales flows with multiple pipelines (paid module)",
     lastUpdated: "2024-01-23",
     readTime: "4 min",
     content: {
       sections: [
         {
           title: "O que são múltiplos pipelines?",
-          content: "Múltiplos pipelines permitem que você tenha diferentes fluxos de venda dentro da mesma conta. Por exemplo: um pipeline para vendas diretas, outro para parcerias, e outro para renovações. Cada pipeline pode ter suas próprias etapas customizadas. Este é um recurso exclusivo do plano PRO.",
+          content: "Múltiplos pipelines permitem que você tenha diferentes fluxos de venda dentro da mesma conta. Por exemplo: um pipeline para vendas diretas, outro para parcerias, e outro para renovações. Cada pipeline pode ter suas próprias etapas customizadas. Este é um recurso exclusivo do plano com módulos avançados.",
         },
         {
           title: "Quando usar múltiplos pipelines?",
@@ -352,7 +352,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Criando um novo pipeline",
-          content: "Para criar um pipeline adicional (requer plano PRO):",
+          content: "Para criar um pipeline adicional (requer plano com módulos avançados):",
           steps: [
             "Vá em 'Configurações' > 'Pipelines'",
             "Clique em '+ Novo Pipeline'",
@@ -371,7 +371,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "What are multiple pipelines?",
-          content: "Multiple pipelines let you maintain different sales flows within the same account. For example: one pipeline for direct sales, another for partnerships, and another for renewals. Each pipeline can have its own custom stages. This is an exclusive PRO plan feature.",
+          content: "Multiple pipelines let you maintain different sales flows within the same account. For example: one pipeline for direct sales, another for partnerships, and another for renewals. Each pipeline can have its own custom stages. This is an paid module.",
         },
         {
           title: "When to use multiple pipelines?",
@@ -387,7 +387,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Creating a new pipeline",
-          content: "To create an additional pipeline (requires PRO plan):",
+          content: "To create an additional pipeline (requires paid plan):",
           steps: [
             "Go to Settings > Pipelines",
             "Click '+ New Pipeline'",
@@ -409,16 +409,16 @@ export const helpArticles: HelpArticle[] = [
     slug: "automacoes-email",
     category: "Automações",
     categorySlug: "automacoes",
-    description: "Aprenda a criar automações inteligentes baseadas nas etapas do pipeline (PRO)",
+    description: "Aprenda a criar automações inteligentes baseadas nas etapas do pipeline (módulo pago)",
     titleEn: "Setting Up Email Automations",
-    descriptionEn: "Learn how to create smart automations triggered by pipeline stages (PRO)",
+    descriptionEn: "Learn how to create smart automations triggered by pipeline stages (módulo pago)",
     lastUpdated: "2024-01-23",
     readTime: "6 min",
     content: {
       sections: [
         {
           title: "O que são automações de email?",
-          content: "Automações de email no Estetia CRM disparam mensagens automaticamente quando um deal muda de etapa. Por exemplo: quando um deal vai para 'Proposta', você pode enviar automaticamente um email de acompanhamento ao cliente. Este é um recurso exclusivo do plano PRO.",
+          content: "Automações de email no Estetia CRM disparam mensagens automaticamente quando um deal muda de etapa. Por exemplo: quando um deal vai para 'Proposta', você pode enviar automaticamente um email de acompanhamento ao cliente. Este é um recurso exclusivo do plano com módulos avançados.",
         },
         {
           title: "Criando sua primeira automação",
@@ -471,7 +471,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "What are email automations?",
-          content: "Email automations in Estetia CRM send messages automatically when a deal moves to a stage. For example: when a deal enters 'Proposal', you can automatically send a follow-up email to the client. This is an exclusive PRO plan feature.",
+          content: "Email automations in Estetia CRM send messages automatically when a deal moves to a stage. For example: when a deal enters 'Proposal', you can automatically send a follow-up email to the client. This is an paid module.",
         },
         {
           title: "Creating your first automation",
@@ -536,10 +536,10 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "Visão geral do Analytics",
-          content: "A página de Analytics mostra métricas em tempo real sobre seu desempenho comercial. Mesmo no plano FREE, você tem acesso a indicadores essenciais para acompanhar a saúde do seu funil.",
+          content: "A página de Analytics mostra métricas em tempo real sobre seu desempenho comercial. Mesmo no plano Gratuito, você tem acesso a indicadores essenciais para acompanhar a saúde do seu funil.",
         },
         {
-          title: "Métricas principais (disponíveis no FREE)",
+          title: "Métricas principais (disponíveis no Gratuito)",
           content: "Entenda cada métrica:",
           steps: [
             "Total de Deals - Quantidade de oportunidades ativas no pipeline",
@@ -561,8 +561,8 @@ export const helpArticles: HelpArticle[] = [
           ],
         },
         {
-          title: "Analytics PRO - O próximo nível",
-          content: "No plano PRO, você desbloqueia:",
+          title: "Analytics Avançado - O próximo nível",
+          content: "No plano com módulos avançados, você desbloqueia:",
           steps: [
             "Forecasting - Previsão de faturamento baseada em probabilidades",
             "Análise por vendedor - Performance individual de cada rep",
@@ -578,10 +578,10 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "Analytics overview",
-          content: "The Analytics page shows real-time metrics about your sales performance. Even on the FREE plan, you have access to essential indicators to track the health of your funnel.",
+          content: "The Analytics page shows real-time metrics about your sales performance. Even on the Free plan, you have access to essential indicators to track the health of your funnel.",
         },
         {
-          title: "Key metrics (available on FREE)",
+          title: "Key metrics (available on Gratuito)",
           content: "Understanding each metric:",
           steps: [
             "Total Deals — Number of active opportunities in the pipeline",
@@ -603,8 +603,8 @@ export const helpArticles: HelpArticle[] = [
           ],
         },
         {
-          title: "PRO Analytics — the next level",
-          content: "On the PRO plan, you unlock:",
+          title: "Advanced Analytics — the next level",
+          content: "On the paid plan, you unlock:",
           steps: [
             "Forecasting — Revenue projection based on pipeline probabilities",
             "Rep-level analysis — Individual performance for each salesperson",
@@ -763,9 +763,9 @@ export const helpArticles: HelpArticle[] = [
     slug: "permissoes-equipe",
     category: "Equipe e Configurações",
     categorySlug: "equipe",
-    description: "Como adicionar usuários e configurar níveis de acesso (PRO)",
+    description: "Como adicionar usuários e configurar níveis de acesso (módulo pago)",
     titleEn: "Managing Team Permissions",
-    descriptionEn: "How to add users and configure access levels (PRO)",
+    descriptionEn: "How to add users and configure access levels (módulo pago)",
     lastUpdated: "2024-01-23",
     readTime: "5 min",
     content: {
@@ -780,7 +780,7 @@ export const helpArticles: HelpArticle[] = [
           ],
         },
         {
-          title: "Adicionando membros à equipe (PRO)",
+          title: "Adicionando membros à equipe (módulo pago)",
           content: "Para convidar novos usuários:",
           steps: [
             "Vá em Configurações > Equipe",
@@ -793,7 +793,7 @@ export const helpArticles: HelpArticle[] = [
           tips: [
             "Comece adicionando membros como 'Member' - você pode promover depois",
             "Apenas Owners podem gerenciar a assinatura e pagamentos",
-            "Cada usuário no plano PRO tem custo adicional - veja a tabela de preços",
+            "Cada usuário no plano com módulos avançados tem custo adicional - veja a tabela de preços",
           ],
         },
         {
@@ -830,7 +830,7 @@ export const helpArticles: HelpArticle[] = [
           ],
         },
         {
-          title: "Adding team members (PRO)",
+          title: "Adding team members (módulo pago)",
           content: "To invite new users:",
           steps: [
             "Go to Settings > Team",
@@ -843,7 +843,7 @@ export const helpArticles: HelpArticle[] = [
           tips: [
             "Start by adding members as 'Member' — you can promote them later",
             "Only Owners can manage the subscription and payments",
-            "Each additional user on the PRO plan has an extra cost — see pricing",
+            "Each additional user on the paid plan has an extra cost — see pricing",
           ],
         },
         {
@@ -864,132 +864,6 @@ export const helpArticles: HelpArticle[] = [
             "Review permissions quarterly",
             "Remove inactive users to reduce costs",
             "Use Member visibility limits to encourage ownership",
-          ],
-        },
-      ],
-    },
-  },
-
-  {
-    title: "Diferenças entre plano FREE e PRO",
-    slug: "free-vs-pro",
-    category: "Planos e Billing",
-    categorySlug: "planos",
-    description: "Entenda os recursos disponíveis em cada plano e quando fazer upgrade",
-    titleEn: "FREE vs PRO Plan Differences",
-    descriptionEn: "Understand the features available in each plan and when to upgrade",
-    lastUpdated: "2024-01-23",
-    readTime: "4 min",
-    content: {
-      sections: [
-        {
-          title: "Visão geral dos planos",
-          content: "O Estetia CRM oferece 2 planos: FREE (gratuito para sempre) e PRO (pago, com recursos avançados). Ambos incluem deals ilimitados, contatos ilimitados e o pipeline Kanban visual.",
-        },
-        {
-          title: "O que está incluído no FREE?",
-          content: "O plano gratuito é robusto e perfeito para freelancers ou pequenas equipes:",
-          steps: [
-            "Deals ilimitados",
-            "Contatos ilimitados",
-            "1 Pipeline com etapas personalizáveis",
-            "Kanban board visual",
-            "Analytics básico (métricas essenciais)",
-            "Integração com WhatsApp",
-            "1 usuário (você)",
-          ],
-        },
-        {
-          title: "O que você ganha no PRO?",
-          content: "O plano PRO desbloqueia recursos para equipes e operações mais sofisticadas:",
-          steps: [
-            "Tudo do FREE +",
-            "Pipelines ilimitados (múltiplos fluxos de venda)",
-            "Usuários ilimitados (adicione sua equipe)",
-            "Email Automations (automações inteligentes)",
-            "Analytics PRO (forecasting, relatórios avançados)",
-            "Controle de permissões (Owner/Admin/Member)",
-            "Suporte prioritário",
-            "Exportação de dados (CSV/Excel)",
-          ],
-        },
-        {
-          title: "Quando fazer upgrade para PRO?",
-          content: "Considere o PRO quando você:",
-          tips: [
-            "Tiver mais de 1 pessoa na equipe comercial",
-            "Precisar de processos de venda diferentes (múltiplos pipelines)",
-            "Quiser automatizar follow-ups e nutrir leads",
-            "Precisar de forecasting para bater metas",
-            "Quiser controle granular de permissões",
-          ],
-        },
-        {
-          title: "Como fazer upgrade?",
-          content: "Para mudar para o plano PRO:",
-          steps: [
-            "Vá em Configurações > Assinatura",
-            "Clique em 'Fazer Upgrade para PRO'",
-            "Escolha entre pagamento mensal ou anual (desconto de 20% no anual)",
-            "Complete o pagamento via cartão de crédito",
-            "Pronto! Recursos PRO liberados imediatamente",
-          ],
-        },
-      ],
-    },
-    contentEn: {
-      sections: [
-        {
-          title: "Plan overview",
-          content: "Estetia CRM offers 2 plans: FREE (free forever) and PRO (paid, with advanced features). Both include unlimited deals, unlimited contacts, and the visual Kanban pipeline.",
-        },
-        {
-          title: "What's included in FREE?",
-          content: "The free plan is robust and perfect for freelancers or small teams:",
-          steps: [
-            "Unlimited deals",
-            "Unlimited contacts",
-            "1 Pipeline with customizable stages",
-            "Visual Kanban board",
-            "Basic analytics (essential metrics)",
-            "WhatsApp integration",
-            "1 user (you)",
-          ],
-        },
-        {
-          title: "What you get with PRO?",
-          content: "The PRO plan unlocks features for teams and more sophisticated operations:",
-          steps: [
-            "Everything in FREE +",
-            "Unlimited pipelines (multiple sales flows)",
-            "Unlimited users (add your team)",
-            "Email Automations (smart automations)",
-            "PRO Analytics (forecasting, advanced reports)",
-            "Permission control (Owner/Admin/Member)",
-            "Priority support",
-            "Data export (CSV/Excel)",
-          ],
-        },
-        {
-          title: "When to upgrade to PRO?",
-          content: "Consider PRO when you:",
-          tips: [
-            "Have more than 1 person on the sales team",
-            "Need different sales processes (multiple pipelines)",
-            "Want to automate follow-ups and nurture leads",
-            "Need forecasting to hit your targets",
-            "Want granular permission control",
-          ],
-        },
-        {
-          title: "How to upgrade?",
-          content: "To switch to the PRO plan:",
-          steps: [
-            "Go to Settings > Subscription",
-            "Click 'Upgrade to PRO'",
-            "Choose between monthly or annual billing (20% discount on annual)",
-            "Complete payment by credit card",
-            "Done! PRO features are unlocked immediately",
           ],
         },
       ],
@@ -1131,7 +1005,7 @@ export const helpArticles: HelpArticle[] = [
             "Filtro por período - Deals criados em um range de datas",
             "Filtro por valor - Deals acima de um valor mínimo",
             "Filtro por etapa - Focar em uma fase específica",
-            "Filtro por pipeline - Alternar entre pipelines (PRO)",
+            "Filtro por pipeline - Alternar entre pipelines (módulo pago)",
           ],
         },
         {
@@ -1165,7 +1039,7 @@ export const helpArticles: HelpArticle[] = [
             "Date range filter — Deals created within a date range",
             "Value filter — Deals above a minimum value",
             "Stage filter — Focus on a specific pipeline phase",
-            "Pipeline filter — Switch between pipelines (PRO)",
+            "Pipeline filter — Switch between pipelines (módulo pago)",
           ],
         },
         {
@@ -1647,16 +1521,16 @@ export const helpArticles: HelpArticle[] = [
     slug: "exportar-dados",
     category: "Analytics e Relatórios",
     categorySlug: "analytics",
-    description: "Como exportar seus deals e contatos para Excel ou CSV (PRO)",
+    description: "Como exportar seus deals e contatos para Excel ou CSV (módulo pago)",
     titleEn: "Exporting Data for Analysis",
-    descriptionEn: "How to export your deals and contacts to Excel or CSV (PRO)",
+    descriptionEn: "How to export your deals and contacts to Excel or CSV (módulo pago)",
     lastUpdated: "2024-01-23",
     readTime: "3 min",
     content: {
       sections: [
         {
           title: "Por que exportar dados?",
-          content: "Embora o Estetia tenha analytics integrado, às vezes você precisa fazer análises mais profundas em ferramentas especializadas como Excel, Power BI ou Google Sheets. A exportação de dados (recurso PRO) permite isso.",
+          content: "Embora o Estetia tenha analytics integrado, às vezes você precisa fazer análises mais profundas em ferramentas especializadas como Excel, Power BI ou Google Sheets. A exportação de dados (módulo pago) permite isso.",
         },
         {
           title: "O que pode ser exportado?",
@@ -1703,7 +1577,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "Why export data?",
-          content: "While Estetia has built-in analytics, sometimes you need deeper analysis in specialized tools like Excel, Power BI, or Google Sheets. Data export (PRO feature) enables exactly that.",
+          content: "While Estetia has built-in analytics, sometimes you need deeper analysis in specialized tools like Excel, Power BI, or Google Sheets. Data export (paid module) enables exactly that.",
         },
         {
           title: "What can be exported?",
@@ -1823,20 +1697,20 @@ export const helpArticles: HelpArticle[] = [
   },
 
   {
-    title: "Analytics PRO: Forecasting de vendas",
+    title: "Analytics Avançado: Forecasting de vendas",
     slug: "forecasting-vendas",
     category: "Analytics e Relatórios",
     categorySlug: "analytics",
-    description: "Como usar o forecasting para prever faturamento e bater metas (PRO)",
-    titleEn: "PRO Analytics: Sales Forecasting",
-    descriptionEn: "How to use forecasting to predict revenue and hit your targets (PRO)",
+    description: "Como usar o forecasting para prever faturamento e bater metas (módulo pago)",
+    titleEn: "Advanced Analytics: Sales Forecasting",
+    descriptionEn: "How to use forecasting to predict revenue and hit your targets (módulo pago)",
     lastUpdated: "2024-01-23",
     readTime: "5 min",
     content: {
       sections: [
         {
           title: "O que é Forecasting?",
-          content: "Forecasting é a previsão de receita baseada nos deals atuais no pipeline. O Estetia CRM analisa seus deals, aplica probabilidades de fechamento por etapa, e calcula quanto você provavelmente vai faturar no mês/trimestre. Este é um recurso exclusivo do plano PRO.",
+          content: "Forecasting é a previsão de receita baseada nos deals atuais no pipeline. O Estetia CRM analisa seus deals, aplica probabilidades de fechamento por etapa, e calcula quanto você provavelmente vai faturar no mês/trimestre. Este é um recurso exclusivo do plano com módulos avançados.",
         },
         {
           title: "Como funciona o cálculo?",
@@ -1856,7 +1730,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Interpretando os números",
-          content: "Na página Analytics PRO, você vê 3 cenários:",
+          content: "Na página Analytics Avançado, você vê 3 cenários:",
           steps: [
             "Pessimista - Assume que só os deals em estágio final fecham (80% de probabilidade)",
             "Realista - Calcula baseado nas probabilidades médias de cada etapa",
@@ -1879,7 +1753,7 @@ export const helpArticles: HelpArticle[] = [
       sections: [
         {
           title: "What is Forecasting?",
-          content: "Forecasting is revenue prediction based on current pipeline deals. Estetia CRM analyzes your deals, applies closing probabilities by stage, and calculates how much you will likely bill this month or quarter. This is an exclusive PRO plan feature.",
+          content: "Forecasting is revenue prediction based on current pipeline deals. Estetia CRM analyzes your deals, applies closing probabilities by stage, and calculates how much you will likely bill this month or quarter. This is an paid module.",
         },
         {
           title: "How is the forecast calculated?",
@@ -1899,7 +1773,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Interpreting the numbers",
-          content: "On the PRO Analytics page, you see 3 scenarios:",
+          content: "On the Advanced Analytics page, you see 3 scenarios:",
           steps: [
             "Pessimistic — Assumes only deals in late stages close (80% probability)",
             "Realistic — Calculated using average probabilities for each stage",
@@ -2053,7 +1927,7 @@ export const helpArticles: HelpArticle[] = [
           content: "Para fazer upgrade ou downgrade:",
           steps: [
             "Em Configurações > Assinatura, clique em 'Mudar Plano'",
-            "Escolha o novo plano (Mensal, Anual, ou downgrade para FREE)",
+            "Escolha o novo plano (Mensal, Anual, ou downgrade para Gratuito)",
             "Se upgrade: mudança é imediata, você paga proporcional até o fim do ciclo",
             "Se downgrade: mudança acontece no fim do ciclo atual (você não perde dias pagos)",
             "Confirme a mudança",
@@ -2061,16 +1935,16 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Cancelando assinatura",
-          content: "Para cancelar o plano PRO e voltar ao FREE:",
+          content: "Para cancelar o plano com módulos avançados e voltar ao Gratuito:",
           steps: [
             "Vá em Configurações > Assinatura",
             "Role até o final e clique em 'Cancelar Assinatura'",
             "Informe o motivo (opcional, mas nos ajuda a melhorar)",
             "Confirme o cancelamento",
-            "Seu plano PRO continua ativo até o fim do período pago",
-            "Após o vencimento, você volta automaticamente ao FREE",
+            "Seu plano com módulos avançados continua ativo até o fim do período pago",
+            "Após o vencimento, você volta automaticamente ao Gratuito",
           ],
-          warning: "No plano FREE, você perde: múltiplos pipelines, email automations, usuários adicionais e analytics PRO. Seus dados são preservados.",
+          warning: "No plano Gratuito, você perde: múltiplos pipelines, email automations, usuários adicionais e analytics avançado. Seus dados são preservados.",
         },
         {
           title: "Histórico de faturas",
@@ -2103,7 +1977,7 @@ export const helpArticles: HelpArticle[] = [
           content: "To upgrade or downgrade:",
           steps: [
             "In Settings > Subscription, click 'Change Plan'",
-            "Choose the new plan (Monthly, Annual, or downgrade to FREE)",
+            "Choose the new plan (Monthly, Annual, or downgrade to Gratuito)",
             "If upgrading: change is immediate, you pay prorated to end of cycle",
             "If downgrading: change takes effect at the end of the current cycle (no lost paid days)",
             "Confirm the change",
@@ -2111,16 +1985,16 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Cancelling subscription",
-          content: "To cancel the PRO plan and return to FREE:",
+          content: "To cancel the paid plan and return to Gratuito:",
           steps: [
             "Go to Settings > Subscription",
             "Scroll to the bottom and click 'Cancel Subscription'",
             "Provide a reason (optional, but it helps us improve)",
             "Confirm the cancellation",
-            "Your PRO plan remains active until the end of the paid period",
-            "After expiry, you automatically return to FREE",
+            "Your paid plan remains active until the end of the paid period",
+            "After expiry, you automatically return to Gratuito",
           ],
-          warning: "On the FREE plan, you lose: multiple pipelines, email automations, additional users, and PRO analytics. Your data is preserved.",
+          warning: "On the Free plan, you lose: multiple pipelines, email automations, additional users, and advanced analytics. Your data is preserved.",
         },
         {
           title: "Invoice history",
@@ -2497,7 +2371,7 @@ export const helpArticles: HelpArticle[] = [
             "Verifique sua caixa de spam - o email pode ter ido para lá",
             "Limpe o cache do navegador (Ctrl+Shift+Delete)",
             "Tente em navegador diferente ou modo anônimo",
-            "Se ainda não funcionar, contate suporte@siriuscrm.com.br",
+            "Se ainda não funcionar, contate suporte@estetiacrm.com.br",
           ],
         },
         {
@@ -2555,7 +2429,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Ainda com problemas?",
-          content: "Se nenhuma solução acima resolver, entre em contato com nosso suporte: suporte@siriuscrm.com.br ou abra um chat dentro do sistema. Inclua screenshots e descrição detalhada do problema.",
+          content: "Se nenhuma solução acima resolver, entre em contato com nosso suporte: suporte@estetiacrm.com.br ou abra um chat dentro do sistema. Inclua screenshots e descrição detalhada do problema.",
         },
       ],
     },
@@ -2570,7 +2444,7 @@ export const helpArticles: HelpArticle[] = [
             "Check your spam folder — the email may have landed there",
             "Clear browser cache (Ctrl+Shift+Delete)",
             "Try a different browser or incognito mode",
-            "If it still does not work, contact support@siriuscrm.com.br",
+            "If it still does not work, contact support@estetiacrm.com.br",
           ],
         },
         {
@@ -2628,7 +2502,7 @@ export const helpArticles: HelpArticle[] = [
         },
         {
           title: "Still having issues?",
-          content: "If none of the above resolves the issue, contact our support at support@siriuscrm.com.br or open a chat inside the system. Include screenshots and a detailed description of the problem.",
+          content: "If none of the above resolves the issue, contact our support at support@estetiacrm.com.br or open a chat inside the system. Include screenshots and a detailed description of the problem.",
         },
       ],
     },

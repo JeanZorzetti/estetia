@@ -1,11 +1,10 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { ChevronLeft, BarChart3 } from 'lucide-react'
+import { ChevronLeft, BarChart3, Lock } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { getOrganizationEntitlements } from '@/lib/feature-gates'
-import { UpgradePrompt } from '@/components/upgrade/upgrade-prompt'
 import { AnalyticsDashboard } from '@/components/tasks/analytics/analytics-dashboard'
 import { AnalyticsProjectFilter } from '@/components/tasks/analytics/analytics-project-filter'
 
@@ -49,7 +48,7 @@ export default async function TasksAnalyticsPage({ params, searchParams }: Props
 
   const selectedProject = projects.find((p) => p.id === projectId) ?? null
 
-  // Gate: feature bloqueada para FREE e STARTER
+  // Gate: feature bloqueada quando não está nos entitlements modulares
   if (!entitlements.features.taskAnalytics) {
     return (
       <div className="flex-1 space-y-6">
@@ -75,7 +74,25 @@ export default async function TasksAnalyticsPage({ params, searchParams }: Props
           </div>
         </div>
 
-        <UpgradePrompt feature="Analytics de Tarefas" requiredTier="PRO" />
+        <div className="rounded-2xl border border-border/50 bg-card p-6 sm:p-8">
+          <div className="flex items-start gap-3">
+            <Lock className="h-5 w-5 mt-0.5 shrink-0 text-muted-foreground" />
+            <div className="space-y-3">
+              <div>
+                <h2 className="text-base font-semibold text-foreground">Recurso em revisão</h2>
+                <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+                  Esta página faz parte de funcionalidades que estão sendo reorganizadas no nosso novo modelo de planos modulares.
+                </p>
+              </div>
+              <Link
+                href="/dashboard/billing/plans"
+                className="inline-flex items-center gap-1 text-xs font-medium text-foreground/80 underline underline-offset-4 hover:text-foreground transition-colors"
+              >
+                Ver módulos disponíveis
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

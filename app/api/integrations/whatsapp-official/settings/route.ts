@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
     if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
       return NextResponse.json(
-        { error: 'Integração WhatsApp Oficial disponível apenas no plano PRO' },
+        { error: 'Adicione o módulo WhatsApp Oficial à sua assinatura para liberar esta integração.' },
         { status: 403 }
       )
     }

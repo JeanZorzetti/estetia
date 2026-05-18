@@ -25,10 +25,9 @@ export async function POST(request: Request) {
 
         const orgId = user.organization.id
 
-        // Check PRO or BUSINESS plan requirement
         if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
             return NextResponse.json(
-                { error: 'Integração N8N disponível apenas no plano PRO' },
+                { error: 'Adicione o módulo N8N à sua assinatura para liberar esta integração.' },
                 { status: 403 }
             )
         }

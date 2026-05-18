@@ -1,11 +1,17 @@
 /**
- * Entitlements System
+ * Entitlements System — Legacy tier-based (FREE / STARTER / PRO / BUSINESS).
  *
- * Define os limites e recursos disponíveis por tier de plano
- * FREE → STARTER → PRO → BUSINESS
+ * @deprecated Os planos por tier foram substituídos pelo modelo modular em
+ * `/dashboard/billing/plans` (módulos individuais: `prontuario`, `recall`, etc.).
+ * Este arquivo é mantido apenas para:
+ *   - Limites quantitativos não-expostos na UI (max users/contacts/deals).
+ *   - `isTrialActive()` / `isReadOnly()` durante o trial inicial de 7 dias.
+ *   - Compatibilidade com scripts admin, webhooks (MercadoPago) e crons que
+ *     ainda leem `Organization.tier`.
  *
- * Trial: novos usuários recebem 7 dias com acesso PRO completo.
- * Após expirar sem pagamento: conta vai para read-only (pode ver, não pode criar/editar).
+ * NÃO use `canUseFeature(tier, ...)` ou `PLAN_NAMES` em código novo.
+ * Para gating de features, use `lib/guards/require-module.ts` e
+ * `lib/module-map.ts`.
  */
 
 import { SubscriptionTier } from '@prisma/client'

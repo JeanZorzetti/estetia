@@ -17,11 +17,7 @@ import {
 import { Loader2, XCircle } from 'lucide-react'
 import { toast } from 'sonner'
 
-interface Props {
-  planName: string
-}
-
-export function CancelSubscriptionButton({ planName }: Props) {
+export function CancelSubscriptionButton() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -36,7 +32,7 @@ export function CancelSubscriptionButton({ planName }: Props) {
         return
       }
 
-      toast.success('Assinatura cancelada. Seu plano foi revertido para Gratuito.')
+      toast.success('Assinatura cancelada com sucesso.')
       router.refresh()
     } catch {
       toast.error('Erro ao cancelar assinatura')
@@ -55,13 +51,10 @@ export function CancelSubscriptionButton({ planName }: Props) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Cancelar plano {planName}?</AlertDialogTitle>
+          <AlertDialogTitle>Cancelar assinatura?</AlertDialogTitle>
           <AlertDialogDescription className="space-y-2">
             <span className="block">
-              Ao confirmar, sua assinatura será cancelada imediatamente e o plano revertido para <strong>Gratuito</strong>.
-            </span>
-            <span className="block text-sm">
-              Você perderá acesso a todos os recursos do plano {planName}: contatos extras, pipelines, automações e agentes IA.
+              Ao confirmar, sua assinatura será cancelada imediatamente e você perderá o acesso aos módulos contratados.
             </span>
             <span className="block text-sm font-medium text-destructive">
               Esta ação não pode ser desfeita.

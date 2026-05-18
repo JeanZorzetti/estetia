@@ -137,7 +137,7 @@ export function TimeTrackerWidget({ taskId, locked = false }: TimeTrackerWidgetP
         <Clock className="mx-auto h-8 w-8 text-muted-foreground/50" />
         <h3 className="mt-2 text-sm font-semibold">Time Tracking</h3>
         <p className="mt-1 text-xs text-muted-foreground">
-          Disponível no plano PRO ou superior.
+          Em revisão no nosso novo modelo modular.
         </p>
       </div>
     )

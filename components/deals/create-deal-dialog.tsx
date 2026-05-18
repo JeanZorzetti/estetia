@@ -3,9 +3,10 @@
 import { useTranslations } from 'next-intl'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Plus, MessageCircle, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { FeatureGateModal } from '@/components/dashboard/billing/feature-gate-modal'
 import { trackDealCreated, trackContactCreated } from '@/lib/analytics'
 import {
     ResponsiveDialog,
@@ -61,11 +62,21 @@ export function CreateDealDialog({
     onOpenChange?: (open: boolean) => void,
 }) {
     const tCommon = useTranslations('common')
+    const router = useRouter()
     const [internalOpen, setInternalOpen] = useState(false)
     const open = externalOpen !== undefined ? externalOpen : internalOpen
     const setOpen = externalOnOpenChange ?? setInternalOpen
-    const [showUpgradeModal, setShowUpgradeModal] = useState(false)
     const [loading, setLoading] = useState(false)
+
+    const notifyLimitReached = () => {
+        toast.error('Limite de negócios do plano atingido.', {
+            description: 'Adicione mais módulos à sua assinatura para liberar.',
+            action: {
+                label: 'Ver planos',
+                onClick: () => router.push('/dashboard/billing/plans'),
+            },
+        })
+    }
     const [selectedContactId, setSelectedContactId] = useState<string>('')
     const [showNewContact, setShowNewContact] = useState(false)
     const [contacts, setContacts] = useState<Contact[]>(initialContacts)
@@ -76,7 +87,7 @@ export function CreateDealDialog({
         if (newOpen) {
             // Check limits
             if (!isPro && dealCount >= 10) {
-                setShowUpgradeModal(true)
+                notifyLimitReached()
                 return
             }
         }
@@ -174,7 +185,7 @@ export function CreateDealDialog({
 
                 // Handle specific errors
                 if (result.error?.includes('10 negócios')) {
-                    setShowUpgradeModal(true)
+                    notifyLimitReached()
                 } else {
                     alert("Erro ao criar negócio: " + (result.error || 'Erro desconhecido'))
                 }
@@ -193,13 +204,6 @@ export function CreateDealDialog({
 
     return (
         <>
-            <FeatureGateModal
-                isOpen={showUpgradeModal}
-                onClose={() => setShowUpgradeModal(false)}
-                title="Limite de Negócios Atingido"
-                description="O plano gratuito permite até 10 negócios no pipeline. Faça upgrade para remover este limite."
-            />
-
             <ResponsiveDialog open={open} onOpenChange={handleOpenChange}>
                 <ResponsiveDialogTrigger asChild>
                     <Button>

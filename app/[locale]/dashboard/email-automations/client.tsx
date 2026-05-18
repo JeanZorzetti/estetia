@@ -253,14 +253,14 @@ export function EmailAutomationsClient({
                 <div className="mx-auto mb-4 p-3 bg-muted rounded-full w-fit">
                   <Lock className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <CardTitle>Analytics de Email - PRO</CardTitle>
+                <CardTitle>Analytics de Email</CardTitle>
                 <CardDescription>
-                  Faça upgrade para o plano PRO e desbloqueie analytics detalhados de email
+                  Adicione o módulo de Analytics Avançado à sua assinatura para desbloquear métricas detalhadas de email.
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
                 <p className="text-sm text-muted-foreground mb-4">
-                  Com o plano PRO você terá acesso a:
+                  Com este módulo você terá acesso a:
                 </p>
                 <ul className="text-sm space-y-2 mb-6">
                   <li>✅ Taxa de entrega e abertura</li>

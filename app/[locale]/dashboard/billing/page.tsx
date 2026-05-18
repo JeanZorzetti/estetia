@@ -546,10 +546,10 @@ export default async function BillingPage() {
           <div className="flex-1 min-w-0">
             <p className={`text-sm font-medium ${daysLeft <= 2 ? 'text-orange-700 dark:text-orange-400' : 'text-foreground'}`}>
               {daysLeft === 0
-                ? 'Último dia do trial PRO'
-                : `Trial PRO ativo — ${daysLeft} dia${daysLeft !== 1 ? 's' : ''} restante${daysLeft !== 1 ? 's' : ''}`}
+                ? 'Último dia do trial'
+                : `Trial ativo — ${daysLeft} dia${daysLeft !== 1 ? 's' : ''} restante${daysLeft !== 1 ? 's' : ''}`}
             </p>
-            <p className="text-xs text-muted-foreground">Você tem acesso completo ao plano PRO durante o trial.</p>
+            <p className="text-xs text-muted-foreground">Você tem acesso completo a todos os módulos durante o trial.</p>
           </div>
           <Button asChild size="sm" className="shrink-0">
             <Link href="/dashboard/billing/plans">Fazer upgrade</Link>
@@ -582,7 +582,9 @@ export default async function BillingPage() {
               </div>
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <CardTitle className="text-lg">Plano {tierLabel}</CardTitle>
+                  <CardTitle className="text-lg">
+                    {isFounder ? 'Plano Fundador' : isPaid ? 'Assinatura ativa' : 'Plano atual'}
+                  </CardTitle>
                   {isFounder && (
                     <Badge className="bg-amber-500 text-white text-xs">Fundador #{founderNumber}</Badge>
                   )}
@@ -596,7 +598,11 @@ export default async function BillingPage() {
                   )}
                 </div>
                 <CardDescription className="mt-0.5">
-                  {isFounder ? 'Preço vitalício garantido — nunca sobe' : PLAN_DESCRIPTIONS[tier]}
+                  {isFounder
+                    ? 'Preço vitalício garantido — nunca sobe'
+                    : isPaid
+                      ? 'Sua assinatura está ativa.'
+                      : 'Monte seu plano combinando os módulos que sua clínica usa.'}
                 </CardDescription>
               </div>
             </div>
@@ -619,7 +625,7 @@ export default async function BillingPage() {
           <CardContent className="pt-0">
             <div className="border-t border-border/50 pt-4 flex items-center justify-between gap-4 flex-wrap">
               <p className="text-sm text-muted-foreground">
-                Starter R$67 · Pro R$147 · Business R$397/mês
+                Monte seu plano combinando os módulos que sua clínica usa.
               </p>
               <Button asChild size="sm">
                 <Link href="/dashboard/billing/plans">
@@ -633,7 +639,7 @@ export default async function BillingPage() {
         {isPaid && !isFounder && (
           <CardContent className="pt-0">
             <div className="border-t border-border/50 pt-4 flex justify-end">
-              <CancelSubscriptionButton planName={tierLabel} />
+              <CancelSubscriptionButton />
             </div>
           </CardContent>
         )}

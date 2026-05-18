@@ -93,7 +93,7 @@ export async function POST(
       await requireFeature(user.organizationId, 'taskDependencies')
     } catch {
       return NextResponse.json(
-        { error: 'Dependências de tarefas requerem o plano PRO ou superior.' },
+        { error: 'Dependências de tarefas não estão disponíveis no seu plano atual.' },
         { status: 403 }
       )
     }
