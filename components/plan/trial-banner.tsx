@@ -8,6 +8,7 @@ type TrialBannerProps = {
   trialEndsAt: Date | null
   trialStatus: string | null
   tier: string
+  hasModularSubscription: boolean
 }
 
 function getDaysRemaining(endsAt: Date): number {
@@ -15,7 +16,8 @@ function getDaysRemaining(endsAt: Date): number {
   return Math.max(0, Math.ceil(ms / (1000 * 60 * 60 * 24)))
 }
 
-export function TrialBanner({ trialEndsAt, trialStatus, tier }: TrialBannerProps) {
+export function TrialBanner({ trialEndsAt, trialStatus, tier, hasModularSubscription }: TrialBannerProps) {
+  if (hasModularSubscription) return null
   if (tier !== 'FREE') return null
 
   const isExpired = !trialEndsAt || trialStatus === 'EXPIRED' || new Date(trialEndsAt) <= new Date()

@@ -14,6 +14,7 @@ export type DashboardUser = {
     tier: string
     trialEndsAt: string | null  // ISO string — safe to serialize via cache
     trialStatus: string | null
+    asaasSubscriptionId: string | null
   }
   features: RoleFeatures
 }
@@ -29,7 +30,7 @@ const getDashboardUserUncached = async (email: string): Promise<DashboardUser | 
       orgRole: true,
       organizationId: true,
       organization: {
-        select: { tier: true, trialEndsAt: true, trialStatus: true }
+        select: { tier: true, trialEndsAt: true, trialStatus: true, asaasSubscriptionId: true }
       }
     }
   })
@@ -43,6 +44,7 @@ const getDashboardUserUncached = async (email: string): Promise<DashboardUser | 
     organization: {
       ...user.organization,
       trialEndsAt: user.organization.trialEndsAt?.toISOString() ?? null,
+      asaasSubscriptionId: user.organization.asaasSubscriptionId ?? null,
     },
     features,
   }

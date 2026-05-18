@@ -139,6 +139,8 @@ export interface AsaasPayment {
   value: number
   netValue?: number
   status: string
+  dueDate?: string       // YYYY-MM-DD
+  description?: string
   invoiceUrl?: string
   bankSlipUrl?: string
   pixQrCodeUrl?: string

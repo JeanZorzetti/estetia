@@ -29,6 +29,7 @@ export default async function DashboardLayout({
     tier: dbUser.organization.tier,
     trialEndsAt: dbUser.organization.trialEndsAt ? new Date(dbUser.organization.trialEndsAt) : null,
     trialStatus: dbUser.organization.trialStatus,
+    hasModularSubscription: !!dbUser.organization.asaasSubscriptionId,
   }
 
   return (
@@ -46,6 +47,7 @@ export default async function DashboardLayout({
             tier={orgTrialInfo.tier}
             trialEndsAt={orgTrialInfo.trialEndsAt}
             trialStatus={orgTrialInfo.trialStatus}
+            hasModularSubscription={orgTrialInfo.hasModularSubscription}
           />
 
           {/* Mobile app bar — contextual per route */}
