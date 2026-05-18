@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import { Wallet, Building2, FileCheck2, RefreshCw } from 'lucide-react'
 import { HubCard } from '@/components/financeiro/hub-card'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,6 +16,9 @@ const formatBRLShort = (v: number) => {
 export default async function FinanceiroPage() {
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
+
+  const gate = await requireModule('financeiro')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

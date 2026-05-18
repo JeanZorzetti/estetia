@@ -4,12 +4,17 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { RecallRulesList } from '@/components/recall/recall-rules-list'
 import { RecallKpis } from '@/components/recall/recall-kpis'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const dynamic = 'force-dynamic'
 
 export default async function RecallPage() {
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
+
+  const gate = await requireModule('recall')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

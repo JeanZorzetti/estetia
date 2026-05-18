@@ -6,6 +6,9 @@ import Image from 'next/image'
 import { Logo } from '@/components/brand/logo'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { moduleForRoute, hasModuleAccess } from '@/lib/module-map'
+import { useActiveModules } from '@/lib/hooks/use-active-modules'
+import { ModuleUpgradeModal } from '@/components/upgrade/module-upgrade-modal'
 import {
   // Clinical navigation icons
   Home, CalendarDays, Heart, ClipboardList, Syringe,
@@ -13,6 +16,8 @@ import {
   DollarSign, BarChart3, ShieldCheck,
   Users, UserCheck, DoorOpen, Plug, CreditCard,
   Building2,
+  // Gating icon
+  Lock,
   // UI & account icons
   Settings, LogOut, Sparkles, LifeBuoy, Gift,
   // ── B2B icons kept for reference (not used in clinical nav) ──
@@ -26,6 +31,8 @@ type NavItem = {
   title: string
   href: string
   icon: React.ComponentType<{ className?: string }>
+  // Set at runtime by SidebarInner when the item maps to a non-active module.
+  lockedSlug?: string
 }
 
 type NavSection = {
@@ -121,49 +128,92 @@ const NavLink = memo(function NavLink({
   item,
   pathname,
   open,
+  locked,
+  onLockedClick,
 }: {
   item: NavItem
   pathname: string
   open: boolean
+  locked?: boolean
+  onLockedClick?: (slug: string) => void
 }) {
   const Icon = item.icon
   const isActive =
     pathname === item.href ||
     (item.href !== '/dashboard' && pathname.startsWith(item.href))
 
-  return (
-    <Link
-      href={item.href}
-      className={cn(
-        'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 relative overflow-hidden',
-        !open ? 'justify-center px-2' : '',
-        isActive
-          ? 'text-[#0a1f3d] dark:text-[#c5a059] bg-[#0a1f3d]/8 dark:bg-[#c5a059]/10'
-          : 'text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
-      )}
-    >
-      {isActive && (
+  const baseClass = cn(
+    'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 relative overflow-hidden',
+    !open ? 'justify-center px-2' : '',
+    locked
+      ? 'text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400 hover:bg-black/[0.03] dark:hover:bg-white/[0.03] cursor-pointer'
+      : isActive
+        ? 'text-[#0a1f3d] dark:text-[#c5a059] bg-[#0a1f3d]/8 dark:bg-[#c5a059]/10'
+        : 'text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5',
+  )
+
+  const content = (
+    <>
+      {isActive && !locked && (
         <div className="absolute inset-0 bg-[#0a1f3d]/8 dark:bg-[#c5a059]/10 border-l-2 border-[#0a1f3d] dark:border-[#c5a059]" />
       )}
       <Icon
         className={cn(
           'h-4 w-4 z-10 flex-shrink-0 transition-colors',
-          isActive
-            ? 'text-[#0a1f3d] dark:text-[#c5a059]'
-            : 'text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-300'
+          locked
+            ? 'opacity-50'
+            : isActive
+              ? 'text-[#0a1f3d] dark:text-[#c5a059]'
+              : 'text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-300',
         )}
       />
       <span
         className={cn(
           'z-10 whitespace-pre flex-1 transition-opacity duration-150',
-          open ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'
+          open ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden',
         )}
       >
         {item.title}
       </span>
-      {isActive && open && (
+
+      {locked && open && (
+        <span
+          className={cn(
+            'z-10 inline-flex items-center gap-1 rounded-full',
+            'border border-[#c5a059]/30 dark:border-[#c5a059]/40',
+            'bg-[#c5a059]/5 dark:bg-[#c5a059]/10',
+            'px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider',
+            'text-[#8a6f3a] dark:text-[#c5a059]',
+          )}
+        >
+          <Lock className="h-2.5 w-2.5" strokeWidth={2.5} />
+          Pro
+        </span>
+      )}
+
+      {isActive && !locked && open && (
         <div className="absolute right-0 top-0 h-full w-4 bg-gradient-to-l from-[#0a1f3d]/15 dark:from-[#c5a059]/15 to-transparent" />
       )}
+    </>
+  )
+
+  if (locked) {
+    return (
+      <button
+        type="button"
+        onClick={() => onLockedClick?.(item.lockedSlug as string)}
+        className={cn(baseClass, 'w-full text-left')}
+        aria-label={`${item.title} — bloqueado, clique para desbloquear`}
+        title={`${item.title} — bloqueado`}
+      >
+        {content}
+      </button>
+    )
+  }
+
+  return (
+    <Link href={item.href} className={baseClass}>
+      {content}
     </Link>
   )
 })
@@ -277,6 +327,9 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  const { activeModules, trialActive } = useActiveModules()
+  const [upgradeSlug, setUpgradeSlug] = useState<string | null>(null)
+
   const handleMouseEnter = useCallback(() => {
     if (closeTimer.current) clearTimeout(closeTimer.current)
     openTimer.current = setTimeout(() => setOpen(true), 120)
@@ -286,6 +339,12 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
     if (openTimer.current) clearTimeout(openTimer.current)
     closeTimer.current = setTimeout(() => setOpen(false), 200)
   }, [setOpen])
+
+  function resolveLocked(item: NavItem): string | undefined {
+    const slug = moduleForRoute(item.href)
+    if (!slug) return undefined
+    return hasModuleAccess(slug, activeModules, trialActive) ? undefined : slug
+  }
 
   return (
     <div
@@ -342,9 +401,19 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
             <div key={section.title}>
               {idx > 0 && <Separator className="my-3" />}
               <SectionLabel open={open}>{section.title}</SectionLabel>
-              {section.items.map((item) => (
-                <NavLink key={item.href} item={item} pathname={pathname} open={open} />
-              ))}
+              {section.items.map((item) => {
+                const lockedSlug = resolveLocked(item)
+                return (
+                  <NavLink
+                    key={item.href}
+                    item={lockedSlug ? { ...item, lockedSlug } : item}
+                    pathname={pathname}
+                    open={open}
+                    locked={!!lockedSlug}
+                    onLockedClick={setUpgradeSlug}
+                  />
+                )
+              })}
             </div>
           ))}
         </nav>
@@ -357,6 +426,12 @@ function SidebarInner({ pathname, user, open, setOpen }: { pathname: string; use
         ))}
         <SidebarUserNav user={user} open={open} />
       </div>
+
+      <ModuleUpgradeModal
+        open={!!upgradeSlug}
+        onOpenChange={(v) => !v && setUpgradeSlug(null)}
+        slug={upgradeSlug}
+      />
     </div>
   )
 }

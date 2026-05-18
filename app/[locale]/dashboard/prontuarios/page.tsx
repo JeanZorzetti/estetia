@@ -2,6 +2,8 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import { ProntuariosHubClient } from '@/components/prontuarios/prontuarios-hub-client'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,6 +12,9 @@ const serialize = <T,>(v: T): T => JSON.parse(JSON.stringify(v))
 export default async function ProntuariosPage() {
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
+
+  const gate = await requireModule('prontuario')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

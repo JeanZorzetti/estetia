@@ -3,12 +3,17 @@ import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import { Megaphone, Star, Share2 } from 'lucide-react'
 import { HubCard } from '@/components/marketing-clinico/hub-card'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const dynamic = 'force-dynamic'
 
 export default async function MarketingClinicoPage() {
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
+
+  const gate = await requireModule('marketing_clinico')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

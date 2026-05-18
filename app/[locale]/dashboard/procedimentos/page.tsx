@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Plus } from 'lucide-react'
 import { ProceduresTable } from '@/components/procedimentos/procedures-table'
 import { ProceduresKpis } from '@/components/procedimentos/procedures-kpis'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,6 +21,9 @@ export default async function ProcedimentosPage({
 
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
+
+  const gate = await requireModule('procedimentos')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

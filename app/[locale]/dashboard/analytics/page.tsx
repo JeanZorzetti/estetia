@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { parsePeriodFromSearchParams } from '@/lib/analytics-clinico/period'
 import { getOverviewKpis, getSessionsStats, getTopPatients, getRevenueMonthly } from '@/lib/analytics-clinico/queries'
 import { AnalyticsShell } from '@/components/analytics-clinico/analytics-shell'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 import { Suspense } from 'react'
 
 export const metadata = { title: 'Analytics Clínico | Estetia CRM' }
@@ -25,6 +27,9 @@ export default async function AnalyticsPage({
       </div>
     )
   }
+
+  const gate = await requireModule('analytics_avancado')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

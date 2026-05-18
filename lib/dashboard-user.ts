@@ -15,6 +15,7 @@ export type DashboardUser = {
     trialEndsAt: string | null  // ISO string — safe to serialize via cache
     trialStatus: string | null
     asaasSubscriptionId: string | null
+    billingActiveModules: string[]
   }
   features: RoleFeatures
 }
@@ -30,7 +31,13 @@ const getDashboardUserUncached = async (email: string): Promise<DashboardUser | 
       orgRole: true,
       organizationId: true,
       organization: {
-        select: { tier: true, trialEndsAt: true, trialStatus: true, asaasSubscriptionId: true }
+        select: {
+          tier: true,
+          trialEndsAt: true,
+          trialStatus: true,
+          asaasSubscriptionId: true,
+          billingActiveModules: true,
+        }
       }
     }
   })
@@ -39,12 +46,18 @@ const getDashboardUserUncached = async (email: string): Promise<DashboardUser | 
 
   const features = await getRoleFeatures(user.organizationId, user.orgRole)
 
+  const activeModulesRaw = user.organization.billingActiveModules
+  const activeModules = Array.isArray(activeModulesRaw)
+    ? (activeModulesRaw as string[]).filter((s): s is string => typeof s === 'string')
+    : []
+
   return {
     ...user,
     organization: {
       ...user.organization,
       trialEndsAt: user.organization.trialEndsAt?.toISOString() ?? null,
       asaasSubscriptionId: user.organization.asaasSubscriptionId ?? null,
+      billingActiveModules: activeModules,
     },
     features,
   }

@@ -5,6 +5,8 @@ import { DashboardShellClient } from '@/components/dashboard/dashboard-shell-cli
 import { AppBarProvider } from '@/components/mobile/app-bar-context'
 import { MobileAppBar } from '@/components/mobile/app-bar'
 import { TrialBanner } from '@/components/plan/trial-banner'
+import { ActiveModulesProvider } from '@/lib/hooks/use-active-modules'
+import { isTrialActive, SubscriptionTier } from '@/lib/entitlements'
 import { getSession } from '@/lib/auth'
 import { getDashboardUser } from '@/lib/dashboard-user'
 import { redirect } from 'next/navigation'
@@ -32,7 +34,19 @@ export default async function DashboardLayout({
     hasModularSubscription: !!dbUser.organization.asaasSubscriptionId,
   }
 
+  const trialActive = isTrialActive({
+    tier: dbUser.organization.tier as SubscriptionTier,
+    trialEndsAt: orgTrialInfo.trialEndsAt,
+    trialStatus: dbUser.organization.trialStatus,
+  })
+
   return (
+    <ActiveModulesProvider
+      value={{
+        activeModules: dbUser.organization.billingActiveModules,
+        trialActive,
+      }}
+    >
     <AppBarProvider>
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar — hidden on mobile */}
@@ -69,5 +83,6 @@ export default async function DashboardLayout({
         <DashboardShellClient />
       </div>
     </AppBarProvider>
+    </ActiveModulesProvider>
   )
 }
