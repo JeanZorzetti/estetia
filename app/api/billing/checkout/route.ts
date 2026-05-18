@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createOrgSubscription, updateOrgSubscription } from '@/lib/billing/asaas-orchestrator'
+import { revalidateDashboardUser } from '@/lib/dashboard-user'
 
 export async function POST(req: Request) {
   const session = await getSession()
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
   try {
     if (org?.asaasSubscriptionId) {
       const result = await updateOrgSubscription(user.organizationId, modules, extras)
+      await revalidateDashboardUser(session.user.email)
       return NextResponse.json({
         ok: true,
         action: 'updated',
@@ -49,6 +51,7 @@ export async function POST(req: Request) {
       })
     } else {
       const result = await createOrgSubscription(user.organizationId, modules, cycle, cpfCnpj)
+      await revalidateDashboardUser(session.user.email)
       return NextResponse.json({
         ok: true,
         action: 'created',
