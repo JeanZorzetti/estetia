@@ -32,7 +32,7 @@ function getAsaasConfig(): AsaasConfig {
 const BILLING_SUCCESS_URL =
   process.env.NEXT_PUBLIC_APP_URL
     ? `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
-    : 'https://doc-crm-estetia.7c17iw.easypanel.host/dashboard'
+    : 'https://estetiacrm.com.br/dashboard'
 
 function todayStr(): string {
   return new Date().toISOString().slice(0, 10)
@@ -263,6 +263,7 @@ export async function updateOrgSubscription(
 
   // Charge proration immediately if upgrading
   let prorationPaymentId: string | undefined
+  let prorationInvoiceUrl: string | undefined
   if (prorationR$ > 0) {
     const proPayment = await createPayment(config, {
       customer: org.asaasCustomerId,
@@ -274,6 +275,7 @@ export async function updateOrgSubscription(
       callback: { successUrl: BILLING_SUCCESS_URL, autoRedirect: true },
     }).catch(() => undefined)
     prorationPaymentId = proPayment?.id
+    prorationInvoiceUrl = proPayment?.invoiceUrl
   }
 
   await prisma.organization.update({
@@ -292,14 +294,18 @@ export async function updateOrgSubscription(
     },
   })
 
-  const payments = await getSubscriptionPayments(config, newSubscription.id).catch(() => [])
-  const firstPayment = payments[0]
-  if (firstPayment?.id) {
-    await updatePayment(config, firstPayment.id, {
-      callback: { successUrl: BILLING_SUCCESS_URL, autoRedirect: true },
-    }).catch(() => {})
+  // Only fetch subscription's first payment when there's no proration to pay
+  let invoiceUrl: string | undefined = prorationInvoiceUrl
+  if (!invoiceUrl) {
+    const payments = await getSubscriptionPayments(config, newSubscription.id).catch(() => [])
+    const firstPayment = payments[0]
+    if (firstPayment?.id) {
+      await updatePayment(config, firstPayment.id, {
+        callback: { successUrl: BILLING_SUCCESS_URL, autoRedirect: true },
+      }).catch(() => {})
+    }
+    invoiceUrl = firstPayment?.invoiceUrl
   }
-  const invoiceUrl = firstPayment?.invoiceUrl ?? undefined
 
   return {
     newSubscriptionId: newSubscription.id,
