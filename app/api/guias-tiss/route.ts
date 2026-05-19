@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { GuiaTissCreateSchema } from '@/lib/financeiro/schema'
+import { requireModule } from '@/lib/guards/require-module'
 
 async function getOrgId() {
   const session = await getSession()
@@ -16,6 +17,8 @@ async function getOrgId() {
 export async function GET(req: Request) {
   const orgId = await getOrgId()
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('tiss')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo TISS não está ativo' }, { status: 403 })
 
   const { searchParams } = new URL(req.url)
   const status = searchParams.get('status')
@@ -57,6 +60,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const orgId = await getOrgId()
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('tiss')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo TISS não está ativo' }, { status: 403 })
 
   const body = await req.json()
   const parsed = GuiaTissCreateSchema.safeParse(body)

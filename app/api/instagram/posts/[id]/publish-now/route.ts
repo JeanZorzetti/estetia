@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { canPublishNow } from '@/lib/instagram/post-permissions'
 import { getUserRole } from '@/lib/instagram/get-user-role'
 import { decrypt } from '@/lib/encryption'
+import { requireModule } from '@/lib/guards/require-module'
 
 export const runtime = 'nodejs'
 export const maxDuration = 120
@@ -61,6 +62,8 @@ async function postToInstagram(
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
   const { id } = await params
   const post = await prisma.instagramPost.findFirst({
     where: { id, organizationId: session.user.organizationId },

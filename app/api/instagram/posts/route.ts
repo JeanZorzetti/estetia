@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { requireModule } from '@/lib/guards/require-module'
 
 export const runtime = 'nodejs'
 
 export async function GET(request: NextRequest) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
 
   const organizationId = session.user.organizationId
   const { searchParams } = request.nextUrl
@@ -43,6 +46,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
 
   const body = await request.json()
   const { type, caption, hashtags, altText, imageUrls, slides, scheduledFor, status } = body

@@ -9,10 +9,13 @@ import { prisma } from '@/lib/prisma'
 import { listarClientes } from '@/lib/integrations/omie'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import { requireModule } from '@/lib/guards/require-module'
 
 export async function GET() {
   const session = await getSession()
   if (!session?.user?.email) return await apiError(ERR.UNAUTHORIZED, 401)
+  const gate = await requireModule('omie')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Omie não está ativo' }, { status: 403 })
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -30,6 +33,8 @@ export async function GET() {
 export async function PATCH(request: NextRequest) {
   const session = await getSession()
   if (!session?.user?.email) return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
+  const gate = await requireModule('omie')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Omie não está ativo' }, { status: 403 })
 
   const { omieAppKey, omieAppSecret, omieEnabled } = await request.json()
 

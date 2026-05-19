@@ -5,6 +5,7 @@ import https from 'https'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { nextScheduledTime, PostType } from '@/lib/instagram/scheduling'
 import { getUserRole } from '@/lib/instagram/get-user-role'
+import { requireModule } from '@/lib/guards/require-module'
 
 export const runtime = 'nodejs'
 export const maxDuration = 120
@@ -71,6 +72,8 @@ async function uploadToMinio(b64: string, filename: string): Promise<string> {
 export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
 
   const body = await request.json()
   const { type, caption, hashtags, altText, imagePrompt, slides, scheduledFor: scheduledForRaw, recurrenceRule, recurrenceEndDate } = body

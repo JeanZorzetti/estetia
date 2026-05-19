@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { nextScheduledTime } from '@/lib/instagram/scheduling'
+import { requireModule } from '@/lib/guards/require-module'
 
 export const runtime = 'nodejs'
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
   const { id } = await params
   const post = await prisma.instagramPost.findFirst({ where: { id, organizationId: session.user.organizationId } })
   if (!post) return NextResponse.json({ error: 'Not found' }, { status: 404 })

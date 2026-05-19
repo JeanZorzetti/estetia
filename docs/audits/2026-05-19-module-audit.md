@@ -91,4 +91,28 @@
 
 ---
 
-*Auditoria concluída em 2026-05-19. Próxima revisão recomendada após lançamento de novos módulos.*
+---
+
+## Adendo — 2026-05-19 (re-auditoria)
+
+Re-auditoria confirmou **regressão zero nas páginas dashboard**, mas identificou buracos de bypass via API: clientes autenticados sem o módulo pago podiam chamar as rotas diretamente por curl/Postman.
+
+### Gaps fechados nesta re-auditoria
+
+| Slug | Rotas corrigidas | Ação |
+|---|---|---|
+| `tiss` | `app/api/guias-tiss/route.ts` (GET+POST) + `[id]/route.ts` (GET+PATCH+DELETE) + `[id]/xml/route.ts` (POST) + `[id]/resposta/route.ts` (PATCH) — **4 arquivos** | `requireModule('tiss')` adicionado |
+| `instagram` | `app/api/instagram/posts/route.ts` (GET+POST) + `posts/[id]/route.ts` (GET+PATCH+DELETE) + `approve`, `comments`, `comments/[commentId]`, `duplicate`, `publish-now`, `reschedule` + `generate` + `upload-image` — **10 arquivos** | `requireModule('instagram')` adicionado |
+| `omie` | `app/api/integrations/omie/settings/route.ts` (GET+PATCH) + `sync/route.ts` (POST) — **2 arquivos** | `requireModule('omie')` adicionado |
+
+**Nota:** `/api/instagram/webhook/route.ts` mantido sem gate — webhook público Meta com validação HMAC.
+
+### Status final após adendo
+
+| Módulo | UI | Gate página | Gate API | Status final |
+|---|---|---|---|---|
+| `tiss` | ✅ | ✅ | ✅ | 🟢 |
+| `instagram` | ✅ | ✅ | ✅ | 🟢 |
+| `omie` | ✅ | ✅ | ✅ | 🟢 |
+
+*Re-auditoria concluída em 2026-05-19. Todos os 17 módulos vendidos agora têm cobertura completa: UI + gate de página + gate de API.*

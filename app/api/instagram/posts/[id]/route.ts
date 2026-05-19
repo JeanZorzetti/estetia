@@ -3,12 +3,15 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { canEdit, canDelete } from '@/lib/instagram/post-permissions'
 import { getUserRole } from '@/lib/instagram/get-user-role'
+import { requireModule } from '@/lib/guards/require-module'
 
 export const runtime = 'nodejs'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
   const { id } = await params
   const post = await prisma.instagramPost.findFirst({
     where: { id, organizationId: session.user.organizationId },
@@ -28,6 +31,8 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
   const { id } = await params
   const post = await prisma.instagramPost.findFirst({ where: { id, organizationId: session.user.organizationId } })
   if (!post) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -59,6 +64,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
   const { id } = await params
   const post = await prisma.instagramPost.findFirst({ where: { id, organizationId: session.user.organizationId } })
   if (!post) return NextResponse.json({ error: 'Not found' }, { status: 404 })

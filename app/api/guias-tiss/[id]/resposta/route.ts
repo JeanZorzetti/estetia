@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { requireModule } from '@/lib/guards/require-module'
 
 const RespostaSchema = z.object({
   status: z.enum(['AUTORIZADA', 'NEGADA', 'GLOSADA', 'PAGA', 'CANCELADA']),
@@ -22,6 +23,8 @@ async function getOrgId() {
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const orgId = await getOrgId()
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('tiss')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo TISS não está ativo' }, { status: 403 })
   const { id } = await params
 
   const existing = await prisma.guiaTiss.findFirst({ where: { id, organizationId: orgId }, select: { id: true } })

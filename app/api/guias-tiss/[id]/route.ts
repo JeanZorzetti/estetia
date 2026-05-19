@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { GuiaTissUpdateSchema } from '@/lib/financeiro/schema'
+import { requireModule } from '@/lib/guards/require-module'
 
 async function getOrgId() {
   const session = await getSession()
@@ -16,6 +17,8 @@ async function getOrgId() {
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const orgId = await getOrgId()
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('tiss')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo TISS não está ativo' }, { status: 403 })
   const { id } = await params
 
   const guia = await prisma.guiaTiss.findFirst({
@@ -39,6 +42,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const orgId = await getOrgId()
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('tiss')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo TISS não está ativo' }, { status: 403 })
   const { id } = await params
 
   const existing = await prisma.guiaTiss.findFirst({ where: { id, organizationId: orgId }, select: { id: true } })
@@ -68,6 +73,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const orgId = await getOrgId()
   if (!orgId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('tiss')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo TISS não está ativo' }, { status: 403 })
   const { id } = await params
 
   const existing = await prisma.guiaTiss.findFirst({ where: { id, organizationId: orgId }, select: { id: true } })

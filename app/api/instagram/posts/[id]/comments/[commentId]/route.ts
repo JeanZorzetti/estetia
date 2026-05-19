@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getUserRole } from '@/lib/instagram/get-user-role'
+import { requireModule } from '@/lib/guards/require-module'
 
 export const runtime = 'nodejs'
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string; commentId: string }> }) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
   const { commentId } = await params
   const { resolved } = await req.json()
   const updated = await prisma.instagramPostComment.update({ where: { id: commentId }, data: { resolved } })

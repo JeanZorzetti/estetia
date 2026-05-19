@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { requireModule } from '@/lib/guards/require-module'
 
 export const runtime = 'nodejs'
 
@@ -20,6 +21,8 @@ const MAX_SIZE = 10 * 1024 * 1024
 export async function POST(request: NextRequest) {
   const session = await getSession()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireModule('instagram')
+  if (!gate.allowed) return NextResponse.json({ error: 'Módulo Instagram não está ativo' }, { status: 403 })
 
   const formData = await request.formData()
   const file = formData.get('file') as File | null
