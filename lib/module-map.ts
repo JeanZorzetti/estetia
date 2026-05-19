@@ -24,6 +24,8 @@ export const ROUTE_TO_MODULE: Record<string, string | null> = {
   // CLÍNICO
   '/dashboard/prontuarios':             'prontuario',
   '/dashboard/procedimentos':           'procedimentos',
+  '/dashboard/fotos':                   'fotos',
+  '/dashboard/pacotes':                 'pacotes',
   '/dashboard/recall':                  'recall',
 
   // COMUNICAÇÃO
