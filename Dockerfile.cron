@@ -1,10 +1,14 @@
 FROM alpine:3.19
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl busybox-extras
 
 ADD https://github.com/aptible/supercronic/releases/download/v0.2.33/supercronic-linux-amd64 /usr/local/bin/supercronic
 RUN chmod +x /usr/local/bin/supercronic
 
 COPY crontab.cron /crontab
+COPY docker-entrypoint-cron.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-CMD ["/usr/local/bin/supercronic", "/crontab"]
+EXPOSE 8080
+
+CMD ["/entrypoint.sh"]
