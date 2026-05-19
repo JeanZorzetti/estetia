@@ -11,7 +11,7 @@ import { useActiveModules } from '@/lib/hooks/use-active-modules'
 import { ModuleUpgradeModal } from '@/components/upgrade/module-upgrade-modal'
 import {
   // Clinical navigation icons
-  Home, CalendarDays, Heart, ClipboardList, Syringe,
+  Home, CalendarDays, Heart, ClipboardList, Syringe, Camera, Package,
   MessageCircle, Repeat2, Megaphone,
   DollarSign, BarChart3, ShieldCheck,
   Users, UserCheck, DoorOpen, Plug, CreditCard,
@@ -51,6 +51,8 @@ const navSections: NavSection[] = [
       { title: 'Pacientes',     href: '/dashboard/pacientes',          icon: Heart },
       { title: 'Prontuários',   href: '/dashboard/prontuarios',        icon: ClipboardList },
       { title: 'Procedimentos', href: '/dashboard/procedimentos',      icon: Syringe },
+      { title: 'Fotos',         href: '/dashboard/fotos',              icon: Camera },
+      { title: 'Pacotes',       href: '/dashboard/pacotes',            icon: Package },
     ],
   },
   {
