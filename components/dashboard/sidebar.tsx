@@ -179,18 +179,7 @@ const NavLink = memo(function NavLink({
       </span>
 
       {locked && open && (
-        <span
-          className={cn(
-            'z-10 inline-flex items-center gap-1 rounded-full',
-            'border border-[#c5a059]/30 dark:border-[#c5a059]/40',
-            'bg-[#c5a059]/5 dark:bg-[#c5a059]/10',
-            'px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider',
-            'text-[#8a6f3a] dark:text-[#c5a059]',
-          )}
-        >
-          <Lock className="h-2.5 w-2.5" strokeWidth={2.5} />
-          Add-on
-        </span>
+        <Lock className="z-10 h-3 w-3 opacity-40 flex-shrink-0" strokeWidth={2.5} />
       )}
 
       {isActive && !locked && open && (
