@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { WhatsAppOfficialSettingsForm } from '@/components/integrations/whatsapp-official-settings-form'
 import { WhatsAppSetupCta } from '@/components/integrations/whatsapp-setup-cta'
 import { redirect } from 'next/navigation'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const metadata = { title: "WhatsApp Oficial | Estetia CRM" }
 
@@ -18,6 +20,9 @@ export default async function WhatsAppOfficialPage({ searchParams }: { searchPar
     if (!session?.user?.email) {
         return <div>Não autorizado. Faça login novamente.</div>
     }
+
+    const gate = await requireModule('whatsapp_waba')
+    if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
     const user = await prisma.user.findUnique({
         where: { email: session.user.email },

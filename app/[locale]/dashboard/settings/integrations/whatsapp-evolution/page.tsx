@@ -3,12 +3,17 @@ import { getSession } from '@/lib/auth'
 import { Smartphone } from 'lucide-react'
 import { IntegrationPageHeader } from '@/components/integrations/page-header'
 import { EvolutionForm } from '@/components/integrations/forms/evolution-form'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const metadata = { title: 'WhatsApp Evolution | Estetia CRM' }
 
 export default async function WhatsappEvolutionPage() {
   const session = await getSession()
   if (!session?.user?.email) return <div>Não autorizado</div>
+
+  const gate = await requireModule('whatsapp_evolution')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

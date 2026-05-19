@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Plus, ChevronLeft } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { GuiasTissTable } from '@/components/financeiro/guias-tiss/guias-tiss-table'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,6 +23,9 @@ const KPI_COLORS: Record<string, string> = {
 export default async function GuiasTissPage() {
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
+
+  const gate = await requireModule('tiss')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

@@ -6,6 +6,8 @@ import { Plus, ChevronLeft } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { OperadorasTable } from '@/components/financeiro/operadoras/operadoras-table'
 import { ConveniosTable } from '@/components/financeiro/operadoras/convenios-table'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,6 +16,9 @@ const serialize = <T,>(v: T): T => JSON.parse(JSON.stringify(v))
 export default async function OperadorasPage() {
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
+
+  const gate = await requireModule('tiss')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },

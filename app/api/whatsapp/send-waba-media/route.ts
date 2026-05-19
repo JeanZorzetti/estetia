@@ -17,6 +17,7 @@ import { uploadMedia } from '@/lib/storage'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import { requireModule } from '@/lib/guards/require-module'
 
 const execAsync = promisify(exec)
 
@@ -49,6 +50,11 @@ export async function POST(req: NextRequest) {
     const session = await getSession()
     if (!session?.user) {
       return await apiError(ERR.UNAUTHORIZED, 401, { req })
+    }
+
+    const gate = await requireModule('whatsapp_waba')
+    if (!gate.allowed) {
+      return NextResponse.json({ error: 'Módulo WhatsApp Cloud API não está ativo' }, { status: 403 })
     }
 
     const user = await prisma.user.findUnique({

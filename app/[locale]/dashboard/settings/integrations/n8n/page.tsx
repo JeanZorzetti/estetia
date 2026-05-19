@@ -6,6 +6,8 @@ import { ArrowLeft, Workflow } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { N8NSettingsForm } from '@/components/integrations/n8n-settings-form'
 import { redirect } from 'next/navigation'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const metadata = { title: "N8N | Estetia CRM" }
 
@@ -14,6 +16,9 @@ export default async function N8NIntegrationPage() {
     if (!session || !session.user || !session.user.email) {
         return <div>Não autorizado. Faça login novamente.</div>
     }
+
+    const gate = await requireModule('n8n')
+    if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
     const user = await prisma.user.findUnique({
         where: { email: session.user.email },

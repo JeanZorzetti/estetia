@@ -14,6 +14,7 @@ import { prisma } from '@/lib/prisma';
 import { agiRateLimit } from '@/lib/ratelimit';
 import { createAgiBrain } from '@/lib/agi/brain';
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
+import { requireModule } from '@/lib/guards/require-module';
 import { saveConversation } from '@/lib/agi/memory';
 import {
   getOrCreateSession,
@@ -62,6 +63,17 @@ export async function POST(req: NextRequest) {
         const session = await getSession();
         if (!session?.user) {
             return await apiError(ERR.UNAUTHORIZED, 401)
+        }
+
+        // 1b. Module gate — requires ia_lite, ia_pro or ia_scale
+        const iaGate = await requireModule('ia_lite')
+        const iaGatePro = iaGate.allowed ? iaGate : await requireModule('ia_pro')
+        const iaGateFinal = iaGatePro.allowed ? iaGatePro : await requireModule('ia_scale')
+        if (!iaGateFinal.allowed) {
+            return NextResponse.json(
+                { error: 'Nenhum módulo de IA está ativo. Ative Estetia IA em /dashboard/billing/plans.' },
+                { status: 403 }
+            )
         }
 
         // 2. Get user and organization

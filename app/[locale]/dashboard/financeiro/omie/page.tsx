@@ -9,6 +9,8 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { OmieStatusCard } from '@/components/financeiro/omie/omie-status-card'
 import { OmieSyncButton } from '@/components/financeiro/omie/omie-sync-button'
+import { requireModule } from '@/lib/guards/require-module'
+import { ModuleLocked } from '@/components/upgrade/module-locked'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,6 +26,9 @@ const STATUS_COLORS: Record<string, string> = {
 export default async function OmiePage() {
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
+
+  const gate = await requireModule('omie')
+  if (!gate.allowed) return <ModuleLocked slug={gate.slug} />
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
