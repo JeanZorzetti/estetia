@@ -5,9 +5,8 @@ import { Logos } from "@/components/marketing/logos"
 import { SolutionsTabs } from "@/components/marketing/solutions-tabs"
 import { FeaturesExpanded } from "@/components/marketing/features-expanded"
 import { SocialProof } from "@/components/marketing/social-proof"
+import { HomepageJsonLd } from "@/components/marketing/homepage-json-ld"
 import dynamic from "next/dynamic"
-import Script from "next/script"
-
 
 const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then(m => ({ default: m.StickyCTA })))
 import { blogPosts } from "@/lib/blog-data"
@@ -50,182 +49,6 @@ export default function LandingPage() {
   const locale = useLocale()
   const isEn = locale === 'en'
 
-  const softwareSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Estetia CRM",
-    "applicationCategory": "BusinessApplication",
-    "applicationSubCategory": "ClinicalManagementSoftware",
-    "operatingSystem": "Web, iOS, Android",
-    "url": "https://estetiacrm.com.br",
-    "description": "CRM clínico completo para clínicas de estética e dermatologia: agenda inteligente, anamnese digital, prontuário eletrônico, recall automático via WhatsApp, predictor de no-show, LGPD compliance e integração TISS/TUSS.",
-    "offers": {
-      "@type": "AggregateOffer",
-      "priceCurrency": "BRL",
-      "lowPrice": "0",
-      "highPrice": "799",
-      "offerCount": "4",
-      "availability": "https://schema.org/InStock"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": 4.8,
-      "reviewCount": 127,
-      "bestRating": 5,
-      "worstRating": 1
-    },
-    "featureList": [
-      "Agenda inteligente com confirmação automática",
-      "Anamnese digital com alertas de contraindicação",
-      "Prontuário eletrônico LGPD-compliant",
-      "Recall automático via WhatsApp Business",
-      "Predictor de no-show com IA",
-      "Integração TISS/TUSS para convênios",
-      "Gestão multi-unidade",
-      "Relatórios de KPIs clínicos"
-    ],
-    "screenshot": "https://estetiacrm.com.br/og-image.png",
-    "softwareVersion": "2.0",
-    "datePublished": "2024-01-01",
-    "author": {
-      "@type": "Organization",
-      "name": "ROI Labs",
-      "url": "https://roilabs.com.br"
-    }
-  };
-
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "Estetia CRM",
-    "description": "CRM clínico para clínicas de estética e dermatologia: agenda inteligente, anamnese digital, prontuário eletrônico, recall automático via WhatsApp, LGPD compliance e predictor de no-show.",
-    "brand": {
-      "@type": "Brand",
-      "name": "ROI Labs"
-    },
-    "offers": {
-      "@type": "AggregateOffer",
-      "priceCurrency": "BRL",
-      "lowPrice": "0",
-      "highPrice": "799",
-      "offerCount": "4",
-      "availability": "https://schema.org/InStock",
-      "url": "https://estetiacrm.com.br/pricing"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": 4.8,
-      "reviewCount": 127,
-      "bestRating": 5,
-      "worstRating": 1
-    },
-    "review": [
-      {
-        "@type": "Review",
-        "author": { "@type": "Person", "name": "Dra. Fernanda Lima" },
-        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "O recall automático via WhatsApp reduziu meu no-show de 28% para 8% em 2 meses. A anamnese digital economiza muito tempo da equipe."
-      },
-      {
-        "@type": "Review",
-        "author": { "@type": "Person", "name": "Clínica Bella Pele" },
-        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "O prontuário eletrônico com LGPD nativo nos deu segurança para digitalizar 100% dos atendimentos. Suporte excelente!"
-      }
-    ],
-    "image": "https://estetiacrm.com.br/og-image.png",
-    "url": "https://estetiacrm.com.br"
-  };
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "O que é o Estetia CRM?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Estetia CRM é um sistema de gestão clínica completo para clínicas de estética e dermatologia. Inclui agenda inteligente com confirmação automática, anamnese digital com alertas de contraindicação, prontuário eletrônico LGPD-compliant, recall automático via WhatsApp Business e predictor de no-show com IA."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "O Estetia CRM é gratuito?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Sim! O plano Gratuito permite testar o sistema sem custo. Para clínicas em crescimento, oferecemos Starter (R$149/mês), Pro (R$349/mês) e Business (R$799/mês) com mais recursos, pacientes ilimitados e suporte prioritário."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "O Estetia CRM atende aos requisitos da LGPD para dados de saúde?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Sim. O Estetia foi construído com LGPD Art. 11 nativo (dados sensíveis de saúde): consentimento digital com assinatura eletrônica, criptografia de prontuários, controle de acesso por perfil profissional, registro de auditoria e DPA (Acordo de Processamento de Dados) incluso em todos os planos pagos."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Como funciona o recall automático via WhatsApp?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "O Estetia se conecta ao WhatsApp Business via API Oficial Meta. Configure sequências automáticas: lembrete 48h antes da consulta, confirmação 24h antes, e recall de recompra após o procedimento. Todo o histórico fica registrado no prontuário do paciente."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "O Estetia CRM funciona para redes de clínicas?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Sim. O plano Business inclui gestão multi-unidade com dashboards consolidados, relatórios por unidade, transferência de pacientes entre unidades e padronização de protocolos de anamnese em toda a rede."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Posso cancelar quando quiser?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Sim, sem multa ou fidelidade mínima. Cancele a qualquer momento e mantenha o acesso até o fim do período pago. Todos os planos pagos têm garantia de 7 dias — se não gostar, devolvemos o valor integralmente."
-        }
-      }
-    ]
-  };
-
-  const localBusinessSchema = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "ROI Labs - Estetia CRM",
-    "url": "https://estetiacrm.com.br",
-    "logo": "https://estetiacrm.com.br/logo.png",
-    "image": "https://estetiacrm.com.br/og-image.png",
-    "description": "CRM completo com pipeline Kanban, WhatsApp integrado, IA comercial, prospecção Google Maps e automações para vendedores brasileiros",
-    "telephone": "+55-62-98344-3919",
-    "email": "roilabs.ia@gmail.com",
-    "areaServed": { "@type": "Country", "name": "Brasil" },
-    "address": { "@type": "PostalAddress", "addressCountry": "BR", "addressRegion": "GO" },
-    "openingHoursSpecification": [
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "09:00",
-        "closes": "18:00"
-      }
-    ],
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+55-62-98344-3919",
-      "contactType": "customer support",
-      "availableLanguage": "Portuguese",
-      "areaServed": "BR"
-    },
-    "sameAs": [
-      "https://www.linkedin.com/company/roilabs",
-      "https://twitter.com/roilabs"
-    ],
-    "priceRange": "R$ 0 - R$ 799/mês"
-  };
-
   const plans = [
     {
       name: isEn ? 'Free' : 'Gratuito',
@@ -263,26 +86,7 @@ export default function LandingPage() {
 
   return (
     <>
-      <Script
-        id="software-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
-      />
-      <Script
-        id="product-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-      />
-      <Script
-        id="faq-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <Script
-        id="local-business-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
+      <HomepageJsonLd />
 
       <div className="min-h-screen bg-white text-[#0A1F3D] selection:bg-[#489FB5]/20">
         <div className="relative z-10">
