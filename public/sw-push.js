@@ -5,7 +5,7 @@ self.addEventListener('push', function (event) {
   console.log('[Service Worker] Push received:', event)
 
   let data = {
-    title: 'Sirius CRM',
+    title: 'Estetia CRM',
     body: 'Nova notificação',
     icon: '/icon-192x192.png',
     badge: '/icon-72x72.png',

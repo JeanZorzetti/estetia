@@ -1,7 +1,7 @@
 /**
- * HowTo schemas para artigos tutoriais do blog.
- * O Google exibe steps estruturados diretamente nos resultados de busca.
- * Referência: https://schema.org/HowTo
+ * HowTo schemas for tutorial blog posts.
+ * Google displays structured steps directly in search results.
+ * Reference: https://schema.org/HowTo
  */
 
 interface HowToStep {
@@ -14,7 +14,7 @@ interface HowToSchema {
   '@type': 'HowTo'
   name: string
   description: string
-  totalTime?: string // ISO 8601 duration: PT10M = 10 minutos
+  totalTime?: string // ISO 8601 duration: PT10M = 10 minutes
   estimatedCost?: { '@type': 'MonetaryAmount'; currency: string; value: string }
   step: Array<{ '@type': 'HowToStep'; name: string; text: string }>
 }
@@ -39,122 +39,73 @@ function buildHowTo(
 }
 
 export const howToSchemas: Record<string, HowToSchema> = {
-  'como-organizar-pipeline-vendas': buildHowTo(
-    'Como Organizar seu Pipeline de Vendas com um CRM',
-    'Guia passo a passo para estruturar seu funil de vendas, definir etapas e acompanhar negócios em tempo real.',
+  'spin-selling-para-clinicas-de-estetica': buildHowTo(
+    'Como Aplicar SPIN Selling na Consulta de Avaliação Estética',
+    'Guia em 5 passos para usar as 4 perguntas SPIN (Situação, Problema, Implicação, Necessidade) na consulta de avaliação inicial e aumentar a conversão em procedimentos estéticos.',
     [
-      { name: 'Defina as etapas do seu funil', text: 'Mapeie as fases do seu processo comercial: Prospecção, Qualificação, Proposta, Negociação e Fechamento. Adapte ao seu ciclo de venda real.' },
-      { name: 'Cadastre seus primeiros negócios', text: 'Importe leads do Excel ou adicione manualmente. Inclua valor, prazo esperado e responsável para cada oportunidade.' },
-      { name: 'Configure as atividades de acompanhamento', text: 'Crie tarefas de follow-up para cada negócio: ligações, envio de proposta, reunião. Defina prazo e prioridade.' },
-      { name: 'Mova os cards pelo Kanban', text: 'À medida que o lead avança, arraste o card para a próxima etapa. O CRM registra automaticamente data e hora de cada transição.' },
-      { name: 'Analise o relatório semanal', text: 'Revise a taxa de conversão entre etapas, identifique gargalos e ajuste sua estratégia com base em dados reais.' },
-    ],
-    { totalTime: 'PT30M', cost: '0' }
-  ),
-
-  'como-organizar-carteira-clientes-representante': buildHowTo(
-    'Como Organizar sua Carteira de Clientes sem Depender do Sistema da Fábrica',
-    'Passo a passo para representantes comerciais criarem uma carteira de clientes própria e portátil, independente do ERP da representada.',
-    [
-      { name: 'Exporte seus contatos do sistema da fábrica', text: 'Solicite ao backoffice um relatório em CSV ou Excel com seus clientes ativos. Se não for possível, importe do seu WhatsApp Business.' },
-      { name: 'Importe para o CRM pessoal', text: 'Use a função de importação CSV do Estetia CRM para subir todos os contatos de uma vez. Mapeie os campos: nome, CNPJ, telefone, cidade, segmento.' },
-      { name: 'Segmente por curva ABC', text: 'Classifique clientes por volume de pedidos: A (top 20%, 80% da receita), B (30% intermediários), C (50% menores). Foque esforço nos A e B.' },
-      { name: 'Adicione histórico de interações', text: 'Registre visitas, pedidos e conversas passadas nos cards dos clientes. Quanto mais contexto, melhor o atendimento na próxima visita.' },
-      { name: 'Configure alertas de inatividade', text: 'Programe notificações para clientes sem pedido há 30, 60 ou 90 dias. Reativação proativa evita perda silenciosa de carteira.' },
+      { name: 'Prepare-se com o prontuário antes da consulta', text: 'Revise o histórico do paciente no Estetia CRM: procedimentos anteriores, queixas registradas e preferências. Esse contexto alimenta as perguntas de Situação sem precisar perguntar o óbvio.' },
+      { name: 'Faça perguntas de Situação para entender o contexto', text: 'Pergunte sobre rotina de skincare, histórico de procedimentos e expectativas: "Você já fez algum tratamento para essa região antes? Como foi a experiência?"' },
+      { name: 'Explore Problemas com perguntas abertas', text: 'Identifique o que realmente incomoda o paciente: "O que te faz sentir mais insatisfeita com essa área?", "Isso te afeta no dia a dia de alguma forma?"' },
+      { name: 'Amplie com perguntas de Implicação', text: 'Ajude o paciente a perceber o impacto emocional: "Como você se sente quando percebe isso no espelho?", "Isso já afetou sua autoestima em alguma situação específica?"' },
+      { name: 'Conduza para a Necessidade e apresente a solução', text: 'Pergunte sobre o resultado ideal: "Qual seria o resultado perfeito para você após o tratamento?" Só depois apresente o procedimento como solução para a necessidade que o próprio paciente articulou.' },
     ],
     { totalTime: 'PT45M', cost: '0' }
   ),
 
-  'como-usar-google-maps-para-prospectar': buildHowTo(
-    'Como Usar o Google Maps para Prospectar Empresas',
-    'Guia prático para usar o Google Maps como ferramenta de prospecção B2B local, encontrar empresas na sua região e importar leads para o CRM.',
+  'como-reduzir-no-show-em-clinicas-de-estetica': buildHowTo(
+    'Como Reduzir No-Show em Clínicas de Estética com Confirmação Automática',
+    'Passo a passo para configurar um sistema de redução de no-show com 3 camadas: confirmação automática, no-show predictor e lista de espera.',
     [
-      { name: 'Defina seu território de prospecção', text: 'Abra o Google Maps e pesquise pelo segmento-alvo + cidade: "distribuidoras São Paulo", "construtoras Campinas". Delimite o raio geográfico do seu territory.' },
-      { name: 'Filtre por avaliação e porte', text: 'Priorize empresas com 3+ avaliações (sinal de atividade) e busque indícios de porte: tamanho do local, quantidade de fotos, horário de atendimento.' },
-      { name: 'Colete dados de contato', text: 'Para cada empresa: anote nome fantasia, telefone, site e endereço. Ferramentas como o Estetia PRO automatizam essa coleta via Google Places API.' },
-      { name: 'Qualifique antes de ligar', text: 'Pesquise o site e LinkedIn da empresa. Identifique cargo do decisor, porte aproximado e possíveis dores antes do primeiro contato.' },
-      { name: 'Importe para o CRM e crie sequência de follow-up', text: 'Adicione os leads ao pipeline com tag "Google Maps" para rastrear a origem. Configure cadência: ligação D+1, WhatsApp D+3, email D+7.' },
+      { name: 'Configure lembretes automáticos em 3 momentos', text: 'No Estetia CRM, ative: lembrete 48h antes (confirmação via WhatsApp), 24h antes (com opção de cancelamento/reagendamento) e 2h antes (lembrete final). Cada lembrete pode ser personalizado com nome do paciente e procedimento.' },
+      { name: 'Ative o no-show predictor por paciente', text: 'O sistema analisa histórico de cancelamentos, tempo de agendamento, tipo de procedimento e horário para calcular um score de risco. Pacientes com score alto recebem abordagem extra (ligação pessoal da recepção).' },
+      { name: 'Monte uma lista de espera ativa', text: 'Configure a lista de espera para cada horário. Quando um paciente cancela, o sistema contacta automaticamente o próximo da lista via WhatsApp com um link de confirmação em 1 clique.' },
+      { name: 'Defina política clara de sinal para novos pacientes', text: 'Para procedimentos de alto ticket com novos pacientes, exija sinal de 30-50% no agendamento. Informe claramente no momento da marcação — reduz no-show em até 70% nesse perfil.' },
+      { name: 'Monitore e ajuste mensalmente', text: 'Acompanhe a taxa de no-show mensal no dashboard do Estetia CRM. Identifique profissional, horário ou tipo de procedimento com maior incidência e ajuste a estratégia de confirmação.' },
     ],
     { totalTime: 'PT20M', cost: '0' }
   ),
 
-  'crm-offline-para-vendedores': buildHowTo(
-    'Como Usar um CRM Offline para Registrar Pedidos sem Internet',
-    'Passo a passo para vendedores externos registrarem visitas, pedidos e interações sem conexão e sincronizarem ao reconectar.',
+  'lgpd-para-clinicas-de-estetica-guia-2026': buildHowTo(
+    'Como Adequar sua Clínica de Estética à LGPD em 5 Passos',
+    'Roteiro prático de conformidade LGPD para clínicas de estética e dermatologia — foco em dados sensíveis de saúde (Art. 11) sem precisar de consultoria jurídica inicial.',
     [
-      { name: 'Instale o app como PWA no celular', text: 'Acesse siriuscrm.com.br no Chrome, toque em "Adicionar à tela inicial". O app baixa os dados dos clientes para cache local — funciona sem internet.' },
-      { name: 'Registre visitas e pedidos offline', text: 'Durante a visita, abra o card do cliente, registre o pedido com valor, produtos e observações. Os dados ficam salvos localmente.' },
-      { name: 'Fotografe documentos e assinaturas', text: 'Use a câmera do app para registrar pedidos assinados, notas fiscais ou contratos. As fotos ficam na fila de sincronização.' },
-      { name: 'Sincronize ao reconectar', text: 'Assim que o Wi-Fi ou 4G reconectar, o app sincroniza automaticamente todos os registros offline com a nuvem. Zero perda de dados.' },
-      { name: 'Revise conflitos se necessário', text: 'Se outro vendedor editou o mesmo cliente durante sua visita offline, o CRM mostra os dois registros para você escolher qual manter.' },
-    ],
-    { totalTime: 'PT15M', cost: '0' }
-  ),
-
-  'melhor-crm-2026-comparativo': buildHowTo(
-    'Como Escolher o Melhor CRM para sua Empresa em 2026',
-    'Método em 4 passos para comparar CRMs com critérios objetivos e escolher o sistema certo sem depender de opiniões enviesadas.',
-    [
-      { name: 'Liste suas 5 necessidades prioritárias', text: 'Antes de comparar ferramentas, defina o que é inegociável: WhatsApp integrado? Pipeline Kanban? IA para qualificação? Preço em BRL? Funcionamento offline? Priorize 5 critérios do seu processo de vendas real.' },
-      { name: 'Avalie os 7 critérios eliminatórios', text: 'Para cada CRM, verifique: (1) UX/facilidade, (2) mobile/offline, (3) WhatsApp nativo, (4) automações, (5) analytics, (6) personalização, (7) preço em BRL. Se falhar em 2+ critérios prioritários, elimine.' },
-      { name: 'Teste os 2-3 finalistas por 7 dias', text: 'Crie conta gratuita nos finalistas e simule seu fluxo real: importe 10 contatos, crie 5 negócios, envie 1 proposta. O que parecer mais natural em 7 dias é o vencedor.' },
-      { name: 'Calcule o custo total de 12 meses', text: 'Some licença mensal × 12 × número de usuários + custo de migração + horas de treinamento. Compare o investimento total, não apenas o preço por mês. Alguns CRMs cobram extras por WhatsApp, IA ou relatórios.' },
-    ],
-    { totalTime: 'PT30M', cost: '0' }
-  ),
-
-  'kpis-de-vendas': buildHowTo(
-    'Como Montar um Dashboard de KPIs de Vendas',
-    'Passo a passo para configurar os 12 KPIs essenciais no seu CRM e acompanhar a performance da equipe comercial em tempo real.',
-    [
-      { name: 'Defina os KPIs por grupo', text: 'Organize em 3 categorias: Pipeline (taxa de conversão por etapa, velocidade, valor total), Performance (win rate, ticket médio, ciclo), Financeiro (CAC, LTV, MRR). Comece com 4-5 KPIs, não os 12 de uma vez.' },
-      { name: 'Configure o pipeline com etapas mensuráveis', text: 'Cada etapa do Kanban deve ter critério claro de saída: "Qualificado" = respondeu 3 perguntas BANT, "Proposta" = recebeu documento formal. Sem critérios claros, os KPIs ficam imprecisos.' },
-      { name: 'Estabeleça benchmarks internos', text: 'Calcule seus KPIs dos últimos 3 meses como linha de base. Benchmark B2B típico: conversão 2-5%, ciclo 30-90 dias, win rate 15-25%. Mas o mais importante é melhorar em relação a si mesmo.' },
-      { name: 'Revise semanalmente com o time', text: 'Na reunião de vendas, mostre o dashboard com 3 perguntas: (1) Quais KPIs melhoraram? (2) Quais pioraram? (3) O que faremos diferente esta semana? KPI sem ação é só decoração.' },
-    ],
-    { totalTime: 'PT20M', cost: '0' }
-  ),
-
-  'planilha-controle-comissao-corretor': buildHowTo(
-    'Como Usar a Planilha de Controle de Comissão para Corretores',
-    'Passo a passo para baixar, configurar e usar a planilha gratuita de comissões imobiliárias no Excel ou Google Sheets.',
-    [
-      { name: 'Baixe a planilha gratuita', text: 'Clique no botão de download no artigo. A planilha funciona no Excel (2016+) e Google Sheets. São 4 abas: Controle de Vendas, Dashboard, Calculadora ROI e Instruções.' },
-      { name: 'Configure suas faixas de comissão', text: 'Na aba Instruções, ajuste os percentuais: comissão padrão (6%), split com imobiliária (50/50 ou 60/40) e bônus por meta. A planilha calcula automaticamente com base nesses parâmetros.' },
-      { name: 'Registre cada venda no momento do fechamento', text: 'Preencha: data, nome do cliente, valor do imóvel, tipo (venda/locação), status (pendente/recebido). A aba Dashboard atualiza automaticamente os totais.' },
-      { name: 'Acompanhe comissões pendentes mensalmente', text: 'A aba Dashboard mostra: total recebido, total pendente, previsão dos próximos 30 dias e comparativo mensal. Use para cobrar comissões atrasadas e planejar seu fluxo de caixa.' },
-    ],
-    { totalTime: 'PT10M', cost: '0' }
-  ),
-
-  'como-escolher-crm-b2b-2026': buildHowTo(
-    'Como Escolher um CRM B2B em 5 Passos',
-    'Método prático para PMEs e representantes comerciais escolherem o CRM ideal sem gastar tempo com demos infinitas.',
-    [
-      { name: 'Responda as 5 perguntas de qualificação', text: 'Antes de pesquisar: (1) Quantos vendedores? (2) Seu processo é B2B ou B2C? (3) Usa WhatsApp para vender? (4) Precisa funcionar offline? (5) Orçamento mensal por usuário? As respostas eliminam 80% das opções.' },
-      { name: 'Aplique os 7 critérios eliminatórios', text: 'Para cada CRM: WhatsApp nativo, pipeline Kanban, IA, mobile/offline, preço em BRL, onboarding rápido, suporte em português. Se falhar em 2+ critérios, não perca tempo testando.' },
-      { name: 'Compare preço total em 12 meses', text: 'Calcule: (preço/mês × usuários × 12) + custo de migração + treinamento. Cuidado com CRMs que cobram em dólar — R$67/mês fixo vs US$12.50/mês que vira R$75 com câmbio e IOF.' },
-      { name: 'Teste o favorito por 7 dias com dados reais', text: 'Importe seus contatos reais, crie negócios verdadeiros e use por uma semana. Se o time não adotar naturalmente em 7 dias, o CRM é complexo demais para sua operação.' },
-      { name: 'Decida com base em adoção, não em features', text: 'O melhor CRM é o que o time realmente usa. Um sistema com 200 features e 10% de adoção perde para um sistema simples com 90% de adoção. Priorize UX sobre funcionalidades.' },
-    ],
-    { totalTime: 'PT45M', cost: '0' }
-  ),
-
-  'prospeccao-de-clientes-b2b': buildHowTo(
-    'Como Prospectar Clientes B2B com um CRM',
-    'Método em 5 passos para estruturar a prospecção B2B usando ICP, cadência multicanal e CRM para escalar sem perder qualidade.',
-    [
-      { name: 'Defina seu ICP (Ideal Customer Profile)', text: 'Identifique as 3-5 características dos seus melhores clientes: segmento, porte (faturamento/funcionários), cargo do decisor, localização e dor principal.' },
-      { name: 'Construa uma lista de leads qualificados', text: 'Use LinkedIn, Google Maps, CNPJ.biz ou a prospecção automática do Estetia PRO para encontrar empresas que atendem seu ICP. Meta: 50-100 leads por semana.' },
-      { name: 'Crie a cadência de abordagem', text: 'Sequência padrão: D+0 LinkedIn connection request, D+2 cold email personalizado, D+5 WhatsApp com referência ao email, D+10 ligação de follow-up.' },
-      { name: 'Registre tudo no CRM', text: 'Cada tentativa de contato vira uma atividade no card do lead. Isso elimina o principal problema: o follow-up que não acontece por falta de controle.' },
-      { name: 'Meça e ajuste', text: 'Analise taxa de resposta por canal e por ICP. Se cold email converte mais que LinkedIn para seu segmento, dobre a aposta. Dados guiam a otimização.' },
+      { name: 'Mapeie todos os dados coletados da clínica', text: 'Liste onde estão os dados de pacientes: fichas físicas, WhatsApp, planilhas, sistemas, email. Para cada dado, identifique: o que é coletado, onde está armazenado, quem acessa e por quanto tempo é guardado.' },
+      { name: 'Colete consentimento específico para dados de saúde', text: 'Crie um termo de consentimento digital para anamneses, fotos antes/depois e histórico clínico. O consentimento deve ser livre, informado e específico — um checkbox genérico não é suficiente para o Art. 11.' },
+      { name: 'Publique a Política de Privacidade no site', text: 'Inclua: quais dados são coletados, para que finalidade, como são protegidos, por quanto tempo são guardados e como o paciente pode exercer seus direitos (acesso, exclusão, portabilidade).' },
+      { name: 'Configure controles de acesso no sistema', text: 'No Estetia CRM, defina quem pode ver quais dados: recepcionista acessa agenda, técnico acessa prontuário do seu paciente, gestor tem visão geral. O sistema mantém audit trail de todos os acessos.' },
+      { name: 'Designe um responsável pela proteção de dados (DPO)', text: 'Para clínicas de pequeno porte, o DPO pode ser o próprio proprietário ou um DPO externo contratado por horas. O responsável cuida de responder solicitações de titulares e comunicar incidentes à ANPD.' },
     ],
     { totalTime: 'PT60M', cost: '0' }
   ),
+
+  'anamnese-digital-clinica-de-estetica': buildHowTo(
+    'Como Implementar Anamnese Digital na sua Clínica de Estética',
+    'Passo a passo para substituir fichas de papel por anamnese digital — com alertas de contraindicação, assinatura eletrônica e integração com prontuário.',
+    [
+      { name: 'Crie as fichas de anamnese por procedimento', text: 'No Estetia CRM, configure fichas específicas para cada procedimento: toxina botulínica, preenchimento, laser, microagulhamento, peeling. Cada ficha tem campos obrigatórios e de contraindicação configuráveis.' },
+      { name: 'Configure os alertas de contraindicação', text: 'Cadastre as contraindicações de cada procedimento: gravidez (todos os procedimentos), anticoagulantes (microagulhamento, laser), lúpus (IPL), isotretinoína (peeling profundo). O sistema alerta automaticamente.' },
+      { name: 'Ative o envio automático pré-consulta', text: 'Configure para enviar o link da anamnese digital via WhatsApp quando o agendamento é confirmado. O paciente preenche pelo celular em qualquer momento antes da consulta.' },
+      { name: 'Revise alertas antes do atendimento', text: 'Antes de cada consulta, abra o prontuário no Estetia CRM. Se houver alerta de contraindicação, o sistema exibe em destaque vermelho. O profissional decide se procede, adapta ou cancela o procedimento.' },
+      { name: 'Arquivo e acesso seguro ao histórico', text: 'Todas as anamneses ficam no prontuário do paciente com data, hora e assinatura eletrônica. Para consultas futuras, o profissional vê o histórico completo sem preencher tudo novamente — só atualiza o que mudou.' },
+    ],
+    { totalTime: 'PT30M', cost: '0' }
+  ),
+
+  'kpis-essenciais-clinica-de-estetica': buildHowTo(
+    'Como Montar um Dashboard de KPIs Clínicos no Estetia CRM',
+    'Guia passo a passo para configurar o monitoramento dos 5 KPIs essenciais de clínicas de estética e tomar decisões baseadas em dados.',
+    [
+      { name: 'Configure a taxa de ocupação da agenda', text: 'No dashboard do Estetia CRM, ative a visualização de taxa de ocupação diária, semanal e mensal. Defina a meta (80-90%) e configure alerta quando cair abaixo de 70% por 3 dias consecutivos.' },
+      { name: 'Acompanhe o no-show em tempo real', text: 'O painel mostra no-show do dia, semana e mês por profissional e tipo de procedimento. Identifique padrões: horários com maior índice, procedimentos mais cancelados, perfil de paciente.' },
+      { name: 'Calcule a taxa de recompra mensal', text: 'Configure o filtro de "pacientes que retornaram em 90 dias" como KPI fixo no dashboard. A meta saudável é acima de 40%. Abaixo de 25% indica problema de fidelização que requer ação.' },
+      { name: 'Monitore o ticket médio por procedimento', text: 'Analise ticket médio por tipo de procedimento, profissional e período. Isso revela quais tratamentos têm maior margem, quais profissionais convertem melhor e sazonalidade da receita.' },
+      { name: 'Revise os KPIs semanalmente em reunião de equipe', text: 'Separe 15 minutos por semana para revisar o dashboard com a equipe. Para cada KPI fora da meta: identifique causa, defina ação e responsável, avalie resultado na semana seguinte.' },
+    ],
+    { totalTime: 'PT25M', cost: '0' }
+  ),
 }
 
-/** Retorna o schema HowTo para um slug, ou null se não houver */
+/** Returns the HowTo schema for a slug, or null if not defined */
 export function getHowToSchema(slug: string): HowToSchema | null {
   return howToSchemas[slug] ?? null
 }

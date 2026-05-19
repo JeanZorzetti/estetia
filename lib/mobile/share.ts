@@ -56,7 +56,7 @@ export async function shareDeal(deal: { title: string; id: string }): Promise<bo
   return shareContent({
     title: `Deal: ${deal.title}`,
     text: `Confira este deal no Estetia CRM`,
-    url: `https://siriuscrm.com.br/dashboard/deals/${deal.id}`,
+    url: `https://estetiacrm.com.br/dashboard/deals/${deal.id}`,
     dialogTitle: 'Compartilhar deal',
   })
 }
@@ -65,7 +65,7 @@ export async function shareContact(contact: { name: string; id: string }): Promi
   return shareContent({
     title: contact.name,
     text: `Contato no Estetia CRM: ${contact.name}`,
-    url: `https://siriuscrm.com.br/dashboard/contacts/${contact.id}`,
+    url: `https://estetiacrm.com.br/dashboard/contacts/${contact.id}`,
     dialogTitle: 'Compartilhar contato',
   })
 }

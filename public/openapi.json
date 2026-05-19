@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "https://siriuscrm.com.br/api/v1",
+      "url": "https://estetiacrm.com.br/api/v1",
       "description": "Production server"
     },
     {

@@ -198,7 +198,7 @@ function getSearchAppearanceName(type: string): string {
 
 export async function getSEOMetrics(params?: SEOMetricsParams): Promise<SEOMetrics> {
   const searchConsole = await getSearchConsoleClient()
-  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://siriuscrm.com.br/'
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://estetiacrm.com.br/'
 
   // Use provided dates or fall back to defaults
   const defaultRange = getDefaultDateRange()
@@ -326,7 +326,7 @@ export async function getSEOMetrics(params?: SEOMetricsParams): Promise<SEOMetri
  */
 export async function getSEOByCountry(params?: SEOMetricsParams): Promise<SEOCountryData[]> {
   const searchConsole = await getSearchConsoleClient()
-  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://siriuscrm.com.br/'
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://estetiacrm.com.br/'
 
   const defaultRange = getDefaultDateRange()
   const startDate = params?.startDate && isValidDate(params.startDate)
@@ -363,7 +363,7 @@ export async function getSEOByCountry(params?: SEOMetricsParams): Promise<SEOCou
  */
 export async function getSEOByDevice(params?: SEOMetricsParams): Promise<SEODeviceData[]> {
   const searchConsole = await getSearchConsoleClient()
-  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://siriuscrm.com.br/'
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://estetiacrm.com.br/'
 
   const defaultRange = getDefaultDateRange()
   const startDate = params?.startDate && isValidDate(params.startDate)
@@ -408,7 +408,7 @@ export async function getSearchAppearances(
   params?: SEOMetricsParams
 ): Promise<SearchAppearanceData[]> {
   const searchConsole = await getSearchConsoleClient()
-  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://siriuscrm.com.br/'
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://estetiacrm.com.br/'
 
   const defaultRange = getDefaultDateRange()
   const startDate = params?.startDate && isValidDate(params.startDate)
@@ -483,7 +483,7 @@ export async function getKeywordOpportunities(
   params?: SEOMetricsParams
 ): Promise<KeywordOpportunitiesData> {
   const searchConsole = await getSearchConsoleClient()
-  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://siriuscrm.com.br/'
+  const siteUrl = process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://estetiacrm.com.br/'
 
   const defaultRange = getDefaultDateRange()
   const startDate = params?.startDate && isValidDate(params.startDate)

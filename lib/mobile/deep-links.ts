@@ -13,7 +13,7 @@ export async function setupDeepLinks(router: Router) {
     App.addListener('appUrlOpen', (event) => {
       try {
         const url = new URL(event.url)
-        // Handle both custom scheme (sirius://) and universal links (siriuscrm.com.br)
+        // Handle both custom scheme (estetia://) and universal links (estetiacrm.com.br)
         router.push(url.pathname + url.search)
       } catch {}
     })

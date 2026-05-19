@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Data da última atualização significativa do site
     // Atualizar manualmente quando houver mudanças reais nas páginas estáticas
-    const lastSiteUpdate = new Date('2026-03-20')
+    const lastSiteUpdate = new Date('2026-05-19')
 
     // Static routes
     // Priorização Hierárquica (Seção 7.2):
@@ -125,6 +125,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...withAlternates(`/solucoes/${slug}`, `/solutions/${slug}`),
     }))
 
+    // Competitor comparison pages (/vs/[competitor])
+    const vsSlugs = ['morelo', 'medidata', 'clinicare']
+    const vsPages = vsSlugs.map((slug) => ({
+        url: `${baseUrl}/vs/${slug}`,
+        lastModified: lastSiteUpdate,
+        changeFrequency: 'monthly' as const,
+        priority: 0.85,
+        ...withAlternates(`/vs/${slug}`),
+    }))
+
     // Feature landing pages
     const featureSlugs = [
         'agenda-inteligente', 'anamnese-digital', 'prontuario-eletronico', 'evolucao-fotos',
@@ -147,5 +157,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...calculatorPages,
         ...solucaoPages,
         ...featurePages,
+        ...vsPages,
     ]
 }

@@ -18,7 +18,7 @@ export async function generateMetadata(
   return {
     title: t('title'),
     description: t('description'),
-    keywords: ['sirius crm', 'roi labs', 'crm brasil', 'sobre', 'empresa'],
+    keywords: ['estetia crm', 'roi labs', 'crm clinica estetica', 'sobre', 'empresa'],
     alternates,
     openGraph: {
       title: t('ogTitle'),

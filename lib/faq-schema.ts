@@ -44,413 +44,189 @@ export function generateFAQSchema(faqs: FAQItem[], url: string) {
 }
 
 /**
- * FAQ data for SPIN Selling blog post
+ * FAQ data for homepage — perguntas gerais sobre Estetia CRM
  */
-export const spinSellingFAQs: FAQItem[] = [
+export const estetiaHomepageFAQs: FAQItem[] = [
   {
-    question: 'SPIN Selling funciona para vendas transacionais?',
-    answer:
-      'Não. SPIN foi desenhado para vendas complexas (B2B, alto ticket, múltiplos decisores). Para vendas transacionais (< R$ 1.000, decisão rápida), use abordagens mais diretas como AIDA ou vendas consultivas simplificadas.',
+    question: 'O que é o Estetia CRM?',
+    answer: 'O Estetia CRM é um sistema de gestão clínica SaaS desenvolvido para clínicas de estética e dermatologia. Reúne em uma plataforma: agenda inteligente com no-show predictor, prontuário eletrônico LGPD-compliant, recall automático via WhatsApp, integração com convênios TISS/TUSS e dashboard de KPIs clínicos.',
   },
   {
-    question: 'Quanto tempo leva para dominar SPIN?',
-    answer:
-      'Nível Básico: 2-4 semanas (com prática diária). Nível Intermediário: 2-3 meses (10-15 discoveries). Nível Avançado: 6-12 meses (50+ discoveries + feedback constante). Dica: A curva de aprendizado acelera com gravações + feedback.',
+    question: 'O Estetia CRM é aprovado para clínicas de saúde segundo a LGPD?',
+    answer: 'Sim. O Estetia CRM foi desenvolvido em conformidade com a LGPD Art. 11, que regula o tratamento de dados sensíveis de saúde. A plataforma utiliza criptografia AES-256, coleta consentimento digital do paciente, mantém audit trail de acessos e permite ao paciente exercer seus direitos LGPD (acesso, portabilidade, exclusão).',
   },
   {
-    question: 'Como convencer minha equipe a adotar SPIN?',
-    answer:
-      '1. Mostre dados: 17% aumento conversão, 53% mais chances (estudos Huthwaite). 2. Piloto: Comece com 1-2 vendedores top performers. 3. Resultados: Compartilhe wins da primeira semana. 4. Gamificação: Crie competição saudável. Insight: Vendedores experientes resistem mais. Foque em provar ROI rápido.',
+    question: 'O Estetia CRM funciona para dermatologia e estética corporal também?',
+    answer: 'Sim. Além de clínicas de estética facial, o Estetia CRM atende dermatologistas, clínicas de estética corporal e redes multi-unidade. Cada especialidade conta com campos de anamnese e prontuário customizados, além de soluções verticais específicas em /solucoes/dermatologia e /solucoes/estetica-corporal.',
   },
   {
-    question: 'SPIN funciona em vendas remotas (Zoom, Meet)?',
-    answer:
-      'Sim, inclusive é mais fácil! Benefícios: Você pode ter o template aberto durante a call, Gravação automática para revisão, Cliente não vê você anotando (menos distração), Compartilhamento de tela para mostrar ROI calculado. Dica: Use 2 monitores (1 para Zoom, 1 para template).',
+    question: 'Como o Estetia CRM reduz no-show em clínicas?',
+    answer: 'O Estetia CRM combina 3 camadas: (1) No-show predictor — IA que identifica pacientes com alto risco de cancelamento com base em histórico; (2) Confirmação automática — lembretes via WhatsApp, SMS ou email no prazo ideal para cada paciente; (3) Lista de espera — preenchimento automático de horários vagos. Clínicas que usam as 3 camadas reportam redução de 35-45% nos índices de no-show.',
   },
   {
-    question: "E se o cliente reclamar de 'muitas perguntas'?",
-    answer:
-      'Isso indica que você: Não criou rapport inicial, Fez muitas perguntas de Situação (deveria pesquisar antes), Não explicou o propósito do discovery. Script de Ajuste: "Entendo. O motivo de estar fazendo essas perguntas é garantir que, se eu mostrar alguma coisa, seja exatamente o que resolve seus desafios. Posso fazer mais 2-3 perguntas rápidas?"',
+    question: 'O Estetia CRM integra com convênios (TISS/TUSS)?',
+    answer: 'Sim. O plano Business inclui módulo de convênios com suporte ao padrão TISS/TUSS da ANS. Permite emissão de guias de consulta e procedimento, controle de glosas, faturamento eletrônico para operadoras de saúde e relatórios por convênio. Compatível com as principais operadoras do mercado brasileiro.',
   },
   {
-    question: 'Qual a diferença entre SPIN e BANT?',
-    answer:
-      'SPIN Selling: Foco em discovery profundo de dores, usado durante discovery meeting (40-50 min), objetivo de criar valor percebido, resultado é cliente articula necessidade. BANT: Foco em qualificação rápida, usado no lead scoring inicial (10-15 min), objetivo de filtrar leads viáveis, resultado é vendedor decide se qualifica. Melhor Abordagem: Use BANT primeiro (qualificação) depois SPIN (discovery).',
+    question: 'Quanto custa o Estetia CRM?',
+    answer: 'O Estetia CRM tem 3 planos: Starter (R$149/mês) para 1 profissional e até 300 pacientes; Pro (R$349/mês) para até 3 profissionais, 1.500 pacientes e no-show predictor IA; Business (R$799/mês) para profissionais ilimitados, multi-unidade e convênios TISS. Todos os planos incluem período de teste gratuito de 14 dias.',
   },
   {
-    question: 'Posso combinar SPIN com outras metodologias?',
-    answer:
-      'Sim! SPIN é altamente complementar: SPIN + BANT: BANT qualifica, SPIN aprofunda. SPIN + GPCT: GPCT mapeia jornada, SPIN explora dores. SPIN + Challenger: SPIN descobre dores, Challenger ensina novas perspectivas. SPIN + Sandler: Sandler qualifica dor, SPIN quantifica.',
-  },
-  {
-    question: 'Como medir ROI do treinamento SPIN?',
-    answer:
-      'Acompanhe estas métricas (antes vs depois): Taxa Conversão SQL→Proposta (CRM), Duração Média Discovery (Gravações), Problemas Identificados/Discovery (Template SPIN), % Deals com ROI Calculado (CRM campo custom), Objeção "Está Caro" (CRM motivo de perda), Ciclo de Vendas Médio (CRM), Ticket Médio (CRM). Meta Realista: +15-20% conversão em 3 meses.',
-  },
-  {
-    question: 'SPIN funciona para vendas consultivas de serviços?',
-    answer:
-      'Perfeitamente! Na verdade, SPIN foi criado para consultoria. Adaptações para Serviços: Situação - Foque em projetos anteriores, aprendizados, expectativas. Problema - Explore gargalos em execução, comunicação, timing. Implicação - Quantifique custo de atrasos, retrabalho, escopo mal definido. Necessidade - Explore expectativas de parceria, não só entrega. Exemplo: Consultoria de RH explorando "Qual o custo de uma contratação errada?"',
-  },
-  {
-    question: 'Quanto tempo deve durar um discovery SPIN?',
-    answer:
-      'Complexidade Simples (SaaS low-touch): 30-40 min. Complexidade Média (CRM, ERP mid-market): 40-50 min. Complexidade Alta (Enterprise, múltiplos decisores): 50-60 min. Regra de Ouro: Se terminou em < 30 min, você não explorou o suficiente.',
+    question: 'Em quanto tempo consigo configurar o Estetia CRM?',
+    answer: 'A maioria das clínicas conclui o setup básico em menos de 2 dias: importação de base de pacientes, configuração da agenda e ativação do WhatsApp. O onboarding guiado inclui checklist passo a passo, vídeos e suporte via chat. Redes multi-unidade têm onboarding dedicado com especialista.',
   },
 ]
 
 /**
- * FAQ data for CRM com IA blog post
+ * FAQ data for SPIN Selling para Clínicas de Estética blog post
  */
-export const crmIaFAQs: FAQItem[] = [
+export const spinSellingClinicaFAQs: FAQItem[] = [
   {
-    question: 'O que é CRM com Inteligência Artificial?',
-    answer: 'CRM com Inteligência Artificial é um sistema de gestão de clientes que usa machine learning para automatizar tarefas, prever fechamentos e priorizar leads. Diferente de CRMs tradicionais (que apenas registram), um CRM com IA antecipa o que vai acontecer e recomenda o que fazer agora.',
+    question: 'SPIN Selling funciona para clínicas de estética?',
+    answer: 'Sim. SPIN Selling foi adaptado para consultas de avaliação estética — onde o profissional precisa entender a necessidade real do paciente antes de apresentar um procedimento. Em vez de fazer um pitch do tratamento, o profissional usa perguntas de Situação, Problema, Implicação e Necessidade para que o próprio paciente identifique e verbalize a solução ideal.',
   },
   {
-    question: 'CRM com IA é caro? Vale a pena para PMEs?',
-    answer: 'Não. Em 2026, CRMs com IA como o Estetia CRM oferecem planos gratuitos com recursos de IA incluídos. O ROI é imediato: vendedores que usam lead scoring com IA fecham 3x mais deals em menos tempo, sem contratar mais vendedores.',
+    question: 'Como usar SPIN Selling na consulta de avaliação inicial?',
+    answer: 'Na consulta de avaliação: (1) Situação — entenda a rotina de skincare e histórico de procedimentos do paciente; (2) Problema — explore o que incomoda o paciente (manchas, flacidez, acne); (3) Implicação — ajude o paciente a perceber o impacto emocional e social do problema; (4) Necessidade — pergunte qual seria o resultado ideal para ele. A conversão acontece porque o paciente chegou à conclusão, não porque o profissional vendeu.',
   },
   {
-    question: 'Qual a diferença entre CRM tradicional e CRM com IA?',
-    answer: 'CRM tradicional: registra o que aconteceu, depende do vendedor para decidir tudo, gera relatórios do passado. CRM com IA: prevê o que vai acontecer, sugere a próxima ação ideal, prioriza automaticamente os melhores leads e detecta deals em risco antes que esfriem.',
+    question: 'Qual a taxa de conversão com SPIN Selling em clínicas de estética?',
+    answer: 'Clínicas que treinam a equipe em SPIN Selling para avaliações reportam aumento de 25-40% na taxa de conversão de avaliações em procedimentos. O maior impacto ocorre em procedimentos de alto ticket (acima de R$500) onde o paciente precisa de mais confiança antes de decidir. O SPIN reduz objeções como "vou pensar" porque o paciente chegou à decisão pelo próprio raciocínio.',
   },
   {
-    question: 'Como o Estetia CRM usa IA?',
-    answer: 'O Estetia CRM usa IA em 3 camadas: (1) Alertas automáticos de follow-up baseados em padrões de comportamento de compra; (2) Análise de carteira para identificar clientes em risco de churn; (3) Assistente SPIN para qualificação de leads com metodologia de vendas consultiva em linguagem natural.',
+    question: 'Como o Estetia CRM ajuda na aplicação do SPIN Selling?',
+    answer: 'O Estetia CRM mantém o histórico completo de consultas anteriores, procedimentos realizados e observações de cada paciente. Antes de uma avaliação, o profissional revisa o prontuário e já chega com informações para as perguntas de Situação (procedimentos passados, queixas anteriores). O CRM também registra as perguntas-chave e respostas do paciente para uso futuro.',
   },
   {
-    question: 'Preciso de conhecimento técnico para usar IA no CRM?',
-    answer: 'Não. Os melhores CRMs com IA são desenhados para vendedores, não para engenheiros. A IA funciona em segundo plano — você recebe alertas, sugestões e previsões de forma clara e acionável. Não é necessário configurar modelos ou entender algoritmos.',
+    question: 'SPIN Selling é adequado para procedimentos de alta complexidade como laser?',
+    answer: 'Especialmente para eles. Procedimentos de alta complexidade (laser CO2, peeling profundo, radiofrequência) têm maior ticket médio e maior hesitação de compra. O SPIN Selling é mais eficaz exatamente nesses casos, pois ajuda o paciente a compreender as implicações do problema (fotoenvelhecimento progressivo, perda de colágeno) antes de apresentar a solução.',
+  },
+  {
+    question: 'Como treinar a equipe em SPIN Selling para avaliações?',
+    answer: 'Processo em 3 fases: (1) Workshop prático de 2h com role-playing de consultas — distribuir o roteiro das 12 perguntas SPIN adaptadas para estética; (2) Shadowing — profissional sênior acompanha as primeiras 5 avaliações e dá feedback; (3) Revisão semanal nos primeiros 30 dias com análise de taxa de conversão por profissional no dashboard do Estetia CRM.',
+  },
+  {
+    question: 'SPIN Selling viola a ética médica/estética na consulta?',
+    answer: 'Não. O SPIN Selling não é uma técnica de pressão — é um framework de escuta ativa. Todas as perguntas têm como objetivo entender melhor a necessidade do paciente, não manipulá-lo. O método é compatível com os princípios de boas práticas clínicas e com o Código de Ética dos Conselhos profissionais de medicina e biomedicina.',
   },
 ]
 
 /**
- * FAQ data for Automação de Vendas blog post
+ * FAQ data for No-Show em Clínicas de Estética blog post
  */
-export const automacaoVendasFAQs: FAQItem[] = [
+export const noShowClinicaFAQs: FAQItem[] = [
   {
-    question: 'O que é automação de vendas no CRM?',
-    answer: 'Automação de vendas no CRM é a configuração de ações automáticas que o sistema executa sem intervenção manual — como enviar um e-mail quando um deal fica 3 dias sem resposta, alertar quando um cliente entra no ciclo de recompra, ou criar tarefas quando um lead avança de etapa no pipeline.',
+    question: 'Qual o índice médio de no-show em clínicas de estética?',
+    answer: 'O índice médio de no-show em clínicas de estética no Brasil varia entre 15% e 30% das consultas agendadas, dependendo do tipo de procedimento e do perfil de clientela. Procedimentos de avaliação gratuita têm os maiores índices (25-35%). Clínicas sem sistema de confirmação automática ficam na faixa superior desse intervalo.',
   },
   {
-    question: 'Quais tarefas de vendas posso automatizar?',
-    answer: 'As mais comuns: (1) Captura e atribuição de leads de formulários web; (2) E-mails de follow-up por estágio do pipeline; (3) Lembretes para clientes inativos; (4) Alertas de ciclo de recompra B2B; (5) Relatórios automáticos semanais; (6) Registro de interações via WhatsApp no histórico do cliente.',
+    question: 'Como o lembretes automáticos reduzem no-show em clínicas?',
+    answer: 'Lembretes automáticos reduzem no-show porque eliminam o principal motivo de cancelamento: esquecimento. O timing ideal é: 48h antes (confirmação inicial), 24h antes (lembrete com opção de cancelamento) e 2h antes (lembrete final). Clínicas que usam os 3 lembretes via WhatsApp reduzem no-show em 35-45% sem aumentar carga operacional.',
   },
   {
-    question: 'Quanto tempo leva para configurar automação de vendas?',
-    answer: 'Com um CRM moderno como o Estetia, você configura as primeiras automações em menos de 30 minutos. Comece simples: gatilho "deal em Proposta Enviada por 3 dias" → ação "criar lembrete de ligação". Isso já resolve o problema mais comum de leads perdidos por falta de follow-up.',
+    question: 'Lista de espera resolve o problema de no-show em clínicas?',
+    answer: 'A lista de espera não evita o no-show, mas minimiza o impacto financeiro. Quando um paciente cancela, o sistema contacta automaticamente o próximo da lista de espera para preencher o horário. Com Estetia CRM, o processo é automático: o paciente da lista recebe mensagem via WhatsApp e pode confirmar com 1 clique. Clínicas com lista de espera ativa recuperam 60-70% dos horários vagos.',
   },
   {
-    question: 'Automação de vendas deixa o relacionamento impessoal?',
-    answer: 'Não, quando feita corretamente. A automação cuida do que é previsível e repetitivo (lembretes, registros, relatórios), liberando o vendedor para o que exige inteligência emocional: escutar, negociar e construir confiança. O erro é automatizar demais — o toque humano no fechamento e na negociação sempre vale mais.',
+    question: 'Qual o custo financeiro real do no-show para uma clínica de estética?',
+    answer: 'Para uma clínica com ticket médio de R$300 e 20% de no-show em 100 consultas/semana: 20 consultas perdidas × R$300 = R$6.000/semana em receita não realizada. Em um mês, isso representa R$24.000. Além da receita, há custo de oportunidade (profissional parado), custo de insumos preparados e custo administrativo de remarcação. Use a Calculadora No-Show do Estetia em /ferramentas/calculadora-no-show para calcular o impacto na sua clínica.',
   },
   {
-    question: 'Qual o ROI da automação de vendas com CRM?',
-    answer: 'Em média: +40% de produtividade por vendedor, -60% de leads perdidos por falta de follow-up, +25% de taxa de conversão com contato no timing ideal. Para um vendedor que ganha R$ 8.000/mês e passa 10h/semana em tarefas administrativas, a automação recupera aproximadamente R$ 12.000/ano em tempo produtivo.',
+    question: 'Como o no-show predictor de IA do Estetia CRM funciona?',
+    answer: 'O no-show predictor analisa o histórico de comportamento de cada paciente: frequência de cancelamentos anteriores, tempo médio entre agendamento e consulta, canal de comunicação preferido, tipo de procedimento e horário preferencial. Com base nesses padrões, o sistema atribui um score de risco a cada agendamento e adapta automaticamente a estratégia de confirmação para pacientes de alto risco.',
+  },
+  {
+    question: 'Devo cobrar taxa de no-show em clínicas de estética?',
+    answer: 'A cobrança de taxa de no-show é legalmente permitida no Brasil desde que informada no momento do agendamento e aceita pelo paciente. O impacto na relação com o paciente depende da forma como é comunicada. A melhor prática é exigir sinal (30-50% do valor) para procedimentos de alto ticket ou novos pacientes, e usar lembretes automáticos como primeira linha de defesa antes de implementar penalidades.',
   },
 ]
 
 /**
- * FAQ data for Melhor CRM 2026 blog post
+ * FAQ data for LGPD para Clínicas de Estética blog post
  */
-export const melhorCrm2026FAQs: FAQItem[] = [
+export const lgpdClinicaFAQs: FAQItem[] = [
   {
-    question: 'Qual o melhor CRM para pequenas empresas em 2026?',
-    answer: 'Para pequenas empresas em 2026, o melhor CRM combina facilidade de uso, automação de follow-up e plano gratuito generoso. O Estetia CRM oferece pipeline visual, alertas de IA e integração WhatsApp gratuitamente para até 50 clientes — ideal para começar sem investimento inicial.',
+    question: 'A LGPD se aplica a clínicas de estética?',
+    answer: 'Sim. Clínicas de estética e dermatologia tratam dados sensíveis de saúde (Art. 11 da LGPD), que têm regime mais rigoroso do que dados pessoais comuns. Isso inclui: anamneses, prontuários, fotos de procedimentos, histórico de tratamentos, informações sobre condições de saúde e resultados de exames. O descumprimento pode gerar multas de até 2% do faturamento anual, limitado a R$50 milhões por infração.',
   },
   {
-    question: 'CRM com WhatsApp é essencial em 2026?',
-    answer: 'Sim. No Brasil, mais de 95% dos vendedores usam WhatsApp como principal canal de comunicação com clientes. Um CRM sem integração nativa com WhatsApp em 2026 força cópia manual de conversas, perdendo histórico e eficiência.',
+    question: 'Quais dados de pacientes são considerados sensíveis pela LGPD?',
+    answer: 'Pela LGPD Art. 5 e Art. 11, são dados sensíveis de saúde: histórico de doenças e condições clínicas, resultados de exames laboratoriais e de imagem, medicamentos em uso, alergias, procedimentos realizados, fotos de antes/depois de tratamentos estéticos, informações de saúde mental, dados genéticos e biométricos. Todos esses dados requerem consentimento específico e explícito do paciente.',
   },
   {
-    question: 'Quanto custa um bom CRM em 2026?',
-    answer: 'Varia muito: de R$ 0 (planos gratuitos como Estetia CRM, HubSpot Free) até R$ 500+ por usuário/mês (Salesforce, Microsoft Dynamics). Para PMEs brasileiras, a faixa de R$ 0 a R$ 150/mês por usuário cobre a maioria das necessidades.',
+    question: 'Posso usar fotos de pacientes para divulgação da clínica?',
+    answer: 'Somente com consentimento livre, informado, específico e inequívoco do paciente (LGPD Art. 11). O consentimento precisa descrever claramente: quais fotos serão usadas, em quais canais (Instagram, site, material impresso), por quanto tempo e que o paciente pode revogar a qualquer momento. O Estetia CRM gera e armazena esse termo de consentimento digital com assinatura eletrônica.',
   },
   {
-    question: 'CRM online ou instalado localmente?',
-    answer: 'Em 2026, CRM online (SaaS/cloud) é a escolha dominante: acesso de qualquer lugar, app mobile nativo, atualizações automáticas, sem custo de infraestrutura. CRMs instalados localmente existem para setores muito regulados (governo, saúde) mas são a exceção para vendas B2B e B2C.',
+    question: 'Por quanto tempo posso guardar o prontuário de pacientes?',
+    answer: 'O CFM (Conselho Federal de Medicina) estabelece guarda mínima de 20 anos para prontuários médicos. O CFB (Conselho Federal de Biomedicina) e os Conselhos de Enfermagem têm normas similares. Para clínicas de estética não médicas, a recomendação é guardar pelo menos 5 anos após o último atendimento. O Estetia CRM mantém prontuários por tempo configurável com backup automático criptografado.',
   },
   {
-    question: 'Salesforce, HubSpot ou Estetia CRM: qual escolher?',
-    answer: 'Depende do contexto: Salesforce é o líder global, poderoso mas complexo e caro (R$ 200-500+/usuário/mês). HubSpot tem excelente plano gratuito mas cobra caro por automações avançadas. O Estetia CRM é feito para o mercado brasileiro, com automações nativas para WhatsApp, alertas de recompra e interface em português — com plano gratuito para sempre até 50 clientes.',
+    question: 'O que é o DPO e clínicas de estética precisam ter um?',
+    answer: 'DPO (Data Protection Officer / Encarregado de Dados) é o responsável pela proteção de dados da organização. A LGPD torna o DPO obrigatório para operadores e controladores que tratam dados em larga escala. Para clínicas pequenas e médias, o DPO pode ser externo (contratado por hora). O Estetia CRM oferece relatórios de conformidade que facilitam o trabalho do DPO.',
+  },
+  {
+    question: 'Como implementar LGPD na prática em uma clínica de estética?',
+    answer: 'Os passos fundamentais são: (1) Mapeamento de dados — listar todos os dados coletados e onde são armazenados; (2) Base legal — definir a base legal para cada tratamento (consentimento, obrigação legal, legítimo interesse); (3) Termo de consentimento — criar e coletar consentimento digitalmente; (4) Política de privacidade — publicar no site e exibir no momento do agendamento; (5) Procedimentos de resposta — definir como responder a solicitações de titulares (acesso, exclusão, portabilidade). O Estetia CRM automatiza os passos 3, 4 e 5.',
   },
 ]
 
 /**
- * FAQ data for Prospecção B2B blog post
+ * FAQ data for Anamnese Digital em Clínicas de Estética blog post
  */
-export const prospeccaoB2bFAQs: FAQItem[] = [
+export const anamneseDigitalFAQs: FAQItem[] = [
   {
-    question: 'Quantos contatos fazer por dia na prospecção B2B?',
-    answer: 'Para um SDR dedicado, o benchmark é 50-80 touchpoints por dia (entre emails, mensagens LinkedIn e ligações). Para um vendedor que também fecha, o ideal é 20-30 touchpoints por dia para manter uma cadência saudável sem comprometer o fechamento dos deals ativos. Qualidade é mais importante que volume: 20 emails bem personalizados superam 100 genéricos.',
+    question: 'O que é anamnese digital em clínicas de estética?',
+    answer: 'Anamnese digital é a versão eletrônica da ficha de anamnese — o questionário clínico preenchido pelo paciente antes do procedimento. Em vez de papel, o paciente preenche pelo celular ou tablet, e as respostas são armazenadas automaticamente no prontuário eletrônico. Inclui: histórico de saúde, alergias, medicamentos, contraindicações ao procedimento e consentimento informado com assinatura digital.',
   },
   {
-    question: 'Cold email ou LinkedIn: qual tem mais resultado em B2B?',
-    answer: 'Depende do ICP. LinkedIn funciona melhor para cargos C-level e diretores — quem tem presença ativa na plataforma. Cold email funciona melhor para volume e para perfis que não são tão ativos no LinkedIn (financeiro, operacional). A melhor estratégia combina os dois em cadência multicanal — o mesmo lead recebe abordagem por ambos os canais, o que aumenta o reconhecimento e a taxa de resposta.',
+    question: 'Quais são as vantagens da anamnese digital sobre o papel?',
+    answer: 'As principais vantagens são: (1) Disponibilidade — o paciente pode preencher antes de chegar à clínica, reduzindo tempo de espera; (2) Legibilidade — sem caligrafia ilegível ou campos em branco; (3) Alertas automáticos — o sistema avisa quando há contraindicações (gravidez, anticoagulantes, lúpus); (4) Histórico acessível — profissionais acessam anamneses anteriores em segundos; (5) LGPD — assinatura digital e armazenamento criptografado.',
   },
   {
-    question: 'Como qualificar um lead na prospecção antes de gastar tempo?',
-    answer: 'Use o framework BANT rápido: Budget (tem orçamento ou pode ter?), Authority (é o decisor ou tem acesso a ele?), Need (tem o problema que você resolve?), Timeline (existe urgência ou gatilho de compra?). Você consegue responder 3 das 4 perguntas com pesquisa antes do primeiro contato — LinkedIn, site da empresa, notícias recentes. Se não passa no BANT, não entre na cadência — é desperdício de tempo.',
+    question: 'A anamnese digital tem validade legal e jurídica?',
+    answer: 'Sim, desde que coletada com certificação adequada. A Lei 14.063/2020 regulamenta o uso de assinaturas eletrônicas em saúde no Brasil. Assinaturas digitais com certificação ICP-Brasil têm a mesma validade jurídica que assinaturas físicas. O Estetia CRM utiliza assinatura eletrônica simples (aceita para ficha clínica) com registro de IP, data/hora e hash do documento para comprovação de autenticidade.',
   },
   {
-    question: 'Quantos follow-ups fazer antes de desistir de um lead?',
-    answer: 'O número ideal é 6-8 touchpoints distribuídos em 2-3 semanas antes do email de break-up. Dados do Rainmaker Institute mostram que 80% das vendas complexas B2B acontecem entre o 5º e o 12º contato. Desistir no 2º ou 3º follow-up (o que a maioria faz) significa abandonar a maioria dos leads que poderiam converter. O segredo é variar o canal e o ângulo da mensagem a cada touchpoint — não mandar o mesmo email 8 vezes.',
+    question: 'Como configurar alertas de contraindicação na anamnese digital?',
+    answer: 'No Estetia CRM, cada procedimento pode ter uma lista de contraindicações configuradas. Quando o paciente preenche a anamnese e indica uma condição contraindicada (ex: gravidez para laser IPL, anticoagulantes para microagulhamento), o sistema gera um alerta vermelho visível para o profissional antes da consulta. Isso evita intercorrências e demonstra due diligence em caso de questionamentos legais.',
+  },
+  {
+    question: 'O paciente pode preencher a anamnese antes de chegar à clínica?',
+    answer: 'Sim. Com o Estetia CRM, o link da anamnese digital é enviado automaticamente via WhatsApp quando o paciente é agendado. O paciente preenche pelo celular em qualquer momento antes da consulta. Ao chegar à clínica, o profissional já tem a ficha completa e o atendimento começa diretamente no procedimento, sem preencher papéis na recepção.',
+  },
+  {
+    question: 'Quantos procedimentos diferentes posso ter na anamnese digital?',
+    answer: 'O Estetia CRM permite criar fichas de anamnese personalizadas por procedimento ou grupo de procedimentos. Uma clínica pode ter fichas específicas para: toxina botulínica, preenchimento com AH, laser, microagulhamento, tratamentos faciais (limpeza, peelings), estética corporal, procedimentos para convênio. Cada ficha pode ter campos obrigatórios e opcionais configuráveis pela gestão.',
   },
 ]
 
 /**
- * FAQ data for Técnicas de Fechamento de Vendas blog post
+ * FAQ data for KPIs Essenciais para Clínicas de Estética blog post
  */
-export const fechamentoVendasFAQs: FAQItem[] = [
+export const kpisClinicaFAQs: FAQItem[] = [
   {
-    question: 'Qual a melhor técnica de fechamento para vendas B2B?',
-    answer: 'Não existe uma única "melhor técnica" — depende do momento e do perfil do cliente. Para vendas B2B complexas, o Fechamento por Resumo e a Pergunta de Comprometimento (SPIN) tendem a funcionar melhor porque respeitam o processo de decisão mais longo. Para deals que já estão maduros e o cliente demonstrou sinais claros, o Fechamento Assumido acelera sem forçar.',
+    question: 'Quais são os KPIs mais importantes para clínicas de estética?',
+    answer: 'Os 5 KPIs prioritários para clínicas de estética são: (1) Taxa de ocupação da agenda — percentual de horários preenchidos; (2) Taxa de no-show — percentual de consultas que não comparecem; (3) Taxa de recompra — pacientes que retornam em até 90 dias; (4) LTV do paciente (Lifetime Value) — receita total gerada por paciente no tempo de relacionamento; (5) Ticket médio por procedimento. Esses 5 indicadores cobrem ocupação, retenção e rentabilidade.',
   },
   {
-    question: 'O que fazer quando o cliente diz "preciso pensar"?',
-    answer: '"Preciso pensar" é sempre uma objeção disfarçada — raramente significa que o cliente precisa apenas de tempo. A resposta certa é usar o Fechamento Columbo: "Claro, entendo. Antes de você ir — só para eu entender melhor — o que especificamente você ainda precisa avaliar?" Com a objeção real na mesa (preço, timing, aprovação interna), você pode endereçá-la diretamente em vez de esperar o cliente nunca voltar.',
+    question: 'O que é taxa de recompra em clínicas de estética e como calcular?',
+    answer: 'Taxa de recompra é o percentual de pacientes que retornam para novos procedimentos após a primeira consulta. Cálculo: (pacientes que fizeram 2+ procedimentos nos últimos 90 dias ÷ total de pacientes únicos atendidos no período) × 100. Uma taxa saudável para clínicas de estética é acima de 40%. Taxas abaixo de 25% indicam problema de fidelização — revisar qualidade do atendimento, recall e programas de fidelidade.',
   },
   {
-    question: 'Quantas tentativas de fechamento fazer em uma reunião?',
-    answer: 'Em vendas consultivas B2B, tente fechar uma ou duas vezes por reunião — não mais. Múltiplas tentativas na mesma conversa sinalizam desespero e pressionam o cliente negativamente. Se a primeira tentativa gerou hesitação, explore a objeção, trate-a e tente uma vez mais. Se ainda assim não houver avanço, estabeleça o próximo passo claro (próxima reunião com data e pauta definidos) antes de encerrar.',
-  },
-]
-
-/**
- * FAQ data for Objeções em Vendas blog post
- */
-export const objecoesVendasFAQs: FAQItem[] = [
-  {
-    question: 'Como saber se a objeção é real ou apenas desculpa?',
-    answer: 'Use a pergunta de exploração do LAER: "O que especificamente te preocupa nisso?" e depois "Se esse ponto estivesse resolvido, você avançaria?" Se o cliente diz sim à segunda pergunta, a objeção é real e você pode endereçá-la. Se ele cria outra objeção imediatamente, provavelmente há algo mais profundo — falta de confiança, outro decisor, ou ausência de interesse genuíno.',
+    question: 'Como calcular o LTV (Lifetime Value) de paciente em clínica de estética?',
+    answer: 'Fórmula básica: LTV = Ticket Médio × Frequência de Procedimentos por Ano × Anos de Relacionamento. Exemplo: paciente com ticket médio de R$400, 6 procedimentos/ano (a cada 2 meses) e relacionamento médio de 3 anos → LTV = R$400 × 6 × 3 = R$7.200. Esse valor ajuda a definir quanto investir em captação (CAC) e em programas de retenção. Use a Calculadora LTV em /ferramentas/calculadora-ltv.',
   },
   {
-    question: 'É possível evitar objeções antes que apareçam?',
-    answer: 'Sim — as melhores equipes de vendas trabalham a prevenção de objeções durante o discovery e a apresentação. Se você sabe que "preço" será levantado, aborde o ROI antes que o cliente pergunte. Se sabe que "já usamos outra solução" é comum no seu mercado, demonstre o diferencial proativamente. Objeções antecipadas e respondidas no momento certo são muito mais fáceis de superar do que quando surgem depois da proposta.',
+    question: 'Qual deve ser a taxa de ocupação ideal de uma clínica de estética?',
+    answer: 'A taxa de ocupação saudável para clínicas de estética varia por modelo: clínicas focadas em procedimentos longos (laser, 1h+) funcionam bem com 70-80% de ocupação. Clínicas com mix de procedimentos rápidos e longos buscam 80-90%. Acima de 90% consistentemente indica necessidade de expansão de capacidade (mais profissionais ou horários). Abaixo de 60% por mais de 30 dias indica problema de captação ou no-show.',
   },
   {
-    question: 'Quantas objeções um cliente pode levantar antes de comprar?',
-    answer: 'Em vendas B2B complexas, é comum um cliente levantar 3 a 6 objeções diferentes ao longo do ciclo de vendas. Cada objeção superada aumenta a confiança e aproxima o fechamento. A pesquisa da Huthwaite International mostra que vendedores que conseguem superar 4 ou mais objeções têm taxa de fechamento 60% maior que os que desistem na segunda ou terceira.',
+    question: 'Com que frequência analisar os KPIs de uma clínica de estética?',
+    answer: 'KPIs operacionais (taxa de ocupação, no-show do dia, confirmações) devem ser verificados diariamente — o dashboard do Estetia CRM exibe esses dados em tempo real. KPIs táticos (taxa de recompra mensal, ticket médio, receita por profissional) são analisados semanalmente. KPIs estratégicos (LTV, CAC, crescimento de base de pacientes) são revisados mensalmente para decisões de investimento.',
   },
   {
-    question: 'O que fazer quando o cliente objeta após já ter concordado com tudo?',
-    answer: 'Objeções de último minuto (após proposta ou na assinatura) geralmente indicam cold feet — arrependimento antecipado de compra. A melhor resposta é reconhecer o momento: "É normal sentir isso antes de uma decisão importante. O que posso fazer para te dar mais confiança?" Depois, ofereça uma garantia, referência de cliente similar ou condição de entrada menor para reduzir o risco percebido.',
-  },
-]
-
-/**
- * FAQ data for KPIs de Vendas blog post
- */
-export const kpisVendasFAQs: FAQItem[] = [
-  {
-    question: 'Qual é o KPI de vendas mais importante?',
-    answer: 'Não existe um único KPI mais importante — depende do estágio do negócio. Para empresas em fase de crescimento acelerado, o New MRR e o CAC são críticos. Para negócios maduros focados em eficiência, win rate e ciclo de vendas. Para gestão do time, Revenue per Rep e conversão por etapa. O segredo é acompanhar KPIs dos 3 grupos (pipeline, performance, financeiro) para ter visão completa — e não se apegar a apenas um número.',
-  },
-  {
-    question: 'Com que frequência revisar os KPIs de vendas?',
-    answer: 'KPIs de pipeline (deals ativos, days in stage, alertas) devem ser revistos diariamente — idealmente o gestor olha o dashboard toda manhã. KPIs de performance (taxa de conversão, win rate, ciclo) devem ser analisados semanalmente na reunião de vendas. KPIs financeiros (CAC, LTV, MRR) são revisados mensalmente e trimestralmente para decisões estratégicas.',
-  },
-  {
-    question: 'Como definir benchmarks de KPIs para minha empresa?',
-    answer: 'Os benchmarks de mercado são um ponto de partida, mas o benchmark mais relevante é o seu histórico interno. Calcule os seus KPIs dos últimos 6-12 meses e use-os como linha de base. Benchmarks externos variam muito por setor, ticket médio e modelo de vendas — uma agência de marketing tem ciclo de vendas e win rate muito diferentes de um fabricante industrial.',
-  },
-  {
-    question: 'O que fazer quando os KPIs mostram resultado ruim?',
-    answer: 'KPI ruim é informação valiosa — ele aponta onde agir. O processo é: (1) Identificar qual KPI está fora do padrão; (2) Analisar a etapa ou comportamento que explica o desvio; (3) Formular hipótese de causa; (4) Testar uma ação corretiva específica; (5) Medir resultado após 2-4 semanas. Nunca tome decisões drásticas com base em uma semana de dados ruim — analise tendências.',
-  },
-]
-
-/**
- * FAQ data for Erros de CRM blog post
- */
-export const errosCrmFAQs: FAQItem[] = [
-  {
-    question: 'Por que meu time resiste ao uso do CRM?',
-    answer: 'A resistência ao CRM quase sempre tem uma das três causas: (1) O sistema é percebido como controle, não como ajuda — o vendedor sente que está sendo vigiado, não apoiado. (2) O CRM cria trabalho extra sem entregar valor perceptível para quem usa — registrar tudo e nunca ver benefício. (3) Falta de treinamento — o vendedor simplesmente não sabe usar bem. A solução é mostrar como o CRM ajuda o próprio vendedor: menos follow-ups perdidos, mais comissão.',
-  },
-  {
-    question: 'Quanto tempo leva para um CRM gerar resultado?',
-    answer: 'Com implementação correta (treinamento, pipeline bem estruturado, automações básicas ativas), os primeiros resultados aparecem em 30-60 dias: menos leads perdidos por falta de follow-up, pipeline mais previsível, gestão com mais tempo livre de tarefas operacionais. Resultados financeiros mensuráveis (aumento de taxa de conversão, redução de ciclo de vendas) aparecem em 90-120 dias de uso consistente.',
-  },
-  {
-    question: 'O que fazer quando o CRM atual está completamente bagunçado?',
-    answer: 'Se o CRM está com dados inconsistentes, etapas embaralhadas e time sem adesão, a melhor abordagem é um "reset" controlado: (1) Exporte os contatos e deals ativos; (2) Archive tudo que tem mais de 90 dias sem movimentação; (3) Reconfigure o pipeline do zero com as etapas corretas; (4) Faça um treinamento de reimplantação com o time; (5) Recomece com disciplina de atualização diária. É mais eficaz do que tentar "arrumar" um sistema em caos.',
-  },
-]
-
-/**
- * FAQ data for Planilha de Comissão para Corretores blog post
- */
-export const planilhaComissaoFAQs: FAQItem[] = [
-  {
-    question: 'Como calcular comissão de corretor de imóveis?',
-    answer: 'A comissão padrão no Brasil é de 6% sobre o valor do imóvel para vendas e 1 aluguel para locação. Para imóveis usados, a média é 5-8%; para lançamentos, 3-5% pagos pela incorporadora. Exemplo: imóvel de R$500.000 × 6% = R$30.000 de comissão bruta. Se houver divisão com a imobiliária (50/50), o corretor recebe R$15.000.',
-  },
-  {
-    question: 'Qual a melhor planilha para controle de comissões?',
-    answer: 'Uma boa planilha de comissões deve ter 4 componentes: (1) Registro de vendas com valor, data e status do pagamento; (2) Cálculo automático da comissão por faixa; (3) Dashboard visual com total recebido vs pendente; (4) Histórico mensal para declaração de IR. Planilhas gratuitas resolvem até ~20 vendas/mês; acima disso, um CRM com cálculo automático evita erros manuais.',
-  },
-  {
-    question: 'Corretor autônomo precisa declarar comissão no Imposto de Renda?',
-    answer: 'Sim. Corretores autônomos declaram via carnê-leão mensal (DARF) com alíquota progressiva de 7,5% a 27,5% sobre o lucro líquido. Despesas dedutíveis incluem: combustível para visitas, telefone, internet, material de marketing e mensalidade de CRM/ferramentas. Manter planilha organizada com todas as comissões recebidas e despesas é essencial para evitar problemas com a Receita Federal.',
-  },
-  {
-    question: 'Como evitar perder comissões por falta de controle?',
-    answer: 'Os 3 maiores motivos de perda de comissão são: (1) Não registrar o negócio formalmente — sem contrato de exclusividade, outro corretor pode fechar; (2) Perder o prazo de cobrança — comissões têm vencimento; (3) Erro no cálculo de split com a imobiliária. A solução é registrar cada venda no momento em que acontece, com valor, data de vencimento da comissão e percentual de split.',
-  },
-]
-
-/**
- * FAQ data for Como Escolher CRM B2B 2026 blog post
- */
-/**
- * FAQ data for CRM Gratuito Brasil 2026 blog post
- */
-export const crmGratuitoFAQs: FAQItem[] = [
-  {
-    question: 'CRM gratuito é realmente de graça?',
-    answer: 'Sim, os 5 CRMs listados neste artigo têm planos genuinamente gratuitos sem limite de tempo. A diferença para um trial é que o plano free não expira — você pode usar por meses ou anos sem pagar. As limitações são em volume (contatos, usuários) ou funcionalidades (automações, relatórios avançados).',
-  },
-  {
-    question: 'Qual CRM gratuito tem WhatsApp integrado?',
-    answer: 'Entre os 5 analisados, apenas o Estetia CRM oferece integração WhatsApp nativa no plano gratuito. HubSpot, Agendor, Bitrix24 e RD Station CRM não integram WhatsApp nativamente — exigem ferramentas de terceiros ou planos pagos.',
-  },
-  {
-    question: 'Posso migrar de um CRM gratuito para outro?',
-    answer: 'Sim. A maioria dos CRMs permite exportar dados em CSV. O processo: exporte contatos e deals do CRM atual, importe no novo. Dica: faça a migração quando tiver menos de 200 contatos — acima disso, o mapeamento de campos fica mais complexo.',
-  },
-  {
-    question: 'CRM gratuito funciona para equipes?',
-    answer: 'Depende do tamanho. Bitrix24 é o único com usuários ilimitados no free. RD Station CRM permite 4, HubSpot 5, Agendor 2, Estetia 1. Para equipes de 3+, avalie se o plano free do CRM escolhido suporta todos os vendedores — senão, o plano pago mais barato pode sair mais em conta do que usar um CRM inferior só porque é grátis.',
-  },
-]
-
-/**
- * FAQ data for Como Migrar de Planilha para CRM blog post
- */
-export const migrarPlanilhaFAQs: FAQItem[] = [
-  {
-    question: 'Quanto tempo leva para migrar de planilha para CRM?',
-    answer: 'Para empresas com até 500 contatos e 1-3 vendedores, a migração completa leva de 1 a 2 horas: 30 minutos para limpar a planilha, 15 minutos para exportar CSV, 15 minutos para importar no CRM e 30 minutos para validar os dados. Times maiores (4-10 vendedores) precisam de 2-3 horas incluindo treinamento.',
-  },
-  {
-    question: 'Vou perder dados ao migrar de planilha para CRM?',
-    answer: 'Não, se você seguir o processo correto: exporte sua planilha como CSV com codificação UTF-8, mapeie os campos (nome, telefone, email, status) para os campos equivalentes no CRM e valide 10% dos registros após a importação. A maioria dos CRMs modernos importa CSV em menos de 5 minutos para até 5.000 contatos.',
-  },
-  {
-    question: 'Qual CRM é mais fácil para quem vem de planilha?',
-    answer: 'CRMs com pipeline visual Kanban são os mais intuitivos para quem vem de planilha. O Estetia CRM, Pipedrive e Agendor têm interfaces que lembram um quadro de tarefas — cada deal é um cartão que você arrasta entre etapas. O onboarding leva menos de 30 minutos sem treinamento técnico.',
-  },
-  {
-    question: 'Posso continuar usando planilha junto com o CRM?',
-    answer: 'Pode, mas não deveria. Manter dois sistemas cria dados duplicados, versões conflitantes e retrabalho. O ideal é migrar 100% para o CRM em até 2 semanas. Se a equipe resistir, defina uma data de corte: a partir do dia X, toda informação que não estiver no CRM não conta para comissão.',
-  },
-]
-
-/**
- * FAQ data for CRM para Varejo blog post
- */
-export const crmVarejoFAQs: FAQItem[] = [
-  {
-    question: 'CRM funciona para loja física ou só para e-commerce?',
-    answer: 'CRM funciona para ambos. Na loja física, o vendedor cadastra o cliente pelo celular no momento da visita, registra interesses e agenda follow-up via WhatsApp. No e-commerce, o CRM integra com a plataforma e transforma carrinhos abandonados e leads de formulário em oportunidades no pipeline automaticamente.',
-  },
-  {
-    question: 'Qual o melhor CRM gratuito para varejo?',
-    answer: 'Para varejo com 1-3 vendedores, o Estetia CRM oferece plano gratuito com pipeline visual, WhatsApp integrado e alertas de follow-up — essencial para recompra. HubSpot Free também funciona, mas não tem WhatsApp nativo, o que é limitante para o varejo brasileiro onde 93% das vendas envolvem WhatsApp.',
-  },
-  {
-    question: 'CRM no varejo substitui o sistema de PDV?',
-    answer: 'Não. CRM e PDV (Ponto de Venda) têm funções diferentes. O PDV registra a transação (emissão de nota fiscal, controle de estoque, pagamento). O CRM gerencia o relacionamento: quem é o cliente, o que ele comprou antes, quando deve voltar, como fazer follow-up. Os dois se complementam.',
-  },
-  {
-    question: 'Como medir o ROI do CRM no varejo?',
-    answer: 'Compare 3 métricas antes e depois do CRM: (1) Taxa de recompra — clientes que voltam em 90 dias; (2) Ticket médio — o CRM permite vender complementos baseado no histórico; (3) Leads perdidos — quantos clientes entraram na loja, pediram orçamento e nunca mais foram contatados. A maioria das lojas recupera o investimento em 60 dias.',
-  },
-]
-
-/**
- * FAQ data for WhatsApp Vendas B2B blog post
- */
-export const whatsappVendasFAQs: FAQItem[] = [
-  {
-    question: 'WhatsApp Business ou WhatsApp Business API: qual usar para vendas B2B?',
-    answer: 'WhatsApp Business (app gratuito) é suficiente para times de até 3 vendedores com volume baixo-médio. A API (via provedores como Evolution API, Twilio ou Z-API) é necessária quando você precisa de múltiplos atendentes no mesmo número, automações avançadas ou integração com CRM. Para PMEs, o app gratuito + CRM com integração resolve 90% dos casos.',
-  },
-  {
-    question: 'Quantas mensagens posso enviar por dia no WhatsApp sem ser bloqueado?',
-    answer: 'O WhatsApp não divulga limites exatos, mas a prática segura é: até 20 mensagens novas por dia para contatos que nunca te responderam, sem limite para conversas já iniciadas pelo cliente. Envios em massa (broadcast) para contatos frios resultam em bloqueio. A regra de ouro: personalize cada mensagem e não envie a mesma mensagem para mais de 10 contatos ao mesmo tempo.',
-  },
-  {
-    question: 'Como registrar conversas do WhatsApp no CRM automaticamente?',
-    answer: 'CRMs com integração WhatsApp nativa (como o Estetia CRM) registram cada mensagem automaticamente no histórico do contato. CRMs sem integração exigem cópia manual ou ferramentas intermediárias. O registro automático é essencial para não perder contexto quando outro vendedor assume o cliente ou quando você precisa revisar o histórico antes de uma ligação.',
-  },
-  {
-    question: 'WhatsApp funciona para prospecção B2B fria?',
-    answer: 'Sim, com ressalvas. A taxa de resposta para mensagens frias no WhatsApp é 5-15% (vs 1-3% do email frio), mas só funciona se a mensagem for personalizada e relevante. Nunca envie catálogo sem contexto. A abordagem que funciona: mencione algo específico da empresa do prospect (evento recente, vaga aberta, expansão) e faça uma pergunta consultiva.',
-  },
-]
-
-/**
- * FAQ data for Como Montar Processo de Vendas blog post
- */
-export const processoVendasFAQs: FAQItem[] = [
-  {
-    question: 'Qual a diferença entre processo de vendas e funil de vendas?',
-    answer: 'O processo de vendas é o que o vendedor FAZ em cada etapa (prospectar, qualificar, apresentar, negociar, fechar). O funil de vendas é a VISUALIZAÇÃO de quantos leads estão em cada etapa e como eles progridem. O processo define as ações; o funil mede os resultados. Você precisa dos dois: processo sem funil não mede; funil sem processo não executa.',
-  },
-  {
-    question: 'Quantas etapas deve ter um processo de vendas?',
-    answer: 'Para PMEs B2B, o ideal é 5 a 7 etapas. Menos que 5 não dá visibilidade suficiente (onde o deal travou?). Mais que 7 cria burocracia e o vendedor para de atualizar. Etapas clássicas: Prospecção → Qualificação → Discovery → Proposta → Negociação → Fechamento → Pós-venda.',
-  },
-  {
-    question: 'Preciso de CRM para ter um processo de vendas?',
-    answer: 'Não para começar — você pode documentar o processo em um documento e usar planilha nos primeiros 30 dias. Mas para escalar, medir e automatizar, o CRM é indispensável. Sem CRM, o processo depende 100% da disciplina individual do vendedor, e a gestão não tem visibilidade de onde os deals estão travando.',
-  },
-  {
-    question: 'Como treinar a equipe no novo processo de vendas?',
-    answer: 'O treinamento mais eficaz é em 3 fases: (1) Workshop de 2 horas apresentando o processo e o CRM; (2) Shadowing na primeira semana — gestor acompanha 2-3 calls de cada vendedor e dá feedback em tempo real; (3) Revisão semanal nos primeiros 30 dias, ajustando etapas e critérios de qualificação com base nos dados reais do pipeline.',
-  },
-]
-
-/**
- * FAQ data for CRM para Agência de Marketing blog post
- */
-export const crmAgenciaFAQs: FAQItem[] = [
-  {
-    question: 'CRM para agência é diferente de CRM para vendas?',
-    answer: 'Sim. Agências precisam de multi-pipeline (um para prospecção de novos clientes, outro para onboarding, outro para renovação), campos customizados por tipo de serviço (SEO, Mídia, Social) e visão de MRR por cliente. CRMs genéricos funcionam, mas precisam de customização. O diferencial é conseguir separar gestão comercial de gestão de projetos.',
-  },
-  {
-    question: 'Posso usar Trello ou Asana no lugar de CRM para minha agência?',
-    answer: 'Trello e Asana são ótimos para gestão de projetos (tarefas, prazos, entregas), mas péssimos para gestão comercial. Eles não rastreiam valor de deal, taxa de conversão, ciclo de vendas ou MRR. Se você só usa Trello, está gerenciando entregas mas não está gerenciando receita. O ideal é usar CRM para vendas + Trello/Asana para projetos.',
-  },
-  {
-    question: 'Como evitar churn de clientes na agência com CRM?',
-    answer: 'Configure 3 alertas no CRM: (1) Cliente sem interação há 15 dias — hora de ligar; (2) Contrato vencendo em 45 dias — iniciar conversa de renovação; (3) NPS abaixo de 7 — acionar plano de retenção. Agências que monitoram esses 3 indicadores reduzem churn em 30-40% porque detectam insatisfação antes que o cliente cancele.',
-  },
-  {
-    question: 'Qual o melhor CRM gratuito para agência pequena?',
-    answer: 'Para agências de até 5 pessoas, o Estetia CRM oferece pipeline visual gratuito com WhatsApp integrado — ideal para prospecção e atendimento. HubSpot Free é outra opção com formulários e email marketing básico. O critério decisivo para agências é suporte a múltiplos pipelines e campos customizados — verifique se o plano gratuito oferece isso.',
-  },
-]
-
-export const comoEscolherCrmFAQs: FAQItem[] = [
-  {
-    question: 'Qual o melhor CRM para pequenas empresas no Brasil?',
-    answer: 'O melhor CRM para PMEs brasileiras em 2026 deve ter 4 características: preço em BRL (sem variação cambial), suporte em português, integração com WhatsApp (canal #1 de vendas no Brasil) e pipeline Kanban visual. CRMs internacionais como HubSpot e Pipedrive cobram em dólar e não integram WhatsApp nativamente. Opções brasileiras como Estetia CRM, RD Station CRM e Ploomes atendem melhor esses critérios.',
-  },
-  {
-    question: 'CRM gratuito vale a pena para empresas B2B?',
-    answer: 'CRMs gratuitos são ideais para times de 1-3 vendedores que precisam organizar o pipeline pela primeira vez. As limitações típicas dos planos free são: sem automações, sem relatórios avançados e limite de contatos (500-1.000). Para PMEs em fase de crescimento, o plano gratuito serve como validação — se o time usar consistentemente por 30 dias, é sinal de que vale investir no plano pago.',
-  },
-  {
-    question: 'Quanto custa implementar um CRM B2B?',
-    answer: 'O custo total de um CRM tem 3 componentes: (1) Licença mensal — de R$0 (planos free) a R$299/usuário em ferramentas enterprise; (2) Implementação — de R$0 (self-service) a R$15.000+ com consultoria; (3) Treinamento — 2-4 horas por vendedor. CRMs modernos self-service (como Estetia, Pipedrive) eliminam o custo de implementação, reduzindo o investimento total para apenas a mensalidade.',
-  },
-  {
-    question: 'Como migrar de planilha para CRM sem perder dados?',
-    answer: 'O processo em 5 passos: (1) Limpe a planilha — remova duplicatas e contatos inativos há mais de 6 meses; (2) Padronize os campos — telefone com DDD, CNPJ sem pontuação; (3) Exporte como CSV UTF-8; (4) Importe no CRM mapeando colunas para campos; (5) Valide 10% dos registros manualmente. A maioria dos CRMs importa planilhas em menos de 5 minutos para até 5.000 contatos.',
+    question: 'Como o Estetia CRM ajuda a monitorar KPIs clínicos?',
+    answer: 'O dashboard do Estetia CRM exibe em tempo real: taxa de ocupação da agenda, alertas de pacientes em risco de churn, receita do dia/semana/mês, procedimentos mais realizados e taxa de recompra por período. Relatórios automáticos semanais são enviados por email para a gestão. Todos os KPIs podem ser filtrados por profissional, procedimento, período e unidade (em plano multi-unidade).',
   },
 ]

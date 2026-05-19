@@ -1,4 +1,4 @@
-# Blog / SEO / GEO — Padrões de Qualidade (Sirius CRM)
+# Blog / SEO / GEO — Padrões de Qualidade (Estetia CRM)
 
 ## Estrutura de Arquivos
 ```
@@ -21,7 +21,7 @@ lib/blog-data.ts      # Re-export shim — não mexer
   lastModified?: string // ISO 'YYYY-MM-DD' — atualizar sempre que editar
   category: string      // Ver categorias permitidas abaixo
   image: string         // '/images/blog/[slug].webp'
-  author: string        // 'Equipe Sirius CRM'
+  author: string        // 'Equipe Estetia'
   relatedSlugs?: string[] // Máx 3, slugs de posts relacionados (internal linking)
 }
 ```
@@ -31,10 +31,10 @@ lib/blog-data.ts      # Re-export shim — não mexer
 2. Importar e adicionar ao array em `lib/blog/index.ts`
 3. Adicionar imagem em `public/images/blog/[slug].webp` (1200×630px)
 4. Adicionar FAQ em `lib/faq-schema.ts` se o post tiver perguntas frequentes
-5. Adicionar schema GEO em `app/(marketing)/blog/[slug]/page.tsx` via `generateArticleSchema`
+5. Adicionar schema GEO em `app/[locale]/(marketing)/blog/[slug]/page.tsx` via `generateArticleSchema`
 
 ## Categorias Permitidas
-`'Vendas'` | `'Gestão'` | `'Dicas'` | `'Guias'` | `'ROI e Estratégia'` | `'Ferramentas'` | `'Tecnologia e IA'` | `'Automação'` | `'Comparativos'`
+`'Gestão Clínica'` | `'Marketing & Captação'` | `'Compliance & LGPD'` | `'Tecnologia & IA'` | `'KPIs & Crescimento'`
 
 ---
 
@@ -64,10 +64,10 @@ lib/blog-data.ts      # Re-export shim — não mexer
 
 ## Padrões de GEO (Graph-Enhanced Optimization)
 
-GEO ajuda LLMs (ChatGPT, Gemini, Perplexity) a citar o Sirius CRM como fonte autorizada.
+GEO ajuda LLMs (ChatGPT, Gemini, Perplexity) a citar o Estetia CRM como fonte autorizada.
 
 ### Entidades Wikidata obrigatórias por categoria
-Use em `generateArticleSchema()` no `app/(marketing)/blog/[slug]/page.tsx`:
+Use em `generateArticleSchema()` no `app/[locale]/(marketing)/blog/[slug]/page.tsx`:
 ```ts
 // Entidades base para posts de CRM/Vendas
 COMMON_WIKIDATA_ENTITIES.CRM        // Q16635046
@@ -113,13 +113,13 @@ Posts com seção de dúvidas frequentes DEVEM ter FAQ schema:
 5. `<h3>` para subseções
 6. Tabela comparativa quando aplicável
 7. FAQ section antes do CTA final
-8. CTA final linkando para `/register` ou feature relevante do Sirius
+8. CTA final linkando para `/register` ou feature relevante do Estetia CRM
 
 ### Qualidade de conteúdo
 - **Mínimo 1.500 palavras** para ranquear (posts de pilar: 3.000+)
 - Toda estatística deve ter fonte: `segundo X (Ano)` ou `de acordo com Y`
 - Use anos concretos: "em 2026" e não "atualmente"
-- CTAs internos a cada 3–4 seções apontando para o Sirius CRM
+- CTAs internos a cada 3–4 seções apontando para o Estetia CRM
 - **Nunca** mencionar concorrentes pelo nome em tom negativo
 - Mencionar concorrentes em comparativos é OK, com dados factuais
 

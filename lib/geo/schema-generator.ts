@@ -101,7 +101,7 @@ export function generateArticleSchema(
     : {
         '@type': 'Person',
         name: post.author || 'ROI Labs',
-        url: 'https://siriuscrm.com.br',
+        url: 'https://estetiacrm.com.br',
         sameAs: ['https://www.linkedin.com/company/roi-labs'],
       }
 
@@ -111,8 +111,8 @@ export function generateArticleSchema(
 
   // Garante que imageUrl não duplique o domínio para URLs Unsplash/externas
   const resolvedImageUrl = imageUrl
-    ? (imageUrl.startsWith('http') ? imageUrl : `https://siriuscrm.com.br${imageUrl}`)
-    : (post.image?.startsWith('http') ? post.image : `https://siriuscrm.com.br${post.image || '/logo.png'}`)
+    ? (imageUrl.startsWith('http') ? imageUrl : `https://estetiacrm.com.br${imageUrl}`)
+    : (post.image?.startsWith('http') ? post.image : `https://estetiacrm.com.br${post.image || '/logo.png'}`)
 
   // Montar schema BlogPosting
   const schema: WithContext<BlogPosting> = {
@@ -130,12 +130,12 @@ export function generateArticleSchema(
       url: 'https://roilabs.com.br',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://siriuscrm.com.br/logo.png',
+        url: 'https://estetiacrm.com.br/logo.png',
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': canonicalUrl || `https://siriuscrm.com.br/blog/${post.slug}`,
+      '@id': canonicalUrl || `https://estetiacrm.com.br/blog/${post.slug}`,
     },
     // GEO: Desambiguação de entidades via Wikidata
     ...(mentions.length > 0 && {
@@ -263,6 +263,20 @@ export const COMMON_WIKIDATA_ENTITIES = {
   BRASILIA: 'https://www.wikidata.org/wiki/Q2844', // Brasília
   CURITIBA: 'https://www.wikidata.org/wiki/Q83319', // Curitiba
   PORTO_ALEGRE: 'https://www.wikidata.org/wiki/Q40269', // Porto Alegre
+
+  // ============================================================================
+  // MEDICINA ESTÉTICA & SAÚDE (Aesthetic Medicine & Health)
+  // ============================================================================
+  AESTHETIC_MEDICINE: 'https://www.wikidata.org/wiki/Q11792628', // Aesthetic Medicine
+  DERMATOLOGY: 'https://www.wikidata.org/wiki/Q183576', // Dermatology
+  COSMETICS: 'https://www.wikidata.org/wiki/Q170737', // Cosmetics
+  ELECTRONIC_HEALTH_RECORD: 'https://www.wikidata.org/wiki/Q1276626', // EHR / Prontuário Eletrônico
+  GENERAL_DATA_PROTECTION: 'https://www.wikidata.org/wiki/Q67741985', // LGPD (Lei Geral de Proteção de Dados)
+  DATA_PROTECTION: 'https://www.wikidata.org/wiki/Q1035291', // Data Protection
+  BOTULINUM_TOXIN: 'https://www.wikidata.org/wiki/Q309678', // Botulinum toxin (Botox)
+  LASER_SURGERY: 'https://www.wikidata.org/wiki/Q6490020', // Laser surgery
+  APPOINTMENT_SCHEDULING: 'https://www.wikidata.org/wiki/Q1033015', // Scheduling / Agendamento
+  PATIENT: 'https://www.wikidata.org/wiki/Q181600', // Patient
 
   // ============================================================================
   // INDÚSTRIAS & SEGMENTOS (Industries & Segments)
@@ -493,6 +507,76 @@ export const createGeoConfig = {
       COMMON_WIKIDATA_ENTITIES.KANBAN,
     ],
     about: [COMMON_WIKIDATA_ENTITIES.SALES],
+    ...overrides,
+  }),
+
+  /**
+   * Artigos sobre medicina estética e CRM clínico
+   */
+  aestheticMedicine: (overrides?: Partial<GeoArticleConfig>): GeoArticleConfig => ({
+    mentions: [
+      COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+      COMMON_WIKIDATA_ENTITIES.CRM,
+      COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+    ],
+    about: [
+      COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+      COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
+    ],
+    ...overrides,
+  }),
+
+  /**
+   * Artigos sobre dermatologia e gestão clínica
+   */
+  dermatology: (overrides?: Partial<GeoArticleConfig>): GeoArticleConfig => ({
+    mentions: [
+      COMMON_WIKIDATA_ENTITIES.DERMATOLOGY,
+      COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+      COMMON_WIKIDATA_ENTITIES.CRM,
+      COMMON_WIKIDATA_ENTITIES.BRAZIL,
+    ],
+    about: [
+      COMMON_WIKIDATA_ENTITIES.DERMATOLOGY,
+      COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+    ],
+    ...overrides,
+  }),
+
+  /**
+   * Artigos sobre LGPD para clínicas de saúde
+   */
+  lgpdHealth: (overrides?: Partial<GeoArticleConfig>): GeoArticleConfig => ({
+    mentions: [
+      COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+      COMMON_WIKIDATA_ENTITIES.DATA_PROTECTION,
+      COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+      COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+      COMMON_WIKIDATA_ENTITIES.BRAZIL,
+    ],
+    about: [
+      COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+      COMMON_WIKIDATA_ENTITIES.DATA_PROTECTION,
+    ],
+    ...overrides,
+  }),
+
+  /**
+   * Artigos sobre KPIs e métricas clínicas
+   */
+  clinicKpis: (overrides?: Partial<GeoArticleConfig>): GeoArticleConfig => ({
+    mentions: [
+      COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+      COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+      COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
+      COMMON_WIKIDATA_ENTITIES.CHURN_RATE,
+      COMMON_WIKIDATA_ENTITIES.BRAZIL,
+    ],
+    about: [
+      COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+      COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+    ],
     ...overrides,
   }),
 }

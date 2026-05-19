@@ -1,8 +1,8 @@
-// Sirius CRM Service Worker
+// Estetia CRM Service Worker
 // Simple PWA implementation without build tools
 
 const CACHE_VERSION = 'v1';
-const CACHE_NAME = `sirius-crm-${CACHE_VERSION}`;
+const CACHE_NAME = `estetia-crm-${CACHE_VERSION}`;
 
 // Assets to precache
 const PRECACHE_ASSETS = [
@@ -157,11 +157,11 @@ self.addEventListener('push', (event) => {
     try {
       payload = event.data.json();
     } catch {
-      payload = { title: 'Sirius CRM', body: event.data.text() };
+      payload = { title: 'Estetia CRM', body: event.data.text() };
     }
   }
 
-  const title = payload.title || 'Sirius CRM';
+  const title = payload.title || 'Estetia CRM';
   const category = payload.category;
   const actions = (category && ACTION_CATEGORIES[category]) || [];
 

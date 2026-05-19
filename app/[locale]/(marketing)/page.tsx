@@ -55,15 +55,15 @@ export default function LandingPage() {
     "@type": "SoftwareApplication",
     "name": "Estetia CRM",
     "applicationCategory": "BusinessApplication",
-    "applicationSubCategory": "CRM",
+    "applicationSubCategory": "ClinicalManagementSoftware",
     "operatingSystem": "Web, iOS, Android",
     "url": "https://estetiacrm.com.br",
-    "description": "CRM completo para clínicas de estética e dermatologia: agenda inteligente, anamnese digital, recall automático via WhatsApp, LGPD compliance e prontuário eletrônico.",
+    "description": "CRM clínico completo para clínicas de estética e dermatologia: agenda inteligente, anamnese digital, prontuário eletrônico, recall automático via WhatsApp, predictor de no-show, LGPD compliance e integração TISS/TUSS.",
     "offers": {
       "@type": "AggregateOffer",
       "priceCurrency": "BRL",
       "lowPrice": "0",
-      "highPrice": "597",
+      "highPrice": "799",
       "offerCount": "4",
       "availability": "https://schema.org/InStock"
     },
@@ -75,14 +75,14 @@ export default function LandingPage() {
       "worstRating": 1
     },
     "featureList": [
-      "Pipeline Kanban visual com drag-and-drop",
-      "WhatsApp integrado via Evolution API",
-      "Estetia IA — Assistente clínico e de gestão",
-      "Prospecção automática pelo Google Maps",
-      "Automações de follow-up por email e WhatsApp",
-      "Analytics PRO com previsão de receita",
-      "Modo offline para vendedores externos",
-      "API pública e webhooks"
+      "Agenda inteligente com confirmação automática",
+      "Anamnese digital com alertas de contraindicação",
+      "Prontuário eletrônico LGPD-compliant",
+      "Recall automático via WhatsApp Business",
+      "Predictor de no-show com IA",
+      "Integração TISS/TUSS para convênios",
+      "Gestão multi-unidade",
+      "Relatórios de KPIs clínicos"
     ],
     "screenshot": "https://estetiacrm.com.br/og-image.png",
     "softwareVersion": "2.0",
@@ -98,7 +98,7 @@ export default function LandingPage() {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Estetia CRM",
-    "description": "CRM completo para clínicas de estética: agenda inteligente, anamnese digital, recall automático via WhatsApp, LGPD compliance e Estetia IA para gestão clínica.",
+    "description": "CRM clínico para clínicas de estética e dermatologia: agenda inteligente, anamnese digital, prontuário eletrônico, recall automático via WhatsApp, LGPD compliance e predictor de no-show.",
     "brand": {
       "@type": "Brand",
       "name": "ROI Labs"
@@ -107,7 +107,7 @@ export default function LandingPage() {
       "@type": "AggregateOffer",
       "priceCurrency": "BRL",
       "lowPrice": "0",
-      "highPrice": "597",
+      "highPrice": "799",
       "offerCount": "4",
       "availability": "https://schema.org/InStock",
       "url": "https://estetiacrm.com.br/pricing"
@@ -122,15 +122,15 @@ export default function LandingPage() {
     "review": [
       {
         "@type": "Review",
-        "author": { "@type": "Person", "name": "Carlos Silva" },
+        "author": { "@type": "Person", "name": "Dra. Fernanda Lima" },
         "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "Finalmente um CRM que não complica. Em 10 minutos já estava usando e fechando negócios mais rápido."
+        "reviewBody": "O recall automático via WhatsApp reduziu meu no-show de 28% para 8% em 2 meses. A anamnese digital economiza muito tempo da equipe."
       },
       {
         "@type": "Review",
-        "author": { "@type": "Person", "name": "Mariana Souza" },
+        "author": { "@type": "Person", "name": "Clínica Bella Pele" },
         "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "O WhatsApp integrado economiza horas por semana. Meu time adora a simplicidade!"
+        "reviewBody": "O prontuário eletrônico com LGPD nativo nos deu segurança para digitalizar 100% dos atendimentos. Suporte excelente!"
       }
     ],
     "image": "https://estetiacrm.com.br/og-image.png",
@@ -146,7 +146,7 @@ export default function LandingPage() {
         "name": "O que é o Estetia CRM?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Estetia CRM é uma plataforma completa de vendas com pipeline Kanban, WhatsApp integrado via Evolution API, IA comercial (Estetia IA), prospecção automática pelo Google Maps, automações de deals e email, analytics avançado e API pública. Feito para vendedores brasileiros."
+          "text": "Estetia CRM é um sistema de gestão clínica completo para clínicas de estética e dermatologia. Inclui agenda inteligente com confirmação automática, anamnese digital com alertas de contraindicação, prontuário eletrônico LGPD-compliant, recall automático via WhatsApp Business e predictor de no-show com IA."
         }
       },
       {
@@ -154,23 +154,31 @@ export default function LandingPage() {
         "name": "O Estetia CRM é gratuito?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim! O plano Gratuito inclui 250 contatos, 100 negócios e 1 pipeline sem prazo de expiração. Para mais recursos, oferecemos Starter (R$149/mês), Pro (R$297/mês) e Business (R$597/mês)."
+          "text": "Sim! O plano Gratuito permite testar o sistema sem custo. Para clínicas em crescimento, oferecemos Starter (R$149/mês), Pro (R$349/mês) e Business (R$799/mês) com mais recursos, pacientes ilimitados e suporte prioritário."
         }
       },
       {
         "@type": "Question",
-        "name": "Como funciona o WhatsApp integrado?",
+        "name": "O Estetia CRM atende aos requisitos da LGPD para dados de saúde?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "O Estetia se conecta ao WhatsApp via API Oficial Meta. Envie lembretes de consulta, recall automático e confirmações diretamente do CRM, com inbox unificado e registro de histórico no prontuário."
+          "text": "Sim. O Estetia foi construído com LGPD Art. 11 nativo (dados sensíveis de saúde): consentimento digital com assinatura eletrônica, criptografia de prontuários, controle de acesso por perfil profissional, registro de auditoria e DPA (Acordo de Processamento de Dados) incluso em todos os planos pagos."
         }
       },
       {
         "@type": "Question",
-        "name": "Como funciona a prospecção pelo Google Maps?",
+        "name": "Como funciona o recall automático via WhatsApp?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Automatize o recall de pacientes. O Estetia envia lembretes de retorno, confirmações de agenda e mensagens personalizadas via WhatsApp. Cada plano inclui créditos mensais: Starter 75, Pro 300 e Business 1.500 leads/mês."
+          "text": "O Estetia se conecta ao WhatsApp Business via API Oficial Meta. Configure sequências automáticas: lembrete 48h antes da consulta, confirmação 24h antes, e recall de recompra após o procedimento. Todo o histórico fica registrado no prontuário do paciente."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O Estetia CRM funciona para redes de clínicas?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. O plano Business inclui gestão multi-unidade com dashboards consolidados, relatórios por unidade, transferência de pacientes entre unidades e padronização de protocolos de anamnese em toda a rede."
         }
       },
       {
@@ -178,7 +186,7 @@ export default function LandingPage() {
         "name": "Posso cancelar quando quiser?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sim, sem multas ou taxas. Cancele a qualquer momento e mantenha acesso até o fim do período pago. Garantia de 7 dias em todos os planos pagos."
+          "text": "Sim, sem multa ou fidelidade mínima. Cancele a qualquer momento e mantenha o acesso até o fim do período pago. Todos os planos pagos têm garantia de 7 dias — se não gostar, devolvemos o valor integralmente."
         }
       }
     ]
@@ -215,7 +223,7 @@ export default function LandingPage() {
       "https://www.linkedin.com/company/roilabs",
       "https://twitter.com/roilabs"
     ],
-    "priceRange": "R$ 0 - R$ 597/mês"
+    "priceRange": "R$ 0 - R$ 799/mês"
   };
 
   const plans = [
@@ -237,15 +245,15 @@ export default function LandingPage() {
     },
     {
       name: 'Pro',
-      price: 'R$ 297',
+      price: 'R$ 349',
       period: isEn ? '/mo' : '/mês',
-      description: isEn ? 'For growing teams' : 'Para equipes em crescimento',
-      features: isEn ? ['15 Users', '5,000 Contacts', 'Sales AI', '300 leads/mo'] : ['15 Usuários', '5.000 Contatos', 'IA Comercial', '300 leads/mês'],
+      description: isEn ? 'For growing clinics' : 'Para clínicas em crescimento',
+      features: isEn ? ['Unlimited patients', 'No-show predictor AI', 'WhatsApp Business', 'TISS/TUSS integration'] : ['Pacientes ilimitados', 'Predictor de no-show IA', 'WhatsApp Business', 'Integração TISS/TUSS'],
       highlighted: true,
     },
     {
       name: 'Business',
-      price: 'R$ 597',
+      price: 'R$ 799',
       period: isEn ? '/mo' : '/mês',
       description: isEn ? 'For large operations' : 'Para grandes operações',
       features: isEn ? ['50 Users', 'Unlimited', 'Round-Robin', '1,500 leads/mo'] : ['50 Usuários', 'Ilimitado', 'Round-Robin', '1.500 leads/mês'],

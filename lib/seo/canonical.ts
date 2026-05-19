@@ -1,4 +1,4 @@
-const BASE_URL = 'https://siriuscrm.com.br'
+const BASE_URL = 'https://estetiacrm.com.br'
 
 /**
  * Build locale-aware canonical + hreflang alternates for static pages.

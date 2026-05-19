@@ -83,7 +83,7 @@ export default function PricingPage() {
       '@type': 'AggregateOffer',
       priceCurrency: 'BRL',
       lowPrice: '149',
-      highPrice: '597',
+      highPrice: '799',
       offerCount: '3',
     },
     aggregateRating: {

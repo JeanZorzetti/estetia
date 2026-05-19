@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingFAQs, crmIaFAQs, automacaoVendasFAQs, melhorCrm2026FAQs, prospeccaoB2bFAQs, fechamentoVendasFAQs, objecoesVendasFAQs, kpisVendasFAQs, errosCrmFAQs, planilhaComissaoFAQs, comoEscolherCrmFAQs, crmGratuitoFAQs, migrarPlanilhaFAQs, crmVarejoFAQs, whatsappVendasFAQs, processoVendasFAQs, crmAgenciaFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -49,46 +49,19 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     imageUrl = `https://estetiacrm.com.br/api/og?${roiParams.toString()}`
   }
 
-  // AI-optimized description: Fatos diretos, dados concretos, sem clickbait
+  // AI-optimized descriptions for each Estetia post (fatos diretos para LLMs)
   let aiOptimizedDescription = post.excerpt
 
-  // Descrições otimizadas para AI Answer Engines (fatos diretos)
-  if (slug === 'planilha-controle-comissao-corretor') {
-    aiOptimizedDescription = 'Corretores perdem em média R$2.300/mês por falta de controle de comissões. Planilha gratuita com 4 abas prontas para Excel e Google Sheets — sem cadastro, sem pegadinha. Inclui calculadora de ROI.'
-  } else if (slug === 'spin-selling-guia-completo') {
-    aiOptimizedDescription = 'SPIN Selling: Metodologia criada por Neil Rackham (1988, 35.000 vendas analisadas). 4 tipos de perguntas: Situação, Problema, Implicação, Necessidade. Aumenta taxa de fechamento em vendas complexas B2B com ciclo longo (+30 dias).'
-  } else if (slug === 'funil-de-vendas-guia-completo') {
-    aiOptimizedDescription = 'Funil de vendas: 5 etapas principais (Prospecção → Qualificação → Proposta → Negociação → Fechamento). Taxa conversão típica: 20-30% topo para fundo. Tempo médio ciclo B2B: 30-90 dias. Pipeline visual Kanban aumenta conversão em 25%.'
-  } else if (slug === 'custo-oculto-inacao-crm') {
-    aiOptimizedDescription = 'Para calcular o ROI de um CRM: multiplique o número de leads perdidos por mês (média 23% em vendas sem sistema) pelo ticket médio. O custo da inação supera R$ 47.000/ano para times de 5 vendedores. Metodologia validada com 847 empresas. Lead decay reduz conversão em 10x após 5 minutos (Harvard Business Review 2024).'
-  } else if (slug === 'prospeccao-de-clientes-b2b') {
-    aiOptimizedDescription = 'Testamos cold email, LinkedIn, Google Maps, indicações e scraping em PMEs B2B reais. Um método gerou 5x mais reuniões que os outros com o mesmo esforço. Inclui cadência de 7 touchpoints e template de ICP.'
-  } else if (slug === 'tecnicas-de-fechamento-de-vendas') {
-    aiOptimizedDescription = '60% das vendas são perdidas porque o vendedor nunca pede o fechamento. 7 técnicas com scripts prontos para copiar e usar hoje — incluindo os 5 sinais de compra que indicam a hora exata de fechar.'
-  } else if (slug === 'como-superar-objecoes-em-vendas') {
-    aiOptimizedDescription = '10 objeções mais comuns: preço, timing, concorrência, aprovação interna, experiência ruim anterior. Técnica LAER: Listen, Acknowledge, Explore, Respond. 44% dos vendedores desistem após a 1ª objeção, mas 80% das vendas fecham após a 5ª tentativa (National Sales Executive Association).'
-  } else if (slug === 'kpis-de-vendas') {
-    aiOptimizedDescription = 'Taxa de conversão B2B média no Brasil: 2-5%. Ciclo de vendas: 30-90 dias. Sua equipe mede esses números? São 2 dos 12 KPIs que separam times que batem meta. Com benchmarks brasileiros e dashboard grátis.'
-  } else if (slug === 'erros-crm-comuns') {
-    aiOptimizedDescription = '7 erros críticos de CRM: falta de treinamento, dados desatualizados, pipeline mal estruturado, ausência de integração WhatsApp/email, uso como planilha sem automações, gestor que não usa o sistema. Gartner: 70% das implementações de CRM não geram ROI esperado por falhas de adoção.'
-  } else if (slug === 'melhor-crm-2026-comparativo') {
-    aiOptimizedDescription = 'Pipedrive, RD Station, HubSpot e mais 4 CRMs comparados em preço BRL, WhatsApp nativo e IA. Um deles custa R$0 e superou opções de R$299/mês. Tabela completa com notas em 7 critérios.'
-  } else if (slug === 'como-escolher-crm-b2b-2026') {
-    aiOptimizedDescription = '63% das PMEs ainda usam planilhas. CRM errado custa R$12.000+/ano. Responda 5 perguntas para descobrir qual sistema combina com seu negócio — 7 critérios eliminatórios sem viés de marca.'
-  } else if (slug === 'crm-gratuito-brasil-2026') {
-    aiOptimizedDescription = 'Testamos 5 CRMs "gratuitos" no Brasil e só 1 tem WhatsApp + IA sem pagar. Os outros 4 cobram em dólar ou travam funcionalidades essenciais. Tabela comparativa com contatos, usuários e preço do upgrade.'
-  } else if (slug === 'crm-para-representante-comercial-2026') {
-    aiOptimizedDescription = 'Representantes comerciais perdem 100% da carteira ao trocar de representada. CRM próprio com modo offline, WhatsApp integrado e IA que aplica BANT automaticamente — inclui opção gratuita para autônomos.'
-  } else if (slug === 'como-migrar-planilha-para-crm') {
-    aiOptimizedDescription = '63% das PMEs ainda controlam vendas em planilha. A migração para CRM leva 1-2 horas e zero risco de perda de dados — se você seguir estes 5 passos. Checklist de migração incluso.'
-  } else if (slug === 'crm-para-varejo-2026') {
-    aiOptimizedDescription = 'Lojas que usam CRM vendem 29% mais por cliente com recompra automatizada. Pipeline para loja física + e-commerce, follow-up via WhatsApp e KPIs de varejo que importam.'
-  } else if (slug === 'whatsapp-vendas-b2b-estrategias') {
-    aiOptimizedDescription = 'WhatsApp tem 98% de abertura mas 80% dos vendedores B2B usam errado. 7 estratégias com templates prontos — incluindo cadência de 7 toques que gera 3x mais respostas.'
-  } else if (slug === 'como-montar-processo-de-vendas') {
-    aiOptimizedDescription = 'Empresas com processo de vendas definido convertem 33% mais. 6 etapas do ICP ao pós-venda com template grátis — pare de depender de 1-2 vendedores estrela.'
-  } else if (slug === 'crm-para-agencia-de-marketing') {
-    aiOptimizedDescription = 'Agências perdem 23% de receita por falta de controle de renovações. Multi-pipeline (prospecção + onboarding + renovação) resolve — veja como montar no CRM.'
+  if (slug === 'spin-selling-para-clinicas-de-estetica') {
+    aiOptimizedDescription = 'SPIN Selling adaptado para consultas de avaliação estética: 12 perguntas-modelo (Situação, Problema, Implicação, Necessidade) que aumentam a conversão de avaliações em até 40% sem pressão de venda. Inclui script de consulta e exemplos para procedimentos de alto ticket.'
+  } else if (slug === 'como-reduzir-no-show-em-clinicas-de-estetica') {
+    aiOptimizedDescription = 'No-show médio em clínicas de estética: 15-30% das consultas. Clínicas com confirmação automática via WhatsApp + no-show predictor IA reduzem cancelamentos em 35-45%. Inclui cálculo de perda financeira e lista de espera automática.'
+  } else if (slug === 'lgpd-para-clinicas-de-estetica-guia-2026') {
+    aiOptimizedDescription = 'LGPD Art. 11 classifica dados de saúde como sensíveis. Clínicas de estética e dermatologia precisam de: consentimento específico para fotos, criptografia de prontuários, DPO designado, política de privacidade publicada. Multas de até 2% do faturamento ou R$50M.'
+  } else if (slug === 'anamnese-digital-clinica-de-estetica') {
+    aiOptimizedDescription = 'Anamnese digital reduz tempo de espera na recepção, elimina papel, gera alertas automáticos de contraindicações (gravidez, anticoagulantes, lúpus) e tem validade jurídica pela Lei 14.063/2020. Paciente preenche pelo celular antes da consulta.'
+  } else if (slug === 'kpis-essenciais-clinica-de-estetica') {
+    aiOptimizedDescription = '5 KPIs prioritários para clínicas de estética: taxa de ocupação (ideal 80-90%), no-show (meta < 10%), recompra em 90 dias (saudável > 40%), LTV por paciente, ticket médio por procedimento. Dashboard em tempo real no Estetia CRM.'
   }
 
   const isEnLocale = locale === 'en'
@@ -172,215 +145,61 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const imageUrl = rawImage.startsWith('http') ? rawImage : `https://estetiacrm.com.br${rawImage}`
 
   // GEO-optimized JSON-LD Schema with Wikidata entity disambiguation
-  let geoConfig = createGeoConfig.crm()
+  const estetiaAuthor = {
+    name: post.author || 'Equipe Estetia',
+    sameAs: ['https://www.linkedin.com/company/roi-labs'],
+    worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
+  }
 
-  // Configurações específicas por post para melhor desambiguação de entidades
-  if (slug === 'planilha-controle-comissao-corretor') {
-    geoConfig = createGeoConfig.realEstate({
-      citations: [
-        'https://www.ibresp.com.br/blogs/2024/qual-a-porcentagem-do-corretor-de-imoveis/',
-        'https://portas.com.br/noticias/precos-de-imoveis-devem-continuar-subindo-em-2026-apontam-especialistas/',
-      ],
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: [
-          'https://www.linkedin.com/company/roi-labs',
-          'https://twitter.com/roilabs',
-        ],
-        jobTitle: 'Software Development',
-        worksFor: {
-          name: 'ROI Labs',
-          url: 'https://roilabs.com.br',
-        },
-      },
-    })
-  } else if (slug === 'spin-selling-guia-completo') {
-    geoConfig = {
+  let geoConfig = createGeoConfig.aestheticMedicine({ author: estetiaAuthor })
+
+  if (slug === 'spin-selling-para-clinicas-de-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
       mentions: [
-        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
         COMMON_WIKIDATA_ENTITIES.CRM,
         COMMON_WIKIDATA_ENTITIES.BRAZIL,
-      ],
-      about: [
-        COMMON_WIKIDATA_ENTITIES.SALES,
-        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
-      ],
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: [
-          'https://www.linkedin.com/company/roi-labs',
-          'https://twitter.com/roilabs',
-        ],
-        worksFor: {
-          name: 'ROI Labs',
-          url: 'https://roilabs.com.br',
-        },
-      },
-    }
-  } else if (slug === 'funil-de-vendas-guia-completo') {
-    geoConfig = createGeoConfig.sales({
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: [
-          'https://www.linkedin.com/company/roi-labs',
-          'https://twitter.com/roilabs',
-        ],
-        worksFor: {
-          name: 'ROI Labs',
-          url: 'https://roilabs.com.br',
-        },
-      },
-    })
-  } else if (slug === 'custo-oculto-inacao-crm') {
-    // GEO Configuration for ROI Analysis article
-    geoConfig = {
-      mentions: [
-        COMMON_WIKIDATA_ENTITIES.CRM,
-        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
-        COMMON_WIKIDATA_ENTITIES.SALES,
-        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
-      ],
-      about: [
-        'https://www.wikidata.org/wiki/Q193234', // Return on Investment
-        COMMON_WIKIDATA_ENTITIES.CRM,
-        'https://www.wikidata.org/wiki/Q192536', // Cost–benefit analysis
-      ],
-      citations: [
-        'https://www.gartner.com/en/information-technology/insights/crm-customer-engagement-center',
-        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
-        'https://hbr.org/2024/03/the-short-life-of-online-sales-leads',
-      ],
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: [
-          'https://www.linkedin.com/company/roi-labs',
-          'https://twitter.com/roilabs',
-          'https://github.com/roilabs',
-        ],
-        jobTitle: 'Sales Engineering & ROI Analysis',
-        worksFor: {
-          name: 'ROI Labs',
-          url: 'https://roilabs.com.br',
-        },
-      },
-    }
-  } else if (slug === 'prospeccao-de-clientes-b2b') {
-    geoConfig = {
-      mentions: [
-        COMMON_WIKIDATA_ENTITIES.SALES,
-        COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION,
-        COMMON_WIKIDATA_ENTITIES.PROSPECTING,
-        COMMON_WIKIDATA_ENTITIES.CRM,
-        COMMON_WIKIDATA_ENTITIES.BRAZIL,
-        COMMON_WIKIDATA_ENTITIES.EMAIL_MARKETING,
-      ],
-      about: [
-        COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION,
-        COMMON_WIKIDATA_ENTITIES.SALES,
-      ],
-      citations: [
-        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
-        'https://hbr.org/2024/03/the-short-life-of-online-sales-leads',
-      ],
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
-        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
-      },
-    }
-  } else if (slug === 'tecnicas-de-fechamento-de-vendas') {
-    geoConfig = {
-      mentions: [
-        COMMON_WIKIDATA_ENTITIES.SALES,
-        COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
         COMMON_WIKIDATA_ENTITIES.SPIN_SELLING,
-        COMMON_WIKIDATA_ENTITIES.CRM,
-        COMMON_WIKIDATA_ENTITIES.BRAZIL,
-      ],
-      about: [
-        COMMON_WIKIDATA_ENTITIES.SALES,
         COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
-      ],
-      citations: [
-        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
-      ],
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
-        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
-      },
-    }
-  } else if (slug === 'como-superar-objecoes-em-vendas') {
-    geoConfig = {
-      mentions: [
         COMMON_WIKIDATA_ENTITIES.SALES,
-        COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.SALES],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'como-reduzir-no-show-em-clinicas-de-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
         COMMON_WIKIDATA_ENTITIES.CRM,
         COMMON_WIKIDATA_ENTITIES.BRAZIL,
-        COMMON_WIKIDATA_ENTITIES.PIPELINE_SALES,
+        COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING,
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
       ],
-      about: [
-        COMMON_WIKIDATA_ENTITIES.SALES,
-      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'lgpd-para-clinicas-de-estetica-guia-2026') {
+    geoConfig = createGeoConfig.lgpdHealth({
       citations: [
-        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
+        'https://www.gov.br/anpd/pt-br',
+        'https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm',
       ],
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
-        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
-      },
-    }
-  } else if (slug === 'kpis-de-vendas') {
-    geoConfig = {
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'anamnese-digital-clinica-de-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
       mentions: [
-        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
-        COMMON_WIKIDATA_ENTITIES.SALES,
-        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+        COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
         COMMON_WIKIDATA_ENTITIES.BRAZIL,
-        COMMON_WIKIDATA_ENTITIES.CONVERSION_RATE,
-        COMMON_WIKIDATA_ENTITIES.CUSTOMER_ACQUISITION_COST,
-        COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
-        COMMON_WIKIDATA_ENTITIES.PIPELINE_SALES,
+        COMMON_WIKIDATA_ENTITIES.BOTULINUM_TOXIN,
       ],
-      about: [
-        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
-        COMMON_WIKIDATA_ENTITIES.SALES,
-      ],
-      citations: [
-        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
-        'https://www.gartner.com/en/information-technology/insights/crm-customer-engagement-center',
-      ],
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
-        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
-      },
-    }
-  } else if (slug === 'erros-crm-comuns') {
-    geoConfig = {
-      mentions: [
-        COMMON_WIKIDATA_ENTITIES.CRM,
-        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
-        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
-        COMMON_WIKIDATA_ENTITIES.SALES,
-        COMMON_WIKIDATA_ENTITIES.BRAZIL,
-        COMMON_WIKIDATA_ENTITIES.AUTOMATION,
-      ],
-      about: [
-        COMMON_WIKIDATA_ENTITIES.CRM,
-        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
-      ],
-      citations: [
-        'https://www.gartner.com/en/information-technology/insights/crm-customer-engagement-center',
-        'https://www.salesforce.com/resources/research-reports/state-of-sales/',
-      ],
-      author: {
-        name: post.author || 'ROI Labs',
-        sameAs: ['https://www.linkedin.com/company/roi-labs', 'https://twitter.com/roilabs'],
-        worksFor: { name: 'ROI Labs', url: 'https://roilabs.com.br' },
-      },
-    }
+      about: [COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'kpis-essenciais-clinica-de-estetica') {
+    geoConfig = createGeoConfig.clinicKpis({ author: estetiaAuthor })
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -402,23 +221,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // FAQ Schema for posts with FAQ sections (for Featured Snippets)
   const faqDataMap: Record<string, FAQItem[]> = {
-    'spin-selling-guia-completo': spinSellingFAQs,
-    'crm-ia-inteligencia-artificial-2026': crmIaFAQs,
-    'crm-automacao-vendas-guia-completo': automacaoVendasFAQs,
-    'melhor-crm-2026-comparativo': melhorCrm2026FAQs,
-    'prospeccao-de-clientes-b2b': prospeccaoB2bFAQs,
-    'tecnicas-de-fechamento-de-vendas': fechamentoVendasFAQs,
-    'como-superar-objecoes-em-vendas': objecoesVendasFAQs,
-    'kpis-de-vendas': kpisVendasFAQs,
-    'erros-crm-comuns': errosCrmFAQs,
-    'planilha-controle-comissao-corretor': planilhaComissaoFAQs,
-    'como-escolher-crm-b2b-2026': comoEscolherCrmFAQs,
-    'crm-gratuito-brasil-2026': crmGratuitoFAQs,
-    'como-migrar-planilha-para-crm': migrarPlanilhaFAQs,
-    'crm-para-varejo-2026': crmVarejoFAQs,
-    'whatsapp-vendas-b2b-estrategias': whatsappVendasFAQs,
-    'como-montar-processo-de-vendas': processoVendasFAQs,
-    'crm-para-agencia-de-marketing': crmAgenciaFAQs,
+    'spin-selling-para-clinicas-de-estetica': spinSellingClinicaFAQs,
+    'como-reduzir-no-show-em-clinicas-de-estetica': noShowClinicaFAQs,
+    'lgpd-para-clinicas-de-estetica-guia-2026': lgpdClinicaFAQs,
+    'anamnese-digital-clinica-de-estetica': anamneseDigitalFAQs,
+    'kpis-essenciais-clinica-de-estetica': kpisClinicaFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 
@@ -440,42 +247,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* HowTo Schema for tutorial articles */}
       {(() => { const h = getHowToSchema(slug); return h ? <JsonLd data={h} /> : null })()}
 
-      {/* ItemList Schema for comparison articles (enables list rich snippets) */}
-      {slug === 'melhor-crm-2026-comparativo' && (
-        <JsonLd data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "name": "Melhores CRMs do Brasil em 2026",
-          "description": "Comparativo dos 7 CRMs mais usados no Brasil em 2026, avaliados em UX, mobile, WhatsApp, automação, analytics, personalização e preço.",
-          "numberOfItems": 7,
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Estetia CRM", "url": "https://estetiacrm.com.br" },
-            { "@type": "ListItem", "position": 2, "name": "Pipedrive", "url": "https://www.pipedrive.com/pt" },
-            { "@type": "ListItem", "position": 3, "name": "HubSpot CRM", "url": "https://www.hubspot.com/products/crm" },
-            { "@type": "ListItem", "position": 4, "name": "RD Station CRM", "url": "https://www.rdstation.com/crm/" },
-            { "@type": "ListItem", "position": 5, "name": "Ploomes", "url": "https://www.ploomes.com" },
-            { "@type": "ListItem", "position": 6, "name": "Agendor", "url": "https://www.agendor.com.br" },
-            { "@type": "ListItem", "position": 7, "name": "Bitrix24", "url": "https://www.bitrix24.com.br" },
-          ],
-        }} />
-      )}
-
-      {slug === 'crm-gratuito-brasil-2026' && (
-        <JsonLd data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "name": "CRMs Gratuitos no Brasil em 2026",
-          "description": "Comparativo de 5 CRMs com plano gratuito funcional no Brasil em 2026, avaliados em contatos, usuários, WhatsApp, IA e preço de upgrade.",
-          "numberOfItems": 5,
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Estetia CRM", "url": "https://estetiacrm.com.br" },
-            { "@type": "ListItem", "position": 2, "name": "HubSpot Free", "url": "https://www.hubspot.com/products/crm" },
-            { "@type": "ListItem", "position": 3, "name": "Agendor", "url": "https://www.agendor.com.br" },
-            { "@type": "ListItem", "position": 4, "name": "Bitrix24", "url": "https://www.bitrix24.com.br" },
-            { "@type": "ListItem", "position": 5, "name": "RD Station CRM", "url": "https://www.rdstation.com/crm/" },
-          ],
-        }} />
-      )}
 
       {/* ── Hero full-bleed editorial ── */}
       <div className="relative w-full overflow-hidden bg-[#0A1F3D]" style={{ height: '60vh', minHeight: '400px', maxHeight: '600px' }}>

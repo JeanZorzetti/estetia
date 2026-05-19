@@ -8,7 +8,7 @@
 
 const INDEXNOW_API_KEY = 'a573338e-b64d-4494-89f5-aeac5c0e787e'
 const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/indexnow'
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://estetiacrm.com.br'
 
 export interface IndexNowSubmission {
   url: string | string[]

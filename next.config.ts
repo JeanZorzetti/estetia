@@ -34,6 +34,13 @@ const nextConfig: NextConfig = {
   /* SEO Redirects - Fix 404s from Ahrefs */
   async redirects() {
     return [
+      // Legacy EasyPanel host → estetiacrm.com.br (preserve path/query)
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'doc-crm-estetia.7c17iw.easypanel.host' }],
+        destination: 'https://estetiacrm.com.br/:path*',
+        permanent: true,
+      },
       // Feature pages → Main features page
       {
         source: '/features/sales-playbook',
@@ -101,20 +108,26 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
+      // Sirius legacy pages → nearest Estetia equivalent
+      {
+        source: '/blog/planilha-controle-comissao-corretor',
+        destination: '/blog/kpis-essenciais-clinica-de-estetica',
+        permanent: true,
+      },
       // Missing blog posts → closest existing posts
       {
         source: '/blog/pipeline-vendas-guia',
-        destination: '/blog/como-organizar-pipeline-vendas',
+        destination: '/blog/kpis-essenciais-clinica-de-estetica',
         permanent: true,
       },
       {
         source: '/blog/crm-vendas-consultivas',
-        destination: '/blog/crm-automacao-vendas-guia-completo',
+        destination: '/blog/spin-selling-para-clinicas-de-estetica',
         permanent: true,
       },
       {
         source: '/blog/link-telegram',
-        destination: '/blog/spin-selling-guia-completo',
+        destination: '/blog/spin-selling-para-clinicas-de-estetica',
         permanent: true,
       },
       // Pricing billing fragments crawled as paths
@@ -200,7 +213,7 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: https: blob:",
               "media-src 'self' data: blob: https://*.easypanel.host",
               "font-src 'self' data: https://www.mercadopago.com https://sdk.mercadopago.com https://fonts.scalar.com",
-              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.sentry.io https://vitals.vercel-insights.com https://*.clarity.ms https://api.mercadopago.com https://cdn.jsdelivr.net https://*.posthog.com https://*.i.posthog.com https://*.pusher.com wss://*.pusher.com https://*.roilabs.com.br wss://*.roilabs.com.br https://*.siriuscrm.com.br wss://*.siriuscrm.com.br https://siriuscrm.com.br https://vercel.live wss://vercel.live https://*.easypanel.host",
+              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.sentry.io https://vitals.vercel-insights.com https://*.clarity.ms https://api.mercadopago.com https://cdn.jsdelivr.net https://*.posthog.com https://*.i.posthog.com https://*.pusher.com wss://*.pusher.com https://*.roilabs.com.br wss://*.roilabs.com.br https://*.estetiacrm.com.br wss://*.estetiacrm.com.br https://estetiacrm.com.br https://vercel.live wss://vercel.live https://*.easypanel.host",
               "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://vercel.live https://www.mercadopago.com https://sdk.mercadopago.com",
               "base-uri 'self'",
               "form-action 'self'",
