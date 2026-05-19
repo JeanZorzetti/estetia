@@ -1,0 +1,29 @@
+# WhatsApp automations — every 30 min
+*/30 * * * * curl -sf -X POST $APP_URL/api/cron/whatsapp-flows-estetica -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Calendar reminders — every day 2am
+0 2 * * * curl -sf -X POST $APP_URL/api/cron/calendar-reminders -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Deal idle detection — every 15 min
+*/15 * * * * curl -sf -X POST $APP_URL/api/cron/deal-idle -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Trial expiry check — every hour
+0 * * * * curl -sf -X POST $APP_URL/api/cron/check-trial-expiry -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Follow-up emails — every day 8am
+0 8 * * * curl -sf -X POST $APP_URL/api/cron/follow-up-emails -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Recall process — every day 9am
+0 9 * * * curl -sf -X POST $APP_URL/api/cron/recall-process -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Monthly revenue snapshot — 1st of month midnight
+0 0 1 * * curl -sf -X POST $APP_URL/api/cron/monthly-revenue -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Sync ads — every day 6am
+0 6 * * * curl -sf -X POST $APP_URL/api/cron/sync-ads -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Sync Google Calendar — every day 3am
+0 3 * * * curl -sf -X POST $APP_URL/api/cron/sync-google-calendar -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Billing PIX check — every hour
+0 * * * * curl -sf -X POST $APP_URL/api/cron/billing-pix -H "Authorization: Bearer $CRON_SECRET" -o /dev/null

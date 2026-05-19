@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { requireModule } from '@/lib/guards/require-module'
+import { deletePhoto } from '@/lib/storage-photos'
 
 /**
  * DELETE /api/clinica/fotos/[id]
@@ -28,6 +29,11 @@ export async function DELETE(
     where: { id, organizationId: user.organizationId },
   })
   if (!foto) return NextResponse.json({ error: 'Foto não encontrada' }, { status: 404 })
+
+  // Delete from MinIO if objectKey is stored (new uploads), ignore errors for legacy URLs
+  if (foto.objectKey) {
+    try { await deletePhoto(foto.objectKey) } catch {}
+  }
 
   await prisma.patientPhoto.delete({ where: { id } })
 

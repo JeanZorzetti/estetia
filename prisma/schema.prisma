@@ -3510,6 +3510,7 @@ model PatientPhoto {
   patient                Patient    @relation(fields: [patientId], references: [id], onDelete: Cascade)
   treatmentSessionId     String?
   url                    String
+  objectKey              String?
   tipo                   PhotoType
   anguloPadronizado      String?
   areaCorpo              String?
