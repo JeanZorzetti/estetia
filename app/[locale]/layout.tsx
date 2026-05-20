@@ -180,10 +180,24 @@ function buildSchemaOrg(locale: Locale) {
         '@type': 'Organization',
         '@id': `${baseUrl}/#organization`,
         name: 'ROI Labs',
+        legalName: 'ROI Labs Tecnologia',
         url: 'https://roilabs.com.br',
+        description: isPtBR
+          ? 'ROI Labs é a empresa de tecnologia por trás do Estetia CRM, plataforma SaaS de gestão clínica para clínicas de estética e dermatologia no Brasil.'
+          : 'ROI Labs is the technology company behind Estetia CRM, a SaaS clinical management platform for aesthetic and dermatology clinics in Brazil.',
+        foundingDate: '2024-01-01',
         logo: {
           '@type': 'ImageObject',
           url: `${baseUrl}/logo.png`,
+          width: 512,
+          height: 512,
+        },
+        image: `${baseUrl}/og-image.png`,
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: 'BR',
+          addressRegion: 'GO',
+          addressLocality: 'Goiânia',
         },
         contactPoint: {
           '@type': 'ContactPoint',
@@ -194,7 +208,11 @@ function buildSchemaOrg(locale: Locale) {
           areaServed: isPtBR ? 'BR' : ['BR', 'US', 'GB', 'AU', 'CA'],
           availableLanguage: ['Portuguese', 'English'],
         },
-        sameAs: ['https://twitter.com/roilabs'],
+        sameAs: [
+          'https://twitter.com/roilabs',
+          'https://www.linkedin.com/company/roilabs',
+          'https://github.com/JeanZorzetti',
+        ],
       },
       {
         '@type': 'SoftwareApplication',
