@@ -11,6 +11,7 @@ import { UpcomingAppointments } from "@/components/dashboard/clinic/upcoming-app
 import { QuickActions } from "@/components/dashboard/clinic/quick-actions"
 import { PendingAnamneses } from "@/components/dashboard/clinic/pending-anamneses"
 import { RecallSuggestions } from "@/components/dashboard/clinic/recall-suggestions"
+import { ClinicOnboardingChecklist } from "@/components/dashboard/clinic-onboarding-checklist"
 
 export async function generateMetadata({
   params,
@@ -61,6 +62,7 @@ export default async function DashboardPage({
           onboarding: {
             select: {
               status: true,
+              completedSteps: true,
             },
           },
         },
@@ -88,6 +90,9 @@ export default async function DashboardPage({
 
     const shouldShowOnboarding =
       !user.onboarding || user.onboarding.status === "IN_PROGRESS"
+
+    const checklistSteps = user.onboarding?.completedSteps ?? []
+    const checklistAllDone = checklistSteps.length >= 5
 
     // --- Datas ---
     const today = new Date()
@@ -209,6 +214,11 @@ export default async function DashboardPage({
                 · {orgName}
               </p>
             </div>
+
+            {/* Checklist de onboarding clínico — some depois de completo */}
+            {!checklistAllDone && (
+              <ClinicOnboardingChecklist initialCompletedSteps={checklistSteps} />
+            )}
 
             {/* KPIs */}
             <DailyKPIs

@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
+import * as Sentry from '@sentry/nextjs'
 import { SubscriptionTier } from '@prisma/client'
 import logger from '@/lib/logger'
 import { sendEmail } from '@/lib/email'
@@ -155,6 +156,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true })
 
   } catch (error: any) {
+    Sentry.captureException(error, {
+      tags: { route: 'mercadopago_webhook' },
+      extra: { message: error.message },
+    })
     logger.error({ error: error.message }, 'MercadoPago webhook error')
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
@@ -162,8 +167,13 @@ export async function POST(req: NextRequest) {
 
 async function processApprovedPayment(payment: any) {
   const externalReference = payment.external_reference
-  
+
   if (!externalReference) {
+    Sentry.captureMessage('MP approved payment missing external_reference', {
+      level: 'error',
+      tags: { route: 'mercadopago_webhook' },
+      extra: { paymentId: payment.id },
+    })
     logger.warn({ paymentId: payment.id }, 'No external reference')
     return
   }
@@ -173,6 +183,11 @@ async function processApprovedPayment(payment: any) {
   const underscoreIdx = externalReference.indexOf('_')
 
   if (underscoreIdx === -1) {
+    Sentry.captureMessage('MP invalid external_reference format', {
+      level: 'error',
+      tags: { route: 'mercadopago_webhook' },
+      extra: { externalReference },
+    })
     logger.warn({ externalReference }, 'Invalid external reference format')
     return
   }
@@ -186,20 +201,27 @@ async function processApprovedPayment(payment: any) {
     tierOrAddon = tierOrAddon.replace('_ANNUAL', '')
   }
 
-  // Programa de Fundadores (FOUNDER_STARTER | FOUNDER_PRO | FOUNDER_BUSINESS)
-  if (tierOrAddon.startsWith('FOUNDER_')) {
-    await upgradeToFounder(organizationId, tierOrAddon, payment)
-    return
-  }
+  try {
+    // Programa de Fundadores (FOUNDER_STARTER | FOUNDER_PRO | FOUNDER_BUSINESS)
+    if (tierOrAddon.startsWith('FOUNDER_')) {
+      await upgradeToFounder(organizationId, tierOrAddon, payment)
+      return
+    }
 
-  // Verificar se é upgrade de plano
-  if (Object.values(SubscriptionTier).includes(tierOrAddon as SubscriptionTier)) {
-    await upgradePlan(organizationId, tierOrAddon as SubscriptionTier, payment, isAnnual)
-  } else if (tierOrAddon === 'WHATSAPP_SETUP') {
-    await processWhatsAppSetupPurchase(organizationId, payment)
-  } else {
-    // É um add-on
-    await processAddonPurchase(organizationId, tierOrAddon, payment)
+    // Verificar se é upgrade de plano
+    if (Object.values(SubscriptionTier).includes(tierOrAddon as SubscriptionTier)) {
+      await upgradePlan(organizationId, tierOrAddon as SubscriptionTier, payment, isAnnual)
+    } else if (tierOrAddon === 'WHATSAPP_SETUP') {
+      await processWhatsAppSetupPurchase(organizationId, payment)
+    } else {
+      await processAddonPurchase(organizationId, tierOrAddon, payment)
+    }
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { route: 'mercadopago_webhook', step: 'processApprovedPayment' },
+      extra: { organizationId, tierOrAddon, paymentId: payment.id, externalReference },
+    })
+    throw err
   }
 }
 

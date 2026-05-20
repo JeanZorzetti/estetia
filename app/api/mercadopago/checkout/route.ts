@@ -7,6 +7,7 @@ import logger from '@/lib/logger'
 import { SubscriptionTier } from '@prisma/client'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import * as Sentry from '@sentry/nextjs'
 
 /**
  * POST /api/mercadopago/checkout
@@ -133,6 +134,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, preferenceId, checkoutUrl })
 
   } catch (error) {
+    Sentry.captureException(error, {
+      tags: { route: 'mercadopago_checkout' },
+      extra: { message: error instanceof Error ? error.message : 'Unknown error' },
+    })
     logger.error({
       error,
       message: error instanceof Error ? error.message : 'Unknown error',

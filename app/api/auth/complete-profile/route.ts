@@ -85,10 +85,17 @@ export async function POST(req: NextRequest) {
       return await apiError(ERR.UNAUTHORIZED, 401, { req })
     }
 
-    const { phone, jobTitle, company, companyDescription, segment } = await req.json()
+    const {
+      phone, jobTitle, company, companyDescription, segment,
+      cnpj, rtNome, rtConselho, rtNumeroConselho, rtUfConselho,
+    } = await req.json()
 
     if (!phone || !jobTitle || !company || !segment) {
       return NextResponse.json({ error: 'Preencha todos os campos obrigatórios.' }, { status: 400 })
+    }
+
+    if (!cnpj || !rtNome || !rtConselho || !rtNumeroConselho || !rtUfConselho) {
+      return NextResponse.json({ error: 'CNPJ e dados do Responsável Técnico são obrigatórios.' }, { status: 400 })
     }
 
     const user = await prisma.user.findUnique({
@@ -100,19 +107,22 @@ export async function POST(req: NextRequest) {
       return await apiError(ERR.USER_NOT_FOUND, 404, { req })
     }
 
-    // Update user with phone and jobTitle
     await prisma.user.update({
       where: { id: user.id },
       data: { phone, jobTitle },
     })
 
-    // Update organization with company name, description, segment
     await prisma.organization.update({
       where: { id: user.organizationId },
       data: {
         name: company,
         description: companyDescription || null,
         segment,
+        cnpj,
+        rtNome,
+        rtConselho,
+        rtNumeroConselho,
+        rtUfConselho,
       },
     })
 

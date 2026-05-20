@@ -9,6 +9,7 @@ import { ActiveModulesProvider } from '@/lib/hooks/use-active-modules'
 import { isTrialActive, SubscriptionTier } from '@/lib/entitlements'
 import { getSession } from '@/lib/auth'
 import { getDashboardUser } from '@/lib/dashboard-user'
+import { WhatsAppButton } from '@/components/marketing/whatsapp-button'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardLayout({
@@ -81,6 +82,9 @@ export default async function DashboardLayout({
 
         {/* Heavy client-only components — lazily loaded after first paint */}
         <DashboardShellClient />
+
+        {/* WhatsApp suporte flutuante */}
+        <WhatsAppButton />
       </div>
     </AppBarProvider>
     </ActiveModulesProvider>
