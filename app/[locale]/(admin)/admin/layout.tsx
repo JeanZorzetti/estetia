@@ -2,28 +2,7 @@ import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import {
-    ShieldAlert,
-    ArrowLeft,
-    Activity,
-    LifeBuoy,
-    LayoutDashboard,
-    Users,
-    Building2,
-    BarChart3,
-    Smartphone,
-    Search,
-    TrendingUp,
-    Network,
-    Scale,
-    DollarSign,
-    Stethoscope,
-    ClipboardList,
-    Heart,
-    Server,
-    ChevronDown,
-} from "lucide-react"
+import { ShieldAlert, ArrowLeft } from "lucide-react"
 import { AdminNav } from "./admin-nav"
 
 export default async function AdminLayout({
