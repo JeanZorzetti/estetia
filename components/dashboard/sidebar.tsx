@@ -266,17 +266,15 @@ function SidebarUserNav({ user, open }: { user: any; open: boolean }) {
             <button
               type="submit"
               className={cn(linkClass, 'w-full text-red-500 dark:text-red-400')}
-              onClick={async () => {
+              onClick={() => {
                 const sessionId = sessionStorage.getItem('estetia_access_session_id')
                 if (sessionId) {
                   sessionStorage.removeItem('estetia_access_session_id')
-                  try {
-                    await fetch('/api/access/session', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ action: 'logout', sessionId }),
-                    })
-                  } catch { /* fire-and-forget */ }
+                  fetch('/api/access/session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'logout', sessionId }),
+                  }).catch(() => {})
                 }
               }}
             >
