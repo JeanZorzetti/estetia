@@ -6,7 +6,6 @@ import { NavDropdowns, SolucoesLink } from '@/components/marketing/nav-dropdowns
 import { FeaturesDropdown } from '@/components/marketing/features-dropdown'
 import { Footer } from '@/components/marketing/footer'
 import { LanguageSwitcher } from '@/components/marketing/language-switcher'
-import { WhatsAppButton } from '@/components/marketing/whatsapp-button'
 import { Link } from '@/i18n/routing'
 import { useTranslations } from 'next-intl'
 
@@ -80,9 +79,6 @@ export default function MarketingLayout({
 
       {/* Footer Dinâmico */}
       <Footer />
-
-      {/* WhatsApp flutuante */}
-      <WhatsAppButton />
     </div>
   )
 }
