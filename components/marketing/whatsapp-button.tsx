@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { MessageCircle, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const WA_NUMBER = '5511999999999' // substituir pelo número real
+const WA_NUMBER = '62983443919' // substituir pelo número real
 const WA_MESSAGE = encodeURIComponent('Olá! Tenho interesse no Estetia CRM e gostaria de mais informações.')
 
 export function WhatsAppButton() {
