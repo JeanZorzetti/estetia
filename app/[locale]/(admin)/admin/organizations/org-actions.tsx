@@ -52,10 +52,10 @@ const PLAN_STYLES: Record<SubscriptionTier, string> = {
 }
 
 const PLAN_DESCRIPTIONS: Record<SubscriptionTier, string[]> = {
-    FREE: ["Até 3 deals", "1 usuário", "CRM básico"],
-    STARTER: ["Deals ilimitados", "Até 3 usuários", "1 WhatsApp", "100 leads/mês"],
-    PRO: ["Deals ilimitados", "Até 10 usuários", "1 WhatsApp", "500 leads/mês", "Relatórios avançados"],
-    BUSINESS: ["Tudo do Pro", "Usuários ilimitados", "Multi-WhatsApp", "2000 leads/mês", "Round-robin"],
+    FREE: ["Até 3 pacientes", "1 profissional", "Agenda básica"],
+    STARTER: ["Pacientes ilimitados", "Até 3 profissionais", "Prontuário digital", "Anamnese digital"],
+    PRO: ["Pacientes ilimitados", "Até 10 profissionais", "TISS 4.01", "NFS-e", "No-show predictor"],
+    BUSINESS: ["Tudo do Pro", "Profissionais ilimitados", "Multi-sala", "App paciente PWA", "Operadoras convênio"],
 }
 
 export function OrgActions({ orgId, currentTier, orgName }: OrgActionsProps) {
@@ -242,10 +242,10 @@ export function OrgActions({ orgId, currentTier, orgName }: OrgActionsProps) {
                     <div className="bg-red-950/30 border border-red-900/50 rounded-lg p-4 space-y-2">
                         <p className="text-sm text-red-400">Esta ação irá excluir:</p>
                         <ul className="text-sm text-red-300/80 space-y-1">
-                            <li>• Todos os usuários da organização</li>
-                            <li>• Todos os deals e contatos</li>
-                            <li>• Todo histórico de atividades</li>
-                            <li>• Configurações e pipelines</li>
+                            <li>• Todos os usuários e profissionais</li>
+                            <li>• Todos os pacientes e prontuários</li>
+                            <li>• Todo histórico de sessões e anamneses</li>
+                            <li>• Configurações, agenda e dados LGPD</li>
                         </ul>
                     </div>
 
