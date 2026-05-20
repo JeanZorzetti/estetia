@@ -12,7 +12,7 @@ export const analyticsConfig = {
 
   // Google Analytics (GA4)
   ga: {
-    id: 'G-5NCPVL72BF',
+    id: 'G-ZQXPNMKN7H',
     enabled: true,
   },
 
