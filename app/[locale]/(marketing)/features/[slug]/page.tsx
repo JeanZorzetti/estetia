@@ -17,10 +17,11 @@ import {
   User,
   Briefcase,
   Building2,
-  Zap,
   HelpCircle,
+  Sparkles,
 } from 'lucide-react'
 import { ALL_FEATURES, FEATURE_CATEGORIES, getFeatureBySlug } from '@/config/features-data'
+import FeatureMockupSelector from '@/components/marketing/feature-mockups'
 
 export function generateStaticParams() {
   return ALL_FEATURES.map((f) => ({ slug: f.slug }))
@@ -53,17 +54,13 @@ export async function generateMetadata({
 }
 
 // Safely try a translation key — returns null if missing.
-// next-intl returns the raw key path when a key doesn't exist, so we detect that.
 function tryT(t: any, key: string): string | null {
   try {
     const val = t(key)
     if (typeof val !== 'string') return null
-    // next-intl returns the last segment or the full key when missing
     if (val === key) return null
-    // Also detect when it returns just the last segment (e.g. "title" for "x.y.title")
     const lastSegment = key.split('.').pop()
     if (val === lastSegment) return null
-    // Detect raw key paths like "marketing.features.sections.crm.contacts.detail.benefits.7.title"
     if (val.includes('marketing.features.sections.')) return null
     if (val.includes('.detail.')) return null
     return val
@@ -72,11 +69,26 @@ function tryT(t: any, key: string): string | null {
   }
 }
 
-// Color themes per section
+// Color themes per section with premium palettes
 const SECTION_THEMES: Record<string, { accent: string; accentBg: string; accentBorder: string; gradient: string }> = {
-  atendimento: { accent: 'text-[#489FB5]', accentBg: 'bg-[#489FB5]/10', accentBorder: 'border-[#489FB5]/20', gradient: 'from-[#489FB5]/5 via-teal-500/5 to-transparent' },
-  comunicacao: { accent: 'text-green-600', accentBg: 'bg-green-500/10', accentBorder: 'border-green-500/20', gradient: 'from-green-500/5 via-emerald-500/5 to-transparent' },
-  gestao: { accent: 'text-[#C5A059]', accentBg: 'bg-[#C5A059]/10', accentBorder: 'border-[#C5A059]/20', gradient: 'from-[#C5A059]/5 via-amber-500/5 to-transparent' },
+  atendimento: { 
+    accent: 'text-[#489FB5]', 
+    accentBg: 'bg-[#489FB5]/8 dark:bg-[#489FB5]/12', 
+    accentBorder: 'border-[#489FB5]/20 dark:border-[#489FB5]/30', 
+    gradient: 'from-[#489FB5]/8 via-transparent to-transparent' 
+  },
+  comunicacao: { 
+    accent: 'text-[#5E5DF0]', 
+    accentBg: 'bg-[#5E5DF0]/8 dark:bg-[#5E5DF0]/12', 
+    accentBorder: 'border-[#5E5DF0]/20 dark:border-[#5E5DF0]/30', 
+    gradient: 'from-[#5E5DF0]/8 via-transparent to-transparent' 
+  },
+  gestao: { 
+    accent: 'text-[#C5A059]', 
+    accentBg: 'bg-[#C5A059]/8 dark:bg-[#C5A059]/12', 
+    accentBorder: 'border-[#C5A059]/20 dark:border-[#C5A059]/30', 
+    gradient: 'from-[#C5A059]/8 via-transparent to-transparent' 
+  },
 }
 
 const PERSONA_ICONS = [User, Briefcase, Building2]
@@ -98,8 +110,7 @@ export default async function FeatureDetailPage({
   const description = tS(`${feature.sectionKey}.${feature.featureKey}.description` as any)
   const sectionTitle = tS(`${feature.sectionKey}.title` as any)
   const sectionSubtitle = tS(`${feature.sectionKey}.subtitle` as any)
-  const Icon = feature.icon
-  const theme = SECTION_THEMES[feature.sectionKey] || SECTION_THEMES.crm
+  const theme = SECTION_THEMES[feature.sectionKey] || SECTION_THEMES.gestao
 
   // Detail data
   const headline = tryT(tS, `${dp}.headline` as any)
@@ -146,8 +157,6 @@ export default async function FeatureDetailPage({
     else break
   }
 
-  const hasDetail = benefits.length > 0
-
   // Sibling features
   const parentCategory = FEATURE_CATEGORIES.find((cat) =>
     cat.sections.some((sec) => sec.features.some((f) => f.slug === slug))
@@ -180,93 +189,119 @@ export default async function FeatureDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div className="bg-background min-h-screen">
+      <div className="bg-white text-[#0A1F3D] min-h-screen relative overflow-hidden dark:bg-slate-950 dark:text-slate-100">
         {/* ════════════════════════════════════════════════════════════
-            HERO — gradient background, large icon, headline
+            GLOWS & PATTERNS BACKGROUND
            ════════════════════════════════════════════════════════════ */}
-        <div className="relative overflow-hidden">
-          <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} pointer-events-none`} />
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-30 pointer-events-none bg-primary/10" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808007_1px,transparent_1px),linear-gradient(to_bottom,#80808007_1px,transparent_1px)] bg-[size:16px_28px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_80%,transparent_100%)] pointer-events-none" />
+        
+        {/* Floating gradient glows */}
+        <div className={`absolute top-[-10%] left-[-15%] w-[600px] h-[600px] rounded-full blur-[140px] opacity-40 pointer-events-none bg-gradient-to-br ${theme.gradient}`} />
+        <div className="absolute top-[25%] right-[-15%] w-[500px] h-[500px] rounded-full blur-[130px] opacity-25 pointer-events-none bg-[#C5A059]/10 dark:bg-[#C5A059]/5" />
 
-          <div className="relative py-24 sm:py-32">
-            <div className="mx-auto max-w-5xl px-6 lg:px-8">
-              {/* Breadcrumb */}
-              <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-10">
-                <Link href="/features" className="hover:text-foreground transition-colors">
-                  Funcionalidades
-                </Link>
-                <span className="text-muted-foreground/50">/</span>
-                <Link href={`/features#${feature.sectionKey}`} className="hover:text-foreground transition-colors">
+        {/* ════════════════════════════════════════════════════════════
+            HERO — 2 columns, mockup on right, serif typography
+           ════════════════════════════════════════════════════════════ */}
+        <div className="relative pt-20 pb-20 sm:pt-28 sm:pb-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            {/* Breadcrumb */}
+            <nav className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400 mb-10">
+              <Link href="/features" className="hover:text-[#489FB5] transition-colors">
+                Funcionalidades
+              </Link>
+              <span className="text-slate-300 dark:text-slate-800">/</span>
+              <Link href={`/features#${feature.sectionKey}`} className="hover:text-[#489FB5] transition-colors">
+                {sectionTitle}
+              </Link>
+              <span className="text-slate-300 dark:text-slate-800">/</span>
+              <span className="text-[#0A1F3D] font-bold dark:text-white">{name}</span>
+            </nav>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+              {/* Text column */}
+              <div className="lg:col-span-7 text-left">
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#C5A059]/25 bg-[#C5A059]/5 px-3.5 py-1 text-xs font-bold text-[#C5A059] mb-6">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#C5A059] animate-pulse" />
                   {sectionTitle}
-                </Link>
-                <span className="text-muted-foreground/50">/</span>
-                <span className="text-foreground font-medium">{name}</span>
-              </nav>
-
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-start">
-                <div>
-                  <Badge className={`mb-6 ${theme.accentBg} ${theme.accent} border-0 font-medium px-3 py-1`}>
-                    {sectionTitle}
-                  </Badge>
-
-                  <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl leading-[1.1]">
-                    {name}
-                  </h1>
-
-                  {headline && (
-                    <p className="mt-6 text-xl sm:text-2xl font-medium text-muted-foreground/80 leading-relaxed max-w-2xl">
-                      {headline}
-                    </p>
-                  )}
-
-                  <p className="mt-6 text-base leading-relaxed text-muted-foreground max-w-2xl">
-                    {description}
-                  </p>
-
-                  <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                    <Button asChild size="lg" className="h-12 px-8 text-base">
-                      <Link href="/register">
-                        Testar Gratis
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base">
-                      <Link href="/pricing">Ver Planos</Link>
-                    </Button>
-                  </div>
                 </div>
 
-                {/* Large icon */}
-                <div className={`hidden lg:flex h-40 w-40 items-center justify-center rounded-3xl ${theme.accentBg} border ${theme.accentBorder}`}>
-                  <Icon className={`h-20 w-20 ${theme.accent} opacity-80`} />
+                <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl text-[#0A1F3D] dark:text-white leading-[1.1] mb-6">
+                  {name}
+                </h1>
+
+                {headline && (
+                  <p className="font-sans text-lg sm:text-xl font-medium text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
+                    {headline}
+                  </p>
+                )}
+
+                <p className="text-base leading-relaxed text-slate-600 dark:text-slate-400 mb-10 max-w-2xl">
+                  {description}
+                </p>
+
+                {/* Call To Actions */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button asChild size="lg" className="h-12 px-8 text-base bg-[#0A1F3D] hover:bg-[#162D54] text-white shadow-lg shadow-[#0A1F3D]/15 rounded-xl transition-all duration-300 hover:-translate-y-0.5 dark:bg-[#C5A059] dark:text-[#0A1F3D] dark:hover:bg-[#b8913f] dark:shadow-[#C5A059]/10">
+                    <Link href="/register">
+                      Testar Grátis
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-[#0A1F3D] dark:text-white dark:border-white/10 dark:hover:bg-slate-900 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+                    <Link href="/pricing">Ver Planos</Link>
+                  </Button>
                 </div>
               </div>
+
+              {/* Mockup Column (Desktop) */}
+              <div className="lg:col-span-5 flex justify-center lg:justify-end">
+                <div className="hidden lg:block w-full max-w-[460px]">
+                  <FeatureMockupSelector slug={slug} />
+                </div>
+              </div>
+            </div>
+
+            {/* Mockup (Mobile/Tablet) */}
+            <div className="mt-12 lg:hidden w-full max-w-[460px] mx-auto">
+              <FeatureMockupSelector slug={slug} />
             </div>
           </div>
         </div>
 
         {/* ════════════════════════════════════════════════════════════
-            BENEFITS — 2x3 grid with icon, title, description
+            BENEFITS — Glassmorphism Cards Grid
            ════════════════════════════════════════════════════════════ */}
         {benefits.length > 0 && (
-          <div className="py-24 border-t">
-            <div className="mx-auto max-w-5xl px-6 lg:px-8">
-              <div className="mb-14">
-                <Badge variant="outline" className="mb-4">Beneficios</Badge>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                  O que voce ganha
+          <div className="py-24 border-t border-slate-100 dark:border-slate-900 relative">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <div className="mb-16">
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <div className="h-px w-6 bg-[#C5A059]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#C5A059]">Benefícios</span>
+                </div>
+                <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl text-[#0A1F3D] dark:text-white">
+                  O que você ganha com a nossa {name}
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {benefits.map((b, i) => (
-                  <div key={i} className="group flex gap-4">
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${theme.accentBg} mt-1 group-hover:scale-110 transition-transform duration-200`}>
-                      <Check className={`h-5 w-5 ${theme.accent}`} />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-base mb-1">{b.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{b.text}</p>
+                  <div 
+                    key={i} 
+                    className="group relative rounded-2xl border border-slate-100 bg-white/60 p-6 shadow-sm backdrop-blur-md transition-all duration-300 hover:shadow-md hover:border-[#489FB5]/30 dark:border-white/5 dark:bg-slate-900/50 hover:-translate-y-0.5"
+                  >
+                    <div className="flex gap-4">
+                      <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${theme.accentBg} ${theme.accent} border ${theme.accentBorder} mt-0.5 group-hover:scale-110 transition-transform duration-300`}>
+                        <Check className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-base text-[#0A1F3D] dark:text-white mb-1.5 group-hover:text-[#489FB5] transition-colors">
+                          {b.title}
+                        </h3>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                          {b.text}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -276,33 +311,40 @@ export default async function FeatureDetailPage({
         )}
 
         {/* ════════════════════════════════════════════════════════════
-            HOW IT WORKS — vertical timeline with numbers
+            HOW IT WORKS — Vertical timeline with golden indicators
            ════════════════════════════════════════════════════════════ */}
         {howSteps.length > 0 && (
-          <div className="py-24 bg-muted/30 border-t">
-            <div className="mx-auto max-w-5xl px-6 lg:px-8">
-              <div className="mb-14">
-                <Badge variant="outline" className="mb-4">Passo a passo</Badge>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                  {howTitle || 'Como funciona na pratica'}
+          <div className="py-24 bg-slate-50/50 border-t border-slate-100 dark:bg-slate-900/20 dark:border-slate-900">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <div className="mb-16">
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <Sparkles className="h-4 w-4 text-[#C5A059]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#C5A059]">Metodologia</span>
+                </div>
+                <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl text-[#0A1F3D] dark:text-white">
+                  {howTitle || 'Como funciona na prática'}
                 </h2>
               </div>
 
-              <div className="relative">
-                {/* Vertical line */}
-                <div className="absolute left-5 top-0 bottom-0 w-px bg-border hidden md:block" />
+              <div className="relative max-w-3xl mx-auto md:mx-0">
+                {/* Vertical line with gradient */}
+                <div className="absolute left-5 top-2 bottom-6 w-0.5 bg-gradient-to-b from-[#0A1F3D]/20 via-[#C5A059]/20 to-transparent hidden md:block dark:from-slate-800 dark:via-[#C5A059]/10" />
 
-                <div className="space-y-10">
+                <div className="space-y-12">
                   {howSteps.map((step, i) => (
-                    <div key={i} className="relative flex gap-6 md:gap-8">
+                    <div key={i} className="relative flex flex-col md:flex-row gap-6 md:gap-8 group">
                       {/* Number circle */}
-                      <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-sm shadow-lg shadow-primary/20">
+                      <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#0A1F3D] to-[#489FB5] text-white font-bold text-sm shadow-md transition-transform group-hover:scale-110 duration-300 dark:from-[#C5A059] dark:to-[#8B6E32] dark:text-[#0A1F3D]">
                         {i + 1}
                       </div>
 
                       <div className="pb-2">
-                        <h3 className="font-semibold text-lg mb-2">{step.title}</h3>
-                        <p className="text-muted-foreground leading-relaxed max-w-xl">{step.text}</p>
+                        <h3 className="font-bold text-lg text-[#0A1F3D] dark:text-white mb-2 group-hover:text-[#489FB5] transition-colors">
+                          {step.title}
+                        </h3>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
+                          {step.text}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -313,15 +355,18 @@ export default async function FeatureDetailPage({
         )}
 
         {/* ════════════════════════════════════════════════════════════
-            USE CASES — persona cards with gradient borders
+            USE CASES — Persona cards with dynamic glow top borders
            ════════════════════════════════════════════════════════════ */}
         {useCases.length > 0 && (
-          <div className="py-24 border-t">
-            <div className="mx-auto max-w-5xl px-6 lg:px-8">
-              <div className="mb-14">
-                <Badge variant="outline" className="mb-4">Casos de uso</Badge>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                  Quem usa e como
+          <div className="py-24 border-t border-slate-100 dark:border-slate-900">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <div className="mb-16">
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <div className="h-px w-6 bg-[#C5A059]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#C5A059]">Casos de Uso</span>
+                </div>
+                <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl text-[#0A1F3D] dark:text-white">
+                  Quem usa e como se beneficia no dia a dia
                 </h2>
               </div>
 
@@ -331,19 +376,24 @@ export default async function FeatureDetailPage({
                   return (
                     <div
                       key={i}
-                      className="group relative rounded-2xl border bg-background p-6 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1"
+                      className="group relative rounded-2xl border border-slate-100 bg-white p-6 shadow-sm hover:shadow-xl hover:shadow-[#0A1F3D]/5 transition-all duration-300 hover:-translate-y-1.5 dark:border-white/5 dark:bg-slate-900"
                     >
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${theme.accentBg} mb-5 group-hover:scale-110 transition-transform duration-200`}>
-                        <PersonaIcon className={`h-6 w-6 ${theme.accent}`} />
+                      {/* Hover border glow top */}
+                      <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl bg-gradient-to-r from-[#489FB5] to-[#C5A059] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${theme.accentBg} ${theme.accent} border ${theme.accentBorder} mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                        <PersonaIcon className="h-6 w-6" />
                       </div>
 
                       <div className="mb-3">
-                        <span className={`text-xs font-semibold uppercase tracking-wider ${theme.accent}`}>
+                        <span className={`text-[10px] font-bold uppercase tracking-wider ${theme.accent}`}>
                           {uc.persona}
                         </span>
                       </div>
 
-                      <p className="text-sm text-muted-foreground leading-relaxed">{uc.scenario}</p>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {uc.scenario}
+                      </p>
                     </div>
                   )
                 })}
@@ -353,23 +403,22 @@ export default async function FeatureDetailPage({
         )}
 
         {/* ════════════════════════════════════════════════════════════
-            PLAN INFO — gradient banner
+            PLAN INFO — Elegant informative banner
            ════════════════════════════════════════════════════════════ */}
         {planInfo && (
-          <div className="py-12 border-t">
-            <div className="mx-auto max-w-5xl px-6 lg:px-8">
-              <div className={`relative overflow-hidden rounded-2xl border ${theme.accentBorder} p-6 sm:p-8`}>
-                <div className={`absolute inset-0 bg-gradient-to-r ${theme.gradient} opacity-50`} />
+          <div className="py-12 border-t border-slate-100 dark:border-slate-900 bg-slate-50/30 dark:bg-transparent">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <div className={`relative overflow-hidden rounded-2xl border ${theme.accentBorder} p-6 sm:p-8 bg-white/70 backdrop-blur-md dark:bg-slate-900/60`}>
                 <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${theme.accentBg}`}>
-                    <Info className={`h-6 w-6 ${theme.accent}`} />
+                  <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${theme.accentBg} ${theme.accent} border ${theme.accentBorder}`}>
+                    <Info className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="font-semibold text-sm mb-1">Limites por plano</p>
-                    <p className="text-sm text-muted-foreground">{planInfo}</p>
+                    <p className="font-bold text-sm text-[#0A1F3D] dark:text-white mb-0.5">Disponibilidade por plano</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{planInfo}</p>
                   </div>
-                  <div className="sm:ml-auto shrink-0">
-                    <Button asChild variant="outline" size="sm">
+                  <div className="sm:ml-auto shrink-0 mt-3 sm:mt-0">
+                    <Button asChild variant="outline" size="sm" className="rounded-lg text-xs font-semibold border-slate-200 text-[#0A1F3D] hover:bg-slate-50 dark:border-slate-800 dark:text-white dark:hover:bg-slate-800">
                       <Link href="/pricing">Comparar planos</Link>
                     </Button>
                   </div>
@@ -380,15 +429,19 @@ export default async function FeatureDetailPage({
         )}
 
         {/* ════════════════════════════════════════════════════════════
-            FAQ — clean accordion-style
+            FAQ — Clean fluid accordion
            ════════════════════════════════════════════════════════════ */}
         {faqs.length > 0 && (
-          <div className="py-24 bg-muted/30 border-t">
+          <div className="py-24 bg-slate-50/50 border-t border-slate-100 dark:bg-slate-900/20 dark:border-slate-900">
             <div className="mx-auto max-w-3xl px-6 lg:px-8">
-              <div className="mb-14 text-center">
-                <Badge variant="outline" className="mb-4">FAQ</Badge>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                  Perguntas frequentes
+              <div className="mb-16 text-center">
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <div className="h-px w-6 bg-[#C5A059]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#C5A059]">Suporte</span>
+                  <div className="h-px w-6 bg-[#C5A059]" />
+                </div>
+                <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl text-[#0A1F3D] dark:text-white">
+                  Perguntas Frequentes
                 </h2>
               </div>
 
@@ -396,16 +449,16 @@ export default async function FeatureDetailPage({
                 {faqs.map((faq, i) => (
                   <details
                     key={i}
-                    className="group rounded-xl border bg-background transition-all duration-200 hover:shadow-sm"
+                    className="group rounded-2xl border border-slate-100 bg-white transition-all duration-200 hover:shadow-sm dark:border-slate-800/80 dark:bg-slate-900"
                   >
-                    <summary className="flex items-center justify-between cursor-pointer p-5 text-sm font-medium select-none">
+                    <summary className="flex items-center justify-between cursor-pointer p-5 text-sm font-bold text-[#0A1F3D] dark:text-white select-none">
                       <div className="flex items-center gap-3">
-                        <HelpCircle className="h-4 w-4 text-muted-foreground shrink-0" />
+                        <HelpCircle className="h-4.5 w-4.5 text-[#489FB5] shrink-0" />
                         {faq.q}
                       </div>
-                      <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-200 group-open:rotate-180" />
+                      <ChevronDown className="h-4 w-4 text-slate-400 shrink-0 transition-transform duration-300 group-open:rotate-180" />
                     </summary>
-                    <div className="px-5 pb-5 pt-0 text-sm text-muted-foreground leading-relaxed ml-7">
+                    <div className="px-5 pb-5 pt-0 text-xs text-slate-600 dark:text-slate-400 leading-relaxed ml-7 border-t border-slate-50 pt-4 dark:border-slate-800/50">
                       {faq.a}
                     </div>
                   </details>
@@ -416,17 +469,20 @@ export default async function FeatureDetailPage({
         )}
 
         {/* ════════════════════════════════════════════════════════════
-            RELATED FEATURES — explore more
+            RELATED FEATURES — Sister features cards
            ════════════════════════════════════════════════════════════ */}
         {siblingFeatures.length > 0 && (
-          <div className="py-24 border-t">
-            <div className="mx-auto max-w-5xl px-6 lg:px-8">
-              <div className="mb-14">
-                <Badge variant="outline" className="mb-4">{sectionTitle}</Badge>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                  Explore mais
+          <div className="py-24 border-t border-slate-100 dark:border-slate-900">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <div className="mb-16">
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <div className="h-px w-6 bg-[#C5A059]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#C5A059]">{sectionTitle}</span>
+                </div>
+                <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl text-[#0A1F3D] dark:text-white">
+                  Outras soluções para sua clínica
                 </h2>
-                <p className="mt-3 text-muted-foreground max-w-xl">{sectionSubtitle}</p>
+                <p className="mt-3 text-slate-500 dark:text-slate-400 max-w-xl text-sm">{sectionSubtitle}</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -434,17 +490,20 @@ export default async function FeatureDetailPage({
                   const SibIcon = sibling.icon
                   return (
                     <Link key={sibling.slug} href={`/features/${sibling.slug}`}>
-                      <div className="group relative overflow-hidden rounded-2xl border bg-background p-5 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300 hover:-translate-y-1 h-full">
-                        <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${theme.accentBg} mb-4 group-hover:scale-110 transition-transform duration-200`}>
-                          <SibIcon className={`h-5 w-5 ${theme.accent}`} />
+                      <div className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-5 hover:shadow-lg hover:shadow-[#0A1F3D]/5 hover:border-[#489FB5]/30 transition-all duration-300 hover:-translate-y-1.5 h-full dark:border-white/5 dark:bg-slate-900">
+                        {/* Soft card top line hover */}
+                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#489FB5]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        
+                        <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${theme.accentBg} ${theme.accent} border ${theme.accentBorder} mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                          <SibIcon className="h-5 w-5" />
                         </div>
-                        <h3 className="font-semibold text-sm mb-1 group-hover:text-primary transition-colors">
+                        <h3 className="font-bold text-sm text-[#0A1F3D] dark:text-white mb-1.5 group-hover:text-[#489FB5] transition-colors">
                           {tS(`${sibling.sectionKey}.${sibling.featureKey}.name` as any)}
                         </h3>
-                        <p className="text-xs text-muted-foreground line-clamp-2">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                           {tS(`${sibling.sectionKey}.${sibling.featureKey}.description` as any)}
                         </p>
-                        <ArrowRight className="absolute top-5 right-5 h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition-colors" />
+                        <ArrowRight className="absolute top-5 right-5 h-4 w-4 text-slate-300 opacity-30 group-hover:opacity-100 group-hover:text-[#489FB5] group-hover:translate-x-0.5 transition-all" />
                       </div>
                     </Link>
                   )
@@ -457,17 +516,17 @@ export default async function FeatureDetailPage({
         {/* ════════════════════════════════════════════════════════════
             PREV / NEXT NAVIGATION
            ════════════════════════════════════════════════════════════ */}
-        <div className="border-t">
-          <div className="mx-auto max-w-5xl px-6 lg:px-8 py-8 flex justify-between items-center">
+        <div className="border-t border-slate-100 dark:border-slate-900">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-8 flex justify-between items-center">
             {prev ? (
               <Link
                 href={`/features/${prev.slug}`}
-                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="group flex items-center gap-3 text-xs text-slate-500 hover:text-[#0A1F3D] dark:hover:text-white transition-colors"
               >
-                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+                <ArrowLeft className="h-4 w-4 text-slate-300 group-hover:-translate-x-1 group-hover:text-[#489FB5] transition-all" />
                 <div className="text-left">
-                  <span className="text-xs text-muted-foreground/60 block">Anterior</span>
-                  <span className="font-medium">{tS(`${prev.sectionKey}.${prev.featureKey}.name` as any)}</span>
+                  <span className="text-[10px] text-slate-400 block uppercase tracking-wider">Anterior</span>
+                  <span className="font-bold text-slate-700 dark:text-slate-300">{tS(`${prev.sectionKey}.${prev.featureKey}.name` as any)}</span>
                 </div>
               </Link>
             ) : (
@@ -476,13 +535,13 @@ export default async function FeatureDetailPage({
             {next ? (
               <Link
                 href={`/features/${next.slug}`}
-                className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="group flex items-center gap-3 text-xs text-slate-500 hover:text-[#0A1F3D] dark:hover:text-white transition-colors"
               >
                 <div className="text-right">
-                  <span className="text-xs text-muted-foreground/60 block">Proxima</span>
-                  <span className="font-medium">{tS(`${next.sectionKey}.${next.featureKey}.name` as any)}</span>
+                  <span className="text-[10px] text-slate-400 block uppercase tracking-wider">Próxima</span>
+                  <span className="font-bold text-slate-700 dark:text-slate-300">{tS(`${next.sectionKey}.${next.featureKey}.name` as any)}</span>
                 </div>
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="h-4 w-4 text-slate-300 group-hover:translate-x-1 group-hover:text-[#489FB5] transition-all" />
               </Link>
             ) : (
               <div />
@@ -491,45 +550,49 @@ export default async function FeatureDetailPage({
         </div>
 
         {/* ════════════════════════════════════════════════════════════
-            FINAL CTA — with glass effect
+            FINAL CTA — Glassmorphism Premium Banner
            ════════════════════════════════════════════════════════════ */}
-        <div className="py-24 border-t bg-muted/20">
-          <div className="mx-auto max-w-3xl px-6 lg:px-8">
-            <div className="relative overflow-hidden rounded-3xl border bg-background p-10 sm:p-14 text-center shadow-xl shadow-primary/5">
-              <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[100px] opacity-20 pointer-events-none bg-primary" />
-              <div className="absolute bottom-0 left-0 w-60 h-60 rounded-full blur-[80px] opacity-10 pointer-events-none bg-primary" />
+        <div className="py-24 border-t border-slate-100 dark:border-slate-900 bg-slate-50/40 dark:bg-slate-900/10 relative">
+          <div className="mx-auto max-w-4xl px-6 lg:px-8">
+            <div className="relative overflow-hidden rounded-3xl border border-slate-200/60 bg-white p-10 sm:p-14 text-center shadow-2xl shadow-[#0A1F3D]/5 dark:border-slate-800 dark:bg-slate-900">
+              {/* Internal subtle glow backgrounds */}
+              <div className="absolute top-0 right-0 w-80 h-80 rounded-full blur-[110px] opacity-15 pointer-events-none bg-[#489FB5]" />
+              <div className="absolute bottom-0 left-0 w-60 h-60 rounded-full blur-[90px] opacity-10 pointer-events-none bg-[#C5A059]" />
 
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-sm text-green-600 dark:text-green-400 mb-6">
-                  <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="font-medium">Gratuito para sempre</span>
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/5 px-3 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-6">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="font-medium">Gratuito e Sem Compromisso</span>
                 </div>
 
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                <h2 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl text-[#0A1F3D] dark:text-white mb-4">
                   {t('cta.title')}
                 </h2>
-                <p className="mt-4 text-lg text-muted-foreground max-w-lg mx-auto">{t('cta.subtitle')}</p>
+                <p className="mt-4 text-sm sm:text-base text-slate-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
+                  {t('cta.subtitle')}
+                </p>
 
                 <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button asChild size="lg" className="h-12 px-8 text-base shadow-lg shadow-primary/20">
+                  <Button asChild size="lg" className="h-12 px-8 text-base bg-[#0A1F3D] hover:bg-[#162D54] text-white shadow-xl shadow-[#0A1F3D]/25 rounded-xl transition-all hover:-translate-y-0.5 dark:bg-[#C5A059] dark:text-[#0A1F3D] dark:hover:bg-[#b8913f] dark:shadow-[#C5A059]/10">
                     <Link href="/register">
                       {t('cta.button')}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base">
+                  <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 text-[#0A1F3D] hover:bg-slate-50 rounded-xl transition-all hover:-translate-y-0.5 dark:border-slate-800 dark:text-white dark:hover:bg-slate-900">
                     <Link href="/pricing">{t('cta.buttonSecondary')}</Link>
                   </Button>
                 </div>
 
-                <div className="mt-6 flex items-center justify-center gap-6 text-sm text-muted-foreground">
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-400 dark:text-slate-500">
                   <span className="flex items-center gap-1.5">
-                    <Check className="h-4 w-4 text-green-500" />
-                    Sem cartao de credito
+                    <Check className="h-4 w-4 text-emerald-500" />
+                    Sem cartão de crédito
                   </span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-slate-200 dark:bg-slate-800" />
                   <span className="flex items-center gap-1.5">
-                    <Check className="h-4 w-4 text-green-500" />
-                    5 min para configurar
+                    <Check className="h-4 w-4 text-emerald-500" />
+                    Configuração em 5 minutos
                   </span>
                 </div>
               </div>

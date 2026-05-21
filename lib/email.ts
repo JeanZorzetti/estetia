@@ -20,8 +20,8 @@ function getResend(): Resend {
 }
 
 export const emailConfig = {
-  from: 'Estetia CRM <noreply@siriuscrm.com.br>',
-  replyTo: 'suporte@roilabs.com.br',
+  from: 'Estetia CRM <noreply@estetiacrm.com.br>',
+  replyTo: 'suporte@estetiacrm.com.br',
 } as const
 
 export async function sendEmail({

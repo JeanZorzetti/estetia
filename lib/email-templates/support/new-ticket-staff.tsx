@@ -20,7 +20,7 @@ interface Props {
 
 export default function NewTicketStaffEmail({ ticket, userEmail, locale = 'pt-BR' }: Props) {
   const s = locale === 'en' ? emailsEn.emails.support.newTicketStaff : emailsPtBr.emails.support.newTicketStaff
-  const ticketUrl = `https://siriuscrm.com.br/admin/support/${ticket.id}`
+  const ticketUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://estetiacrm.com.br'}/admin/support/${ticket.id}`
   const shortId = ticket.id.slice(0, 8).toUpperCase()
 
   const userName = ticket.createdByUser.name || ticket.createdByUser.email

@@ -1,15 +1,15 @@
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-  appId: 'com.roilabs.sirius',
+  appId: 'com.roilabs.estetia',
   appName: 'Estetia CRM',
   webDir: 'out',
   server: {
-    url: 'https://siriuscrm.com.br',
+    url: 'https://estetiacrm.com.br',
     cleartext: false,
     androidScheme: 'https',
     iosScheme: 'https',
-    allowNavigation: ['siriuscrm.com.br', '*.siriuscrm.com.br'],
+    allowNavigation: ['estetiacrm.com.br', '*.estetiacrm.com.br'],
     // Always open at login — auth middleware redirects to /dashboard if session is valid
     startPath: '/login',
   },

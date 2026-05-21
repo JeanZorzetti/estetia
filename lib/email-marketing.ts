@@ -71,7 +71,7 @@ async function sendWelcomeEmail(data: LeadCalculadoraData) {
 
   try {
     await resend.emails.send({
-      from: 'Estetia CRM <contato@siriuscrm.com.br>',
+      from: 'Estetia CRM <contato@estetiacrm.com.br>',
       to: data.email,
       subject: `${data.nome ? data.nome.split(' ')[0] + ', você' : 'Você'} está perdendo R$ ${formatCurrency(data.perdaMensal)}/mês 💸`,
       html: getWelcomeEmailTemplate(data, nicho),
@@ -91,11 +91,11 @@ async function notifyCommercialTeam(data: LeadCalculadoraData) {
 
   if (!isHotLead) return
 
-  const notifyEmail = process.env.COMMERCIAL_TEAM_EMAIL || 'comercial@roilabs.com.br'
+  const notifyEmail = process.env.COMMERCIAL_TEAM_EMAIL || 'comercial@estetiacrm.com.br'
 
   try {
     await resend.emails.send({
-      from: 'Estetia Leads <leads@siriuscrm.com.br>',
+      from: 'Estetia Leads <leads@estetiacrm.com.br>',
       to: notifyEmail,
       subject: `🔥 Lead QUENTE: ${data.email} (perde R$ ${formatCurrency(data.perdaMensal)}/mês)`,
       html: `

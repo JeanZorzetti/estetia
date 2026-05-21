@@ -12,7 +12,7 @@ interface Props {
 
 export default function NewMessageUserEmail({ ticket, message, locale = 'pt-BR' }: Props) {
   const s = locale === 'en' ? emailsEn.emails.support.newMessageUser : emailsPtBr.emails.support.newMessageUser
-  const ticketUrl = `https://siriuscrm.com.br/dashboard/support/${ticket.id}`
+  const ticketUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://estetiacrm.com.br'}/dashboard/support/${ticket.id}`
 
   const intro = s.intro.replace('{subject}', ticket.subject)
   const replyFrom = s.replyFrom.replace('{authorName}', message.authorName)

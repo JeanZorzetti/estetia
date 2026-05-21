@@ -1,8 +1,8 @@
-# Generative UI - Sistema de Interface Fluida para Sirius CRM
+# Generative UI - Sistema de Interface Fluida para Estetia CRM
 
 ## 📋 Visão Geral
 
-Sistema completo de **Generative UI** que permite ao AGI Sirius renderizar componentes React dinâmicos durante conversas de vendas. O AI decide **quando** e **qual** componente usar para melhor apoiar o argumento de venda.
+Sistema completo de **Generative UI** que permite à **Estetia IA** renderizar componentes React dinâmicos durante conversas de vendas. O AI decide **quando** e **qual** componente usar para melhor apoiar o argumento de venda.
 
 **Status:** ✅ Fase 1 Completa (Fundação)
 

@@ -57,7 +57,7 @@ export class OpenStreetMapProvider implements ScrapingProvider {
     // User-Agent obrigatório pela política de uso
     const response = await fetch(url.toString(), {
       headers: {
-        'User-Agent': 'EstetiaCRM/1.0 (contato@roilabs.com.br)',
+        'User-Agent': 'EstetiaCRM/1.0 (contato@estetiacrm.com.br)',
         'Accept-Language': 'pt-BR',
       },
     })

@@ -27,3 +27,9 @@
 
 # Billing PIX check — every hour
 0 * * * * curl -sf -X POST $APP_URL/api/cron/billing-pix -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Instagram scheduled posts — every 5 min
+*/5 * * * * curl -sf -X POST $APP_URL/api/cron/instagram-poster -H "Authorization: Bearer $CRON_SECRET" -o /dev/null
+
+# Integration retry queue — every 5 min
+*/5 * * * * curl -sf -X POST $APP_URL/api/cron/process-integration-retries -H "Authorization: Bearer $CRON_SECRET" -o /dev/null

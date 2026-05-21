@@ -1,0 +1,600 @@
+
+> crm-project@0.1.0 dev
+> next dev
+
+⚠ `eslint` configuration in next.config.ts is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\jeanz\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\jeanz\OneDrive\Desktop\ROI Labs\Doc-CRM\package-lock.json
+
+▲ Next.js 16.1.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.11:3000
+- Environments: .env.local
+- Experiments (use with caution):
+  · optimizePackageImports
+  · staleTimes
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 5.5s
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.faq.6.q` in messages for locale `pt-BR`.
+    at IntegracoesPage (app\[locale]\(marketing)\integracoes\page.tsx:88:17)
+  86 |   for (let i = 1; i <= 6; i++) {
+  87 |     try {
+> 88 |       const q = t(`faq.${i}.q` as any)
+     |                 ^
+  89 |       const a = t(`faq.${i}.a` as any)
+  90 |       if (q && a && !q.includes('.faq.')) faqs.push({ q, a })
+  91 |     } catch { break } {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.faq.6.q` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.faq.6.a` in messages for locale `pt-BR`.
+    at IntegracoesPage (app\[locale]\(marketing)\integracoes\page.tsx:89:17)
+  87 |     try {
+  88 |       const q = t(`faq.${i}.q` as any)
+> 89 |       const a = t(`faq.${i}.a` as any)
+     |                 ^
+  90 |       if (q && a && !q.includes('.faq.')) faqs.push({ q, a })
+  91 |     } catch { break }
+  92 |   } {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.faq.6.a` in messages for locale `pt-BR`.'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="PABX" className=... style=... onError={function onError}>
+                                                          ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '283637068'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Twilio" className=... style=... onError={function onError}>
+                                                            ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '375800940'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Asaas" className=... style=... onError={function onError}>
+                                                           ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2849491788'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '1394559788'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="eNotas" className=... style=... onError={function onError}>
+                                                            ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '1254217900'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="NFE.io" className=... style=... onError={function onError}>
+                                                            ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3971802124'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '1394559788'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Unimed" className=... style=... onError={function onError}>
+                                                            ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '1264131871'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Amil" className=... style=... onError={function onError}>
+                                                          ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '922702847'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '563035615'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="MEDTISS" className=... style=... onError={function onError}>
+                                                             ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3478203711'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Hapvida" className=... style=... onError={function onError}>
+                                                             ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2602157439'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Memed" className=... style=... onError={function onError}>
+                                                           ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '993487596'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Bling" className=... style=... onError={function onError}>
+                                                           ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '203893036'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Slack" className=... style=... onError={function onError}>
+                                                           ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2896778540'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt=... className=... style=... onError={function onError}>
+                                                       ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2894662572'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="JotForm" className=... style=... onError={function onError}>
+                                                             ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2616785164'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="Webhook" className=... style=... onError={function onError}>
+                                                             ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3642598540'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <img src=... alt="CFM" className=... style=... onError={function onError}>
+                                                         ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2529081324'
+}
+ GET /integracoes 500 in 10.6s (compile: 3.1s, proxy.ts: 136ms, generate-params: 607ms, render: 7.4s)
+✓ Compiled in 728ms
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.faq.6.q` in messages for locale `pt-BR`.
+    at IntegracoesPage (app\[locale]\(marketing)\integracoes\page.tsx:88:17)
+  86 |   for (let i = 1; i <= 6; i++) {
+  87 |     try {
+> 88 |       const q = t(`faq.${i}.q` as any)
+     |                 ^
+  89 |       const a = t(`faq.${i}.a` as any)
+  90 |       if (q && a && !q.includes('.faq.')) faqs.push({ q, a })
+  91 |     } catch { break } {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.faq.6.q` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.faq.6.a` in messages for locale `pt-BR`.
+    at IntegracoesPage (app\[locale]\(marketing)\integracoes\page.tsx:89:17)
+  87 |     try {
+  88 |       const q = t(`faq.${i}.q` as any)
+> 89 |       const a = t(`faq.${i}.a` as any)
+     |                 ^
+  90 |       if (q && a && !q.includes('.faq.')) faqs.push({ q, a })
+  91 |     } catch { break }
+  92 |   } {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.faq.6.a` in messages for locale `pt-BR`.'
+}
+ GET /integracoes 200 in 2.1s (compile: 334ms, proxy.ts: 22ms, generate-params: 10ms, render: 1738ms)
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.faq.6.q` in messages for locale `pt-BR`.
+    at IntegracoesPage (app\[locale]\(marketing)\integracoes\page.tsx:88:17)
+  86 |   for (let i = 1; i <= 6; i++) {
+  87 |     try {
+> 88 |       const q = t(`faq.${i}.q` as any)
+     |                 ^
+  89 |       const a = t(`faq.${i}.a` as any)
+  90 |       if (q && a && !q.includes('.faq.')) faqs.push({ q, a })
+  91 |     } catch { break } {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.faq.6.q` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.faq.6.a` in messages for locale `pt-BR`.
+    at IntegracoesPage (app\[locale]\(marketing)\integracoes\page.tsx:89:17)
+  87 |     try {
+  88 |       const q = t(`faq.${i}.q` as any)
+> 89 |       const a = t(`faq.${i}.a` as any)
+     |                 ^
+  90 |       if (q && a && !q.includes('.faq.')) faqs.push({ q, a })
+  91 |     } catch { break }
+  92 |   } {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.faq.6.a` in messages for locale `pt-BR`.'
+}
+ GET /integracoes 200 in 970ms (compile: 46ms, proxy.ts: 12ms, generate-params: 14ms, render: 912ms)
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.asaas.detail.benefits.6.title` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:120:19)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.asaas.detail.benefits.6.title` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.asaas.detail.benefits.6.text` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:121:18)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.asaas.detail.benefits.6.text` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.asaas.detail.howItWorks.5.title` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:129:19)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.asaas.detail.howItWorks.5.title` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.asaas.detail.howItWorks.5.text` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:130:18)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.asaas.detail.howItWorks.5.text` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.asaas.detail.faq.4.q` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:147:15)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.asaas.detail.faq.4.q` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.asaas.detail.faq.4.a` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:148:15)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.asaas.detail.faq.4.a` in messages for locale `pt-BR`.'
+}
+ GET /integracoes/asaas 200 in 1571ms (compile: 836ms, proxy.ts: 20ms, generate-params: 643ms, render: 715ms)
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.zapier.detail.benefits.5.title` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:120:19)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.zapier.detail.benefits.5.title` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.zapier.detail.benefits.5.text` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:121:18)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.zapier.detail.benefits.5.text` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.zapier.detail.howItWorks.5.title` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:129:19)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.zapier.detail.howItWorks.5.title` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.zapier.detail.howItWorks.5.text` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:130:18)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.zapier.detail.howItWorks.5.text` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.zapier.detail.faq.4.q` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:147:15)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.zapier.detail.faq.4.q` in messages for locale `pt-BR`.'
+}
+Error: MISSING_MESSAGE: Could not resolve `marketing.integrations.items.zapier.detail.faq.4.a` in messages for locale `pt-BR`.
+    at tryTSafe (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:62:17)
+    at IntegrationDetailPage (app\[locale]\(marketing)\integracoes\[slug]\page.tsx:148:15)
+  60 | function tryTSafe(t: TFunc, key: string): string | null {
+  61 |   try {
+> 62 |     const val = t(key as any)
+     |                 ^
+  63 |     if (typeof val !== 'string') return null
+  64 |     if (val === key) return null
+  65 |     const lastSegment = key.split('.').pop() {
+  code: 'MISSING_MESSAGE',
+  originalMessage: 'Could not resolve `marketing.integrations.items.zapier.detail.faq.4.a` in messages for locale `pt-BR`.'
+}
+ GET /integracoes/zapier 200 in 419ms (compile: 19ms, proxy.ts: 14ms, generate-params: 8ms, render: 385ms)
+ GET /integracoes/unimed 404 in 325ms (compile: 24ms, proxy.ts: 18ms, generate-params: 11ms, render: 283ms)
+^C^C
