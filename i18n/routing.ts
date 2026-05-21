@@ -103,6 +103,16 @@ export const routing = defineRouting({
       en: '/help/[category]/[slug]',
     },
 
+    // Integrações / Integrations
+    '/integracoes': {
+      'pt-BR': '/integracoes',
+      en: '/integrations',
+    },
+    '/integracoes/[slug]': {
+      'pt-BR': '/integracoes/[slug]',
+      en: '/integrations/[slug]',
+    },
+
     // Referral
     '/r/[code]': '/r/[code]',
 

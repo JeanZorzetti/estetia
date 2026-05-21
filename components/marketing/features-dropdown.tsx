@@ -98,15 +98,23 @@ export function FeaturesDropdown() {
               ))}
             </div>
 
-            {/* Footer link */}
-            <div className="mt-4 pt-3 border-t">
+            {/* Footer links */}
+            <div className="mt-4 pt-3 border-t flex items-center justify-between gap-4">
               <Link
                 href="/features"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors py-1"
+                className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors py-1"
               >
                 {tNav('features_menu.all_features' as any)}
                 <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              <Link
+                href="/integracoes"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
+              >
+                <span className="hidden sm:inline">WhatsApp · Google Calendar · API →</span>
+                <span className="sm:hidden">Integrações →</span>
               </Link>
             </div>
           </div>
