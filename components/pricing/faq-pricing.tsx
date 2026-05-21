@@ -53,11 +53,17 @@ const FAQS = [
 
 export function FaqPricing() {
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion type="single" collapsible className="w-full flex flex-col gap-2">
       {FAQS.map((f, i) => (
-        <AccordionItem key={i} value={`item-${i}`}>
-          <AccordionTrigger className="text-left">{f.q}</AccordionTrigger>
-          <AccordionContent className="text-muted-foreground leading-relaxed">
+        <AccordionItem 
+          key={i} 
+          value={`item-${i}`}
+          className="border-b-0 bg-white/20 dark:bg-slate-900/10 backdrop-blur-xs rounded-2xl border border-slate-200/30 dark:border-white/5 px-5 transition-all duration-350 hover:bg-white/40 dark:hover:bg-slate-900/20 data-[state=open]:bg-white/60 dark:data-[state=open]:bg-slate-900/30 data-[state=open]:border-[#C5A059]/25 shadow-xs"
+        >
+          <AccordionTrigger className="text-left font-serif font-bold text-sm text-[#0A1F3D] dark:text-slate-100 hover:text-[#C5A059] dark:hover:text-[#C5A059] transition-all duration-200 py-4 hover:no-underline">
+            {f.q}
+          </AccordionTrigger>
+          <AccordionContent className="text-xs font-sans font-medium text-slate-500 dark:text-slate-400 leading-relaxed pb-4 pt-1 pr-4">
             {f.a}
           </AccordionContent>
         </AccordionItem>
@@ -65,3 +71,4 @@ export function FaqPricing() {
     </Accordion>
   )
 }
+
