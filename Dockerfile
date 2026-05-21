@@ -1,9 +1,12 @@
 # ============================================
-# Sirius CRM - Production Dockerfile
+# Estetia CRM - Production Dockerfile
+# Debian-based (glibc) for native Next.js SWC bindings
 # ============================================
 
-FROM node:20-alpine AS base
-RUN apk add --no-cache libc6-compat openssl
+FROM node:20-slim AS base
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openssl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
 # ===== Dependencies =====
@@ -23,15 +26,17 @@ RUN node_modules/.bin/prisma generate && \
     node_modules/.bin/prisma generate --schema prisma/whatsapp.prisma
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-RUN TURBOPACK=0 NODE_OPTIONS="--max-old-space-size=4096" node_modules/.bin/next build
+RUN NODE_OPTIONS="--max-old-space-size=4096" node_modules/.bin/next build
 
 # ===== Runner =====
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
 
-RUN apk add --no-cache libc6-compat openssl curl ffmpeg && \
-    addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openssl ca-certificates curl ffmpeg \
+    && rm -rf /var/lib/apt/lists/* && \
+    groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --gid nodejs --shell /bin/bash --create-home nextjs
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
