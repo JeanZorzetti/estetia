@@ -23,7 +23,7 @@ RUN node_modules/.bin/prisma generate && \
     node_modules/.bin/prisma generate --schema prisma/whatsapp.prisma
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-RUN NODE_OPTIONS="--max-old-space-size=4096" node_modules/.bin/next build
+RUN NODE_OPTIONS="--max-old-space-size=4096" node_modules/.bin/next build --no-turbo
 
 # ===== Runner =====
 FROM node:20-alpine AS runner
