@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
             overflow: 'hidden',
           }}
         >
-          {/* Background gradient indigo → purple */}
+          {/* Background gradient navy */}
           <div
             style={{
               position: 'absolute',
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
               left: 0,
               right: 0,
               bottom: 0,
-              background: 'linear-gradient(135deg, #312e81 0%, #4c1d95 50%, #581c87 100%)',
+              background: 'linear-gradient(135deg, #0a1f3d 0%, #0d2547 60%, #0a2050 100%)',
             }}
           />
 
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
               right: '-80px',
               width: '400px',
               height: '400px',
-              background: 'radial-gradient(circle, rgba(139,92,246,0.3) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(197,160,89,0.22) 0%, transparent 70%)',
               borderRadius: '50%',
             }}
           />
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
               left: '-60px',
               width: '350px',
               height: '350px',
-              background: 'radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(72,159,181,0.15) 0%, transparent 70%)',
               borderRadius: '50%',
             }}
           />
@@ -105,22 +105,23 @@ export async function GET(request: NextRequest) {
                   gap: '14px',
                 }}
               >
-                {/* Logo circle placeholder */}
+                {/* Logo badge */}
                 <div
                   style={{
                     width: '48px',
                     height: '48px',
                     borderRadius: '12px',
-                    background: 'rgba(255,255,255,0.15)',
+                    background: 'linear-gradient(135deg, #c5a059 0%, #a8853f 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontSize: '24px',
                     fontWeight: 'bold',
-                    color: 'white',
+                    color: '#0a1f3d',
+                    fontFamily: 'Georgia, serif',
                   }}
                 >
-                  S
+                  E
                 </div>
                 <div
                   style={{
@@ -133,16 +134,17 @@ export async function GET(request: NextRequest) {
                       fontSize: '22px',
                       fontWeight: 'bold',
                       color: 'white',
-                      letterSpacing: '0.05em',
+                      letterSpacing: '0.08em',
+                      fontFamily: 'Georgia, serif',
                     }}
                   >
-                    SIRIUS
+                    ESTETIA
                   </span>
                   <span
                     style={{
                       fontSize: '12px',
-                      color: 'rgba(255,255,255,0.6)',
-                      letterSpacing: '0.15em',
+                      color: 'rgba(197,160,89,0.85)',
+                      letterSpacing: '0.2em',
                     }}
                   >
                     CRM
@@ -194,7 +196,7 @@ export async function GET(request: NextRequest) {
                   width: '80px',
                   height: '4px',
                   borderRadius: '2px',
-                  background: 'linear-gradient(90deg, #818cf8, #c084fc)',
+                  background: 'linear-gradient(90deg, #c5a059, rgba(197,160,89,0.3))',
                 }}
               />
             </div>
