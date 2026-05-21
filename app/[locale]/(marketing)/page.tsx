@@ -6,6 +6,7 @@ import { SolutionsTabs } from "@/components/marketing/solutions-tabs"
 import { FeaturesExpanded } from "@/components/marketing/features-expanded"
 import { SocialProof } from "@/components/marketing/social-proof"
 import { HomepageJsonLd } from "@/components/marketing/homepage-json-ld"
+import { ScenarioCard } from "@/components/pricing/scenario-card"
 import dynamic from "next/dynamic"
 
 const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then(m => ({ default: m.StickyCTA })))
@@ -47,42 +48,6 @@ export async function generateMetadata({
 export default function LandingPage() {
   const t = useTranslations("marketing.home")
   const locale = useLocale()
-  const isEn = locale === 'en'
-
-  const plans = [
-    {
-      name: isEn ? 'Free' : 'Gratuito',
-      price: 'R$ 0',
-      period: isEn ? '' : '',
-      description: isEn ? 'To test the CRM' : 'Para testar o CRM',
-      features: isEn ? ['2 Users', '250 Contacts', '100 Deals', '1 Pipeline'] : ['2 Usuários', '250 Contatos', '100 Negócios', '1 Pipeline'],
-      highlighted: false,
-    },
-    {
-      name: 'Starter',
-      price: 'R$ 149',
-      period: isEn ? '/mo' : '/mês',
-      description: isEn ? 'For small businesses' : 'Para pequenas empresas',
-      features: isEn ? ['5 Users', '1,000 Contacts', 'WhatsApp', '75 leads/mo'] : ['5 Usuários', '1.000 Contatos', 'WhatsApp', '75 leads/mês'],
-      highlighted: false,
-    },
-    {
-      name: 'Pro',
-      price: 'R$ 349',
-      period: isEn ? '/mo' : '/mês',
-      description: isEn ? 'For growing clinics' : 'Para clínicas em crescimento',
-      features: isEn ? ['Unlimited patients', 'No-show predictor AI', 'WhatsApp Business', 'TISS/TUSS integration'] : ['Pacientes ilimitados', 'Predictor de no-show IA', 'WhatsApp Business', 'Integração TISS/TUSS'],
-      highlighted: true,
-    },
-    {
-      name: 'Business',
-      price: 'R$ 799',
-      period: isEn ? '/mo' : '/mês',
-      description: isEn ? 'For large operations' : 'Para grandes operações',
-      features: isEn ? ['50 Users', 'Unlimited', 'Round-Robin', '1,500 leads/mo'] : ['50 Usuários', 'Ilimitado', 'Round-Robin', '1.500 leads/mês'],
-      highlighted: false,
-    },
-  ]
 
   return (
     <>
@@ -122,84 +87,62 @@ export default function LandingPage() {
                   style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
                   {t('plans.title')}
                 </h2>
-                <p className="text-[#64748B] max-w-xl mx-auto">{t('plans.subtitle')}</p>
+                <p className="text-[#64748B] max-w-xl mx-auto">
+                  Pague apenas pelos módulos que sua clínica usa. A partir de R$ 39/mês (Plataforma Base) + os módulos que você escolher.
+                </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                {plans.map((plan) => (
-                  <div
-                    key={plan.name}
-                    className={`group relative rounded-2xl border p-7 flex flex-col transition-all duration-300 ${
-                      plan.highlighted
-                        ? 'border-[#C5A059] bg-[#0A1F3D] shadow-2xl shadow-[#0A1F3D]/25 scale-[1.02]'
-                        : 'border-[#0A1F3D]/8 bg-[#EEF0F8] hover:border-[#0A1F3D]/20 hover:shadow-md hover:-translate-y-0.5'
-                    }`}
-                  >
-                    {plan.highlighted && (
-                      <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                        <div className="rounded-full bg-gradient-to-r from-[#C5A059] to-[#8B6E32] px-4 py-1 text-xs font-bold text-white tracking-wide shadow-lg">
-                          {t('plans.mostPopular')}
-                        </div>
-                      </div>
-                    )}
-                    {!plan.highlighted && (
-                      <div className="absolute top-0 left-6 right-6 h-[2px] rounded-full bg-[#0A1F3D]/8 group-hover:bg-[#C5A059]/40 transition-colors duration-300" />
-                    )}
-                    <div className="mb-5">
-                      <h3 className={`text-lg font-bold mb-1 ${plan.highlighted ? 'text-white' : 'text-[#0A1F3D]'}`}>
-                        {plan.name}
-                      </h3>
-                      <p className={`text-sm ${plan.highlighted ? 'text-white/60' : 'text-[#64748B]'}`}>
-                        {plan.description}
-                      </p>
-                    </div>
-                    <div className="flex items-baseline gap-1 mb-7">
-                      <span className={`font-serif font-bold ${plan.highlighted ? 'text-white' : 'text-[#0A1F3D]'}`}
-                        style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)' }}>
-                        {plan.price}
-                      </span>
-                      {plan.period && (
-                        <span className={`text-sm ${plan.highlighted ? 'text-white/50' : 'text-[#64748B]'}`}>
-                          {plan.period}
-                        </span>
-                      )}
-                    </div>
-                    <ul className="space-y-2.5 mb-8 flex-1">
-                      {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2.5 text-sm">
-                          <span className={`inline-flex h-4 w-4 items-center justify-center rounded-full shrink-0 ${
-                            plan.highlighted ? 'bg-[#C5A059]/20' : 'bg-[#489FB5]/15'
-                          }`}>
-                            <svg className={`h-2.5 w-2.5 ${plan.highlighted ? 'text-[#C5A059]' : 'text-[#489FB5]'}`} fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                          </span>
-                          <span className={plan.highlighted ? 'text-white/80' : 'text-[#64748B]'}>
-                            {feature}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Link
-                      href={plan.highlighted ? '/register' : '/pricing'}
-                      className={`inline-flex h-11 items-center justify-center rounded-xl text-sm font-semibold transition-all duration-200 w-full ${
-                        plan.highlighted
-                          ? 'bg-[#C5A059] hover:bg-[#B8913F] text-[#0A1F3D] shadow-lg shadow-[#C5A059]/30 hover:-translate-y-0.5'
-                          : 'bg-white border border-[#0A1F3D]/12 text-[#0A1F3D] hover:border-[#0A1F3D]/25 hover:shadow-sm'
-                      }`}
-                    >
-                      {plan.price === 'R$ 0' || plan.price === '$ 0' ? t('plans.startFree') : t('plans.seeDetails')}
-                    </Link>
-                  </div>
-                ))}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <ScenarioCard
+                  icon="LayoutDashboard"
+                  title="Clínica Solo"
+                  subtitle="Para profissionais autônomos que estão começando a digitalizar a clínica."
+                  modules={[
+                    'Plataforma Base (agenda + LGPD)',
+                    'Prontuário eletrônico',
+                    'Controle de procedimentos',
+                    'Pacotes e séries',
+                  ]}
+                  totalCents={16600}
+                />
+                <ScenarioCard
+                  icon="Sparkles"
+                  title="Clínica Média"
+                  subtitle="Para clínicas com equipe, múltiplos procedimentos e comunicação ativa."
+                  modules={[
+                    'Plataforma Base (agenda + LGPD)',
+                    'Prontuário eletrônico',
+                    'Controle de procedimentos',
+                    'Pacotes e séries',
+                    'WhatsApp Evolution',
+                    'Recall e reativação',
+                    'Fotos clínicas (antes/depois)',
+                  ]}
+                  totalCents={36200}
+                  highlight
+                />
+                <ScenarioCard
+                  icon="Brain"
+                  title="Dermato com Convênios"
+                  subtitle="Para dermatologistas que atendem convênios e precisam de TISS/TUSS."
+                  modules={[
+                    'Plataforma Base (agenda + LGPD)',
+                    'Prontuário eletrônico',
+                    'Controle de procedimentos',
+                    'WhatsApp Cloud API (oficial)',
+                    'Módulo TISS/TUSS',
+                    'IA clínica',
+                  ]}
+                  totalCents={66000}
+                />
               </div>
 
               <div className="mt-10 text-center">
                 <Link
-                  href="/pricing"
+                  href="/precos"
                   className="inline-flex items-center gap-1.5 text-sm text-[#489FB5] hover:text-[#2A7A94] transition-colors font-medium"
                 >
-                  {t('plans.compareLink')}
+                  Monte seu plano →
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -284,7 +227,7 @@ export default function LandingPage() {
                   {t('cta.btnPrimary')}
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
-                <Link href="/pricing" className="inline-flex items-center justify-center rounded-xl border border-[#0A1F3D]/15 bg-[#EEF0F8] px-10 py-4 text-base font-medium text-[#0A1F3D] hover:border-[#0A1F3D]/25 hover:bg-[#E8EAF4] transition-colors">
+                <Link href="/precos" className="inline-flex items-center justify-center rounded-xl border border-[#0A1F3D]/15 bg-[#EEF0F8] px-10 py-4 text-base font-medium text-[#0A1F3D] hover:border-[#0A1F3D]/25 hover:bg-[#E8EAF4] transition-colors">
                   {t('cta.btnSecondary')}
                 </Link>
               </div>

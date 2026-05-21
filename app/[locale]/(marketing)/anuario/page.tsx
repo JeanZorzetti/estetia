@@ -369,7 +369,7 @@ export default function AnuarioPage() {
                 Começar Gratuitamente
               </Link>
               <Link
-                href="/pricing"
+                href="/precos"
                 className="inline-flex items-center justify-center rounded-lg border border-zinc-600 bg-zinc-800 px-6 py-3 text-sm font-semibold text-zinc-200 hover:bg-zinc-700 transition-colors"
               >
                 Ver Planos e Preços

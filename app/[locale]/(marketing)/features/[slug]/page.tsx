@@ -248,7 +248,7 @@ export default async function FeatureDetailPage({
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-[#0A1F3D] dark:text-white dark:border-white/10 dark:hover:bg-slate-900 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
-                    <Link href="/pricing">Ver Planos</Link>
+                    <Link href="/precos">Ver Planos</Link>
                   </Button>
                 </div>
               </div>
@@ -419,7 +419,7 @@ export default async function FeatureDetailPage({
                   </div>
                   <div className="sm:ml-auto shrink-0 mt-3 sm:mt-0">
                     <Button asChild variant="outline" size="sm" className="rounded-lg text-xs font-semibold border-slate-200 text-[#0A1F3D] hover:bg-slate-50 dark:border-slate-800 dark:text-white dark:hover:bg-slate-800">
-                      <Link href="/pricing">Comparar planos</Link>
+                      <Link href="/precos">Comparar planos</Link>
                     </Button>
                   </div>
                 </div>
@@ -580,7 +580,7 @@ export default async function FeatureDetailPage({
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 text-[#0A1F3D] hover:bg-slate-50 rounded-xl transition-all hover:-translate-y-0.5 dark:border-slate-800 dark:text-white dark:hover:bg-slate-900">
-                    <Link href="/pricing">{t('cta.buttonSecondary')}</Link>
+                    <Link href="/precos">{t('cta.buttonSecondary')}</Link>
                   </Button>
                 </div>
 

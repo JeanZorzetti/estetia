@@ -220,7 +220,7 @@ export default async function IntegrationDetailPage({
                       </Link>
                     </Button>
                     <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base">
-                      <Link href="/pricing">Ver Planos</Link>
+                      <Link href="/precos">Ver Planos</Link>
                     </Button>
                   </div>
                 </div>
@@ -330,7 +330,7 @@ export default async function IntegrationDetailPage({
                   </div>
                   <div className="sm:ml-auto shrink-0">
                     <Button asChild variant="outline" size="sm">
-                      <Link href="/pricing">Comparar planos</Link>
+                      <Link href="/precos">Comparar planos</Link>
                     </Button>
                   </div>
                 </div>
@@ -473,7 +473,7 @@ export default async function IntegrationDetailPage({
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base">
-                    <Link href="/pricing">Ver Planos</Link>
+                    <Link href="/precos">Ver Planos</Link>
                   </Button>
                 </div>
                 <div className="mt-6 flex items-center justify-center gap-6 text-sm text-muted-foreground">

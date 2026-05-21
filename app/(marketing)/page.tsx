@@ -151,7 +151,7 @@ export default function MarketingHomePage() {
           <nav className="hidden gap-6 text-sm text-zinc-500 md:flex">
             <Link href="#funcionalidades" className="hover:text-zinc-900 transition-colors">Funcionalidades</Link>
             <Link href="#depoimentos" className="hover:text-zinc-900 transition-colors">Depoimentos</Link>
-            <Link href="/pricing" className="hover:text-zinc-900 transition-colors">Preços</Link>
+            <Link href="/precos" className="hover:text-zinc-900 transition-colors">Preços</Link>
             <Link href="#faq" className="hover:text-zinc-900 transition-colors">FAQ</Link>
           </nav>
           <div className="flex items-center gap-3">
@@ -392,7 +392,7 @@ export default function MarketingHomePage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/pricing"
+                href="/precos"
                 className="rounded-xl border border-zinc-200 px-8 py-3.5 text-base font-semibold text-zinc-700 hover:bg-zinc-50 transition-all"
               >
                 Ver todos os planos
@@ -481,7 +481,7 @@ export default function MarketingHomePage() {
               <span className="text-zinc-600">· CRM para estética e dermatologia</span>
             </div>
             <nav className="flex flex-wrap justify-center gap-6 text-sm">
-              <Link href="/pricing" className="hover:text-white transition-colors">Preços</Link>
+              <Link href="/precos" className="hover:text-white transition-colors">Preços</Link>
               <Link href="/calculadora-clinica" className="hover:text-white transition-colors">Calculadora</Link>
               <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
               <Link href="/privacy" className="hover:text-white transition-colors">Privacidade</Link>

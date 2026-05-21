@@ -190,7 +190,7 @@ export default async function SolucoesPage({
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="border-[#0A1F3D]/20 text-[#0A1F3D] hover:bg-white px-8">
-              <Link href="/pricing">Ver planos e preços</Link>
+              <Link href="/precos">Ver planos e preços</Link>
             </Button>
           </div>
         </div>

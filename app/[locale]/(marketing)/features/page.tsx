@@ -256,7 +256,7 @@ export default async function FeaturesPage() {
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-[#0A1F3D] dark:text-white dark:border-white/10 dark:hover:bg-slate-900 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
-                  <Link href="/pricing">{t('hero.ctaSecondary')}</Link>
+                  <Link href="/precos">{t('hero.ctaSecondary')}</Link>
                 </Button>
               </div>
             </div>
@@ -449,7 +449,7 @@ export default async function FeaturesPage() {
             {/* Table CTAs */}
             <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="h-12 px-8 text-base bg-[#0A1F3D] hover:bg-[#162D54] text-white shadow-lg rounded-xl transition-all duration-300 hover:-translate-y-0.5 dark:bg-[#C5A059] dark:text-[#0A1F3D] dark:hover:bg-[#b8913f] dark:shadow-[#C5A059]/10">
-                <Link href="/pricing">{t('planComparison.ctaPrimary')}</Link>
+                <Link href="/precos">{t('planComparison.ctaPrimary')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-[#0A1F3D] dark:text-white dark:border-white/10 dark:hover:bg-slate-900 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
                 <Link href="/indique">
@@ -492,7 +492,7 @@ export default async function FeaturesPage() {
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 text-[#0A1F3D] hover:bg-slate-50 rounded-xl transition-all hover:-translate-y-0.5 dark:border-slate-800 dark:text-white dark:hover:bg-slate-900">
-                    <Link href="/pricing">{t('cta.buttonSecondary')}</Link>
+                    <Link href="/precos">{t('cta.buttonSecondary')}</Link>
                   </Button>
                 </div>
 

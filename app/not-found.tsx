@@ -36,7 +36,7 @@ export default function NotFound() {
               Funcionalidades
             </Button>
           </Link>
-          <Link href="/pricing">
+          <Link href="/precos">
             <Button variant="outline" size="lg">
               <DollarSign className="w-4 h-4 mr-2" />
               Preços

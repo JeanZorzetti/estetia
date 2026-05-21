@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Users, Gift, TrendingDown, ArrowRight, Check, Star, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useState, useMemo } from 'react'
 
 const steps = [
   {
@@ -31,16 +32,6 @@ const steps = [
   },
 ]
 
-const rewards = [
-  { referrals: 1, discount: 15, monthly: { starter: 126.65, pro: 252.45, business: 507.45 } },
-  { referrals: 2, discount: 30, monthly: { starter: 104.30, pro: 207.90, business: 417.90 } },
-  { referrals: 3, discount: 45, monthly: { starter: 81.95, pro: 163.35, business: 328.35 } },
-  { referrals: 4, discount: 60, monthly: { starter: 59.60, pro: 118.80, business: 238.80 } },
-  { referrals: 5, discount: 75, monthly: { starter: 37.25, pro: 74.25, business: 149.25 } },
-  { referrals: 6, discount: 90, monthly: { starter: 14.90, pro: 29.70, business: 59.70 } },
-  { referrals: 7, discount: 100, monthly: { starter: 0, pro: 0, business: 0 } },
-]
-
 const faqs = [
   {
     q: 'O desconto é realmente recorrente?',
@@ -55,8 +46,8 @@ const faqs = [
     a: 'Não! Você pode indicar quantas pessoas quiser. O desconto acumula até 100% — a partir daí sua mensalidade é zerada e permanece assim enquanto as indicações estiverem ativas.',
   },
   {
-    q: 'O desconto dos 20% para o indicado se aplica a qualquer plano?',
-    a: 'Sim, para qualquer plano pago (Starter, Pro ou Business). O desconto de 20% é aplicado nos primeiros 3 meses da assinatura.',
+    q: 'O desconto dos 20% para o indicado se aplica a qualquer combinação de módulos?',
+    a: 'Sim. O desconto de 20% para quem você indica se aplica em qualquer combinação de módulos que ele escolher no Estetia, durante os 3 primeiros meses da assinatura paga.',
   },
   {
     q: 'Quando o desconto é ativado?',
@@ -77,6 +68,146 @@ const containerVariants = {
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+}
+
+function ReferralCalculator() {
+  const [mensalidade, setMensalidade] = useState(200)
+  const [referrals, setReferrals] = useState(0)
+
+  const { discount, youPay, savings, annualSavings, isFree } = useMemo(() => {
+    const disc = Math.min(referrals * 15, 100)
+    const pays = Math.max(0, Math.round(mensalidade * (100 - disc)) / 100)
+    const save = mensalidade - pays
+    return {
+      discount: disc,
+      youPay: pays,
+      savings: save,
+      annualSavings: save * 12,
+      isFree: disc >= 100,
+    }
+  }, [mensalidade, referrals])
+
+  const fmt = (v: number) =>
+    v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 })
+
+  return (
+    <section className="py-32 px-6 relative overflow-hidden">
+      <div className="absolute inset-0 bg-muted/30" />
+      <div className="relative mx-auto max-w-3xl">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold tracking-tight mb-4">Calcule sua economia</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Informe sua mensalidade atual e veja quanto você paga com indicações ativas.
+          </p>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="rounded-3xl border border-border/50 bg-background/50 backdrop-blur-xl shadow-2xl p-8 space-y-8"
+        >
+          {/* Mensalidade input */}
+          <div>
+            <label className="block text-sm font-semibold mb-3 text-foreground">
+              Quanto você paga hoje no Estetia?
+            </label>
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-bold text-muted-foreground">R$</span>
+              <input
+                type="number"
+                min={58}
+                max={2000}
+                step={10}
+                value={mensalidade}
+                onChange={(e) => setMensalidade(Math.max(58, Math.min(2000, Number(e.target.value))))}
+                className="flex-1 rounded-xl border border-border bg-background px-4 py-3 text-lg font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/30"
+              />
+            </div>
+            <input
+              type="range"
+              min={58}
+              max={2000}
+              step={10}
+              value={mensalidade}
+              onChange={(e) => setMensalidade(Number(e.target.value))}
+              className="w-full mt-3 accent-primary"
+            />
+            <div className="flex justify-between text-xs text-muted-foreground mt-1">
+              <span>R$58 (mínimo)</span>
+              <span>R$2.000</span>
+            </div>
+          </div>
+
+          {/* Referrals selector */}
+          <div>
+            <label className="block text-sm font-semibold mb-3 text-foreground">
+              Quantas indicações ativas você tem?
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setReferrals(n)}
+                  className={`w-11 h-11 rounded-xl text-sm font-bold transition-all duration-200 ${
+                    referrals === n
+                      ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25 scale-105'
+                      : 'bg-muted/60 text-foreground hover:bg-muted'
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Cada indicação ativa = +15% de desconto na sua mensalidade
+            </p>
+          </div>
+
+          {/* Result display */}
+          <div className="rounded-2xl bg-gradient-to-br from-primary/10 to-background border border-primary/20 p-6 space-y-4">
+            <div className="flex justify-between items-center text-sm text-muted-foreground">
+              <span>Sua mensalidade hoje</span>
+              <span className="font-semibold text-foreground tabular-nums">{fmt(mensalidade)}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm text-muted-foreground">
+              <span>Desconto acumulado</span>
+              <span className="font-bold text-primary tabular-nums">{discount}%</span>
+            </div>
+            <div className="h-px bg-border" />
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-lg">Você passa a pagar</span>
+              <div className="text-right">
+                <div className={`text-3xl font-black tabular-nums ${isFree ? 'text-green-500' : 'text-primary'}`}>
+                  {isFree ? 'R$ 0,00' : fmt(youPay)}
+                </div>
+                {isFree && (
+                  <Badge className="mt-1 bg-green-500 text-white animate-pulse text-xs">Grátis!</Badge>
+                )}
+              </div>
+            </div>
+            {savings > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-muted-foreground">Economia mensal</span>
+                <span className="font-semibold text-green-600 tabular-nums">−{fmt(savings)}</span>
+              </div>
+            )}
+            {annualSavings > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-muted-foreground">Economia anual estimada</span>
+                <span className="font-semibold text-green-600 tabular-nums">−{fmt(annualSavings)}</span>
+              </div>
+            )}
+          </div>
+        </motion.div>
+        <p className="mt-6 text-sm text-muted-foreground text-center flex items-center justify-center gap-2">
+          <Check className="w-4 h-4 text-green-500" />
+          O desconto permanece ativo enquanto a indicação mantiver a assinatura paga.
+        </p>
+      </div>
+    </section>
+  )
 }
 
 export function IndiqueClient() {
@@ -212,172 +343,38 @@ export function IndiqueClient() {
         </div>
       </section>
 
-      {/* Rewards table */}
-      <section className="py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-muted/30" />
-        <div className="relative mx-auto max-w-5xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold tracking-tight mb-4">A matemática ao seu favor</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Seu desconto é cumulativo. Veja como sua mensalidade diminui a cada indicação ativa.
-            </p>
-          </div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="rounded-3xl border border-border/50 bg-background/50 backdrop-blur-xl shadow-2xl overflow-hidden"
-          >
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50 bg-muted/50">
-                    <th className="text-left py-5 px-6 font-semibold text-foreground">Indicações ativas</th>
-                    <th className="text-center py-5 px-6 font-semibold text-foreground">Seu Desconto</th>
-                    <th className="text-center py-5 px-6 font-semibold text-foreground">Starter</th>
-                    <th className="text-center py-5 px-6 font-semibold text-foreground">Pro</th>
-                    <th className="text-center py-5 px-6 font-semibold text-foreground">Business</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/30">
-                  <tr className="hover:bg-muted/30 transition-colors">
-                    <td className="py-4 px-6 text-muted-foreground font-medium">0 (preço cheio)</td>
-                    <td className="py-4 px-6 text-center text-muted-foreground">—</td>
-                    <td className="py-4 px-6 text-center font-medium">R$149</td>
-                    <td className="py-4 px-6 text-center font-medium">R$297</td>
-                    <td className="py-4 px-6 text-center font-medium">R$597</td>
-                  </tr>
-                  {rewards.map((row) => (
-                    <tr
-                      key={row.referrals}
-                      className={`transition-colors hover:bg-muted/50 ${row.referrals === 7 ? 'bg-primary/5 hover:bg-primary/10' : ''}`}
-                    >
-                      <td className="py-4 px-6 flex items-center gap-3 font-medium">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${row.referrals === 7 ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'}`}>
-                          <Users className="w-4 h-4" />
-                        </div>
-                        <span className={row.referrals === 7 ? 'text-primary font-bold' : ''}>
-                          {row.referrals} indicaç{row.referrals === 1 ? 'ão' : 'ões'}
-                        </span>
-                        {row.referrals === 7 && (
-                          <Badge className="ml-2 bg-primary text-primary-foreground animate-pulse shadow-[0_0_10px_rgba(var(--primary),0.5)]">Grátis!</Badge>
-                        )}
-                      </td>
-                      <td className="py-4 px-6 text-center font-bold text-primary text-base">
-                        {row.discount}%
-                      </td>
-                      <td className="py-4 px-6 text-center">
-                        {row.monthly.starter === 0 ? (
-                          <span className="font-bold text-primary">R$0</span>
-                        ) : (
-                          <span className="text-muted-foreground">R${row.monthly.starter.toFixed(2)}</span>
-                        )}
-                      </td>
-                      <td className="py-4 px-6 text-center">
-                        {row.monthly.pro === 0 ? (
-                          <span className="font-bold text-primary">R$0</span>
-                        ) : (
-                          <span className="text-muted-foreground">R${row.monthly.pro.toFixed(2)}</span>
-                        )}
-                      </td>
-                      <td className="py-4 px-6 text-center">
-                        {row.monthly.business === 0 ? (
-                          <span className="font-bold text-primary">R$0</span>
-                        ) : (
-                          <span className="text-muted-foreground">R${row.monthly.business.toFixed(2)}</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
-          <p className="mt-6 text-sm text-muted-foreground text-center flex items-center justify-center gap-2">
-            <Check className="w-4 h-4 text-green-500" />
-            O desconto permanece ativo enquanto a indicação mantiver a assinatura paga.
-          </p>
-        </div>
-      </section>
+      {/* Referral Calculator */}
+      <ReferralCalculator />
 
       {/* Indicado benefits */}
       <section className="py-32 px-6">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-4xl font-bold tracking-tight mb-6">Quem você indica<br/>também sai ganhando</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Seu link não é apenas um convite — é um benefício exclusivo. Quem se cadastra através da sua indicação recebe <strong className="text-foreground font-semibold bg-primary/10 px-2 py-0.5 rounded text-primary">20% de desconto nos 3 primeiros meses</strong> do plano pago.
-              </p>
-              
-              <div className="space-y-4">
-                {[
-                  { plan: 'Starter', price: 'R$149', discounted: 'R$119,20/mês' },
-                  { plan: 'Pro', price: 'R$297', discounted: 'R$237,60/mês' },
-                  { plan: 'Business', price: 'R$597', discounted: 'R$477,60/mês' },
-                ].map((item) => (
-                  <div key={item.plan} className="flex items-center gap-4 p-4 rounded-2xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
-                      <Check className="w-5 h-5 text-green-500" />
-                    </div>
-                    <div>
-                      <div className="font-semibold">{item.plan}</div>
-                      <div className="text-sm text-muted-foreground">
-                        De <span className="line-through">{item.price}</span> por <span className="text-foreground font-medium">{item.discounted}</span> (3 meses)
-                      </div>
-                    </div>
-                  </div>
-                ))}
+        <div className="mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl font-bold tracking-tight mb-6">Quem você indica<br/>também sai ganhando</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
+              Seu link não é apenas um convite — é um benefício exclusivo. Quem se cadastra através da sua indicação recebe{' '}
+              <strong className="text-foreground font-semibold bg-primary/10 px-2 py-0.5 rounded text-primary">
+                20% de desconto nos 3 primeiros meses
+              </strong>{' '}
+              em qualquer combinação de módulos que ele escolher.
+            </p>
+            <div className="inline-flex items-center gap-4 p-6 rounded-2xl border border-border/50 bg-muted/20">
+              <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
+                <Gift className="w-6 h-6 text-green-500" />
               </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Card className="border-primary/30 bg-gradient-to-br from-primary/10 to-background shadow-2xl relative overflow-hidden rounded-3xl">
-                <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <TrendingDown className="w-32 h-32" />
+              <div className="text-left">
+                <div className="font-semibold text-lg">20% off por 3 meses</div>
+                <div className="text-sm text-muted-foreground">
+                  Válido para qualquer combo de módulos, sem valor mínimo.
                 </div>
-                <CardHeader className="pb-4 relative z-10">
-                  <Badge variant="outline" className="w-fit mb-4 bg-background/50 backdrop-blur-sm border-primary/20 text-primary">Cenário de Exemplo</Badge>
-                  <CardTitle className="text-2xl">Economia na Prática</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6 relative z-10">
-                  <div className="p-5 rounded-2xl bg-background/60 backdrop-blur-md border border-border/50">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-muted-foreground font-medium">Seu Plano Atual</span>
-                      <Badge variant="secondary">Pro (R$297)</Badge>
-                    </div>
-                    <div className="flex justify-between items-center mb-6">
-                      <span className="text-muted-foreground font-medium">Suas Indicações Ativas</span>
-                      <span className="font-bold text-lg">3 parceiros</span>
-                    </div>
-                    <div className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent mb-6" />
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-lg">Nova Mensalidade</span>
-                      <div className="text-right">
-                        <div className="text-3xl font-black text-primary">R$163,35</div>
-                        <div className="text-sm text-green-500 font-medium mt-1">−45% de desconto eterno*</div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground text-center">
-                    * O desconto de 45% se mantém ativo enquanto os 3 indicados continuarem com a assinatura paga.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 

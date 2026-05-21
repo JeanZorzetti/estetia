@@ -149,7 +149,7 @@ export default async function IntegracoesPage() {
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-[#0A1F3D] dark:text-white dark:border-white/10 dark:hover:bg-slate-900 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
-                  <Link href="/pricing">{t('hero.ctaSecondary')}</Link>
+                  <Link href="/precos">{t('hero.ctaSecondary')}</Link>
                 </Button>
               </div>
             </div>
@@ -381,7 +381,7 @@ export default async function IntegracoesPage() {
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="h-12 px-8 text-base border-slate-200 text-[#0A1F3D] hover:bg-slate-50 rounded-xl transition-all hover:-translate-y-0.5 dark:border-slate-800 dark:text-white dark:hover:bg-slate-900">
-                    <Link href="/pricing">Ver Planos</Link>
+                    <Link href="/precos">Ver Planos</Link>
                   </Button>
                 </div>
                 

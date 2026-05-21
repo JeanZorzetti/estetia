@@ -130,7 +130,7 @@ export default async function SolucaoPage({
               <Link href="/register">Começar gratuitamente</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="border-[#0A1F3D]/20 text-[#0A1F3D] hover:bg-white px-8">
-              <Link href="/pricing">Ver planos</Link>
+              <Link href="/precos">Ver planos</Link>
             </Button>
           </div>
         </div>

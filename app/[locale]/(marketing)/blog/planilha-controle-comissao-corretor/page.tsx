@@ -383,7 +383,7 @@ export default function PlanilhaControleComissaoPage() {
                       <td className="p-4 font-semibold">Preço</td>
                       <td className="text-center p-4">Grátis</td>
                       <td className="text-center p-4 bg-blue-50 dark:bg-blue-950/30">
-                        <Link href="/pricing" className="text-blue-600 hover:underline">
+                        <Link href="/precos" className="text-blue-600 hover:underline">
                           A partir de R$ 67/mês
                         </Link>
                       </td>

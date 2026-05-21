@@ -112,7 +112,7 @@ export default async function VsClinicArePage({
                 Testar Estetia grátis
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/pricing" className="inline-flex items-center justify-center rounded-xl border border-[#0A1F3D]/15 bg-white px-8 py-3.5 text-sm font-medium text-[#0A1F3D] hover:border-[#0A1F3D]/30 transition-colors">
+              <Link href="/precos" className="inline-flex items-center justify-center rounded-xl border border-[#0A1F3D]/15 bg-white px-8 py-3.5 text-sm font-medium text-[#0A1F3D] hover:border-[#0A1F3D]/30 transition-colors">
                 Ver planos e preços
               </Link>
             </div>

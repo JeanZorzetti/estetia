@@ -12,6 +12,14 @@ export const routing = defineRouting({
     '/features': '/features',
     '/features/[slug]': '/features/[slug]',
     '/pricing': '/pricing',
+    '/precos': {
+      'pt-BR': '/precos',
+      en: '/pricing',
+    },
+    '/indique': {
+      'pt-BR': '/indique',
+      en: '/refer',
+    },
     '/about': '/about',
     '/contact': '/contact',
     '/changelog': '/changelog',
