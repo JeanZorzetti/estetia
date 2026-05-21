@@ -199,41 +199,67 @@ export default async function DashboardPage({
         shouldShowOnboarding={shouldShowOnboarding}
       >
         <AnimatedPageContainer>
-          <div className="flex flex-col gap-6 p-4 lg:p-6">
-            {/* Hero */}
-            <div>
-              <h1 className="text-2xl font-semibold text-foreground">
-                {greeting}, {firstName}
-              </h1>
-              <p className="text-muted-foreground text-sm mt-1">
-                {new Date().toLocaleDateString("pt-BR", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                })}{" "}
-                · {orgName}
-              </p>
+          <div className="flex flex-col gap-8 p-4 lg:p-8 relative min-h-screen bg-slate-50/20 text-[#0A1F3D] selection:bg-[#489FB5]/20 overflow-hidden rounded-3xl border border-[#0A1F3D]/5">
+            {/* DESIGN SYSTEM BACKGROUND INTEGRATION - DASHBOARD EDITION */}
+            {/* Grain texture overlay */}
+            <div className="absolute inset-0 opacity-[0.015] pointer-events-none z-0" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+                backgroundSize: '128px 128px'
+            }} />
+
+            {/* Subtle Clinical Halos */}
+            <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full pointer-events-none z-0 opacity-20 blur-[100px]"
+                style={{ background: 'radial-gradient(circle, rgba(72,159,181,0.15) 0%, transparent 70%)' }} />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[450px] h-[450px] rounded-full pointer-events-none z-0 opacity-15 blur-[90px]"
+                style={{ background: 'radial-gradient(circle, rgba(197,160,89,0.12) 0%, transparent 70%)' }} />
+
+            {/* Header / Hero */}
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[#0A1F3D]/5">
+              <div>
+                <h1 className="font-serif text-3xl font-extrabold text-[#0A1F3D] leading-tight">
+                  {greeting}, <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0A1F3D] via-[#C5A059] to-[#0A1F3D]">{firstName}</span>
+                </h1>
+                <p className="text-[#64748B] text-sm font-semibold mt-1">
+                  Seja bem-vindo(a) à sua central de controle operacional
+                </p>
+              </div>
+              <div className="inline-flex items-center gap-2.5 bg-white/60 backdrop-blur-md px-4 py-2 rounded-xl border border-[#C5A059]/15 shadow-sm shadow-[#C5A059]/5 shrink-0 self-start sm:self-auto">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C5A059] animate-pulse" />
+                <span className="text-xs font-black uppercase tracking-wider text-[#C5A059]">
+                  {new Date().toLocaleDateString("pt-BR", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                  })}
+                </span>
+                <span className="text-slate-300">|</span>
+                <span className="text-xs font-bold text-[#0A1F3D]">{orgName}</span>
+              </div>
             </div>
 
             {/* Checklist de onboarding clínico — some depois de completo */}
-            {!checklistAllDone && (
-              <ClinicOnboardingChecklist initialCompletedSteps={checklistSteps} />
-            )}
+            <div className="relative z-10">
+              {!checklistAllDone && (
+                <ClinicOnboardingChecklist initialCompletedSteps={checklistSteps} />
+              )}
+            </div>
 
             {/* KPIs */}
-            <DailyKPIs
-              totalToday={totalToday}
-              confirmed={confirmed}
-              noShowPredicted={0}
-              revenueExpected={0}
-            />
+            <div className="relative z-10">
+              <DailyKPIs
+                totalToday={totalToday}
+                confirmed={confirmed}
+                noShowPredicted={0}
+                revenueExpected={0}
+              />
+            </div>
 
             {/* Grid principal */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
               {/* Proximos atendimentos — 2/3 */}
               <div className="lg:col-span-2">
-                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                  Proximos atendimentos
+                <h2 className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.25em] mb-4">
+                  Próximos atendimentos
                 </h2>
                 <Suspense>
                   <UpcomingAppointments appointments={todaysSessions} />
@@ -241,11 +267,11 @@ export default async function DashboardPage({
               </div>
 
               {/* Coluna lateral — 1/3 */}
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-6">
                 {/* Acoes rapidas */}
                 <div>
-                  <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                    Acoes rapidas
+                  <h2 className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.25em] mb-4">
+                    Ações rápidas
                   </h2>
                   <QuickActions />
                 </div>
@@ -253,7 +279,7 @@ export default async function DashboardPage({
                 {/* Anamneses pendentes */}
                 {pendingAnamneses.length > 0 && (
                   <div>
-                    <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                    <h2 className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.25em] mb-4">
                       Anamneses pendentes
                     </h2>
                     <PendingAnamneses sessions={pendingAnamneses} />
@@ -263,7 +289,7 @@ export default async function DashboardPage({
                 {/* Recall */}
                 {recallWithLastSession.length > 0 && (
                   <div>
-                    <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                    <h2 className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.25em] mb-4">
                       Recall sugerido
                     </h2>
                     <RecallSuggestions patients={recallWithLastSession} />

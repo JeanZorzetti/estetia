@@ -1,5 +1,5 @@
 import type { TreatmentSession, Treatment, Patient, Professional, ClinicRoom, TreatmentType } from "@prisma/client"
-import { Clock } from "lucide-react"
+import { Clock, CalendarCheck2 } from "lucide-react"
 
 const TREATMENT_LABELS: Partial<Record<TreatmentType, string>> = {
   BOTOX: "Botox",
@@ -32,30 +32,36 @@ interface UpcomingAppointmentsProps {
   appointments: SessionWithRelations[]
 }
 
-const STATUS_LABELS: Record<string, { label: string; className: string }> = {
+const STATUS_STYLES: Record<string, { label: string; badgeClass: string; borderLeftClass: string }> = {
   AGENDADA: {
     label: "Agendada",
-    className: "bg-blue-100 text-blue-700 border border-blue-200",
+    badgeClass: "bg-blue-500/5 text-blue-700 border-blue-500/20 group-hover:bg-blue-500/10 group-hover:border-blue-500/30",
+    borderLeftClass: "bg-blue-500/40 group-hover:bg-blue-500",
   },
   CONFIRMADA: {
     label: "Confirmada",
-    className: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+    badgeClass: "bg-emerald-500/5 text-emerald-700 border-emerald-500/20 group-hover:bg-emerald-500/10 group-hover:border-emerald-500/30",
+    borderLeftClass: "bg-emerald-500/40 group-hover:bg-emerald-500",
   },
   REALIZADA: {
     label: "Realizada",
-    className: "bg-gray-100 text-gray-600 border border-gray-200",
+    badgeClass: "bg-slate-500/5 text-slate-600 border-slate-500/20 group-hover:bg-slate-500/10 group-hover:border-slate-500/30",
+    borderLeftClass: "bg-slate-500/40 group-hover:bg-slate-500",
   },
   NO_SHOW: {
     label: "No-show",
-    className: "bg-red-100 text-red-700 border border-red-200",
+    badgeClass: "bg-rose-500/5 text-rose-700 border-rose-500/20 group-hover:bg-rose-500/10 group-hover:border-rose-500/30",
+    borderLeftClass: "bg-rose-500/40 group-hover:bg-rose-500",
   },
   REMARCADA: {
     label: "Remarcada",
-    className: "bg-amber-100 text-amber-700 border border-amber-200",
+    badgeClass: "bg-amber-500/5 text-amber-700 border-amber-500/20 group-hover:bg-amber-500/10 group-hover:border-amber-500/30",
+    borderLeftClass: "bg-amber-500/40 group-hover:bg-amber-500",
   },
   CANCELADA: {
     label: "Cancelada",
-    className: "bg-gray-100 text-gray-500 border border-gray-200",
+    badgeClass: "bg-zinc-500/5 text-zinc-500 border-zinc-500/10 group-hover:bg-zinc-500/10 group-hover:border-zinc-500/20",
+    borderLeftClass: "bg-zinc-500/30 group-hover:bg-zinc-500",
   },
 }
 
@@ -79,30 +85,52 @@ function getInitials(name: string): string {
 export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps) {
   if (appointments.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 py-12 text-center">
-        <Clock className="w-10 h-10 text-muted-foreground/40 mb-3" />
-        <p className="text-sm font-medium text-muted-foreground">Nenhum atendimento agendado para hoje</p>
-        <p className="text-xs text-muted-foreground/70 mt-1">Use a agenda para agendar novos atendimentos</p>
+      <div className="relative overflow-hidden flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200/80 bg-gradient-to-b from-white/30 to-slate-50/10 py-12 px-6 text-center backdrop-blur-md">
+        {/* Decorative halos */}
+        <div className="absolute -top-12 -right-12 w-28 h-28 rounded-full bg-[#489FB5]/5 blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-12 -left-12 w-28 h-28 rounded-full bg-[#0A1F3D]/5 blur-2xl pointer-events-none" />
+
+        <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white shadow-sm border border-slate-100 mb-4">
+          <CalendarCheck2 className="w-5 h-5 text-[#489FB5] animate-pulse" />
+        </div>
+        
+        <h3 className="font-serif font-bold text-slate-800 text-sm tracking-wide mb-1.5">
+          Sua Agenda está Livre
+        </h3>
+        <p className="text-[11px] font-medium text-slate-400 max-w-[240px] leading-relaxed mb-4">
+          Não há atendimentos registrados para hoje. Aproveite para planejar novos procedimentos.
+        </p>
+
+        <span className="text-[9px] font-black uppercase tracking-widest text-[#C5A059] bg-[#C5A059]/5 border border-[#C5A059]/20 px-3 py-1 rounded-full shadow-inner leading-none">
+          Estetia CRM Executive
+        </span>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {appointments.map((session) => {
         const paciente = session.treatment.paciente
-        const status = STATUS_LABELS[session.status] ?? {
+        const status = STATUS_STYLES[session.status] ?? {
           label: session.status,
-          className: "bg-gray-100 text-gray-600 border border-gray-200",
+          badgeClass: "bg-slate-500/5 text-slate-600 border border-slate-500/10",
+          borderLeftClass: "bg-slate-500/30 group-hover:bg-slate-500",
         }
 
         return (
           <div
             key={session.id}
-            className="flex items-center gap-3 rounded-xl border border-border/60 bg-card px-4 py-3 shadow-sm hover:border-[#489FB5]/40 hover:shadow-md transition-all duration-150"
+            className="group relative flex items-center gap-3.5 rounded-xl border border-slate-200/50 bg-white/70 backdrop-blur-md px-3.5 py-3 hover:border-[#489FB5]/30 hover:shadow-lg hover:shadow-[#489FB5]/5 transition-all duration-300 hover:-translate-y-0.5 overflow-hidden"
           >
-            {/* Avatar */}
-            <div className="flex items-center justify-center w-9 h-9 rounded-full bg-[#0A1F3D]/10 text-[#0A1F3D] text-xs font-semibold shrink-0 select-none">
+            {/* Subtle inside double-border */}
+            <div className="absolute inset-0.5 rounded-[10px] border border-white/40 pointer-events-none" />
+
+            {/* Left accent color indicator based on status */}
+            <div className={`absolute left-0 top-1/4 bottom-1/4 w-[3px] rounded-r transition-all duration-300 ${status.borderLeftClass}`} />
+
+            {/* Avatar - Wrapped in high-end chrome-rimmed glowing circles */}
+            <div className="relative w-9 h-9 rounded-full border border-slate-100 bg-white shadow-sm flex items-center justify-center text-[#0A1F3D] text-[11px] font-extrabold tracking-wider shrink-0 select-none overflow-hidden group-hover:scale-105 transition-transform duration-300">
               {paciente.fotoPerfil ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -115,33 +143,43 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
               )}
             </div>
 
-            {/* Nome + procedimento */}
+            {/* Nome + Procedimento */}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">{paciente.nome}</p>
-              <p className="text-xs text-muted-foreground truncate">
-                {TREATMENT_LABELS[session.treatment.tipoTratamento] ?? "Procedimento"}
-                {session.profissional && (
-                  <span className="text-muted-foreground/60"> · {session.profissional.nome}</span>
-                )}
+              <p className="text-sm font-semibold text-slate-800 truncate leading-snug group-hover:text-[#489FB5] transition-colors">
+                {paciente.nome}
               </p>
-            </div>
-
-            {/* Horário */}
-            <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
-              <Clock className="w-3.5 h-3.5" />
-              <span>{formatTime(session.dataAgendada)}</span>
-            </div>
-
-            {/* Sala */}
-            {session.sala && (
-              <div className="hidden sm:block text-xs text-muted-foreground/70 shrink-0">
-                {session.sala.nome}
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400 truncate mt-0.5">
+                <span className="text-[#C5A059] font-bold">
+                  {TREATMENT_LABELS[session.treatment.tipoTratamento] ?? "Procedimento"}
+                </span>
+                {session.profissional && (
+                  <>
+                    <span className="text-slate-300 font-light">·</span>
+                    <span className="truncate">{session.profissional.nome}</span>
+                  </>
+                )}
               </div>
-            )}
+            </div>
+
+            {/* Horário e Sala em formato capsular */}
+            <div className="flex flex-col items-end gap-1 shrink-0">
+              {/* Horário */}
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-md border border-slate-200/60 bg-slate-50/50 shadow-inner text-[10px] font-bold text-slate-600 tracking-wider">
+                <Clock className="w-3 h-3 text-slate-400" />
+                <span>{formatTime(session.dataAgendada)}</span>
+              </div>
+
+              {/* Sala */}
+              {session.sala && (
+                <div className="text-[9px] font-bold text-[#489FB5] uppercase tracking-wider bg-[#489FB5]/5 px-1.5 py-0.5 rounded">
+                  {session.sala.nome}
+                </div>
+              )}
+            </div>
 
             {/* Status badge */}
             <span
-              className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium shrink-0 ${status.className}`}
+              className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider shrink-0 transition-colors duration-300 ${status.badgeClass}`}
             >
               {status.label}
             </span>
@@ -151,3 +189,4 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
     </div>
   )
 }
+
