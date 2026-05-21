@@ -74,33 +74,49 @@ export default async function ProcedimentosPage({
   }))
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="relative flex flex-col gap-6 p-6 min-h-screen overflow-hidden">
+      {/* Fundo com textura física de micro-grão */}
+      <div className="bg-[radial-gradient(rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[size:16px_16px] opacity-[0.15] pointer-events-none absolute inset-0 z-0" />
+
+      {/* Halos estelares tridimensionais desfocados */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle_at_center,rgba(72,159,181,0.08)_0%,transparent_70%)] blur-[80px] pointer-events-none z-0" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.06)_0%,transparent_70%)] blur-[80px] pointer-events-none z-0" />
+
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Procedimentos</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Catálogo da clínica · {kpis.totalAtivos} ativo{kpis.totalAtivos !== 1 ? 's' : ''}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-amber-500/10 text-amber-700 border border-amber-500/20 backdrop-blur-md mb-2">
+            👑 CATÁLOGO VIP · PROCEDIMENTOS CLÍNICOS
+          </div>
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100 font-serif">
+            Procedimentos
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1 font-medium">
+            Catálogo da clínica · <span className="text-[#C5A059] font-semibold">{kpis.totalAtivos}</span> ativo{kpis.totalAtivos !== 1 ? 's' : ''}
           </p>
         </div>
         <Link
           href="/dashboard/procedimentos/novo"
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors flex-shrink-0"
+          className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#C5A059] to-[#E5C07B] hover:opacity-90 shadow-[0_4px_20px_rgba(197,160,89,0.25)] text-white hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 font-medium px-5 py-2.5 text-sm flex-shrink-0"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 mr-0.5" />
           Novo Procedimento
         </Link>
       </div>
 
       {/* KPIs */}
-      <ProceduresKpis kpis={kpis} />
+      <div className="relative z-10">
+        <ProceduresKpis kpis={kpis} />
+      </div>
 
       {/* Table */}
-      <ProceduresTable
-        initialProcedures={serialize(serializedProcedures)}
-        initialQuery={q}
-        initialCategoria={categoria}
-      />
+      <div className="relative z-10">
+        <ProceduresTable
+          initialProcedures={serialize(serializedProcedures)}
+          initialQuery={q}
+          initialCategoria={categoria}
+        />
+      </div>
     </div>
   )
 }

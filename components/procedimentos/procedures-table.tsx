@@ -40,10 +40,33 @@ const CATEGORIA_LABELS: Record<string, string> = {
 }
 
 const CATEGORIA_COLORS: Record<string, string> = {
-  facial: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300',
-  corporal: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
-  capilar: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
-  outros: 'bg-muted text-muted-foreground',
+  facial: 'bg-pink-500/10 text-pink-600 border border-pink-500/20 dark:text-pink-400 dark:border-pink-500/30 backdrop-blur-md',
+  corporal: 'bg-blue-500/10 text-blue-600 border border-blue-500/20 dark:text-blue-400 dark:border-blue-500/30 backdrop-blur-md',
+  capilar: 'bg-amber-500/10 text-amber-600 border border-amber-500/20 dark:text-amber-400 dark:border-amber-500/30 backdrop-blur-md',
+  outros: 'bg-slate-500/10 text-slate-600 border border-slate-500/20 dark:text-slate-400 dark:border-slate-500/30 backdrop-blur-md',
+}
+
+const CATEGORIA_HOVER_STYLES: Record<string, { filete: string; glow: string; textHover: string }> = {
+  facial: {
+    filete: 'from-pink-500 to-pink-400',
+    glow: 'hover:shadow-[0_8px_30px_rgba(236,72,153,0.03)] hover:border-pink-200/50',
+    textHover: 'group-hover:text-pink-600 dark:group-hover:text-pink-400',
+  },
+  corporal: {
+    filete: 'from-blue-500 to-blue-400',
+    glow: 'hover:shadow-[0_8px_30px_rgba(59,130,246,0.03)] hover:border-blue-200/50',
+    textHover: 'group-hover:text-blue-600 dark:group-hover:text-blue-400',
+  },
+  capilar: {
+    filete: 'from-amber-500 to-amber-400',
+    glow: 'hover:shadow-[0_8px_30px_rgba(245,158,11,0.03)] hover:border-amber-200/50',
+    textHover: 'group-hover:text-amber-600 dark:group-hover:text-amber-400',
+  },
+  outros: {
+    filete: 'from-slate-500 to-slate-400',
+    glow: 'hover:shadow-[0_8px_30px_rgba(100,116,139,0.03)] hover:border-slate-200/50',
+    textHover: 'group-hover:text-slate-600 dark:group-hover:text-slate-400',
+  },
 }
 
 function formatCurrency(value: number | null) {
@@ -106,14 +129,14 @@ export function ProceduresTable({ initialProcedures, initialQuery, initialCatego
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       {/* Filters */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <div className="flex items-center gap-3 relative z-10">
+        <div className="relative flex-1 max-w-sm group">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[#C5A059] transition-colors" />
           <Input
             placeholder="Buscar por nome..."
-            className="pl-9"
+            className="pl-9 bg-white/50 dark:bg-slate-900/40 backdrop-blur-md border-slate-200/60 dark:border-slate-800/60 rounded-full focus-visible:ring-[#C5A059]/20 focus-visible:border-[#C5A059] transition-all"
             value={query}
             onChange={e => setQuery(e.target.value)}
           />
@@ -122,114 +145,163 @@ export function ProceduresTable({ initialProcedures, initialQuery, initialCatego
           value={categoria || 'all'}
           onValueChange={v => setCategoria(v === 'all' ? '' : v)}
         >
-          <SelectTrigger className="w-44">
+          <SelectTrigger className="w-48 bg-white/50 dark:bg-slate-900/40 backdrop-blur-md border-slate-200/60 dark:border-slate-800/60 rounded-full focus:ring-[#C5A059]/20 focus:border-[#C5A059] transition-all">
             <SelectValue placeholder="Categoria" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas as categorias</SelectItem>
-            <SelectItem value="facial">Facial</SelectItem>
-            <SelectItem value="corporal">Corporal</SelectItem>
-            <SelectItem value="capilar">Capilar</SelectItem>
-            <SelectItem value="outros">Outros</SelectItem>
+          <SelectContent className="bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-slate-200/50 dark:border-slate-800/50 rounded-2xl">
+            <SelectItem value="all" className="rounded-xl">Todas as categorias</SelectItem>
+            <SelectItem value="facial" className="rounded-xl">Facial</SelectItem>
+            <SelectItem value="corporal" className="rounded-xl">Corporal</SelectItem>
+            <SelectItem value="capilar" className="rounded-xl">Capilar</SelectItem>
+            <SelectItem value="outros" className="rounded-xl">Outros</SelectItem>
           </SelectContent>
         </Select>
-        {loading && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
+        {loading && <Loader2 className="w-4 h-4 animate-spin text-[#C5A059]" />}
       </div>
 
       {/* Table */}
       {procedures.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 gap-3 border border-dashed border-border rounded-xl text-center">
-          <p className="text-sm text-muted-foreground">
-            {query || categoria ? 'Nenhum procedimento encontrado com esses filtros.' : 'Nenhum procedimento cadastrado ainda.'}
-          </p>
+        <div className="relative overflow-hidden rounded-[2.2rem] border border-slate-200/50 dark:border-slate-800/50 bg-white/40 dark:bg-slate-900/20 backdrop-blur-2xl p-12 text-center shadow-[0_20px_50px_rgba(0,0,0,0.02)] flex flex-col items-center justify-center gap-6">
+          <div className="absolute inset-0.5 border border-white/60 dark:border-white/5 rounded-[2.1rem] pointer-events-none" />
+          
+          {/* Halo Decorativo */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.06)_0%,transparent_70%)] blur-[40px] pointer-events-none" />
+
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-slate-100 to-slate-200/60 dark:from-slate-800 dark:to-slate-900/60 border border-white dark:border-slate-700 shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex items-center justify-center relative">
+            <Search className="w-8 h-8 text-[#C5A059]" />
+          </div>
+
+          <div className="max-w-md relative z-10">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest bg-amber-500/10 text-amber-700 border border-amber-500/20 backdrop-blur-md mb-3">
+              Estetia CRM Catalog
+            </span>
+            <h3 className="text-xl font-extrabold text-slate-800 dark:text-slate-200 font-serif tracking-tight">
+              {query || categoria ? 'Nenhum procedimento encontrado' : 'Nenhum procedimento cadastrado'}
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 font-medium">
+              {query || categoria 
+                ? 'Tente ajustar os filtros ou o termo de busca para encontrar o procedimento desejado.' 
+                : 'Adicione seus procedimentos de elite para iniciar o agendamento de consultas.'}
+            </p>
+          </div>
+
           {!query && !categoria && (
-            <Link href="/dashboard/procedimentos/novo">
-              <Button size="sm" variant="outline">Criar primeiro procedimento</Button>
+            <Link href="/dashboard/procedimentos/novo" className="relative z-10">
+              <Button className="bg-gradient-to-r from-[#C5A059] to-[#E5C07B] hover:opacity-90 shadow-[0_4px_20px_rgba(197,160,89,0.25)] text-white hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 font-medium px-6 py-2.5 rounded-full flex items-center gap-1.5">
+                Criar Primeiro Procedimento
+              </Button>
             </Link>
           )}
         </div>
       ) : (
-        <div className="border border-border/60 rounded-xl overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/30 hover:bg-muted/30">
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Nome</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Categoria</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Duração</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Valor</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Profissionais</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Status</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider w-16">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {procedures.map(p => (
-                <TableRow
-                  key={p.id}
-                  className={cn(
-                    'cursor-pointer hover:bg-muted/30 transition-colors',
-                    !p.ativo && 'opacity-60',
-                  )}
-                  onClick={e => {
-                    const target = e.target as HTMLElement
-                    if (target.closest('[data-no-row-click]')) return
-                    router.push(`/dashboard/procedimentos/${p.id}/editar`)
-                  }}
-                >
-                  <TableCell className="font-medium">{p.nome}</TableCell>
-                  <TableCell>
-                    {p.categoria ? (
-                      <span className={cn(
-                        'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
-                        CATEGORIA_COLORS[p.categoria] ?? CATEGORIA_COLORS.outros,
-                      )}>
-                        {CATEGORIA_LABELS[p.categoria] ?? p.categoria}
-                      </span>
-                    ) : (
-                      <span className="text-muted-foreground text-sm">—</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1.5 text-sm">
-                      <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-                      {formatDuration(p.duracaoMinutos)}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-sm tabular-nums">
-                    {formatCurrency(p.valorPadrao)}
-                  </TableCell>
-                  <TableCell>
-                    {p.profissionaisHabilitadosIds.length > 0 ? (
-                      <Badge variant="secondary" className="text-xs">
-                        {p.profissionaisHabilitadosIds.length} hab.
-                      </Badge>
-                    ) : (
-                      <span className="text-muted-foreground text-sm">—</span>
-                    )}
-                  </TableCell>
-                  <TableCell data-no-row-click>
-                    <div className="flex items-center gap-2">
-                      <Switch
-                        checked={p.ativo}
-                        disabled={togglingId === p.id}
-                        onCheckedChange={() => toggleAtivo(p)}
-                      />
-                      <span className={cn('text-xs', p.ativo ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground')}>
-                        {p.ativo ? 'Ativo' : 'Inativo'}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell data-no-row-click>
-                    <Link href={`/dashboard/procedimentos/${p.id}/editar`}>
-                      <Button variant="ghost" size="icon" className="w-8 h-8">
-                        <Pencil className="w-3.5 h-3.5" />
-                      </Button>
-                    </Link>
-                  </TableCell>
+        <div className="relative rounded-[2.2rem] border border-slate-200/50 dark:border-slate-800/50 bg-white/40 dark:bg-slate-900/20 backdrop-blur-2xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.03)] overflow-hidden">
+          {/* Double-border interno perolado */}
+          <div className="absolute inset-0.5 border border-white/60 dark:border-white/5 rounded-[2.1rem] pointer-events-none" />
+
+          <div className="relative z-10 overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-b border-slate-100 dark:border-slate-800 bg-transparent hover:bg-transparent">
+                  <TableHead className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest h-10">Nome</TableHead>
+                  <TableHead className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest h-10">Categoria</TableHead>
+                  <TableHead className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest h-10">Duração</TableHead>
+                  <TableHead className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest h-10">Valor</TableHead>
+                  <TableHead className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest h-10">Profissionais</TableHead>
+                  <TableHead className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest h-10">Status</TableHead>
+                  <TableHead className="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest h-10 w-16 text-right pr-4">Ações</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {procedures.map(p => {
+                  const cat = p.categoria || 'outros'
+                  const hoverStyles = CATEGORIA_HOVER_STYLES[cat] ?? CATEGORIA_HOVER_STYLES.outros
+                  return (
+                    <TableRow
+                      key={p.id}
+                      className={cn(
+                        'cursor-pointer border-b border-slate-100/60 dark:border-slate-800/60 hover:bg-white/60 dark:hover:bg-slate-900/40 transition-all duration-300 group relative',
+                        !p.ativo && 'opacity-60 hover:opacity-100',
+                        hoverStyles.glow
+                      )}
+                      onClick={e => {
+                        const target = e.target as HTMLElement
+                        if (target.closest('[data-no-row-click]')) return
+                        router.push(`/dashboard/procedimentos/${p.id}/editar`)
+                      }}
+                    >
+                      {/* Filete de status vertical hover reativo ao tipo */}
+                      <td className={cn(
+                        'absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-gradient-to-b opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none',
+                        hoverStyles.filete
+                      )} />
+
+                      <TableCell className={cn('font-bold text-slate-800 dark:text-slate-200 transition-colors duration-300 pl-4 py-4', hoverStyles.textHover)}>
+                        {p.nome}
+                      </TableCell>
+                      
+                      <TableCell className="py-4">
+                        {p.categoria ? (
+                          <span className={cn(
+                            'inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider',
+                            CATEGORIA_COLORS[p.categoria] ?? CATEGORIA_COLORS.outros,
+                          )}>
+                            {CATEGORIA_LABELS[p.categoria] ?? p.categoria}
+                          </span>
+                        ) : (
+                          <span className="text-slate-400 dark:text-slate-500 text-xs italic">Não definido</span>
+                        )}
+                      </TableCell>
+
+                      <TableCell className="py-4">
+                        <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 font-medium">
+                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 mr-0.5">
+                            <Clock className="w-3 h-3" />
+                          </span>
+                          {formatDuration(p.duracaoMinutos)}
+                        </div>
+                      </TableCell>
+
+                      <TableCell className="text-sm font-bold font-serif text-slate-700 dark:text-slate-300 tabular-nums py-4">
+                        {formatCurrency(p.valorPadrao)}
+                      </TableCell>
+
+                      <TableCell className="py-4">
+                        {p.profissionaisHabilitadosIds.length > 0 ? (
+                          <Badge className="bg-[#489FB5]/10 text-[#489FB5] border border-[#489FB5]/20 dark:bg-[#489FB5]/20 dark:text-[#489FB5] backdrop-blur-md text-[10px] font-bold px-2.5 py-0.5 rounded-md">
+                            {p.profissionaisHabilitadosIds.length} hab.
+                          </Badge>
+                        ) : (
+                          <span className="text-slate-400 dark:text-slate-500 text-xs italic">Nenhum</span>
+                        )}
+                      </TableCell>
+
+                      <TableCell data-no-row-click className="py-4">
+                        <div className="flex items-center gap-2">
+                          <Switch
+                            checked={p.ativo}
+                            disabled={togglingId === p.id}
+                            onCheckedChange={() => toggleAtivo(p)}
+                            className="data-[state=checked]:bg-[#C5A059]"
+                          />
+                          <span className={cn('text-xs font-semibold tracking-wide', p.ativo ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500')}>
+                            {p.ativo ? 'Ativo' : 'Inativo'}
+                          </span>
+                        </div>
+                      </TableCell>
+
+                      <TableCell data-no-row-click className="text-right pr-4 py-4">
+                        <Link href={`/dashboard/procedimentos/${p.id}/editar`}>
+                          <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 transition-colors">
+                            <Pencil className="w-3.5 h-3.5" />
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       )}
     </div>
