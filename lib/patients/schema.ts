@@ -5,7 +5,7 @@ export const CreatePatientSchema = z.object({
   telefone: z.string().min(8, 'Telefone obrigatório').max(20),
   dataNascimento: z.string().min(1, 'Data de nascimento obrigatória'),
   consentimentoLgpd: z.literal(true, {
-    errorMap: () => ({ message: 'Consentimento LGPD obrigatório' }),
+    message: 'Consentimento LGPD obrigatório',
   }),
   email: z.string().email('E-mail inválido').optional().or(z.literal('')),
   cpf: z
