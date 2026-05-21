@@ -249,57 +249,62 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
 
       {/* ── Hero full-bleed editorial ── */}
-      <div className="relative w-full overflow-hidden bg-[#0A1F3D]" style={{ height: '60vh', minHeight: '400px', maxHeight: '600px' }}>
-        {/* Gradient hero */}
+      <div className="relative w-full overflow-hidden bg-[#0A1F3D]" style={{ height: '62vh', minHeight: '450px', maxHeight: '650px' }}>
+        {/* Fine-line Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:45px_45px] pointer-events-none z-0 opacity-60" />
+
+        {/* Ambient Gradient Hero */}
         <div className="absolute inset-0 z-0"
-          style={{ background: `linear-gradient(135deg, ${catColor}30 0%, #0A1F3D 60%, #0A1F3D 100%)` }} />
-        {/* Decorative watermark */}
-        <div className="absolute inset-0 flex items-center justify-center z-0">
-          <span className="font-serif text-[24rem] font-bold leading-none select-none pointer-events-none"
-            style={{ color: catColor, opacity: 0.05 }}>
+          style={{ background: `linear-gradient(135deg, ${catColor}25 0%, #0A1F3D 55%, #0A1F3D 100%)` }} />
+
+        {/* Decorative Watermark */}
+        <div className="absolute inset-0 flex items-center justify-center z-0 select-none pointer-events-none">
+          <span className="font-serif text-[28rem] font-bold leading-none"
+            style={{ color: catColor, opacity: 0.06 }}>
             {post.category.charAt(0)}
           </span>
         </div>
+
         {/* Dark overlay for content legibility */}
         <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0A1F3D] via-[#0A1F3D]/50 to-transparent" />
 
         {/* Hero content */}
         <div className="absolute inset-0 flex flex-col justify-end z-10">
-          <div className="container mx-auto px-6 pb-16 max-w-4xl text-center md:text-left">
-            {/* Breadcrumb */}
-            <nav className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-xs mb-6 font-medium text-[#94A3B8]" aria-label="Breadcrumb">
-              <Link href={`/${locale}`} className="hover:text-[#FFFFFF] transition-colors">Home</Link>
-              <ChevronRight className="w-3.5 h-3.5 opacity-50" />
-              <Link href={`/${locale}/blog`} className="hover:text-[#FFFFFF] transition-colors">Blog</Link>
-              <ChevronRight className="w-3.5 h-3.5 opacity-50" />
-              <span className="text-[#C5A059]">{post.category}</span>
+          <div className="container mx-auto px-6 pb-16 max-w-5xl text-center md:text-left">
+            {/* Breadcrumb in luxury pills */}
+            <nav className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-[10px] mb-8 font-bold tracking-[0.15em] uppercase text-[#94A3B8]" aria-label="Breadcrumb">
+              <Link href={`/${locale}`} className="hover:text-white transition-colors bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">Home</Link>
+              <ChevronRight className="w-3 h-3 opacity-45" />
+              <Link href={`/${locale}/blog`} className="hover:text-white transition-colors bg-white/5 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">Blog</Link>
+              <ChevronRight className="w-3 h-3 opacity-45" />
+              <span className="text-[#C5A059] bg-[#C5A059]/10 border border-[#C5A059]/20 px-3 py-1 rounded-full backdrop-blur-md">{post.category}</span>
             </nav>
 
             {/* Category badge */}
             <div className="mb-6">
-              <span className="inline-flex px-4 py-1.5 rounded-full tracking-widest uppercase text-xs font-bold text-[#FFFFFF] backdrop-blur-md bg-[#FFFFFF]/10 border border-[#FFFFFF]/20">
+              <span className="inline-flex px-4 py-1.5 rounded-full tracking-[0.2em] uppercase text-[10px] font-bold text-white backdrop-blur-md bg-white/10 border border-white/20 shadow-md">
                 {post.category}
               </span>
             </div>
 
             {/* Title */}
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-bold leading-tight text-[#FFFFFF] mb-8 max-w-4xl mx-auto md:mx-0">
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-[3.5rem] font-bold leading-[1.15] text-[#FFFFFF] mb-8 max-w-4xl mx-auto md:mx-0 tracking-tight">
               {displayTitle}
             </h1>
 
-            {/* Meta */}
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-sm font-medium text-[#94A3B8]">
-              <span className="flex items-center gap-2">
-                <User className="w-4 h-4 text-[#C5A059]" />
-                {post.author || 'Equipe Estetia'}
+            {/* Meta badges in premium chips */}
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[10px] font-bold tracking-[0.1em] text-[#94A3B8] uppercase">
+              <span className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+                <User className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>{post.author || 'Equipe Estetia'}</span>
               </span>
-              <span className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#C5A059]" />
-                {new Date(post.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+              <span className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+                <Calendar className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>{new Date(post.date).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
               </span>
-              <span className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#C5A059]" />
-                {readingMinutes} min de leitura
+              <span className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+                <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>{readingMinutes} min de leitura</span>
               </span>
             </div>
           </div>
@@ -308,14 +313,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* ── Article body ── */}
       <div className="bg-[#F8F9FC]">
-        <div className="container mx-auto px-6 py-12 max-w-7xl">
+        <div className="container mx-auto px-6 py-16 max-w-7xl">
 
           {/* Back button */}
-          <div className="mb-10">
+          <div className="mb-12">
             <Link href={`/${locale}/blog`}
-              className="inline-flex items-center gap-2 text-sm font-bold tracking-widest uppercase text-[#64748B] hover:text-[#0A1F3D] transition-colors">
-              <ChevronLeft className="w-4 h-4" />
-              Voltar para o Blog
+              className="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase text-[#64748B] hover:text-[#0A1F3D] transition-colors hover:scale-[1.02] duration-300">
+              <ChevronLeft className="w-4 h-4 text-[#C5A059]" />
+              <span>Voltar para o Blog</span>
             </Link>
           </div>
 
@@ -325,19 +330,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {/* Main content */}
             <div>
               {/* Share bar */}
-              <div className="mb-8 pb-8 border-b border-[#0A1F3D]/10">
+              <div className="mb-10 pb-8 border-b border-[#0A1F3D]/10">
                 <ShareButtons title={post.title} url={url} />
               </div>
 
-              {/* Excerpt callout */}
-              <p className="text-xl md:text-2xl font-serif italic leading-relaxed mb-12 text-[#0A1F3D] border-l-4 pl-6"
-                style={{ borderColor: catColor }}>
-                {isEnLocale && post.excerptEn ? post.excerptEn : post.excerpt}
-              </p>
+              {/* Excerpt callout (Suntuoso painel translúcido) */}
+              <div className="backdrop-blur-md bg-white/40 border border-white/60 p-8 sm:p-10 rounded-[2rem] shadow-[0_15px_35px_rgba(0,0,0,0.02)] mb-12 relative overflow-hidden"
+                style={{ borderLeft: `6px solid ${catColor}` }}>
+                {/* Micro-glow inside callout */}
+                <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-[40px] pointer-events-none"
+                  style={{ backgroundColor: `${catColor}15` }} />
+                <p className="text-lg md:text-xl font-serif italic leading-relaxed text-[#0A1F3D] relative z-10">
+                  {isEnLocale && post.excerptEn ? post.excerptEn : post.excerpt}
+                </p>
+              </div>
 
-              {/* Article HTML content */}
-              <div className="bg-[#FFFFFF] rounded-3xl shadow-xl overflow-hidden border border-[#0A1F3D]/5">
-                <div className="p-8 sm:p-10 md:p-14">
+              {/* Article HTML content (Painel de alta costura em vidro fosco) */}
+              <div className="bg-white/80 backdrop-blur-md rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-white/50 overflow-hidden">
+                <div className="p-8 sm:p-12 md:p-16">
                   <BlogContentWrapper content={displayContent} slug={slug} />
                 </div>
               </div>
@@ -361,9 +371,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
-            <div className="mt-24 pt-16 border-t border-[#0A1F3D]/10">
+            <div className="mt-28 pt-20 border-t border-[#0A1F3D]/10">
               <div className="flex items-center gap-6 mb-12">
-                <h2 className="font-serif text-3xl font-bold text-[#0A1F3D]">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A1F3D]">
                   Continue lendo
                 </h2>
                 <div className="flex-1 h-px bg-gradient-to-r from-[#0A1F3D]/20 to-transparent" />
@@ -375,23 +385,28 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   return (
                     <Link key={relatedPost.slug} href={`/${locale}/blog/${relatedPost.slug}`}
                       className="block group">
-                      <div className="h-full flex flex-col bg-[#FFFFFF] rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border border-[#0A1F3D]/5">
+                      <div className="h-full flex flex-col bg-white/60 hover:bg-white backdrop-blur-md rounded-[2.2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_45px_rgba(0,0,0,0.06)] border border-white/40 hover:border-[#C5A059]/40 relative">
+                        {/* Sub-glow */}
+                        <div className="absolute inset-x-0 top-0 h-[2px]" style={{ backgroundColor: relCatColor }} />
+
                         <div className="relative h-48 w-full overflow-hidden flex items-center justify-center bg-[#0A1F3D]">
-                          <div className="absolute inset-0 bg-gradient-to-br opacity-40" style={{ from: relCatColor, to: 'transparent' }} />
-                          <span className="font-serif text-[6rem] font-bold select-none text-[#FFFFFF] opacity-10">
+                          <div className="absolute inset-0 bg-gradient-to-br opacity-40 transition-transform duration-700 ease-out group-hover:scale-105" style={{ from: relCatColor, to: 'transparent' }} />
+                          <span className="font-serif text-[6rem] font-bold select-none text-white opacity-10">
                             {relatedPost.category.charAt(0)}
                           </span>
-                          <span className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full tracking-widest uppercase text-[10px] font-bold text-[#FFFFFF] backdrop-blur-md bg-[#FFFFFF]/10 border border-[#FFFFFF]/20">
+                          <span className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full tracking-[0.15em] uppercase text-[9px] font-bold text-white backdrop-blur-md bg-[#0A1F3D]/40 border border-white/20">
                             {relatedPost.category}
                           </span>
                         </div>
+
                         <div className="p-8 flex flex-col flex-1">
-                          <h3 className="font-serif text-2xl font-bold leading-snug mb-4 flex-1 text-[#0A1F3D] group-hover:text-[#489FB5] transition-colors">
+                          <h3 className="font-serif text-xl sm:text-2xl font-bold leading-snug mb-4 flex-1 text-[#0A1F3D] group-hover:text-[#489FB5] transition-colors duration-300">
                             {relatedPost.title}
                           </h3>
-                          <span className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase group-hover:gap-3 transition-all"
+                          <span className="flex items-center gap-1.5 text-xs font-bold tracking-[0.15em] uppercase group-hover:gap-2.5 transition-all duration-300"
                             style={{ color: relCatColor }}>
-                            Ler artigo <ArrowRight className="w-4 h-4" />
+                            <span>Ler artigo</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
                           </span>
                         </div>
                       </div>
@@ -404,23 +419,32 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
 
         {/* Final CTA — full width navy */}
-        <div className="bg-[#0A1F3D] relative overflow-hidden mt-20">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-[#C5A059]/10 blur-[100px]" />
+        <div className="bg-[#0A1F3D] relative overflow-hidden mt-24 border-t border-white/5">
+          {/* Fine-line Grid Background */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none z-0" />
+
+          {/* Ambient Atmos Glows */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full bg-[#C5A059]/10 blur-[130px] pointer-events-none" />
+
           <div className="container mx-auto px-6 py-28 text-center max-w-3xl relative z-10">
-            <p className="tracking-widest uppercase text-xs font-bold mb-4 text-[#C5A059]">
+            <p className="tracking-[0.2em] uppercase text-[10px] font-bold mb-4 text-[#C5A059]">
               Estetia CRM
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-[#FFFFFF] mb-6 leading-tight">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight max-w-2xl mx-auto">
               Pronto para implementar isso na sua clínica?
             </h2>
-            <p className="text-lg mb-10 text-[#94A3B8]">
+            <p className="text-base md:text-lg mb-12 text-[#94A3B8] max-w-lg mx-auto">
               14 dias grátis. Sem cartão de crédito. Comece a automatizar suas vendas hoje.
             </p>
-            <Link href={`/${locale}/register`}
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full font-bold text-sm bg-[#C5A059] text-[#0A1F3D] hover:bg-opacity-90 hover:scale-105 transition-all duration-300 shadow-[0_8px_30px_rgba(197,160,89,0.3)]">
-              Começar agora
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+
+            <div className="relative inline-block group">
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#C5A059] to-[#C5A059]/50 opacity-40 blur-md group-hover:opacity-75 transition duration-500" />
+              <Link href={`/${locale}/register`}
+                className="relative inline-flex items-center justify-center gap-3 px-8 py-4.5 rounded-full font-bold text-sm bg-[#C5A059] text-[#0A1F3D] hover:bg-opacity-95 hover:scale-[1.02] transition-all duration-300 shadow-[0_8px_30px_rgba(197,160,89,0.3)]">
+                <span>Começar agora</span>
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
