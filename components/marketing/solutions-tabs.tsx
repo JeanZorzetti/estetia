@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Link } from "@/i18n/routing"
 import { ArrowRight, Calendar, FileText, MessageCircle, BarChart3, Shield, Smartphone } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 
 const CLINIC_TYPES = [
     {
@@ -11,8 +12,8 @@ const CLINIC_TYPES = [
         label: 'Estética',
         emoji: '✨',
         headline: 'Gestão completa para clínicas de estética',
-        desc: 'Agenda inteligente, anamnese digital, recall automático e prontuário LGPD-compliant. Tudo integrado ao WhatsApp para reduzir faltas e aumentar retorno.',
-        features: ['Agendamento online 24h', 'Ficha de anamnese digital', 'Recall automático via WhatsApp', 'Controle de comissões'],
+        desc: 'Agenda inteligente, anamnese digital, recall automático e prontuário LGPD-compliant. Tudo integrado ao WhatsApp para reduzir faltas e aumentar retorno de pacientes com facilidade.',
+        features: ['Agendamento online 24h', 'Ficha de anamnese digital', 'Recall automático via WhatsApp', 'Controle de comissões por profissional'],
         color: '#489FB5',
         badge: 'Mais popular',
     },
@@ -22,8 +23,8 @@ const CLINIC_TYPES = [
         label: 'Dermatologia',
         emoji: '🩺',
         headline: 'Dermatologia digital do atendimento ao laudo',
-        desc: 'Mapeamento corporal com fotos evolutivas, prescrições digitais, agenda médica e integração com operadoras de saúde.',
-        features: ['Fotos evolutivas', 'Prescrições digitais', 'Mapeamento corporal', 'Convênios e operadoras'],
+        desc: 'Mapeamento corporal avançado com fotos evolutivas antes/depois, prescrições digitais integradas, controle de convênios e operadoras de saúde sem planilhas complexas.',
+        features: ['Fotos evolutivas de alta definição', 'Prescrições digitais assinadas', 'Mapeamento corporal', 'Convênios e faturamento TISS/TUSS'],
         color: '#0A1F3D',
         badge: null,
     },
@@ -33,8 +34,8 @@ const CLINIC_TYPES = [
         label: 'Estética Corporal',
         emoji: '💪',
         headline: 'Controle de evolução e protocolos corporais',
-        desc: 'Fichas de avaliação corporal com medidas, fotos comparativas, protocolos personalizados e evolução visual do paciente.',
-        features: ['Avaliação postural', 'Fotos comparativas', 'Protocolos personalizados', 'Evolução com medidas'],
+        desc: 'Fichas completas de avaliação corporal com medições de adipometria, fotos posturais comparativas, protocolos personalizados de alta performance e histórico visual.',
+        features: ['Avaliação postural e de medidas', 'Fotos comparativas integradas', 'Protocolos personalizados por série', 'Evolução gráfica de medidas'],
         color: '#C5A059',
         badge: null,
     },
@@ -47,40 +48,53 @@ export function SolutionsTabs() {
     const current = CLINIC_TYPES.find(c => c.id === active)!
 
     return (
-        <section id="solutions" className="py-24 px-6 bg-[#EEF0F8]">
-            <div className="mx-auto max-w-7xl">
+        <section id="solutions" className="py-32 px-6 relative overflow-hidden border-t border-[#0A1F3D]/5 bg-[#EEF0F8]/30">
+            {/* Background design accents */}
+            <div className="absolute top-[20%] right-[-10%] w-[700px] h-[700px] rounded-full pointer-events-none -z-10 opacity-30 blur-[100px]"
+                style={{ background: `radial-gradient(circle, ${current.color}15 0%, transparent 65%)` }} />
+
+            <div className="mx-auto max-w-7xl relative z-10">
+                
                 {/* Header */}
-                <div className="text-center mb-14">
-                    <div className="inline-flex items-center gap-3 mb-5">
-                        <div className="h-px w-8 bg-[#C5A059]" />
-                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C5A059]">Soluções</span>
-                        <div className="h-px w-8 bg-[#C5A059]" />
+                <div className="text-center mb-16">
+                    <div className="inline-flex items-center gap-3 mb-5 bg-white/70 backdrop-blur-sm px-4 py-1.5 rounded-full border border-[#C5A059]/20 shadow-sm shadow-[#C5A059]/5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#C5A059]" />
+                        <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C5A059]">Especialidades</span>
                     </div>
                     <h2 className="font-serif text-[#0A1F3D] tracking-tight leading-tight"
-                        style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>
+                        style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
                         Feito para cada tipo de clínica
                     </h2>
-                    <p className="mt-3 text-[#64748B] max-w-xl mx-auto leading-relaxed">
-                        Não é um CRM genérico adaptado. É uma plataforma construída para o nicho de saúde e beleza.
+                    <p className="mt-4 text-[#64748B] max-w-2xl mx-auto leading-relaxed text-base">
+                        Não é um sistema genérico adaptado. É uma plataforma de alta tecnologia construída especificamente para o nicho de saúde e beleza.
                     </p>
                 </div>
 
-                {/* Tab pills */}
-                <div className="flex flex-wrap justify-center gap-2 mb-12">
+                {/* Tab pills with Sliding indicator */}
+                <div className="flex flex-wrap justify-center items-center gap-3 mb-16 max-w-lg mx-auto">
                     {CLINIC_TYPES.map((type) => (
                         <button
                             key={type.id}
                             onClick={() => setActive(type.id)}
-                            className={`relative inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-200 ${
+                            className={`relative inline-flex items-center gap-2.5 rounded-full px-6 py-3.5 text-xs sm:text-sm font-bold transition-colors duration-300 z-10 cursor-pointer ${
                                 active === type.id
-                                    ? 'bg-[#0A1F3D] text-white shadow-lg shadow-[#0A1F3D]/15'
-                                    : 'bg-[#EEF0F8] text-[#64748B] hover:bg-[#E2E4EE] hover:text-[#0A1F3D]'
+                                    ? 'text-white'
+                                    : 'text-[#64748B] hover:text-[#0A1F3D] bg-white/40 hover:bg-white/80 border border-slate-200/50'
                             }`}
                         >
+                            {/* Animated sliding background pill */}
+                            {active === type.id && (
+                                <motion.div
+                                    layoutId="activeSolutionTab"
+                                    className="absolute inset-0 rounded-full -z-10 shadow-lg shadow-[#0A1F3D]/10"
+                                    style={{ backgroundColor: '#0A1F3D' }}
+                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                />
+                            )}
                             <span>{type.emoji}</span>
                             <span>{type.label}</span>
                             {type.badge && (
-                                <span className="ml-0.5 rounded-full bg-[#C5A059] px-1.5 py-0.5 text-[9px] font-bold text-white uppercase tracking-wider">
+                                <span className="ml-1 rounded-full bg-[#C5A059] px-2 py-0.5 text-[8px] font-extrabold text-white uppercase tracking-widest shadow-sm">
                                     {type.badge}
                                 </span>
                             )}
@@ -88,129 +102,160 @@ export function SolutionsTabs() {
                     ))}
                 </div>
 
-                {/* Content panel */}
-                <div key={active} className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                    {/* Left: text */}
-                    <div>
-                        <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold mb-5 border"
-                            style={{
-                                backgroundColor: `${current.color}12`,
-                                borderColor: `${current.color}30`,
-                                color: current.color
-                            }}>
-                            <span className="text-base">{current.emoji}</span>
-                            {current.label}
+                {/* Content panel with silk transition */}
+                <AnimatePresence mode="wait">
+                    <motion.div 
+                        key={active}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -15 }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center bg-white/40 backdrop-blur-md rounded-[32px] p-8 sm:p-12 border border-white/40 shadow-2xl shadow-[#0A1F3D]/5"
+                    >
+                        {/* Left: text */}
+                        <div className="flex flex-col items-start text-left">
+                            <div className="inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-bold mb-6 border shadow-sm"
+                                style={{
+                                    backgroundColor: `${current.color}10`,
+                                    borderColor: `${current.color}35`,
+                                    color: current.color
+                                }}>
+                                <span className="text-base leading-none">{current.emoji}</span>
+                                <span className="uppercase tracking-widest text-[10px]">{current.label}</span>
+                            </div>
+                            
+                            <h3 className="font-serif text-[#0A1F3D] leading-tight mb-5"
+                                style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)' }}>
+                                {current.headline}
+                            </h3>
+                            
+                            <p className="text-[#64748B] leading-relaxed mb-8 text-base sm:text-lg font-medium">
+                                {current.desc}
+                            </p>
+                            
+                            <ul className="space-y-4.5 mb-8 w-full">
+                                {current.features.map((feat, i) => {
+                                    const Icon = FEATURE_ICONS[i % FEATURE_ICONS.length]
+                                    return (
+                                        <li key={feat} className="flex items-center gap-3.5 bg-white/60 rounded-xl px-4 py-3 border border-slate-100/40 shadow-sm hover:border-[#C5A059]/25 transition-colors duration-300">
+                                            <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                                                style={{ backgroundColor: `${current.color}15` }}>
+                                                <Icon className="h-4.5 w-4.5" style={{ color: current.color }} />
+                                            </span>
+                                            <span className="text-sm font-bold text-[#0A1F3D]">{feat}</span>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                            
+                            <div className="flex flex-wrap items-center gap-6 mt-2">
+                                <Link
+                                    href={`/solucoes/${current.slug}` as any}
+                                    className="group inline-flex items-center gap-2 text-sm font-extrabold transition-all duration-300 px-5 py-2.5 rounded-xl text-white shadow-md cursor-pointer hover:-translate-y-0.5"
+                                    style={{ backgroundColor: current.color }}
+                                >
+                                    Ver solução completa
+                                    <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+                                </Link>
+                                <Link
+                                    href={"/solucoes" as any}
+                                    className="group inline-flex items-center gap-2 text-sm font-bold text-[#64748B] hover:text-[#0A1F3D] transition-colors"
+                                >
+                                    Ver todas as especialidades
+                                    <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-300" />
+                                </Link>
+                            </div>
                         </div>
-                        <h3 className="font-serif text-[#0A1F3D] leading-tight mb-4"
-                            style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)' }}>
-                            {current.headline}
-                        </h3>
-                        <p className="text-[#64748B] leading-relaxed mb-8 text-lg">
-                            {current.desc}
-                        </p>
-                        <ul className="space-y-3 mb-8">
-                            {current.features.map((feat, i) => {
-                                const Icon = FEATURE_ICONS[i % FEATURE_ICONS.length]
-                                return (
-                                    <li key={feat} className="flex items-center gap-3">
-                                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
-                                            style={{ backgroundColor: `${current.color}15` }}>
-                                            <Icon className="h-4 w-4" style={{ color: current.color }} />
-                                        </span>
-                                        <span className="text-sm font-medium text-[#0A1F3D]">{feat}</span>
-                                    </li>
-                                )
-                            })}
-                        </ul>
-                        <div className="flex flex-wrap items-center gap-4">
-                            <Link
-                                href={`/solucoes/${current.slug}` as any}
-                                className="inline-flex items-center gap-2 text-sm font-bold transition-colors"
-                                style={{ color: current.color }}
-                            >
-                                Ver landing completa
-                                <ArrowRight className="h-4 w-4" />
-                            </Link>
-                            <Link
-                                href={"/solucoes" as any}
-                                className="inline-flex items-center gap-2 text-sm font-medium text-[#64748B] hover:text-[#0A1F3D] transition-colors"
-                            >
-                                Ver todas as soluções
-                                <ArrowRight className="h-3.5 w-3.5" />
-                            </Link>
-                        </div>
-                    </div>
 
-                    {/* Right: visual mockup */}
-                    <div className="relative">
-                        <div className="relative rounded-3xl overflow-hidden border border-[#0A1F3D]/8 shadow-2xl shadow-[#0A1F3D]/8 bg-[#EEF0F8] aspect-[4/3] flex items-center justify-center p-8">
-                            {/* Decorative corner accent */}
-                            <div className="absolute top-0 right-0 w-32 h-32 rounded-bl-3xl"
-                                style={{ background: `radial-gradient(circle at top right, ${current.color}20 0%, transparent 70%)` }} />
+                        {/* Right: visual mockup */}
+                        <div className="relative">
+                            <div className="relative rounded-[28px] overflow-hidden border border-white/30 shadow-2xl bg-gradient-to-br from-slate-50/80 via-white/40 to-slate-100/50 backdrop-blur-xl aspect-[4/3] flex items-center justify-center p-8">
+                                {/* Decorative corner accent with selected active color */}
+                                <div className="absolute top-0 right-0 w-40 h-40 rounded-bl-3xl opacity-60 pointer-events-none"
+                                    style={{ background: `radial-gradient(circle at top right, ${current.color}35 0%, transparent 70%)` }} />
 
-                            {/* Mock UI */}
-                            <div className="w-full space-y-3">
-                                {/* Header bar */}
-                                <div className="flex items-center justify-between rounded-xl bg-white border border-[#0A1F3D]/6 px-4 py-3">
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-6 w-6 rounded-full" style={{ backgroundColor: `${current.color}30` }} />
-                                        <div className="h-2.5 w-32 rounded-full bg-[#0A1F3D]/10" />
-                                    </div>
-                                    <div className="h-7 w-20 rounded-lg" style={{ backgroundColor: `${current.color}20` }} />
-                                </div>
-
-                                {/* Content cards */}
-                                {[0.9, 0.6, 0.75].map((opacity, i) => (
-                                    <div key={i} className="flex items-center gap-3 rounded-xl bg-white border border-[#0A1F3D]/6 px-4 py-3.5"
-                                        style={{ opacity }}>
-                                        <div className="h-9 w-9 rounded-xl shrink-0" style={{ backgroundColor: `${current.color}20` }} />
-                                        <div className="flex-1 space-y-1.5">
-                                            <div className="h-2 rounded-full bg-[#0A1F3D]/12" style={{ width: `${60 + i * 15}%` }} />
-                                            <div className="h-1.5 rounded-full bg-[#0A1F3D]/7" style={{ width: `${40 + i * 10}%` }} />
+                                {/* Mock UI */}
+                                <div className="w-full space-y-4 relative z-10">
+                                    {/* Header bar */}
+                                    <div className="flex items-center justify-between rounded-xl bg-white border border-slate-100/80 px-4 py-3 shadow-sm">
+                                        <div className="flex items-center gap-2.5">
+                                            <div className="h-7 w-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm" style={{ backgroundColor: current.color }}>
+                                                {current.emoji}
+                                            </div>
+                                            <div className="space-y-1">
+                                                <div className="h-2.5 w-24 rounded-full bg-[#0A1F3D]/10" />
+                                                <div className="h-1.5 w-16 rounded-full bg-[#0A1F3D]/5" />
+                                            </div>
                                         </div>
-                                        <div className="h-5 w-14 rounded-full text-[9px] font-bold flex items-center justify-center text-white"
-                                            style={{ backgroundColor: current.color }}>
-                                            {['Hoje', 'Amanhã', 'Seg'][i]}
+                                        <div className="h-7 px-3 rounded-lg flex items-center justify-center text-[9px] font-extrabold uppercase tracking-wider text-white shadow-sm" style={{ backgroundColor: current.color }}>
+                                            {current.label}
                                         </div>
                                     </div>
-                                ))}
 
-                                {/* Bottom stat bar */}
-                                <div className="grid grid-cols-3 gap-2">
-                                    {['+23%', '97%', '4.9★'].map((val, i) => (
-                                        <div key={i} className="rounded-xl bg-white border border-[#0A1F3D]/6 px-3 py-2.5 text-center">
-                                            <div className="font-bold text-sm" style={{ color: current.color }}>{val}</div>
-                                            <div className="h-1.5 w-10 rounded-full bg-[#0A1F3D]/8 mx-auto mt-1" />
+                                    {/* Content cards */}
+                                    {[0.95, 0.75, 0.6].map((opacity, i) => (
+                                        <div key={i} className="flex items-center gap-3.5 rounded-xl bg-white border border-slate-100/80 px-4 py-4 shadow-sm"
+                                            style={{ opacity }}>
+                                            <div className="h-10 w-10 rounded-xl shrink-0 flex items-center justify-center font-bold text-sm shadow-inner" style={{ backgroundColor: `${current.color}15`, color: current.color }}>
+                                                {['09h', '11h', '14h'][i]}
+                                            </div>
+                                            <div className="flex-1 space-y-2">
+                                                <div className="h-2.5 rounded-full bg-[#0A1F3D]/12" style={{ width: `${60 + i * 12}%` }} />
+                                                <div className="h-1.5 rounded-full bg-[#0A1F3D]/6" style={{ width: `${40 + i * 8}%` }} />
+                                            </div>
+                                            <div className="h-6 px-3 rounded-full text-[9px] font-extrabold flex items-center justify-center text-white shadow-sm"
+                                                style={{ backgroundColor: current.color }}>
+                                                {['Botox', 'Fios', 'Lipo'][i]}
+                                            </div>
                                         </div>
                                     ))}
+
+                                    {/* Bottom stat bar */}
+                                    <div className="grid grid-cols-3 gap-3">
+                                        {['+28% Retorno', '99.2% Fiel', '4.95★ Médio'].map((val, i) => (
+                                            <div key={i} className="rounded-xl bg-white border border-slate-100/80 px-3 py-3 text-center shadow-sm hover:border-[#C5A059]/40 transition-colors duration-300">
+                                                <div className="font-extrabold text-[11px]" style={{ color: current.color }}>{val.split(' ')[0]}</div>
+                                                <div className="text-[8px] font-bold text-[#64748B] mt-0.5 uppercase tracking-wider">{val.split(' ').slice(1).join(' ')}</div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Floating badge */}
-                        <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl border border-[#0A1F3D]/8 shadow-xl px-4 py-3 flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl flex items-center justify-center"
-                                style={{ backgroundColor: `${current.color}15` }}>
-                                <Shield className="h-5 w-5" style={{ color: current.color }} />
-                            </div>
-                            <div>
-                                <div className="text-xs font-bold text-[#0A1F3D]">100% LGPD</div>
-                                <div className="text-[10px] text-[#64748B]">Dados protegidos</div>
-                            </div>
-                        </div>
+                            {/* Floating 3D badge 1 */}
+                            <motion.div 
+                                animate={{ y: [0, -8, 0] }}
+                                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                                className="absolute -bottom-5 -left-5 bg-white rounded-2xl border border-slate-100 shadow-xl px-5 py-3.5 flex items-center gap-3 z-20"
+                            >
+                                <div className="h-10 w-10 rounded-xl flex items-center justify-center shadow-inner"
+                                    style={{ backgroundColor: `${current.color}15` }}>
+                                    <Shield className="h-5 w-5" style={{ color: current.color }} />
+                                </div>
+                                <div>
+                                    <div className="text-[11px] font-black text-[#0A1F3D] tracking-tight">100% Protegido</div>
+                                    <div className="text-[9px] font-bold text-[#64748B] uppercase tracking-wider mt-0.5">Certificado LGPD</div>
+                                </div>
+                            </motion.div>
 
-                        <div className="absolute -top-4 -right-4 bg-white rounded-2xl border border-[#0A1F3D]/8 shadow-xl px-4 py-3 flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl flex items-center justify-center"
-                                style={{ backgroundColor: `${current.color}15` }}>
-                                <Smartphone className="h-5 w-5" style={{ color: current.color }} />
-                            </div>
-                            <div>
-                                <div className="text-xs font-bold text-[#0A1F3D]">App iOS & Android</div>
-                                <div className="text-[10px] text-[#64748B]">Gestão em movimento</div>
-                            </div>
+                            {/* Floating 3D badge 2 */}
+                            <motion.div 
+                                animate={{ y: [0, 8, 0] }}
+                                transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
+                                className="absolute -top-5 -right-5 bg-white rounded-2xl border border-slate-100 shadow-xl px-5 py-3.5 flex items-center gap-3 z-20"
+                            >
+                                <div className="h-10 w-10 rounded-xl flex items-center justify-center shadow-inner"
+                                    style={{ backgroundColor: `${current.color}15` }}>
+                                    <Smartphone className="h-5 w-5" style={{ color: current.color }} />
+                                </div>
+                                <div>
+                                    <div className="text-[11px] font-black text-[#0A1F3D] tracking-tight">iOS & Android</div>
+                                    <div className="text-[9px] font-bold text-[#64748B] uppercase tracking-wider mt-0.5">App Gestão Integrado</div>
+                                </div>
+                            </motion.div>
                         </div>
-                    </div>
-                </div>
+                    </motion.div>
+                </AnimatePresence>
             </div>
         </section>
     )
