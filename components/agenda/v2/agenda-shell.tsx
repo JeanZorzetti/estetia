@@ -141,58 +141,80 @@ export function AgendaShell({ initialSessions, profissionais, salas, procedures 
 
   return (
     <DndContext sensors={sensors} onDragEnd={onDragEnd}>
-      <div className="flex flex-col gap-4 p-6">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Agenda</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Gerencie sessões, salas e profissionais — drag-and-drop para remarcar
-          </p>
-        </div>
+      <div className="relative min-h-[calc(100vh-4rem)] w-full py-8 px-4 sm:px-6 lg:px-8 overflow-hidden flex flex-col gap-6">
+        {/* Premium Micro-Grain background texture */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.015] bg-[radial-gradient(#0A1F3D_1px,transparent_1px)] [background-size:16px_16px]" />
 
-        <AgendaToolbar
-          currentDate={currentDate}
-          view={view}
-          onDateChange={setCurrentDate}
-          onViewChange={setView}
-          onNewSession={() => { setNovaInitialDate(new Date()); setNovaInitialProf(undefined); setNovaOpen(true) }}
-        />
+        {/* Decorative ambient lighting halos */}
+        <div className="absolute top-12 -left-64 w-[500px] h-[500px] rounded-full bg-[#489FB5]/5 blur-[150px] pointer-events-none" />
+        <div className="absolute bottom-24 -right-64 w-[500px] h-[500px] rounded-full bg-[#0A1F3D]/5 blur-[150px] pointer-events-none" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-4">
-          <div className="flex flex-col gap-4">
-            <AgendaSidebar
-              profissionais={profissionais}
-              salas={salas}
-              filters={filters}
-              onFiltersChange={setFilters}
-            />
-            <WaitlistPanel />
+        <div className="relative z-10 flex flex-col gap-6 w-full">
+          {/* Header section with classic Serif typography */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/40 pb-6">
+            <div className="flex-1 min-w-0">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#C5A059]/20 bg-[#C5A059]/5 text-[9px] font-bold text-[#8E6D31] tracking-widest uppercase mb-3">
+                ☕ Cabine Clínica VIP · Agenda Executiva Inteligente
+              </span>
+              <h1 className="font-serif font-extrabold text-3xl text-slate-800 tracking-wide">
+                Agenda de Elite
+              </h1>
+              <p className="text-xs font-medium text-slate-400 mt-1 max-w-xl leading-relaxed">
+                Gerencie sessões de tratamento, salas e profissionais. Arraste e solte sessões para remarcar dinamicamente.
+              </p>
+            </div>
           </div>
 
-          <div>
-            {view === 'week' && (
-              <ViewWeek
-                currentDate={currentDate}
-                sessions={filteredSessions}
-                onSlotClick={onSlotClick}
-                onSessionClick={(s) => setDrawerSession(s)}
-              />
-            )}
-            {view === 'day' && (
-              <ViewDay
-                currentDate={currentDate}
-                sessions={filteredSessions}
+          <AgendaToolbar
+            currentDate={currentDate}
+            view={view}
+            onDateChange={setCurrentDate}
+            onViewChange={setView}
+            onNewSession={() => { setNovaInitialDate(new Date()); setNovaInitialProf(undefined); setNovaOpen(true) }}
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-6 items-start">
+            <div className="flex flex-col gap-6">
+              <AgendaSidebar
                 profissionais={profissionais}
-                onSlotClick={(date, profId) => onSlotClick(date, profId)}
-                onSessionClick={(s) => setDrawerSession(s)}
+                salas={salas}
+                filters={filters}
+                onFiltersChange={setFilters}
               />
-            )}
-            {view === 'month' && (
-              <ViewMonth
-                currentDate={currentDate}
-                sessions={filteredSessions}
-                onDayClick={(d) => { setCurrentDate(d); setView('day') }}
-              />
-            )}
+              <WaitlistPanel />
+            </div>
+
+            <div className="relative z-10 rounded-2xl border border-slate-200/50 bg-white/70 backdrop-blur-xl p-3 sm:p-5 shadow-[0_20px_50px_rgba(0,0,0,0.02)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.04)] transition-all duration-500">
+              {/* Inside white border for double-border luxury glass look */}
+              <div className="absolute inset-0.5 rounded-[14px] border border-white/50 pointer-events-none" />
+              
+              <div className="relative z-10">
+                {view === 'week' && (
+                  <ViewWeek
+                    currentDate={currentDate}
+                    sessions={filteredSessions}
+                    onSlotClick={onSlotClick}
+                    onSessionClick={(s) => setDrawerSession(s)}
+                  />
+                )}
+                {view === 'day' && (
+                  <ViewDay
+                    currentDate={currentDate}
+                    sessions={filteredSessions}
+                    profissionais={profissionais}
+                    onSlotClick={(date, profId) => onSlotClick(date, profId)}
+                    onSessionClick={(s) => setDrawerSession(s)}
+                  />
+                )}
+                {view === 'month' && (
+                  <ViewMonth
+                    currentDate={currentDate}
+                    sessions={filteredSessions}
+                    onDayClick={(d) => { setCurrentDate(d); setView('day') }}
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -218,3 +240,4 @@ export function AgendaShell({ initialSessions, profissionais, salas, procedures 
     </DndContext>
   )
 }
+

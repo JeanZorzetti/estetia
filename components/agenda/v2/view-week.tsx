@@ -49,26 +49,32 @@ export function ViewWeek({ currentDate, sessions, onSlotClick, onSessionClick }:
   const today = new Date()
 
   return (
-    <div className="flex flex-col border border-border/60 rounded-xl overflow-hidden bg-card">
+    <div className="flex flex-col border border-slate-200/50 rounded-2xl overflow-hidden bg-white/40 backdrop-blur-md shadow-sm">
       {/* Header row with day names */}
-      <div className="grid grid-cols-[60px_repeat(6,1fr)] border-b border-border/60 bg-muted/20">
-        <div className="border-r border-border/40" />
+      <div className="grid grid-cols-[60px_repeat(6,1fr)] border-b border-slate-200/50 bg-slate-50/50">
+        <div className="border-r border-slate-200/30" />
         {days.map((day) => {
           const isToday = isSameDay(day, today)
           return (
             <div
               key={day.toISOString()}
               className={cn(
-                'flex flex-col items-center justify-center py-3 border-r border-border/40 last:border-r-0',
-                isToday && 'bg-primary/5',
+                'flex flex-col items-center justify-center py-3 border-r border-slate-200/30 last:border-r-0 transition-colors',
+                isToday && 'bg-[#489FB5]/5 relative',
               )}
             >
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+              {isToday && (
+                <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-[#489FB5] to-[#0A1F3D]" />
+              )}
+              <p className={cn(
+                'text-[9px] uppercase tracking-widest font-bold',
+                isToday ? 'text-[#489FB5]' : 'text-slate-400'
+              )}>
                 {format(day, 'EEE', { locale: ptBR })}
               </p>
               <p className={cn(
-                'text-xl font-bold tracking-tighter tabular-nums mt-0.5',
-                isToday && 'text-primary',
+                'text-lg font-extrabold tracking-tight tabular-nums mt-0.5',
+                isToday ? 'text-[#0A1F3D] font-black' : 'text-slate-700',
               )}>
                 {format(day, 'd')}
               </p>
@@ -80,13 +86,13 @@ export function ViewWeek({ currentDate, sessions, onSlotClick, onSessionClick }:
       {/* Body: time labels + day columns */}
       <div className="grid grid-cols-[60px_repeat(6,1fr)] relative overflow-y-auto" style={{ maxHeight: '70vh' }}>
         {/* Hour labels column */}
-        <div className="border-r border-border/40 bg-muted/10">
+        <div className="border-r border-slate-200/30 bg-slate-50/20">
           {hourLabels.map((h, i) => (
             <div
               key={h}
               style={{ height: `${slotHeightPx * 2}px` }}
               className={cn(
-                'text-[10px] text-muted-foreground tabular-nums pr-2 text-right pt-0.5',
+                'text-[9px] font-bold text-slate-400 tabular-nums pr-2.5 text-right pt-0.5',
                 i === 0 && 'pt-2',
               )}
             >
@@ -94,6 +100,7 @@ export function ViewWeek({ currentDate, sessions, onSlotClick, onSessionClick }:
             </div>
           ))}
         </div>
+
 
         {/* Day columns */}
         {days.map((day) => {
@@ -103,7 +110,7 @@ export function ViewWeek({ currentDate, sessions, onSlotClick, onSessionClick }:
           return (
             <div
               key={day.toISOString()}
-              className="relative border-r border-border/40 last:border-r-0"
+              className="relative border-r border-slate-200/30 last:border-r-0"
               style={{ height: `${columnHeightPx}px` }}
             >
               {/* Slot grid for click + drop */}

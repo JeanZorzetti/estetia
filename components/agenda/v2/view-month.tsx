@@ -41,10 +41,10 @@ export function ViewMonth({ currentDate, sessions, onDayClick }: Props) {
   const maxCount = Math.max(1, ...Object.values(sessionsByDay).map(arr => arr.length))
 
   return (
-    <div className="flex flex-col border border-border/60 rounded-xl overflow-hidden bg-card">
-      <div className="grid grid-cols-7 bg-muted/20 border-b border-border/60">
+    <div className="flex flex-col border border-slate-200/50 rounded-2xl overflow-hidden bg-white/40 backdrop-blur-md shadow-sm">
+      <div className="grid grid-cols-7 bg-slate-50/50 border-b border-slate-200/50">
         {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map(label => (
-          <div key={label} className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium py-2 text-center">
+          <div key={label} className="text-[9px] uppercase tracking-widest text-[#0A1F3D] font-bold py-2.5 text-center">
             {label}
           </div>
         ))}
@@ -63,41 +63,46 @@ export function ViewMonth({ currentDate, sessions, onDayClick }: Props) {
               key={key}
               onClick={() => onDayClick(day)}
               className={cn(
-                'border border-border/30 p-2 min-h-[88px] text-left flex flex-col gap-1 transition-colors hover:bg-muted/30',
-                !inMonth && 'bg-muted/10 text-muted-foreground/50',
-                isCurrentDay && 'ring-2 ring-primary ring-inset',
+                'relative border border-slate-200/30 p-2 min-h-[96px] text-left flex flex-col gap-1 transition-all duration-300',
+                !inMonth && 'bg-slate-50/[0.05] text-slate-300',
+                inMonth && 'hover:bg-slate-100/50',
+                isCurrentDay && 'bg-[#489FB5]/5 ring-1 ring-[#489FB5]/30 overflow-hidden',
               )}
             >
-              <div className="flex items-center justify-between">
+              {isCurrentDay && (
+                <div className="absolute top-0 inset-x-0 h-0.5 bg-[#489FB5]" />
+              )}
+              <div className="relative z-10 flex items-center justify-between w-full">
                 <span className={cn(
-                  'text-xs font-bold tabular-nums',
-                  isCurrentDay && 'text-primary',
+                  'text-[10px] font-extrabold tabular-nums',
+                  isCurrentDay && 'text-[#489FB5]',
+                  !inMonth && 'text-slate-300',
+                  inMonth && !isCurrentDay && 'text-slate-600',
                 )}>
                   {format(day, 'd')}
                 </span>
                 {count > 0 && (
-                  <span className="text-[9px] font-semibold text-muted-foreground tabular-nums px-1 rounded bg-muted">
+                  <span className="inline-flex items-center justify-center px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-[#0A1F3D]/5 border border-slate-200 text-[#0A1F3D] tabular-nums scale-90">
                     {count}
                   </span>
                 )}
               </div>
               {count > 0 && (
-                <div className="flex flex-col gap-0.5 mt-auto">
+                <div className="relative z-10 flex flex-col gap-0.5 mt-auto w-full">
                   <div
-                    className="h-1 rounded-full bg-primary"
+                    className="h-1 rounded-full bg-[#489FB5]/80 shadow-[0_0_6px_rgba(72,159,181,0.2)]"
                     style={{ opacity: 0.4 + intensity * 0.6 }}
                   />
                   {dayList.slice(0, 2).map(s => (
-                    <p key={s.id} className="text-[9px] truncate text-muted-foreground">
+                    <p key={s.id} className="text-[9px] font-semibold truncate text-slate-500">
                       {format(new Date(s.dataAgendada), 'HH:mm')} {s.treatment.paciente.nome}
                     </p>
                   ))}
                   {count > 2 && (
-                    <p className="text-[9px] text-muted-foreground/60">+{count - 2} mais</p>
+                    <p className="text-[9px] font-semibold text-slate-400">+{count - 2} mais</p>
                   )}
                 </div>
               )}
-              {isSameDay(day, day) && false && format(day, 'd')}
             </button>
           )
         })}
@@ -105,3 +110,4 @@ export function ViewMonth({ currentDate, sessions, onDayClick }: Props) {
     </div>
   )
 }
+

@@ -43,40 +43,53 @@ export function SessionCard({ session, onClick, heightPx, topPx, widthPct = 100,
         left: `calc(${leftPct}% + 2px)`,
         width: `calc(${widthPct}% - 4px)`,
         borderLeftColor: color,
-        backgroundColor: `${color}15`,
+        backgroundColor: `${color}18`,
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
         transform: CSS.Translate.toString(transform),
         zIndex: isDragging ? 50 : 1,
       }}
       className={cn(
-        'absolute rounded-md border border-border/40 border-l-4 px-2 py-1 cursor-grab active:cursor-grabbing overflow-hidden transition-all',
-        'hover:shadow-md hover:border-border hover:z-10',
-        finalizado && 'opacity-60',
-        isDragging && 'shadow-2xl ring-2 ring-primary opacity-90',
+        'absolute rounded-xl border border-white/60 border-l-[5px] px-2.5 py-1.5 cursor-grab active:cursor-grabbing overflow-hidden transition-all duration-300',
+        'hover:shadow-[0_8px_20px_rgba(0,0,0,0.05)] hover:border-white/90 hover:-translate-y-[1px] hover:z-20',
+        finalizado && 'opacity-55',
+        isDragging && 'shadow-[0_20px_50px_rgba(0,0,0,0.15)] ring-2 ring-[#489FB5] opacity-90 scale-[1.01] z-50',
       )}
       {...listeners}
       {...attributes}
     >
-      <div className="flex items-start justify-between gap-1 mb-0.5">
-        <p className="text-[11px] font-semibold leading-tight truncate flex-1">
-          {session.treatment.paciente.nome}
-        </p>
-        <NoShowBadge score={session.noShowScore} />
+      {/* Delicate white inner shine line */}
+      <div className="absolute inset-0 pointer-events-none border border-white/10 rounded-[10px]" />
+
+      <div className="relative z-10 flex flex-col h-full justify-between">
+        <div>
+          <div className="flex items-start justify-between gap-1 mb-0.5">
+            <p className="text-[11px] font-bold text-slate-800 leading-tight truncate flex-1">
+              {session.treatment.paciente.nome}
+            </p>
+            <NoShowBadge score={session.noShowScore} />
+          </div>
+          {session.treatment.procedure && (
+            <p className="text-[9px] font-semibold text-slate-500 truncate leading-tight">
+              {session.treatment.procedure.nome}
+            </p>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between gap-2 mt-auto pt-1">
+          <div className="flex items-center gap-1 text-[9px] font-bold text-slate-400">
+            <Clock className="w-2.5 h-2.5 text-slate-400/80" />
+            <span className="tabular-nums">
+              {new Date(session.dataAgendada).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+            </span>
+            {session.profissional && (
+              <span className="truncate max-w-[50px]">· {session.profissional.nome.split(' ')[0]}</span>
+            )}
+          </div>
+          {heightPx > 64 && <StatusBadge status={session.status} className="scale-90 origin-bottom-right shrink-0" />}
+        </div>
       </div>
-      {session.treatment.procedure && (
-        <p className="text-[10px] text-muted-foreground truncate leading-tight">
-          {session.treatment.procedure.nome}
-        </p>
-      )}
-      <div className="flex items-center gap-1 mt-1 text-[9px] text-muted-foreground">
-        <Clock className="w-2.5 h-2.5" />
-        <span className="tabular-nums">
-          {new Date(session.dataAgendada).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-        </span>
-        {session.profissional && (
-          <span className="truncate">· {session.profissional.nome}</span>
-        )}
-      </div>
-      {heightPx > 60 && <StatusBadge status={session.status} className="mt-1" />}
     </div>
   )
 }
+

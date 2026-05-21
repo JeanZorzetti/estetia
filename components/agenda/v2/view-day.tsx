@@ -48,31 +48,30 @@ export function ViewDay({ currentDate, sessions, profissionais, onSlotClick, onS
   const showUnassigned = sessionsByProf['__no_prof__'].length > 0
 
   return (
-    <div className="flex flex-col border border-border/60 rounded-xl overflow-hidden bg-card">
-      <div className="grid border-b border-border/60 bg-muted/20" style={{ gridTemplateColumns: `60px repeat(${cols.length + (showUnassigned ? 1 : 0)}, minmax(180px, 1fr))` }}>
-        <div className="border-r border-border/40" />
+    <div className="flex flex-col border border-slate-200/50 rounded-2xl overflow-hidden bg-white/40 backdrop-blur-md shadow-sm">
+      <div className="grid border-b border-slate-200/50 bg-slate-50/50" style={{ gridTemplateColumns: `60px repeat(${cols.length + (showUnassigned ? 1 : 0)}, minmax(180px, 1fr))` }}>
+        <div className="border-r border-slate-200/30" />
         {cols.map(p => (
-          <div key={p.id} className="flex items-center justify-center py-3 border-r border-border/40 last:border-r-0">
-            <p className="text-sm font-semibold tracking-tight truncate">{p.nome}</p>
+          <div key={p.id} className="flex items-center justify-center py-3 border-r border-slate-200/30 last:border-r-0">
+            <p className="text-[11px] font-bold tracking-wider text-[#0A1F3D] uppercase truncate">{p.nome}</p>
           </div>
         ))}
         {showUnassigned && (
-          <div className="flex items-center justify-center py-3 border-r border-border/40">
-            <p className="text-sm font-medium text-muted-foreground italic">Sem profissional</p>
+          <div className="flex items-center justify-center py-3 border-r border-slate-200/30">
+            <p className="text-[11px] font-bold tracking-wider text-slate-400 italic uppercase">Sem profissional</p>
           </div>
         )}
       </div>
 
       <div className="grid relative overflow-auto" style={{ maxHeight: '70vh', gridTemplateColumns: `60px repeat(${cols.length + (showUnassigned ? 1 : 0)}, minmax(180px, 1fr))` }}>
-        <div className="border-r border-border/40 bg-muted/10">
-          {hourLabels.map((h, i) => (
+        <div className="border-r border-slate-200/30 bg-slate-50/20">
+          {hourLabels.map((h) => (
             <div
               key={h}
               style={{ height: `${slotHeightPx * 4}px` }}
-              className="text-[10px] text-muted-foreground tabular-nums pr-2 text-right pt-0.5"
+              className="text-[9px] font-bold text-slate-400 tabular-nums pr-2.5 text-right pt-0.5"
             >
               {String(h).padStart(2, '0')}:00
-              {i}
             </div>
           ))}
         </div>
@@ -80,7 +79,7 @@ export function ViewDay({ currentDate, sessions, profissionais, onSlotClick, onS
         {[...cols.map(p => p.id), ...(showUnassigned ? ['__no_prof__'] : [])].map((profId, colIdx) => (
           <div
             key={profId}
-            className="relative border-r border-border/40 last:border-r-0"
+            className="relative border-r border-slate-200/30 last:border-r-0"
             style={{ height: `${columnHeightPx}px` }}
           >
             {Array.from({ length: SLOTS_PER_DAY }, (_, i) => {

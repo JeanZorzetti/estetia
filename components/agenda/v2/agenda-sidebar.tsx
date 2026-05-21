@@ -31,95 +31,116 @@ function toggle<T>(set: Set<T>, item: T): Set<T> {
 
 export function AgendaSidebar({ profissionais, salas, filters, onFiltersChange }: Props) {
   return (
-    <div className="flex flex-col gap-4">
-      <Card className="border-border/60">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-            <Users className="w-3.5 h-3.5" />
+    <div className="flex flex-col gap-5 relative z-10 w-full">
+      {/* Profissionais Card */}
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200/50 bg-white/70 backdrop-blur-md p-4 shadow-[0_4px_20px_rgba(0,0,0,0.015)] transition-all duration-300">
+        <div className="absolute inset-0.5 rounded-[14px] border border-white/50 pointer-events-none" />
+        <div className="relative z-10">
+          <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#0A1F3D] mb-3 flex items-center gap-2">
+            <span className="p-1 rounded-lg bg-slate-100/60 border border-slate-200/50">
+              <Users className="w-3 h-3 text-[#489FB5]" />
+            </span>
             Profissionais
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pb-3">
-          <ScrollArea className="max-h-40">
-            <div className="flex flex-col gap-1.5">
+          </h3>
+          <ScrollArea className="max-h-44 pr-1">
+            <div className="flex flex-col gap-2">
               {profissionais.map(p => (
                 <label
                   key={p.id}
-                  className="flex items-center gap-2 cursor-pointer text-sm hover:bg-muted/30 rounded-md px-1 py-0.5 transition-colors"
+                  className="group flex items-center gap-2.5 cursor-pointer rounded-xl hover:bg-slate-100/50 border border-transparent hover:border-slate-200/30 p-1.5 transition-all duration-200"
                 >
                   <Checkbox
+                    className="border-slate-300/80 data-[state=checked]:bg-[#489FB5] data-[state=checked]:border-[#489FB5] transition-all"
                     checked={filters.profissionalIds.has(p.id)}
                     onCheckedChange={() =>
                       onFiltersChange({ ...filters, profissionalIds: toggle(filters.profissionalIds, p.id) })
                     }
                   />
-                  <span className="text-xs truncate">{p.nome}</span>
+                  <span className="text-[11px] font-semibold text-slate-700 group-hover:text-slate-900 transition-colors truncate">
+                    {p.nome}
+                  </span>
                 </label>
               ))}
             </div>
           </ScrollArea>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card className="border-border/60">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-            <DoorOpen className="w-3.5 h-3.5" />
+      {/* Salas Card */}
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200/50 bg-white/70 backdrop-blur-md p-4 shadow-[0_4px_20px_rgba(0,0,0,0.015)] transition-all duration-300">
+        <div className="absolute inset-0.5 rounded-[14px] border border-white/50 pointer-events-none" />
+        <div className="relative z-10">
+          <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#0A1F3D] mb-3 flex items-center gap-2">
+            <span className="p-1 rounded-lg bg-slate-100/60 border border-slate-200/50">
+              <DoorOpen className="w-3 h-3 text-[#489FB5]" />
+            </span>
             Salas
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pb-3">
-          <ScrollArea className="max-h-40">
-            <div className="flex flex-col gap-1.5">
-              {salas.map(s => (
-                <label
-                  key={s.id}
-                  className="flex items-center gap-2 cursor-pointer text-sm hover:bg-muted/30 rounded-md px-1 py-0.5 transition-colors"
-                >
-                  <Checkbox
-                    checked={filters.salaIds.has(s.id)}
-                    onCheckedChange={() =>
-                      onFiltersChange({ ...filters, salaIds: toggle(filters.salaIds, s.id) })
-                    }
-                  />
-                  <span
-                    className="w-2 h-2 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: s.cor ?? '#94a3b8' }}
-                  />
-                  <span className="text-xs truncate">{s.nome}</span>
-                </label>
-              ))}
+          </h3>
+          <ScrollArea className="max-h-44 pr-1">
+            <div className="flex flex-col gap-2">
+              {salas.map(s => {
+                const color = s.cor ?? '#94a3b8'
+                return (
+                  <label
+                    key={s.id}
+                    className="group flex items-center gap-2.5 cursor-pointer rounded-xl hover:bg-slate-100/50 border border-transparent hover:border-slate-200/30 p-1.5 transition-all duration-200"
+                  >
+                    <Checkbox
+                      className="border-slate-300/80 data-[state=checked]:bg-[#489FB5] data-[state=checked]:border-[#489FB5] transition-all"
+                      checked={filters.salaIds.has(s.id)}
+                      onCheckedChange={() =>
+                        onFiltersChange({ ...filters, salaIds: toggle(filters.salaIds, s.id) })
+                      }
+                    />
+                    <span
+                      className="w-2.5 h-2.5 rounded-full flex-shrink-0 shadow-[0_0_8px_rgba(0,0,0,0.1)] transition-transform group-hover:scale-110"
+                      style={{
+                        backgroundColor: color,
+                        boxShadow: `0 0 10px ${color}40`,
+                      }}
+                    />
+                    <span className="text-[11px] font-semibold text-slate-700 group-hover:text-slate-900 transition-colors truncate">
+                      {s.nome}
+                    </span>
+                  </label>
+                )
+              })}
             </div>
           </ScrollArea>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card className="border-border/60">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-            <Activity className="w-3.5 h-3.5" />
+      {/* Status Card */}
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200/50 bg-white/70 backdrop-blur-md p-4 shadow-[0_4px_20px_rgba(0,0,0,0.015)] transition-all duration-300">
+        <div className="absolute inset-0.5 rounded-[14px] border border-white/50 pointer-events-none" />
+        <div className="relative z-10">
+          <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#0A1F3D] mb-3 flex items-center gap-2">
+            <span className="p-1 rounded-lg bg-slate-100/60 border border-slate-200/50">
+              <Activity className="w-3 h-3 text-[#489FB5]" />
+            </span>
             Status
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pb-3">
-          <div className="flex flex-col gap-1.5">
+          </h3>
+          <div className="flex flex-col gap-2">
             {STATUSES.map(s => (
               <label
                 key={s.id}
-                className="flex items-center gap-2 cursor-pointer text-sm hover:bg-muted/30 rounded-md px-1 py-0.5 transition-colors"
+                className="group flex items-center gap-2.5 cursor-pointer rounded-xl hover:bg-slate-100/50 border border-transparent hover:border-slate-200/30 p-1.5 transition-all duration-200"
               >
                 <Checkbox
+                  className="border-slate-300/80 data-[state=checked]:bg-[#489FB5] data-[state=checked]:border-[#489FB5] transition-all"
                   checked={filters.statuses.has(s.id)}
                   onCheckedChange={() =>
                     onFiltersChange({ ...filters, statuses: toggle(filters.statuses, s.id) })
                   }
                 />
-                <span className="text-xs">{s.label}</span>
+                <span className="text-[11px] font-semibold text-slate-700 group-hover:text-slate-900 transition-colors">
+                  {s.label}
+                </span>
               </label>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }
