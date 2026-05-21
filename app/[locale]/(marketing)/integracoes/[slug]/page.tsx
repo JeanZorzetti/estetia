@@ -17,10 +17,17 @@ import {
   Briefcase,
   Building2,
 } from 'lucide-react'
-import { INTEGRATIONS, getIntegrationBySlug } from '@/config/integrations-data'
+import {
+  DETAILED_INTEGRATIONS,
+  getDetailedBySlug,
+  getDashboardIntegrationById,
+  MARKETING_CATEGORY_LABELS,
+  type IntegrationCategory,
+} from '@/config/integrations-marketing'
+import { IntegrationIcon } from '@/components/marketing/integration-icon-client'
 
 export function generateStaticParams() {
-  return INTEGRATIONS.map((i) => ({ slug: i.slug }))
+  return DETAILED_INTEGRATIONS.map((i) => ({ slug: i.landingSlug }))
 }
 
 export async function generateMetadata({
@@ -29,12 +36,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
   const { locale, slug } = await params
-  const integration = getIntegrationBySlug(slug)
-  if (!integration) return {}
+  const detailed = getDetailedBySlug(slug)
+  if (!detailed) return {}
 
   const t = await getTranslations({ locale, namespace: 'marketing.integrations' })
-  const name = t(`items.${integration.i18nKey}.name` as any)
-  const description = t(`items.${integration.i18nKey}.shortDesc` as any)
+  const name = t(`items.${detailed.i18nKey}.name` as any)
+  const description = t(`items.${detailed.i18nKey}.shortDesc` as any)
   const alternates = buildLocaleAlternates(locale, `/integracoes/${slug}`)
 
   return {
@@ -65,12 +72,23 @@ function tryTSafe(t: TFunc, key: string): string | null {
   }
 }
 
-const CATEGORY_THEMES: Record<string, { accent: string; accentBg: string; accentBorder: string; gradient: string }> = {
-  comunicacao:       { accent: 'text-green-600',  accentBg: 'bg-green-500/10',  accentBorder: 'border-green-500/20',  gradient: 'from-green-500/5 via-emerald-500/5 to-transparent' },
-  agenda:            { accent: 'text-[#489FB5]',  accentBg: 'bg-[#489FB5]/10', accentBorder: 'border-[#489FB5]/20', gradient: 'from-[#489FB5]/5 via-teal-500/5 to-transparent' },
-  financeiro_fiscal: { accent: 'text-[#C5A059]',  accentBg: 'bg-[#C5A059]/10', accentBorder: 'border-[#C5A059]/20', gradient: 'from-[#C5A059]/5 via-amber-500/5 to-transparent' },
-  automacao_dev:     { accent: 'text-violet-600', accentBg: 'bg-violet-500/10', accentBorder: 'border-violet-500/20', gradient: 'from-violet-500/5 via-purple-500/5 to-transparent' },
+const CATEGORY_THEMES: Record<IntegrationCategory, { accent: string; accentBg: string; accentBorder: string; gradient: string }> = {
+  mensageria:        { accent: 'text-green-600',    accentBg: 'bg-green-500/10',    accentBorder: 'border-green-500/20',    gradient: 'from-green-500/5 via-emerald-500/5 to-transparent' },
+  telefonia:         { accent: 'text-cyan-600',     accentBg: 'bg-cyan-500/10',     accentBorder: 'border-cyan-500/20',     gradient: 'from-cyan-500/5 via-teal-500/5 to-transparent' },
+  calendarios:       { accent: 'text-[#489FB5]',   accentBg: 'bg-[#489FB5]/10',   accentBorder: 'border-[#489FB5]/20',   gradient: 'from-[#489FB5]/5 via-teal-500/5 to-transparent' },
+  'email-marketing': { accent: 'text-orange-600',   accentBg: 'bg-orange-500/10',   accentBorder: 'border-orange-500/20',   gradient: 'from-orange-500/5 via-amber-500/5 to-transparent' },
+  anuncios:          { accent: 'text-blue-600',     accentBg: 'bg-blue-500/10',     accentBorder: 'border-blue-500/20',     gradient: 'from-blue-500/5 via-indigo-500/5 to-transparent' },
+  pagamentos:        { accent: 'text-[#C5A059]',   accentBg: 'bg-[#C5A059]/10',   accentBorder: 'border-[#C5A059]/20',   gradient: 'from-[#C5A059]/5 via-amber-500/5 to-transparent' },
+  nfse:              { accent: 'text-amber-600',    accentBg: 'bg-amber-500/10',    accentBorder: 'border-amber-500/20',    gradient: 'from-amber-500/5 via-yellow-500/5 to-transparent' },
+  convenios:         { accent: 'text-emerald-600',  accentBg: 'bg-emerald-500/10',  accentBorder: 'border-emerald-500/20',  gradient: 'from-emerald-500/5 via-green-500/5 to-transparent' },
+  telemedicina:      { accent: 'text-purple-600',   accentBg: 'bg-purple-500/10',   accentBorder: 'border-purple-500/20',   gradient: 'from-purple-500/5 via-violet-500/5 to-transparent' },
+  erp:               { accent: 'text-indigo-600',   accentBg: 'bg-indigo-500/10',   accentBorder: 'border-indigo-500/20',   gradient: 'from-indigo-500/5 via-blue-500/5 to-transparent' },
+  produtividade:     { accent: 'text-slate-600',    accentBg: 'bg-slate-500/10',    accentBorder: 'border-slate-500/20',    gradient: 'from-slate-500/5 via-gray-500/5 to-transparent' },
+  webhooks:          { accent: 'text-violet-600',   accentBg: 'bg-violet-500/10',   accentBorder: 'border-violet-500/20',   gradient: 'from-violet-500/5 via-purple-500/5 to-transparent' },
+  validacoes:        { accent: 'text-teal-600',     accentBg: 'bg-teal-500/10',     accentBorder: 'border-teal-500/20',     gradient: 'from-teal-500/5 via-emerald-500/5 to-transparent' },
 }
+
+const FALLBACK_THEME = CATEGORY_THEMES['webhooks']
 
 const PERSONA_ICONS = [User, Briefcase, Building2]
 
@@ -80,17 +98,20 @@ export default async function IntegrationDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const integration = getIntegrationBySlug(slug)
-  if (!integration) notFound()
+  const detailed = getDetailedBySlug(slug)
+  if (!detailed) notFound()
+
+  const dashboardIntegration = getDashboardIntegrationById(detailed.dashboardId)
 
   const t = await getTranslations('marketing.integrations')
-  const dp = `items.${integration.i18nKey}.detail`
-  const theme = CATEGORY_THEMES[integration.category]
-  const Icon = integration.icon
+  const dp = `items.${detailed.i18nKey}.detail`
 
-  const name = t(`items.${integration.i18nKey}.name` as any)
-  const shortDesc = t(`items.${integration.i18nKey}.shortDesc` as any)
-  const categoryLabel = t(`categories.${integration.category}` as any)
+  const category = dashboardIntegration?.category
+  const theme = category ? (CATEGORY_THEMES[category] ?? FALLBACK_THEME) : FALLBACK_THEME
+  const categoryLabel = category ? MARKETING_CATEGORY_LABELS[category] : 'Integração'
+
+  const name = t(`items.${detailed.i18nKey}.name` as any)
+  const shortDesc = t(`items.${detailed.i18nKey}.shortDesc` as any)
   const headline = tryTSafe(t as TFunc, `${dp}.headline`)
 
   type Benefit = { title: string; text: string }
@@ -104,7 +125,7 @@ export default async function IntegrationDetailPage({
 
   type Step = { title: string; text: string }
   const howSteps: Step[] = []
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     const title = tryTSafe(t as TFunc, `${dp}.howItWorks.${i}.title`)
     const text = tryTSafe(t as TFunc, `${dp}.howItWorks.${i}.text`)
     if (title && text) howSteps.push({ title, text })
@@ -122,7 +143,7 @@ export default async function IntegrationDetailPage({
 
   type FAQ = { q: string; a: string }
   const faqs: FAQ[] = []
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     const q = tryTSafe(t as TFunc, `${dp}.faq.${i}.q`)
     const a = tryTSafe(t as TFunc, `${dp}.faq.${i}.a`)
     if (q && a) faqs.push({ q, a })
@@ -131,10 +152,9 @@ export default async function IntegrationDetailPage({
 
   const planInfo = tryTSafe(t as TFunc, `${dp}.planInfo`)
 
-  // Prev / next
-  const idx = INTEGRATIONS.findIndex((i) => i.slug === slug)
-  const prev = idx > 0 ? INTEGRATIONS[idx - 1] : null
-  const next = idx < INTEGRATIONS.length - 1 ? INTEGRATIONS[idx + 1] : null
+  const idx = DETAILED_INTEGRATIONS.findIndex((i) => i.landingSlug === slug)
+  const prev = idx > 0 ? DETAILED_INTEGRATIONS[idx - 1] : null
+  const next = idx < DETAILED_INTEGRATIONS.length - 1 ? DETAILED_INTEGRATIONS[idx + 1] : null
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -186,6 +206,12 @@ export default async function IntegrationDetailPage({
                   <p className="mt-6 text-base leading-relaxed text-muted-foreground max-w-2xl">
                     {shortDesc}
                   </p>
+                  {dashboardIntegration?.costNote && (
+                    <p className="mt-3 text-sm text-muted-foreground/70 flex items-center gap-1.5">
+                      <span className={`h-1.5 w-1.5 rounded-full ${theme.accentBg.replace('/10', '')}`} />
+                      {dashboardIntegration.costNote}
+                    </p>
+                  )}
                   <div className="mt-10 flex flex-col sm:flex-row gap-4">
                     <Button asChild size="lg" className="h-12 px-8 text-base">
                       <Link href="/register">
@@ -199,9 +225,11 @@ export default async function IntegrationDetailPage({
                   </div>
                 </div>
 
-                <div className={`hidden lg:flex h-40 w-40 items-center justify-center rounded-3xl ${theme.accentBg} border ${theme.accentBorder}`}>
-                  <Icon className={`h-20 w-20 ${theme.accent} opacity-80`} />
-                </div>
+                {dashboardIntegration && (
+                  <div className={`hidden lg:flex h-40 w-40 items-center justify-center rounded-3xl border ${theme.accentBorder}`} style={{ backgroundColor: `${dashboardIntegration.cardBgColor}1A` }}>
+                    <IntegrationIcon icon={dashboardIntegration.icon} size="xl" />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -312,7 +340,7 @@ export default async function IntegrationDetailPage({
         )}
 
         {/* ── Help center link ── */}
-        {integration.helpArticleSlug && (
+        {detailed.helpArticleSlug && (
           <div className="py-10 border-t">
             <div className="mx-auto max-w-5xl px-6 lg:px-8">
               <div className={`rounded-xl border ${theme.accentBorder} ${theme.accentBg} p-5 flex items-center justify-between gap-4`}>
@@ -323,7 +351,7 @@ export default async function IntegrationDetailPage({
                   </p>
                 </div>
                 <Button asChild variant="outline" size="sm" className="shrink-0">
-                  <Link href={`/help/integracoes/${integration.helpArticleSlug}`}>
+                  <Link href={`/help/integracoes/${detailed.helpArticleSlug}`}>
                     Ver guia
                     <ExternalLink className="ml-2 h-3.5 w-3.5" />
                   </Link>
@@ -369,18 +397,23 @@ export default async function IntegrationDetailPage({
               <h2 className="text-2xl font-bold tracking-tight">Outras integrações</h2>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {INTEGRATIONS.filter((i) => i.slug !== slug).map((other) => {
-                const OtherIcon = other.icon
-                const otherTheme = CATEGORY_THEMES[other.category]
+              {DETAILED_INTEGRATIONS.filter((i) => i.landingSlug !== slug).map((other) => {
+                const otherDash = getDashboardIntegrationById(other.dashboardId)
+                const otherCategory = otherDash?.category
+                const otherTheme = otherCategory ? (CATEGORY_THEMES[otherCategory] ?? FALLBACK_THEME) : FALLBACK_THEME
                 return (
                   <Link
-                    key={other.slug}
-                    href={`/integracoes/${other.slug}`}
+                    key={other.landingSlug}
+                    href={`/integracoes/${other.landingSlug}`}
                     className="group flex flex-col items-center gap-3 rounded-xl border bg-background p-4 hover:border-primary/30 hover:shadow-md transition-all text-center"
                   >
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${otherTheme.accentBg} group-hover:scale-110 transition-transform`}>
-                      <OtherIcon className={`h-5 w-5 ${otherTheme.accent}`} />
-                    </div>
+                    {otherDash ? (
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${otherTheme.accentBg} group-hover:scale-110 transition-transform overflow-hidden`}>
+                        <IntegrationIcon icon={otherDash.icon} size="sm" />
+                      </div>
+                    ) : (
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${otherTheme.accentBg} group-hover:scale-110 transition-transform`} />
+                    )}
                     <span className="text-xs font-medium group-hover:text-primary transition-colors line-clamp-2">
                       {t(`items.${other.i18nKey}.name` as any)}
                     </span>
@@ -395,7 +428,7 @@ export default async function IntegrationDetailPage({
         <div className="border-t">
           <div className="mx-auto max-w-5xl px-6 lg:px-8 py-8 flex justify-between items-center">
             {prev ? (
-              <Link href={`/integracoes/${prev.slug}`} className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <Link href={`/integracoes/${prev.landingSlug}`} className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
                 <div className="text-left">
                   <span className="text-xs text-muted-foreground/60 block">Anterior</span>
@@ -404,7 +437,7 @@ export default async function IntegrationDetailPage({
               </Link>
             ) : <div />}
             {next ? (
-              <Link href={`/integracoes/${next.slug}`} className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <Link href={`/integracoes/${next.landingSlug}`} className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <div className="text-right">
                   <span className="text-xs text-muted-foreground/60 block">Próxima</span>
                   <span className="font-medium">{t(`items.${next.i18nKey}.name` as any)}</span>
