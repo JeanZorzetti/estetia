@@ -54,21 +54,34 @@ export default async function FinanceiroPage() {
   ])
 
   return (
-    <div className="flex flex-col gap-8 p-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Financeiro & TISS</h1>
-        <p className="text-muted-foreground text-sm mt-1.5 leading-relaxed">
-          Fluxo de caixa, operadoras, guias TISS e integração com Omie ERP
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-50 via-slate-50/95 to-slate-100/90 p-8 overflow-hidden flex flex-col gap-8">
+      {/* Halos estelares de fundo de alta costura */}
+      <div className="pointer-events-none absolute -left-10 top-0 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-cyan-500/5 to-blue-600/5 blur-[120px]" />
+      <div className="pointer-events-none absolute left-1/3 top-1/4 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-amber-500/5 to-orange-600/5 blur-[150px]" />
+      <div className="pointer-events-none absolute -right-20 top-1/2 h-[450px] w-[450px] rounded-full bg-gradient-to-br from-[#C5A059]/5 to-yellow-600/5 blur-[130px]" />
+
+      {/* Header */}
+      <div className="relative z-10 flex flex-col gap-1.5">
+        <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-[#C5A059]/30 bg-gradient-to-r from-[#C5A059]/10 to-[#E5C07B]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#9A7D42] shadow-sm">
+          👑 Central Financeira & TISS VIP
+        </div>
+        <h1 className="font-serif text-4xl font-extrabold tracking-tight text-slate-800">
+          Financeiro & TISS
+        </h1>
+        <p className="text-sm font-medium text-slate-500/90 flex items-center gap-1.5">
+          <span>Fluxo de caixa, operadoras, guias TISS e integração com Omie ERP</span>
+          <span className="h-1 w-1 rounded-full bg-slate-300" />
+          <span className="text-xs font-semibold text-[#C5A059] uppercase tracking-wider">Módulos VIP</span>
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <HubCard
           icon={Wallet}
           title="Fluxo de Caixa"
           description="Recebíveis, gráficos e exportação CSV"
           href="/dashboard/financeiro/fluxo-caixa"
-          colorClass="bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-300"
+          colorClass="FLUXO_CAIXA"
           kpis={[
             { label: 'Recebido', value: formatBRLShort(Number(recebidoMes._sum.valorTotal ?? 0)) },
             { label: 'A receber', value: formatBRLShort(Number(aReceber._sum.valorTotal ?? 0)) },
@@ -80,7 +93,7 @@ export default async function FinanceiroPage() {
           title="Operadoras & Convênios"
           description="Cadastro de operadoras e tabela de preços"
           href="/dashboard/financeiro/operadoras"
-          colorClass="bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300"
+          colorClass="OPERADORAS"
           kpis={[
             { label: 'Ativas', value: operadorasAtivas },
             { label: 'Convênios', value: conveniosCount },
@@ -92,7 +105,7 @@ export default async function FinanceiroPage() {
           title="Guias TISS"
           description="Criar e gerenciar guias com geração de XML ANS 4.x"
           href="/dashboard/financeiro/guias-tiss"
-          colorClass="bg-violet-100 text-violet-600 dark:bg-violet-900/30 dark:text-violet-300"
+          colorClass="GUIAS_TISS"
           kpis={[
             { label: 'Rascunhos', value: rascunhos },
             { label: 'Enviadas', value: enviadasMes },
@@ -104,7 +117,7 @@ export default async function FinanceiroPage() {
           title="Omie Sync"
           description="Sincronização de recebíveis com Omie ERP"
           href="/dashboard/financeiro/omie"
-          colorClass="bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-300"
+          colorClass="OMIE"
           kpis={[
             { label: 'Status', value: org?.omieEnabled ? 'Ativo' : 'Off' },
             { label: 'Recebíveis', value: omieRecebiveis },
