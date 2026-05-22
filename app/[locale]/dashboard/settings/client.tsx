@@ -29,6 +29,8 @@ import {
   Webhook,
   User as UserIcon,
   BookOpen,
+  Crown,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -205,7 +207,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
             title: 'Integrações',
             description: 'WhatsApp, Instagram, Google, ERP',
             badge: (
-              <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4">
+              <Badge variant="outline" className="text-[9px] font-bold px-1.5 py-0 h-4 border-[#C5A059]/30 bg-[#C5A059]/10 text-[#9A7D42] dark:text-[#E2C799] uppercase tracking-wide">
                 Marketplace
               </Badge>
             ),
@@ -269,7 +271,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
             description: 'Assinatura, pagamentos e notas',
             badge:
               user.organization?.tier && user.organization.tier !== 'FREE' ? (
-                <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4">
+                <Badge variant="outline" className="text-[9px] font-bold px-1.5 py-0 h-4 border-[#C5A059]/30 bg-[#C5A059]/10 text-[#9A7D42] dark:text-[#E2C799] uppercase tracking-wide">
                   {user.organization.tier}
                 </Badge>
               ) : undefined,
@@ -325,40 +327,61 @@ export function SettingsClient({ user }: SettingsClientProps) {
   const [profileOpen, setProfileOpen] = useState(false)
 
   return (
-    <div className="px-4 py-4 md:p-8 md:pt-6 space-y-8 max-w-5xl">
-      {/* Header */}
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-1">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+    <div className="px-4 py-6 md:p-10 md:pt-8 space-y-10 max-w-6xl mx-auto">
+      {/* Cabeçalho Monumental em Serif Clássico com Badge de Luxo */}
+      <div className="flex flex-wrap items-start justify-between gap-6 pb-6 border-b border-slate-200/40 dark:border-slate-800/40 relative">
+        <div className="flex-1 min-w-0 space-y-3">
+          {/* Badge Real de Acento */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider text-[#9A7D42] dark:text-[#E2C799] bg-[#C5A059]/10 border border-[#C5A059]/30 uppercase select-none shadow-sm">
+            <Crown className="h-3.5 w-3.5 text-[#C5A059] animate-pulse" />
+            <span>Central de Gestão & Configurações VIP</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="font-serif text-3xl md:text-4xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100 flex items-center gap-2">
               Configurações
+              <Sparkles className="h-5 w-5 text-[#C5A059] shrink-0 opacity-80" />
             </h1>
+            
             {user.organization && (
-              <Badge variant="outline" className="font-normal">
+              <Badge variant="outline" className="font-semibold text-xs border-[#C5A059]/30 bg-[#C5A059]/5 text-[#9A7D42] dark:text-[#E2C799] px-2.5 py-0.5 rounded-lg shadow-sm">
                 {user.organization.name}
               </Badge>
             )}
+            
             {user.organization?.tier && user.organization.tier !== 'FREE' && (
-              <Badge className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0">
-                {user.organization.tier}
+              <Badge className="bg-gradient-to-r from-[#9A7D42] via-[#C5A059] to-[#D4AF37] text-white border-0 px-2.5 py-0.5 rounded-lg font-bold text-xs shadow-md tracking-wide">
+                {user.organization.tier.toUpperCase()}
               </Badge>
             )}
           </div>
-          <p className="text-sm text-muted-foreground">
-            Tudo que sua clínica precisa para operar com excelência
+          
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
+            Configure a engrenagem interna da sua clínica. Gerencie dados operacionais, integre ferramentas externas, garanta a segurança jurídica da LGPD e personalize a jornada da sua equipe e pacientes com acabamento nobre.
           </p>
         </div>
 
-        <HubSearchBar value={query} onChange={setQuery} />
+        <div className="shrink-0 pt-1.5">
+          <HubSearchBar value={query} onChange={setQuery} />
+        </div>
       </div>
 
+      {/* Grid de Seções */}
       {filtered.length === 0 ? (
-        <div className="rounded-xl border border-border/50 bg-muted/20 py-16 text-center">
-          <p className="text-sm text-muted-foreground">Nenhuma configuração encontrada</p>
-          <p className="text-xs text-muted-foreground/60 mt-1">Tente outro termo de busca</p>
+        <div className="rounded-2xl border border-white/40 dark:border-white/[0.02] bg-white/30 dark:bg-slate-900/30 backdrop-blur-xl py-20 text-center shadow-lg relative overflow-hidden">
+          <div className="absolute inset-[1px] rounded-[15px] border border-white/20 dark:border-white/[0.01] pointer-events-none" />
+          <div className="max-w-md mx-auto space-y-3 px-4">
+            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-400 dark:text-slate-500 shadow-inner">
+              <Sparkles className="h-6 w-6" />
+            </div>
+            <p className="text-sm font-bold text-slate-800 dark:text-slate-200">Nenhuma configuração encontrada</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              O termo digitado não corresponde a nenhuma clínica, membro, LGPD ou integração. Tente ajustar o termo de busca para localizar sua central VIP.
+            </p>
+          </div>
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-12">
           {filtered.map((section) => (
             <SettingsSection
               key={section.label}
@@ -373,29 +396,30 @@ export function SettingsClient({ user }: SettingsClientProps) {
                   return (
                     <Sheet key={card.title} open={profileOpen} onOpenChange={setProfileOpen}>
                       <SheetTrigger asChild>
-                        <button type="button" className="text-left">
-                          <div
-                            className="group flex items-center gap-3 rounded-xl border border-border/60 bg-card p-4 h-full transition-all duration-200 ease-out hover:border-primary/40 hover:shadow-sm hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                          >
-                            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ring-1 ring-border/40 ${card.iconBg} ${card.iconColor}`}>
-                              <card.icon className="h-5 w-5" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <h3 className="text-sm font-semibold tracking-tight text-foreground truncate">
-                                {card.title}
-                              </h3>
-                              <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
-                                {card.description}
-                              </p>
-                            </div>
-                          </div>
+                        <button type="button" className="text-left w-full h-full block focus-visible:outline-none">
+                          <SettingsCard
+                            icon={card.icon}
+                            iconColor={card.iconColor}
+                            iconBg={card.iconBg}
+                            title={card.title}
+                            description={card.description}
+                            badge={card.badge}
+                          />
                         </button>
                       </SheetTrigger>
-                      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-                        <SheetHeader>
-                          <SheetTitle>Meu Perfil</SheetTitle>
+                      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto bg-white/95 dark:bg-[#0B0F19]/95 backdrop-blur-2xl border-l border-white/20 dark:border-slate-800/40 p-6 shadow-2xl">
+                        <SheetHeader className="pb-5 border-b border-slate-200/50 dark:border-slate-800/40">
+                          <div className="flex items-center gap-2 mb-1">
+                            <Crown className="h-4.5 w-4.5 text-[#C5A059]" />
+                            <SheetTitle className="font-serif text-xl font-bold text-slate-800 dark:text-slate-100">
+                              Meu Perfil
+                            </SheetTitle>
+                          </div>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Atualize seus dados pessoais e informações de acesso
+                          </p>
                         </SheetHeader>
-                        <div className="mt-6">
+                        <div className="mt-8 relative">
                           <ProfileForm
                             initialData={{
                               name: user.name ?? '',

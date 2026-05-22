@@ -26,6 +26,7 @@ import {
   ShieldCheck,
   ClipboardList,
   CreditCard,
+  Crown,
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -276,14 +277,32 @@ export function SettingsLayout({ children, organizationName }: SettingsLayoutPro
   }, [activeTabId, setConfig, allTabs])
 
   return (
-    <div className="flex-1 flex h-full relative">
+    <div className="flex-1 flex h-full min-h-screen relative bg-slate-50 dark:bg-[#0B0F19] transition-colors duration-300 overflow-hidden">
+      {/* TEXTURA DE MICRO-GRÃO FÍSICO */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.015] dark:opacity-[0.025] mix-blend-overlay z-10"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+        }}
+      />
+
+      {/* SUPER-HALOS ESTELARES DESFOCADOS PERIFÉRICOS */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Superior Esquerdo - Azul Marinho Profundo */}
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-500/10 dark:bg-blue-600/15 blur-[120px] mix-blend-screen" />
+        {/* Centro - Turquesa Cirúrgico */}
+        <div className="absolute top-[30%] left-[25%] w-[45%] h-[45%] rounded-full bg-teal-500/5 dark:bg-teal-500/10 blur-[130px] mix-blend-screen" />
+        {/* Direito - Ouro Imperial / Sofisticação */}
+        <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] rounded-full bg-amber-500/10 dark:bg-[#C5A059]/15 blur-[140px] mix-blend-screen" />
+      </div>
+
       {/* Mobile sidebar toggle */}
       <div className="md:hidden fixed bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] right-4 z-50">
         <Button
           size="icon"
           variant="default"
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="h-12 w-12 rounded-full shadow-lg"
+          className="h-12 w-12 rounded-full shadow-2xl bg-gradient-to-r from-[#9A7D42] to-[#C5A059] hover:from-[#866B35] hover:to-[#B48F47] text-white border border-[#C5A059]/30 transition-all duration-300"
         >
           {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
@@ -291,123 +310,152 @@ export function SettingsLayout({ children, organizationName }: SettingsLayoutPro
 
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-all duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar Glassmorphic */}
       <aside
         className={cn(
-          'w-64 border-r border-border/60 bg-card/50 backdrop-blur-xl p-5 overflow-y-auto',
-          'fixed top-[var(--app-bar-height)] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] left-0 z-40 transition-transform duration-200 md:relative md:inset-auto md:translate-x-0',
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          'w-66 border-r border-white/20 dark:border-white/[0.05] bg-white/40 dark:bg-[#0E1322]/55 backdrop-blur-2xl p-5 overflow-y-auto z-40 transition-all duration-300 md:relative md:inset-auto md:translate-x-0 flex flex-col',
+          'fixed top-[var(--app-bar-height)] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] left-0 md:h-[calc(100vh-var(--app-bar-height))]',
+          sidebarOpen ? 'translate-x-0 w-72' : '-translate-x-full'
         )}
       >
-        {/* Header */}
-        <div className="flex items-center gap-2 mb-5">
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-border/40">
-            <Building2 className="h-3.5 w-3.5" />
+        {/* Header da Sidebar */}
+        <div className="flex items-center gap-3 mb-6 group">
+          <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/10 to-[#C5A059]/20 text-[#9A7D42] dark:text-[#E2C799] border border-[#C5A059]/30 shadow-inner overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
+            <Building2 className="h-4 w-4" />
           </div>
           <div className="min-w-0 flex-1">
-            <h2 className="text-sm font-semibold text-foreground truncate">Configurações</h2>
+            <div className="flex items-center gap-1">
+              <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 tracking-tight truncate">
+                Configurações
+              </h2>
+              <Crown className="h-3 w-3 text-[#C5A059] shrink-0 animate-pulse" />
+            </div>
             {organizationName && (
-              <p className="text-[10px] text-muted-foreground truncate">{organizationName}</p>
+              <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 truncate tracking-wide">
+                {organizationName.toUpperCase()}
+              </p>
             )}
           </div>
         </div>
 
         {/* Search */}
-        <div className="relative mb-5">
-          <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+        <div className="relative mb-6">
+          <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
           <Input
             type="text"
-            placeholder="Buscar..."
+            placeholder="Buscar configuração..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 h-8 text-sm"
+            className="pl-9 pr-4 h-9 text-xs rounded-xl bg-white/50 dark:bg-slate-900/50 border-white/40 dark:border-slate-800/40 text-slate-700 dark:text-slate-300 placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-[#C5A059]/40 focus-visible:border-[#C5A059]/30 transition-all duration-300 shadow-sm"
           />
         </div>
 
         {/* Grouped Navigation */}
-        <nav className="space-y-5">
+        <nav className="flex-1 space-y-6 overflow-y-auto pr-1 custom-scrollbar">
           {filteredGroups.map((group) => (
-            <div key={group.label} className="space-y-1">
-              <h3 className="px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+            <div key={group.label} className="space-y-1.5">
+              <h3 className="px-2.5 text-[10px] font-bold uppercase tracking-widest text-[#9A7D42] dark:text-[#C5A059]/80 opacity-90">
                 {group.label}
               </h3>
-              {group.tabs.map((tab) => {
-                const Icon = tab.icon
-                const isActive = activeTabId === tab.id
-                const isExternal = tab.href.startsWith('/help')
+              <div className="space-y-0.5">
+                {group.tabs.map((tab) => {
+                  const Icon = tab.icon
+                  const isActive = activeTabId === tab.id
+                  const isExternal = tab.href.startsWith('/help')
 
-                const content = (
-                  <div
-                    className={cn(
-                      'flex items-center gap-2.5 px-2 py-1.5 rounded-md transition-colors duration-150 group cursor-pointer',
-                      isActive
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                    )}
-                  >
-                    <Icon
+                  const content = (
+                    <div
                       className={cn(
-                        'h-4 w-4 shrink-0 transition-colors',
-                        isActive ? 'text-primary' : 'text-muted-foreground/70 group-hover:text-foreground'
+                        'flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-300 group cursor-pointer relative overflow-hidden',
+                        isActive
+                          ? 'bg-gradient-to-r from-[#C5A059]/10 to-[#C5A059]/5 text-[#9A7D42] dark:text-[#E2C799] border-l-2 border-[#C5A059] font-semibold shadow-[0_2px_10px_rgba(197,160,89,0.05)]'
+                          : 'text-slate-600 dark:text-slate-400 hover:bg-white/50 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-slate-100 border-l-2 border-transparent'
                       )}
-                    />
-                    <span className="text-xs font-medium truncate">{tab.label}</span>
-                    {tab.badge && (
-                      <span className="ml-auto text-[9px] font-semibold px-1.5 py-0.5 rounded bg-primary/10 text-primary ring-1 ring-primary/20">
-                        {tab.badge}
-                      </span>
-                    )}
-                  </div>
-                )
-
-                if (isExternal) {
-                  return (
-                    <a key={tab.id} href={tab.href} target="_blank" rel="noopener noreferrer">
-                      {content}
-                    </a>
+                    >
+                      <div
+                        className={cn(
+                          'flex h-6 w-6 items-center justify-center rounded-lg transition-all duration-300',
+                          isActive 
+                            ? 'bg-[#C5A059]/20 text-[#9A7D42] dark:text-[#E2C799]' 
+                            : 'bg-slate-100/50 dark:bg-slate-800/30 text-slate-400 dark:text-slate-500 group-hover:bg-white dark:group-hover:bg-slate-800 group-hover:text-slate-700 dark:group-hover:text-slate-300'
+                        )}
+                      >
+                        <Icon className="h-3.5 w-3.5 shrink-0" />
+                      </div>
+                      <span className="text-xs font-medium truncate">{tab.label}</span>
+                      {tab.badge && (
+                        <span className="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-[#C5A059] text-white border border-[#C5A059]/30">
+                          {tab.badge}
+                        </span>
+                      )}
+                    </div>
                   )
-                }
 
-                return (
-                  <Link key={tab.id} href={tab.href} onClick={() => setSidebarOpen(false)}>
-                    {content}
-                  </Link>
-                )
-              })}
+                  if (isExternal) {
+                    return (
+                      <a key={tab.id} href={tab.href} target="_blank" rel="noopener noreferrer" className="block">
+                        {content}
+                      </a>
+                    )
+                  }
+
+                  return (
+                    <Link key={tab.id} href={tab.href} onClick={() => setSidebarOpen(false)} className="block">
+                      {content}
+                    </Link>
+                  )
+                })}
+              </div>
             </div>
           ))}
         </nav>
 
         {/* Empty state */}
         {searchQuery && filteredGroups.length === 0 && (
-          <div className="text-center py-8">
-            <Search className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
-            <p className="text-xs text-muted-foreground">Nenhum resultado</p>
+          <div className="text-center py-10 bg-white/20 dark:bg-slate-900/20 rounded-2xl border border-white/10 p-4 mb-auto">
+            <Search className="h-6 w-6 text-slate-400/50 dark:text-slate-600/50 mx-auto mb-2 animate-bounce" />
+            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">Nenhum resultado</p>
+            <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Tente termos mais simples</p>
           </div>
         )}
 
-        {/* Theme Toggle */}
-        <div className="mt-6 pt-4 border-t border-border/50">
+        {/* Theme Toggle Capsule */}
+        <div className="mt-auto pt-4 border-t border-slate-200/50 dark:border-slate-800/40">
           <button
             onClick={() => setTheme(isDark ? 'light' : 'dark')}
-            className="flex items-center gap-2.5 w-full px-2 py-1.5 rounded-md text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-150"
+            className="flex items-center justify-between w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 bg-white/60 dark:bg-[#0B0F19]/40 border border-white/40 dark:border-slate-800/30 hover:bg-[#C5A059]/10 dark:hover:bg-[#C5A059]/5 hover:text-[#9A7D42] dark:hover:text-[#E2C799] transition-all duration-300 hover:shadow-md"
           >
-            {isDark ? (
-              <Sun className="h-4 w-4 text-muted-foreground/70" />
-            ) : (
-              <Moon className="h-4 w-4 text-muted-foreground/70" />
-            )}
-            <span>{isDark ? 'Modo claro' : 'Modo escuro'}</span>
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-slate-100/80 dark:bg-slate-800/50 text-[#C5A059] shadow-inner">
+                {isDark ? (
+                  <Sun className="h-3.5 w-3.5 animate-spin" style={{ animationDuration: '8s' }} />
+                ) : (
+                  <Moon className="h-3.5 w-3.5 text-[#9A7D42]" />
+                )}
+              </div>
+              <span className="font-medium">{isDark ? 'Modo Claro' : 'Modo Escuro'}</span>
+            </div>
+            <div className="w-6 h-3 rounded-full bg-slate-200 dark:bg-slate-800 relative transition-colors duration-300">
+              <div 
+                className={cn(
+                  "absolute top-0.5 w-2 h-2 rounded-full transition-all duration-300 bg-[#C5A059]",
+                  isDark ? "left-3.5 bg-yellow-400" : "left-0.5 bg-[#9A7D42]"
+                )}
+              />
+            </div>
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto">{children}</main>
+      <main className="flex-1 overflow-y-auto z-20 relative max-h-screen">
+        {children}
+      </main>
     </div>
   )
 }
