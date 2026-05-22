@@ -22,9 +22,14 @@ export function InviteWizardTrigger({ actorRole }: Props) {
 
   return (
     <>
-      <Button size="sm" className="gap-1.5 shrink-0" onClick={() => setOpen(true)}>
-        <UserPlus className="h-4 w-4" />
-        Convidar Membro
+      <Button 
+        size="sm" 
+        className="gap-2 shrink-0 rounded-xl bg-gradient-to-r from-[#9A7D42] to-[#C5A059] hover:from-[#866B35] hover:to-[#B48F47] text-white border border-[#C5A059]/30 transition-all duration-300 shadow-md hover:shadow-lg font-bold px-4 h-10 select-none overflow-hidden relative" 
+        onClick={() => setOpen(true)}
+      >
+        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
+        <UserPlus className="h-4 w-4 drop-shadow-sm" />
+        <span className="text-xs tracking-wide">Convidar Membro</span>
       </Button>
       <InviteWizardDialog
         open={open}
