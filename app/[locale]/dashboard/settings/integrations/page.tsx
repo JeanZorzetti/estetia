@@ -159,32 +159,43 @@ export default async function IntegrationsPage() {
   })
 
   return (
-    <div className="flex-1 space-y-6 p-6">
-      <div className="flex items-center gap-4">
+    <div className="flex-1 space-y-6 p-6 relative">
+      {/* Premium decorative gradient glow at the top right */}
+      <div className="absolute top-0 right-0 w-[500px] h-[350px] bg-gradient-to-bl from-primary/5 via-transparent to-transparent rounded-full blur-3xl pointer-events-none z-0" />
+
+      <div className="flex items-center gap-4 relative z-10">
         <Link href="/dashboard/settings">
-          <Button variant="ghost" size="sm" className="gap-2">
+          <Button variant="ghost" size="sm" className="gap-2 rounded-xl text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" />
             Voltar
           </Button>
         </Link>
       </div>
 
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4 flex-wrap relative z-10">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Integrações</h2>
-          <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-            Conecte suas próprias contas e ferramentas — você no controle das credenciais
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground bg-clip-text">
+            Integrações
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1.5 max-w-2xl font-medium">
+            Conecte suas próprias contas e ferramentas — você no controle completo das suas credenciais
           </p>
         </div>
         <Link href="/dashboard/settings/integrations/status">
-          <Button variant="outline" size="sm" className="gap-1.5 shrink-0">
-            <Activity className="h-4 w-4" />
+          <Button variant="outline" size="sm" className="gap-1.5 shrink-0 rounded-xl bg-background/50 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.02)] transition-all hover:bg-muted">
+            <span className="relative flex h-2 w-2 mr-0.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <Activity className="h-3.5 h-3.5" />
             Ver Status
           </Button>
         </Link>
       </div>
 
-      <IntegrationGrid orgStatus={{ configured }} upvoteCounts={upvoteCounts} />
+      <div className="relative z-10 border-t border-border/20 pt-6">
+        <IntegrationGrid orgStatus={{ configured }} upvoteCounts={upvoteCounts} />
+      </div>
     </div>
   )
 }

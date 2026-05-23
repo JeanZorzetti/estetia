@@ -37,40 +37,77 @@ export function DpoForm({ initial }: Props) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">Encarregado de Dados (DPO)</CardTitle>
-        <CardDescription>
-          Art. 41 da LGPD — responsável pelo tratamento de dados pessoais
+    <Card className={cn(
+      "border-border/50 relative overflow-hidden",
+      "bg-gradient-to-br from-card to-background/40",
+      "rounded-2xl shadow-sm hover:shadow-md hover:border-border/80 transition-all duration-300"
+    )}>
+      <CardHeader className="pb-3 border-b border-border/20">
+        <CardTitle className="text-base font-semibold flex items-center gap-2">
+          Encarregado de Dados (DPO)
+        </CardTitle>
+        <CardDescription className="text-xs font-medium text-muted-foreground/80 mt-0.5">
+          Art. 41 da LGPD — encarregado pelo tratamento e canal de comunicação de dados pessoais
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div className="space-y-1.5">
-            <Label htmlFor="dpo-name">Nome completo</Label>
-            <Input id="dpo-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Maria Souza" />
+      <CardContent className="space-y-5 pt-5">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="dpo-name" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Nome completo</Label>
+            <Input 
+              id="dpo-name" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              placeholder="Maria Souza" 
+              className="h-10 rounded-xl border-border/60 bg-background/50 focus-visible:ring-primary/20 hover:border-border/80 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.01)]"
+            />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="dpo-email">E-mail</Label>
-            <Input id="dpo-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="dpo@clinica.com" />
+          <div className="space-y-2">
+            <Label htmlFor="dpo-email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">E-mail</Label>
+            <Input 
+              id="dpo-email" 
+              type="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              placeholder="dpo@clinica.com" 
+              className="h-10 rounded-xl border-border/60 bg-background/50 focus-visible:ring-primary/20 hover:border-border/80 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.01)]"
+            />
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div className="space-y-1.5">
-            <Label htmlFor="dpo-phone">Telefone</Label>
-            <Input id="dpo-phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(11) 99999-9999" />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="dpo-phone" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Telefone</Label>
+            <Input 
+              id="dpo-phone" 
+              value={phone} 
+              onChange={(e) => setPhone(e.target.value)} 
+              placeholder="(11) 99999-9999" 
+              className="h-10 rounded-xl border-border/60 bg-background/50 focus-visible:ring-primary/20 hover:border-border/80 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.01)]"
+            />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="dpo-cpf">CPF</Label>
-            <Input id="dpo-cpf" value={cpf} onChange={(e) => setCpf(e.target.value)} placeholder="000.000.000-00" />
+          <div className="space-y-2">
+            <Label htmlFor="dpo-cpf" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">CPF</Label>
+            <Input 
+              id="dpo-cpf" 
+              value={cpf} 
+              onChange={(e) => setCpf(e.target.value)} 
+              placeholder="000.000.000-00" 
+              className="h-10 rounded-xl border-border/60 bg-background/50 focus-visible:ring-primary/20 hover:border-border/80 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.01)]"
+            />
           </div>
         </div>
 
-        <Button onClick={handleSave} disabled={isPending}>
-          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Salvar DPO
-        </Button>
+        <div className="flex justify-end pt-2">
+          <Button 
+            onClick={handleSave} 
+            disabled={isPending}
+            className="rounded-xl px-5 h-10 shadow-sm transition-all duration-200"
+          >
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Salvar DPO
+          </Button>
+        </div>
       </CardContent>
     </Card>
   )

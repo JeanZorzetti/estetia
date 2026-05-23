@@ -42,27 +42,32 @@ export default async function LgpdPage() {
   const org = user.organization
 
   return (
-    <div className="flex-1 space-y-6 p-6 max-w-3xl">
-      <ClinicaPageHeader
-        title="LGPD & Privacidade"
-        description="Encarregado de Dados, política de retenção e direitos dos titulares — conforme Lei 13.709/2018"
-        icon={ShieldCheck}
-        iconBg="bg-red-500/10"
-        iconColor="text-red-500"
-      />
+    <div className="flex-1 p-6 max-w-3xl relative">
+      {/* Decorative privacy-themed gradient glow at the top right */}
+      <div className="absolute top-0 right-0 w-[450px] h-[300px] bg-gradient-to-bl from-emerald-500/[0.03] via-transparent to-transparent rounded-full blur-3xl pointer-events-none z-0" />
 
-      <DpoForm
-        initial={{
-          dpoName: org.dpoName,
-          dpoEmail: org.dpoEmail,
-          dpoPhone: org.dpoPhone,
-          dpoCpf: org.dpoCpf,
-        }}
-      />
+      <div className="relative z-10 space-y-6">
+        <ClinicaPageHeader
+          title="LGPD & Privacidade"
+          description="Encarregado de Dados, política de retenção e direitos dos titulares — em conformidade com a Lei Federal nº 13.709/2018"
+          icon={ShieldCheck}
+          iconBg="bg-emerald-500/10"
+          iconColor="text-emerald-600 dark:text-emerald-400"
+        />
 
-      <RetentionConfig initial={org.lgpdRetentionMonths ?? 60} />
+        <DpoForm
+          initial={{
+            dpoName: org.dpoName,
+            dpoEmail: org.dpoEmail,
+            dpoPhone: org.dpoPhone,
+            dpoCpf: org.dpoCpf,
+          }}
+        />
 
-      <ExportCard />
+        <RetentionConfig initial={org.lgpdRetentionMonths ?? 60} />
+
+        <ExportCard />
+      </div>
     </div>
   )
 }

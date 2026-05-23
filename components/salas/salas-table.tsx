@@ -81,22 +81,32 @@ export function SalasTable({ initialSalas }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
+      {/* Premium Filter Controls */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input className="pl-9" placeholder="Buscar por nome..." value={query} onChange={e => setQuery(e.target.value)} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
+          <Input 
+            className="pl-9 h-10 rounded-xl border-border/60 bg-background/50 focus-visible:ring-primary/20 hover:border-border/80 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.01)]" 
+            placeholder="Buscar por nome..." 
+            value={query} 
+            onChange={e => setQuery(e.target.value)} 
+          />
         </div>
         <Select value={tipo} onValueChange={setTipo}>
-          <SelectTrigger className="w-44"><SelectValue placeholder="Tipo" /></SelectTrigger>
-          <SelectContent>
+          <SelectTrigger className="w-44 h-10 rounded-xl border-border/60 bg-background/50 hover:border-border/80 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.01)]">
+            <SelectValue placeholder="Tipo" />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl">
             <SelectItem value="all">Todos os tipos</SelectItem>
             {ROOM_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
-          <SelectContent>
+          <SelectTrigger className="w-32 h-10 rounded-xl border-border/60 bg-background/50 hover:border-border/80 transition-all shadow-[0_1px_2px_rgba(0,0,0,0.01)]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl">
             <SelectItem value="all">Todos</SelectItem>
             <SelectItem value="active">Ativos</SelectItem>
             <SelectItem value="inactive">Inativos</SelectItem>
@@ -105,71 +115,95 @@ export function SalasTable({ initialSalas }: Props) {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-12 gap-2 border border-dashed border-border rounded-xl text-center">
-          <p className="text-sm text-muted-foreground">Nenhuma sala corresponde aos filtros.</p>
+        <div className="flex flex-col items-center justify-center py-16 gap-2 border border-dashed border-border/80 rounded-2xl bg-card/20 text-center">
+          <p className="text-sm font-medium text-muted-foreground">Nenhuma sala corresponde aos filtros.</p>
         </div>
       ) : (
-        <div className="border border-border/60 rounded-xl overflow-hidden">
+        <div className="border border-border/50 rounded-2xl overflow-hidden bg-card/40 backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.015)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)]">
           <Table>
             <TableHeader>
-              <TableRow className="bg-muted/30 hover:bg-muted/30">
-                <TableHead className="font-semibold text-xs uppercase tracking-wider w-12"></TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Nome</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Tipo</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Capacidade</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Equipamentos</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider">Status</TableHead>
-                <TableHead className="font-semibold text-xs uppercase tracking-wider w-12"></TableHead>
+              <TableRow className="bg-muted/40 hover:bg-muted/40 border-b border-border/50">
+                <TableHead className="font-bold text-xs uppercase tracking-wider w-14 py-4 text-muted-foreground"></TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider py-4 text-muted-foreground">Nome</TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider py-4 text-muted-foreground">Tipo</TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider py-4 text-muted-foreground">Capacidade</TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider py-4 text-muted-foreground">Equipamentos</TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider py-4 text-muted-foreground">Status</TableHead>
+                <TableHead className="font-bold text-xs uppercase tracking-wider w-14 py-4 text-muted-foreground"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.map(s => (
                 <TableRow
                   key={s.id}
-                  className={cn('cursor-pointer hover:bg-muted/30 transition-colors', !s.ativo && 'opacity-60')}
+                  className={cn(
+                    'group/row cursor-pointer transition-all duration-200 border-b border-border/30 last:border-b-0',
+                    'hover:bg-primary/[0.01] dark:hover:bg-primary/[0.03]',
+                    !s.ativo && 'opacity-65 hover:opacity-90'
+                  )}
                   onClick={e => {
                     if ((e.target as HTMLElement).closest('[data-no-row-click]')) return
                     router.push(`/dashboard/settings/salas/${s.id}/editar`)
                   }}
                 >
-                  <TableCell>
+                  <TableCell className="py-3">
                     <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center border border-border/40"
-                      style={{ backgroundColor: s.cor ?? 'transparent' }}
+                      className={cn(
+                        "w-8 h-8 rounded-xl flex items-center justify-center border border-black/10 dark:border-white/10 relative overflow-hidden transition-all duration-300 group-hover/row:scale-110 shadow-sm"
+                      )}
+                      style={{ 
+                        backgroundColor: s.cor ?? 'transparent',
+                        boxShadow: s.cor ? `inset 0 2px 4px rgba(255,255,255,0.45), inset 0 -2px 4px rgba(0,0,0,0.15), 0 3px 6px ${s.cor}25` : undefined
+                      }}
                     >
-                      {!s.cor && <DoorOpen className="w-3.5 h-3.5 text-muted-foreground" />}
+                      {!s.cor && <DoorOpen className="w-4 h-4 text-muted-foreground" />}
+                      {s.cor && (
+                        <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
+                      )}
                     </div>
                   </TableCell>
-                  <TableCell className="font-medium text-sm">{s.nome}</TableCell>
-                  <TableCell><RoomTypeBadge tipo={s.tipo} /></TableCell>
-                  <TableCell className="text-sm text-muted-foreground tabular-nums">
-                    {s.capacidade ? `${s.capacidade} pessoa${s.capacidade > 1 ? 's' : ''}` : '—'}
+                  <TableCell className="font-semibold text-sm text-foreground py-3">{s.nome}</TableCell>
+                  <TableCell className="py-3"><RoomTypeBadge tipo={s.tipo} /></TableCell>
+                  <TableCell className="text-sm font-semibold text-foreground py-3 tabular-nums">
+                    {s.capacidade ? `${s.capacidade} pessoa${s.capacidade > 1 ? 's' : ''}` : <span className="text-muted-foreground/35 font-normal text-xs">—</span>}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="py-3">
                     {s.equipamentos.length === 0 ? (
-                      <span className="text-muted-foreground text-sm">—</span>
+                      <span className="text-muted-foreground/35 text-xs">—</span>
                     ) : (
                       <div className="flex flex-wrap gap-1 max-w-xs">
                         {s.equipamentos.slice(0, 2).map(e => (
-                          <Badge key={e} variant="secondary" className="text-xs">{e}</Badge>
+                          <Badge 
+                            key={e} 
+                            variant="secondary" 
+                            className="text-xs bg-muted/60 text-muted-foreground border border-border/30 rounded-lg px-2"
+                          >
+                            {e}
+                          </Badge>
                         ))}
                         {s.equipamentos.length > 2 && (
-                          <Badge variant="outline" className="text-xs">+{s.equipamentos.length - 2}</Badge>
+                          <Badge 
+                            variant="outline" 
+                            className="text-xs rounded-lg px-1.5 border-dashed"
+                          >
+                            +{s.equipamentos.length - 2}
+                          </Badge>
                         )}
                       </div>
                     )}
                   </TableCell>
-                  <TableCell data-no-row-click>
+                  <TableCell data-no-row-click className="py-3">
                     <Switch
                       checked={s.ativo}
                       disabled={toggling === s.id}
                       onCheckedChange={() => toggleAtivo(s)}
+                      className="data-[state=checked]:bg-emerald-500"
                     />
                   </TableCell>
-                  <TableCell data-no-row-click>
+                  <TableCell data-no-row-click className="py-3">
                     <Link href={`/dashboard/settings/salas/${s.id}/editar`}>
-                      <Button variant="ghost" size="icon" className="w-8 h-8">
-                        <Pencil className="w-3.5 h-3.5" />
+                      <Button variant="ghost" size="icon" className="w-8 h-8 rounded-lg hover:bg-muted/80 text-muted-foreground hover:text-foreground">
+                        <Pencil className="w-3.5 h-3.5 transition-transform duration-200 group-hover/row:rotate-6" />
                       </Button>
                     </Link>
                   </TableCell>
