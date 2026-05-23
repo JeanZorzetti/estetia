@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Download, ClipboardList } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import Link from 'next/link'
 

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { BottomNav } from '@/components/dashboard/bottom-nav'
 import { PostHogUserIdentifier } from '@/components/analytics/posthog-user-identifier'
@@ -10,6 +11,10 @@ import { isTrialActive, SubscriptionTier } from '@/lib/entitlements'
 import { getSession } from '@/lib/auth'
 import { getDashboardUser } from '@/lib/dashboard-user'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://estetiacrm.com.br'),
+}
 
 export default async function DashboardLayout({
   children,
