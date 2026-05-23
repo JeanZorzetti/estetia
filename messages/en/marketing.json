@@ -110,6 +110,7 @@
             "description": "Analyzes deals, generates sales scripts, enriches contacts, and recommends next actions. Powered by Knowledge Graph + RAG."
         },
         "plans": {
+            "badge": "Tailored plans",
             "title": "Plans for every stage",
             "subtitle": "Start free and scale as your team grows. No surprises.",
             "mostPopular": "Most Popular",

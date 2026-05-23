@@ -110,6 +110,7 @@
             "description": "Analisa o histórico do paciente, sugere protocolos estéticos, automatiza o recall e ajuda a montar anamneses completas. Baseada em Knowledge Graph + RAG."
         },
         "plans": {
+            "badge": "Planos sob medida",
             "title": "Planos para cada momento",
             "subtitle": "Comece grátis e escale conforme seu time cresce. Sem surpresas.",
             "mostPopular": "Mais Popular",
