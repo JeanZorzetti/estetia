@@ -122,6 +122,17 @@ export default async function DashboardPage({
     // --- KPIs ---
     const totalToday = todaysSessions.length
     const confirmed = todaysSessions.filter((s) => s.status === "CONFIRMADA").length
+    const noShowPredicted = todaysSessions.filter(
+      (s) => (s.noShowScore ?? 0) >= 60 && ["AGENDADA", "CONFIRMADA"].includes(s.status)
+    ).length
+    // valorTotal é do tratamento inteiro; aproximação aceitável para receita prevista do dia
+    const revenueExpected = todaysSessions
+      .filter((s) => ["AGENDADA", "CONFIRMADA", "REALIZADA"].includes(s.status))
+      .reduce((sum, s) => sum + Number(s.treatment.valorTotal ?? 0), 0)
+    // Próximo atendimento ativo do dia (para botão Iniciar)
+    const nextSession = todaysSessions.find((s) =>
+      ["AGENDADA", "CONFIRMADA"].includes(s.status)
+    ) ?? null
 
     // --- Anamneses pendentes ---
     // Anamnesis liga via treatmentId — sessoes de hoje cujo tratamento nao tem anamnese
@@ -249,8 +260,8 @@ export default async function DashboardPage({
               <DailyKPIs
                 totalToday={totalToday}
                 confirmed={confirmed}
-                noShowPredicted={0}
-                revenueExpected={0}
+                noShowPredicted={noShowPredicted}
+                revenueExpected={revenueExpected}
               />
             </div>
 
@@ -273,7 +284,7 @@ export default async function DashboardPage({
                   <h2 className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.25em] mb-4">
                     Ações rápidas
                   </h2>
-                  <QuickActions />
+                  <QuickActions nextSessionId={nextSession?.id ?? null} />
                 </div>
 
                 {/* Anamneses pendentes */}

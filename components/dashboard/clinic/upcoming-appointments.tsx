@@ -1,24 +1,6 @@
-import type { TreatmentSession, Treatment, Patient, Professional, ClinicRoom, TreatmentType } from "@prisma/client"
+import type { TreatmentSession, Treatment, Patient, Professional, ClinicRoom } from "@prisma/client"
 import { Clock, CalendarCheck2 } from "lucide-react"
-
-const TREATMENT_LABELS: Partial<Record<TreatmentType, string>> = {
-  BOTOX: "Botox",
-  PREENCHIMENTO: "Preenchimento",
-  LASER: "Laser",
-  PEELING: "Peeling",
-  HARMONIZACAO_FACIAL: "Harmonização Facial",
-  LIMPEZA_PELE: "Limpeza de Pele",
-  MICROAGULHAMENTO: "Microagulhamento",
-  CRIOLIPOLISE: "Criolipólise",
-  RADIOFREQUENCIA: "Radiofrequência",
-  LUZ_PULSADA: "Luz Pulsada",
-  DEPILACAO_LASER: "Depilação Laser",
-  SKINBOOSTER: "Skinbooster",
-  FIOS_PDO: "Fios PDO",
-  BICHECTOMIA: "Bichectomia",
-  RINOPLASTIA_NONCIRURGICA: "Rinoplastia Não Cirúrgica",
-  OUTROS: "Procedimento",
-}
+import { TREATMENT_LABELS } from "@/lib/treatment-labels"
 
 export type SessionWithRelations = TreatmentSession & {
   treatment: Treatment & {
