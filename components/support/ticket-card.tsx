@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { MessageCircle, Circle } from 'lucide-react'
@@ -43,40 +43,62 @@ export function TicketCard({ ticket, isStaff, href }: TicketCardProps) {
   return (
     <Link
       href={href}
-      className="block p-4 rounded-xl border border-border/60 bg-card hover:bg-accent/30 transition-colors group"
+      className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-2xl relative z-10"
+      aria-label={`Ticket: ${ticket.subject}`}
     >
-      <div className="flex items-start gap-3">
-        {isUnread && (
-          <Circle className="h-2 w-2 mt-1.5 flex-shrink-0 fill-indigo-500 text-[#1a3560]" />
+      <div
+        className={cn(
+          'relative rounded-2xl p-5 border bg-card/45 backdrop-blur-md flex items-start gap-4 overflow-hidden',
+          'transition-all duration-300 ease-out',
+          'group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:border-indigo-500/20',
+          isUnread ? 'border-indigo-500/25 bg-indigo-500/[0.01] shadow-[0_4px_20px_-4px_rgba(99,102,241,0.03)]' : 'border-border/40'
         )}
-        {!isUnread && <div className="w-2 flex-shrink-0" />}
+      >
+        {/* Ambient Corner Glow */}
+        <div className="absolute -right-16 -bottom-16 w-36 h-36 rounded-full blur-3xl opacity-0 group-hover:opacity-10 bg-indigo-500 transition-opacity duration-500 pointer-events-none" />
+
+        {/* Status Indicator Beacon */}
+        <div className="flex-shrink-0 mt-1">
+          {isUnread ? (
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+            </span>
+          ) : (
+            <div className="w-2 h-2 rounded-full bg-transparent" />
+          )}
+        </div>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap mb-1">
-            <span className={`text-sm font-medium truncate ${isUnread ? 'text-foreground font-semibold' : 'text-foreground/80'}`}>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className={cn(
+              'text-sm truncate transition-colors group-hover:text-primary',
+              isUnread ? 'text-foreground font-bold' : 'text-foreground/80 font-semibold'
+            )}>
               {ticket.subject}
             </span>
           </div>
 
           {isStaff && ticket.organization && (
-            <p className="text-xs text-muted-foreground mb-1">{ticket.organization.name}</p>
+            <p className="text-xs text-muted-foreground mt-0.5 font-medium">{ticket.organization.name}</p>
           )}
 
-          <div className="flex items-center gap-2 flex-wrap mt-2">
+          <div className="flex items-center gap-1.5 flex-wrap mt-3">
             <TicketStatusBadge status={ticket.status} />
             <TicketPriorityBadge priority={ticket.priority} />
-            <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-muted/80 text-muted-foreground border border-border/30">
               {CATEGORY_LABELS[ticket.category]}
             </span>
           </div>
         </div>
 
-        <div className="flex flex-col items-end gap-1 flex-shrink-0">
-          <span className="text-xs text-muted-foreground">{timeAgo}</span>
+        {/* Right Info: Time & Message Count */}
+        <div className="flex flex-col items-end gap-2 flex-shrink-0 text-[10px] text-muted-foreground font-semibold">
+          <span className="whitespace-nowrap">{timeAgo}</span>
           {ticket._count && (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <MessageCircle className="h-3 w-3" />
-              <span>{ticket._count.messages}</span>
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-muted/50 border border-border/20">
+              <MessageCircle className="h-3 w-3 text-muted-foreground/75" />
+              <span className="tabular-nums">{ticket._count.messages}</span>
             </div>
           )}
         </div>

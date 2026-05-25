@@ -94,12 +94,12 @@ export function NewTicketDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="gap-2">
+        <Button size="sm" className="gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 px-4 py-2.5 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0">
           <Plus className="h-4 w-4" />
           {t('newTicket')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg rounded-2xl border-border/40 shadow-xl bg-card">
         <DialogHeader>
           <DialogTitle>Abrir Ticket de Suporte</DialogTitle>
         </DialogHeader>
