@@ -20,7 +20,7 @@ export function PacienteTabs({ patientId }: PacienteTabsProps) {
   const pathname = usePathname()
 
   return (
-    <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
+    <div className="flex items-center gap-1 border-b border-border overflow-x-auto custom-scrollbar">
       {TABS.map(tab => {
         const href = tab.href(patientId)
         // Strip locale prefix for matching
