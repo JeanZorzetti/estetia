@@ -153,20 +153,20 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6 relative overflow-visible">
       {/* Premium multi-layered decorative gradient glows */}
-      <div className="absolute top-0 right-0 w-[550px] h-[350px] bg-gradient-to-bl from-indigo-500/10 via-violet-500/3 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
-      <div className="absolute bottom-10 left-10 w-[350px] h-[350px] bg-gradient-to-tr from-cyan-500/5 via-blue-500/2 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute top-0 right-0 w-[550px] h-[350px] bg-gradient-to-bl from-teal-500/10 via-navy-500/3 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-10 left-10 w-[350px] h-[350px] bg-gradient-to-tr from-gold-500/5 via-navy-500/2 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
 
       {/* Breadcrumb Navigation */}
       <div className="relative z-10 flex items-center justify-between">
         <Link
           href="/dashboard/pacientes"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-teal dark:hover:text-teal transition-colors duration-200"
         >
           <ChevronLeft className="w-4 h-4" />
           Voltar para Pacientes
         </Link>
-        <span className="flex items-center gap-1 text-[10px] font-bold text-indigo-500 uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/15 px-2.5 py-1 rounded-full shadow-inner select-none">
-          <Sparkles className="w-3 h-3 text-indigo-500 animate-pulse" />
+        <span className="flex items-center gap-1 text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest bg-teal-500/10 border border-teal-500/15 px-2.5 py-1 rounded-full shadow-inner select-none">
+          <Sparkles className="w-3 h-3 text-teal-500 animate-pulse" />
           Painel Clínico
         </span>
       </div>
@@ -175,14 +175,14 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
       <div className="relative z-10 bg-card/60 dark:bg-zinc-950/60 backdrop-blur-xl border border-border/50 rounded-3xl p-8 md:p-10 shadow-lg flex flex-col xl:flex-row items-start xl:items-center justify-between gap-8 md:gap-10 overflow-hidden group">
         
         {/* Glow effects inside the card */}
-        <div className="absolute top-0 right-0 w-[400px] h-[300px] bg-gradient-to-bl from-indigo-500/[0.08] via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[150px] bg-gradient-to-tr from-violet-500/[0.05] via-transparent to-transparent rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[400px] h-[300px] bg-gradient-to-bl from-teal-500/[0.08] via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[150px] bg-gradient-to-tr from-gold-500/[0.05] via-transparent to-transparent rounded-full blur-2xl pointer-events-none" />
 
         <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start w-full xl:w-auto flex-1">
           {/* Avatar Area */}
           <div className="relative shrink-0 select-none group-hover:scale-[1.03] transition-transform duration-300">
-            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-indigo-500 via-violet-500 to-pink-500 opacity-20 blur-sm group-hover:opacity-45 transition-opacity duration-300" />
-            <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-600 text-white font-black text-3xl flex items-center justify-center shadow-lg border border-white/10">
+            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-navy via-teal to-gold opacity-20 blur-sm group-hover:opacity-45 transition-opacity duration-300" />
+            <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-navy to-gold text-white font-black text-3xl flex items-center justify-center shadow-lg border border-white/10">
               {initials || patient.nome.charAt(0).toUpperCase()}
             </div>
           </div>
@@ -192,7 +192,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
             <div className="space-y-2">
               <div className="flex items-center gap-3.5 flex-wrap">
                 <h1 className="text-2xl font-black tracking-tight text-foreground leading-tight">{patient.nome}</h1>
-                <Badge variant="outline" className="bg-indigo-500/5 border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[10px] font-extrabold uppercase tracking-widest py-1 px-3 rounded-lg select-none">
+                <Badge variant="outline" className="bg-gold-500/5 border-gold-500/20 text-gold-600 dark:text-gold-400 text-[10px] font-extrabold uppercase tracking-widest py-1 px-3 rounded-lg select-none">
                   Paciente
                 </Badge>
               </div>
@@ -212,7 +212,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
                 </Badge>
               ))}
               {patient.tags.map(t => (
-                <Badge key={t} className="bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold px-3.5 py-1 rounded-full shadow-sm select-none transition-colors hover:bg-indigo-500/15">
+                <Badge key={t} className="bg-navy-500/10 border border-navy-500/20 text-navy dark:text-navy-200 text-[10px] font-bold px-3.5 py-1 rounded-full shadow-sm select-none transition-colors hover:bg-navy-500/15">
                   {t}
                 </Badge>
               ))}
@@ -230,7 +230,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
           {/* Age Card */}
           {age && (
             <div className="bg-muted/40 dark:bg-zinc-900/40 border border-border/40 rounded-2xl p-4 px-6 flex items-center gap-3.5 min-w-[130px] transition-all hover:bg-muted/60 dark:hover:bg-zinc-900/60 shadow-sm hover:scale-[1.02] duration-200">
-              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 shrink-0 shadow-inner">
+              <div className="w-10 h-10 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-600 dark:text-gold-400 shrink-0 shadow-inner">
                 <Calendar className="w-5 h-5" />
               </div>
               <div className="flex flex-col min-w-0">
@@ -243,7 +243,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
           {/* Phone Card */}
           {patient.telefone && (
             <div className="bg-muted/40 dark:bg-zinc-900/40 border border-border/40 rounded-2xl p-4 px-6 flex items-center gap-3.5 min-w-[180px] transition-all hover:bg-muted/60 dark:hover:bg-zinc-900/60 shadow-sm hover:scale-[1.02] duration-200">
-              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 shrink-0 shadow-inner">
+              <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-600 dark:text-teal-400 shrink-0 shadow-inner">
                 <Phone className="w-5 h-5" />
               </div>
               <div className="flex flex-col min-w-0">
@@ -256,7 +256,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
           {/* Email Card */}
           {patient.email && (
             <div className="bg-muted/40 dark:bg-zinc-900/40 border border-border/40 rounded-2xl p-4 px-6 flex items-center gap-3.5 max-w-[240px] md:max-w-none transition-all hover:bg-muted/60 dark:hover:bg-zinc-900/60 shadow-sm hover:scale-[1.02] duration-200" title={patient.email}>
-              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 shrink-0 shadow-inner">
+              <div className="w-10 h-10 rounded-xl bg-navy-500/10 border border-navy-500/20 flex items-center justify-center text-navy dark:text-navy-200 shrink-0 shadow-inner">
                 <Mail className="w-5 h-5" />
               </div>
               <div className="flex flex-col min-w-0">
@@ -270,7 +270,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
         {/* Action Button (Spacious right area) */}
         {canEdit && (
           <div className="w-full xl:w-auto shrink-0 flex justify-end z-10 pt-2 xl:pt-0">
-            <Button size="sm" className="rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-extrabold shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/30 px-6 h-11 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 w-full xl:w-auto flex items-center justify-center gap-2 border border-indigo-400/20 cursor-pointer text-xs uppercase tracking-widest font-black leading-normal">
+            <Button size="sm" className="rounded-xl bg-gradient-to-r from-navy to-teal-600 hover:from-navy-600 hover:to-teal text-white font-extrabold shadow-md shadow-navy/20 hover:shadow-navy/30 px-6 h-11 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 w-full xl:w-auto flex items-center justify-center gap-2 border border-navy/20 cursor-pointer text-xs uppercase tracking-widest font-black leading-normal">
               + Novo Registro
             </Button>
           </div>
@@ -305,28 +305,28 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
         <TabsList className="mb-6 bg-muted/20 dark:bg-zinc-900/40 p-1 rounded-2xl border border-border/40 flex flex-wrap gap-1 w-fit max-w-full shadow-inner backdrop-blur-md">
           <TabsTrigger 
             value="historico" 
-            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-indigo-600 data-[state=active]:text-white dark:data-[state=active]:bg-indigo-500/20 dark:data-[state=active]:text-indigo-400 border border-transparent data-[state=active]:border-indigo-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400"
+            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-navy data-[state=active]:text-white dark:data-[state=active]:bg-navy-500/20 dark:data-[state=active]:text-navy-200 border border-transparent data-[state=active]:border-navy-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-navy dark:hover:text-navy-200"
           >
             <FileText className="h-3.5 w-3.5 shrink-0" />
             Prontuário ({records.length})
           </TabsTrigger>
           <TabsTrigger 
             value="anamnese" 
-            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-indigo-600 data-[state=active]:text-white dark:data-[state=active]:bg-indigo-500/20 dark:data-[state=active]:text-indigo-400 border border-transparent data-[state=active]:border-indigo-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400"
+            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-navy data-[state=active]:text-white dark:data-[state=active]:bg-navy-500/20 dark:data-[state=active]:text-navy-200 border border-transparent data-[state=active]:border-navy-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-navy dark:hover:text-navy-200"
           >
             <ClipboardList className="h-3.5 w-3.5 shrink-0" />
             Anamneses ({anamneses.length})
           </TabsTrigger>
           <TabsTrigger 
             value="tratamentos" 
-            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-indigo-600 data-[state=active]:text-white dark:data-[state=active]:bg-indigo-500/20 dark:data-[state=active]:text-indigo-400 border border-transparent data-[state=active]:border-indigo-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400"
+            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-navy data-[state=active]:text-white dark:data-[state=active]:bg-navy-500/20 dark:data-[state=active]:text-navy-200 border border-transparent data-[state=active]:border-navy-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-navy dark:hover:text-navy-200"
           >
             <Calendar className="h-3.5 w-3.5 shrink-0" />
             Tratamentos ({treatments.length})
           </TabsTrigger>
           <TabsTrigger 
             value="consentimentos" 
-            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-indigo-600 data-[state=active]:text-white dark:data-[state=active]:bg-indigo-500/20 dark:data-[state=active]:text-indigo-400 border border-transparent data-[state=active]:border-indigo-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400"
+            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-navy data-[state=active]:text-white dark:data-[state=active]:bg-navy-500/20 dark:data-[state=active]:text-navy-200 border border-transparent data-[state=active]:border-navy-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-navy dark:hover:text-navy-200"
           >
             <Shield className="h-3.5 w-3.5 shrink-0" />
             Consentimentos ({consentLogs.length})
@@ -338,8 +338,8 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
           <div className="space-y-4 pb-8">
             {records.length === 0 && (
               <div className="text-center py-16 bg-card/20 backdrop-blur-sm rounded-3xl border border-border/40 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-4">
-                  <FileText className="h-6 w-6 text-indigo-500" />
+                <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center mb-4">
+                  <FileText className="h-6 w-6 text-teal-500" />
                 </div>
                 <p className="text-sm font-bold text-foreground">Nenhum registro clínico ainda</p>
                 <p className="text-xs text-muted-foreground mt-1">Registre o histórico de atendimentos do paciente</p>
@@ -357,9 +357,9 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
               })
 
               return (
-                <Card key={r.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-indigo-500/25 hover:shadow-md hover:shadow-indigo-500/[0.01] rounded-2xl group relative pl-3">
+                <Card key={r.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-teal-500/25 hover:shadow-md hover:shadow-teal-500/[0.01] rounded-2xl group relative pl-3">
                   {/* Left accent color bar */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 to-violet-600 rounded-l-2xl" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-navy to-teal rounded-l-2xl" />
                   
                   <button
                     className="w-full text-left focus-visible:outline-none cursor-pointer"
@@ -368,13 +368,13 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
                     <CardHeader className="pb-3.5 p-5">
                       <div className="flex items-center justify-between gap-4">
                         <div className="space-y-1.5 min-w-0">
-                          <CardTitle className="text-sm md:text-base font-extrabold text-foreground group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors capitalize flex flex-wrap items-center gap-1.5 leading-tight">
+                          <CardTitle className="text-sm md:text-base font-extrabold text-foreground group-hover:text-teal dark:group-hover:text-teal transition-colors capitalize flex flex-wrap items-center gap-1.5 leading-tight">
                             <span>{formattedDate}</span>
                             <span className="text-[11px] md:text-xs font-semibold text-muted-foreground lowercase">({weekday})</span>
                           </CardTitle>
                           {r.profissional && (
                             <p className="text-[10px] md:text-xs text-muted-foreground font-bold flex items-center gap-1.5 leading-tight">
-                              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
                               Profissional: {r.profissional.nome}
                             </p>
                           )}
@@ -382,7 +382,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
                         <div className="w-8 h-8 rounded-xl bg-muted/40 dark:bg-zinc-900/60 border border-border/10 flex items-center justify-center shrink-0">
                           <ChevronRight className={cn(
                             'h-4 w-4 text-muted-foreground transition-transform duration-300',
-                            activeRecord === r.id && 'rotate-90 text-indigo-500'
+                            activeRecord === r.id && 'rotate-90 text-teal'
                           )} />
                         </div>
                       </div>
@@ -393,26 +393,26 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
                     <CardContent className="border-t border-border/10 bg-muted/10 dark:bg-zinc-900/10 p-5 text-xs space-y-4 font-medium leading-relaxed">
                       {loadingRecord ? (
                         <div className="flex items-center gap-2 text-muted-foreground justify-center py-4">
-                          <Loader2 className="w-4 h-4 animate-spin text-indigo-500" />
+                          <Loader2 className="w-4 h-4 animate-spin text-teal" />
                           <span>Carregando detalhes clínicos...</span>
                         </div>
                       ) : recordContent ? (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
                           {(recordContent as { queixaPrincipal?: string }).queixaPrincipal && (
                             <div className="space-y-1.5 p-3.5 rounded-xl bg-white/40 dark:bg-black/10 border border-border/20">
-                              <span className="text-indigo-600 dark:text-indigo-400 font-extrabold uppercase text-[10px] tracking-wider block leading-normal">Queixa Principal</span>
+                              <span className="text-navy dark:text-teal font-extrabold uppercase text-[10px] tracking-wider block leading-normal">Queixa Principal</span>
                               <p className="text-foreground/90 font-semibold">{(recordContent as { queixaPrincipal: string }).queixaPrincipal}</p>
                             </div>
                           )}
                           {(recordContent as { hipoteseDiagnostica?: string }).hipoteseDiagnostica && (
                             <div className="space-y-1.5 p-3.5 rounded-xl bg-white/40 dark:bg-black/10 border border-border/20">
-                              <span className="text-violet-600 dark:text-violet-400 font-extrabold uppercase text-[10px] tracking-wider block leading-normal">Hipótese Diagnóstica</span>
+                              <span className="text-gold-600 dark:text-gold-400 font-extrabold uppercase text-[10px] tracking-wider block leading-normal">Hipótese Diagnóstica</span>
                               <p className="text-foreground/90 font-semibold">{(recordContent as { hipoteseDiagnostica: string }).hipoteseDiagnostica}</p>
                             </div>
                           )}
                           {(recordContent as { planoTratamento?: string }).planoTratamento && (
                             <div className="space-y-1.5 p-3.5 rounded-xl bg-white/40 dark:bg-black/10 border border-border/20">
-                              <span className="text-cyan-600 dark:text-cyan-400 font-extrabold uppercase text-[10px] tracking-wider block leading-normal">Plano de Tratamento</span>
+                              <span className="text-teal-600 dark:text-teal-400 font-extrabold uppercase text-[10px] tracking-wider block leading-normal">Plano de Tratamento</span>
                               <p className="text-foreground/90 font-semibold">{(recordContent as { planoTratamento: string }).planoTratamento}</p>
                             </div>
                           )}
@@ -433,29 +433,29 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
           <div className="space-y-4 pb-8">
             {anamneses.length === 0 && (
               <div className="text-center py-16 bg-card/20 backdrop-blur-sm rounded-3xl border border-border/40 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
-                  <ClipboardList className="h-6 w-6 text-emerald-500" />
+                <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center mb-4">
+                  <ClipboardList className="h-6 w-6 text-teal-500" />
                 </div>
                 <p className="text-sm font-bold text-foreground">Nenhuma anamnese preenchida ainda</p>
                 <p className="text-xs text-muted-foreground mt-1">Fichas e questionários de saúde do paciente</p>
               </div>
             )}
             {anamneses.map(a => (
-              <Card key={a.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-emerald-500/25 hover:shadow-md hover:shadow-emerald-500/[0.01] rounded-2xl group relative pl-3">
+              <Card key={a.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-teal-500/25 hover:shadow-md hover:shadow-teal-500/[0.01] rounded-2xl group relative pl-3">
                 {/* Left accent color bar */}
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500 to-teal-600 rounded-l-2xl" />
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-teal to-teal-600 rounded-l-2xl" />
 
                 <CardContent className="p-5 text-xs space-y-3 font-semibold">
                   <div className="flex items-center justify-between gap-3 flex-wrap">
                     <span className="font-extrabold text-sm text-foreground/90 flex items-center gap-1.5 leading-tight">
-                      <Award className="w-4 h-4 text-emerald-500" />
+                      <Award className="w-4 h-4 text-teal-500" />
                       Ficha de Anamnese Clínico-Estética
                     </span>
                     {a.assinadoEm && (
-                      <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold shadow-sm relative overflow-hidden select-none leading-tight">
+                      <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 text-[10px] font-bold shadow-sm relative overflow-hidden select-none leading-tight">
                         <span className="relative flex h-1.5 w-1.5 shrink-0">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-teal-500"></span>
                         </span>
                         Assinada
                       </span>
@@ -476,7 +476,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 rounded-xl border border-indigo-500/20 bg-indigo-500/5 hover:bg-indigo-600 hover:text-white transition-all duration-300 text-xs font-bold text-indigo-600 dark:text-indigo-400 shadow-sm hover:shadow-indigo-500/10 cursor-pointer"
+                      className="h-8 rounded-xl border border-teal/20 bg-teal-500/5 hover:bg-teal hover:text-white transition-all duration-300 text-xs font-bold text-teal-600 dark:text-teal-400 shadow-sm hover:shadow-teal/10 cursor-pointer"
                       onClick={() => window.open(`/api/clinica/anamnese/${a.id}`, '_blank')}
                     >
                       Visualizar questionário completo →
@@ -493,8 +493,8 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
           <div className="space-y-4 pb-8">
             {treatments.length === 0 && (
               <div className="text-center py-16 bg-card/20 backdrop-blur-sm rounded-3xl border border-border/40 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-4">
-                  <Calendar className="h-6 w-6 text-rose-500" />
+                <div className="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center mb-4">
+                  <Calendar className="h-6 w-6 text-gold" />
                 </div>
                 <p className="text-sm font-bold text-foreground">Nenhum tratamento em andamento</p>
                 <p className="text-xs text-muted-foreground mt-1">Planos e cronogramas de sessões estéticas del paciente</p>
@@ -503,9 +503,9 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
             {treatments.map(t => {
               const percent = Math.min(100, Math.round((t.sessoesRealizadas / t.sessoesPrevistas) * 100))
               return (
-                <Card key={t.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-rose-500/25 hover:shadow-md hover:shadow-rose-500/[0.01] rounded-2xl group relative pl-3">
+                <Card key={t.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-gold-500/25 hover:shadow-md hover:shadow-gold-500/[0.01] rounded-2xl group relative pl-3">
                   {/* Left accent color bar */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-rose-500 to-pink-600 rounded-l-2xl" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gold to-gold-600 rounded-l-2xl" />
                   
                   <CardContent className="p-5 space-y-4">
                     <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -519,11 +519,11 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
 
                     <div className="flex items-center gap-3 text-[10px] md:text-xs text-muted-foreground font-semibold flex-wrap">
                       <span className="flex items-center gap-1.5 bg-muted/60 dark:bg-zinc-900/60 border border-border/15 px-2.5 py-1 rounded-lg leading-tight">
-                        <Clock className="h-3.5 w-3.5 text-rose-500 shrink-0" />
+                        <Clock className="h-3.5 w-3.5 text-gold shrink-0" />
                         Sessões: {t.sessoesRealizadas}/{t.sessoesPrevistas} realizadas
                       </span>
                       <span className="flex items-center gap-1.5 bg-muted/60 dark:bg-zinc-900/60 border border-border/15 px-2.5 py-1 rounded-lg leading-tight">
-                        <Calendar className="h-3.5 w-3.5 text-rose-500 shrink-0" />
+                        <Calendar className="h-3.5 w-3.5 text-gold shrink-0" />
                         Início: {new Date(t.createdAt).toLocaleDateString('pt-BR')}
                       </span>
                     </div>
@@ -536,7 +536,7 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
                       </div>
                       <div className="w-full h-2 rounded-full bg-muted/50 dark:bg-zinc-800/40 overflow-hidden border border-border/10">
                         <div 
-                          className="h-full rounded-full bg-gradient-to-r from-rose-500 to-pink-500 shadow-sm shadow-rose-500/20 transition-all duration-500" 
+                          className="h-full rounded-full bg-gradient-to-r from-navy to-gold shadow-sm shadow-gold-500/20 transition-all duration-500" 
                           style={{ width: `${percent}%` }}
                         />
                       </div>
@@ -582,17 +582,17 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
           <div className="space-y-4 pb-8">
             {consentLogs.length === 0 && (
               <div className="text-center py-16 bg-card/20 backdrop-blur-sm rounded-3xl border border-border/40 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-4">
-                  <Shield className="h-6 w-6 text-indigo-500" />
+                <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center mb-4">
+                  <Shield className="h-6 w-6 text-teal-500" />
                 </div>
                 <p className="text-sm font-bold text-foreground">Nenhum consentimento ativo</p>
                 <p className="text-xs text-muted-foreground mt-1">Termos de privacidade LGPD e imagem do paciente</p>
               </div>
             )}
             {consentLogs.map(c => (
-              <Card key={c.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-violet-500/25 hover:shadow-md hover:shadow-violet-500/[0.01] rounded-2xl group relative pl-3">
+              <Card key={c.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-teal-500/25 hover:shadow-md hover:shadow-teal-500/[0.01] rounded-2xl group relative pl-3">
                 {/* Left accent color bar */}
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-500 to-cyan-500 rounded-l-2xl" />
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-navy to-teal rounded-l-2xl" />
 
                 <CardContent className="p-5 flex items-center justify-between text-xs font-semibold gap-4 flex-wrap">
                   <div className="space-y-1 min-w-0 flex-1">
