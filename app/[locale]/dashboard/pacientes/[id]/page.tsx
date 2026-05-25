@@ -4,8 +4,9 @@ import { notFound, redirect } from 'next/navigation'
 import { logMedicalAccess } from '@/lib/audit/medical-access-log'
 import { PacienteHeader } from '@/components/pacientes/paciente-header'
 import { PacienteTabs } from '@/components/pacientes/paciente-tabs'
-import { Syringe, Calendar } from 'lucide-react'
+import { Syringe, Calendar, Clock } from 'lucide-react'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -77,22 +78,36 @@ export default async function PacienteOverviewPage({
 
   const STATUS_LABELS: Record<string, string> = {
     AVALIACAO: 'Avaliação',
-    EM_TRATAMENTO: 'Em tratamento',
+    ORCAMENTO_ENVIADO: 'Orçamento Enviado',
+    AGENDADO: 'Agendado',
+    EM_ANDAMENTO: 'Em Andamento',
+    EM_TRATAMENTO: 'Em Tratamento',
+    FINALIZADO: 'Finalizado',
     CONCLUIDO: 'Concluído',
     PAUSADO: 'Pausado',
+    RETORNO: 'Retorno',
     CANCELADO: 'Cancelado',
   }
 
   const STATUS_COLORS: Record<string, string> = {
-    AVALIACAO: 'bg-blue-50 text-blue-700 border-blue-200',
-    EM_TRATAMENTO: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    CONCLUIDO: 'bg-gray-100 text-gray-600 border-gray-200',
-    PAUSADO: 'bg-amber-50 text-amber-700 border-amber-200',
-    CANCELADO: 'bg-red-50 text-red-600 border-red-200',
+    AVALIACAO: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    ORCAMENTO_ENVIADO: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    AGENDADO: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    EM_ANDAMENTO: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    EM_TRATAMENTO: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    FINALIZADO: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    CONCLUIDO: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    PAUSADO: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    RETORNO: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
+    CANCELADO: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 px-2.5 py-0.5 rounded-full border text-[10px] tracking-wide leading-tight',
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6 p-4 md:p-6 relative overflow-visible">
+      {/* Premium multi-layered decorative gradient glows for branded aesthetic */}
+      <div className="absolute top-0 right-0 w-[550px] h-[350px] bg-gradient-to-bl from-teal-500/10 via-navy-500/3 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-10 left-10 w-[350px] h-[350px] bg-gradient-to-tr from-gold-500/5 via-navy-500/2 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
+
       <PacienteHeader
         patient={serialize(patient)}
         counts={{
@@ -104,30 +119,49 @@ export default async function PacienteOverviewPage({
 
       <PacienteTabs patientId={pacienteId} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
         {/* Próxima sessão */}
-        <div className="lg:col-span-1">
-          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+        <div className="lg:col-span-1 flex flex-col">
+          <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-wider leading-none mb-3">
             Próxima sessão
           </h2>
           {proximaSessao ? (
-            <div className="rounded-xl border border-[#489FB5]/30 bg-[#489FB5]/5 p-4">
-              <p className="text-sm font-medium text-foreground">
-                {new Date(proximaSessao.dataAgendada).toLocaleDateString('pt-BR', {
-                  weekday: 'long', day: 'numeric', month: 'long',
-                })}
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {new Date(proximaSessao.dataAgendada).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                {proximaSessao.profissional && ` · ${proximaSessao.profissional.nome}`}
-                {proximaSessao.sala && ` · ${proximaSessao.sala.nome}`}
-              </p>
+            <div className="rounded-2xl border border-teal-500/25 bg-card/45 backdrop-blur-sm p-5 relative overflow-hidden pl-5 group shadow-sm transition-all hover:shadow-md hover:border-teal-500/40 duration-300 flex-1 flex flex-col justify-center min-h-[120px]">
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-teal to-teal-600" />
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal shrink-0 shadow-inner">
+                  <Calendar className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm md:text-base font-black text-foreground capitalize leading-tight">
+                    {new Date(proximaSessao.dataAgendada).toLocaleDateString('pt-BR', {
+                      weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
+                    })}
+                  </p>
+                  <p className="text-[11px] md:text-xs text-muted-foreground font-semibold mt-1 leading-normal flex items-center gap-1.5 flex-wrap">
+                    <Clock className="w-3.5 h-3.5 text-teal shrink-0" />
+                    <span>{new Date(proximaSessao.dataAgendada).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                    {proximaSessao.profissional && (
+                      <>
+                        <span>·</span>
+                        <span>Profissional: <strong className="text-foreground font-bold">{proximaSessao.profissional.nome}</strong></span>
+                      </>
+                    )}
+                    {proximaSessao.sala && (
+                      <>
+                        <span>·</span>
+                        <span>Sala: <strong className="text-foreground font-bold">{proximaSessao.sala.nome}</strong></span>
+                      </>
+                    )}
+                  </p>
+                </div>
+              </div>
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-border p-6 text-center">
-              <Calendar className="w-6 h-6 text-muted-foreground/40 mx-auto mb-2" />
-              <p className="text-xs text-muted-foreground">Sem sessão agendada</p>
-              <Link href="/dashboard/agenda" className="text-xs text-[#489FB5] hover:underline mt-1 block">
+            <div className="rounded-2xl border border-dashed border-border/60 bg-card/20 backdrop-blur-sm p-6 text-center shadow-inner flex flex-col items-center justify-center min-h-[120px] flex-1">
+              <Calendar className="w-6 h-6 text-muted-foreground/30 mb-2" />
+              <p className="text-xs text-muted-foreground font-bold">Sem sessão agendada</p>
+              <Link href="/dashboard/agenda" className="text-xs font-bold text-teal hover:underline hover:text-teal-600 mt-1 block">
                 Agendar sessão →
               </Link>
             </div>
@@ -135,28 +169,29 @@ export default async function PacienteOverviewPage({
         </div>
 
         {/* Tratamentos recentes */}
-        <div className="lg:col-span-1">
-          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+        <div className="lg:col-span-1 flex flex-col">
+          <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-wider leading-none mb-3">
             Tratamentos recentes
           </h2>
           {recentTreatments.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border p-6 text-center">
-              <Syringe className="w-6 h-6 text-muted-foreground/40 mx-auto mb-2" />
-              <p className="text-xs text-muted-foreground">Nenhum tratamento ainda</p>
+            <div className="rounded-2xl border border-dashed border-border/60 bg-card/20 backdrop-blur-sm p-6 text-center shadow-inner flex flex-col items-center justify-center min-h-[120px] flex-1">
+              <Syringe className="w-6 h-6 text-muted-foreground/30 mb-2" />
+              <p className="text-xs text-muted-foreground font-bold">Nenhum tratamento em andamento</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3 flex-1">
               {recentTreatments.map(t => (
-                <div key={t.id} className="flex items-center gap-3 rounded-lg border border-border/50 bg-card px-3 py-2.5">
+                <div key={t.id} className="flex items-center justify-between gap-4 rounded-2xl border border-border/40 bg-card/45 backdrop-blur-sm p-4 hover:border-gold-500/25 transition-all duration-300 hover:shadow-sm relative overflow-hidden pl-5">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gold to-gold-600" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-foreground truncate">
+                    <p className="text-sm font-extrabold text-foreground truncate leading-tight">
                       {t.descricaoCustomizada ?? t.tipoTratamento}
                     </p>
-                    <p className="text-[10px] text-muted-foreground">
-                      {t.sessoesRealizadas}/{t.sessoesPrevistas} sessões
+                    <p className="text-xs text-muted-foreground font-semibold mt-1 leading-normal">
+                      Sessões: {t.sessoesRealizadas}/{t.sessoesPrevistas} realizadas
                     </p>
                   </div>
-                  <span className={`text-[10px] font-medium rounded-full px-2 py-0.5 border ${STATUS_COLORS[t.status] ?? 'bg-gray-100 text-gray-600'}`}>
+                  <span className={cn('shrink-0 border', STATUS_COLORS[t.status] ?? 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20 font-bold px-2.5 py-0.5 rounded-full text-[10px] tracking-wide leading-tight')}>
                     {STATUS_LABELS[t.status] ?? t.status}
                   </span>
                 </div>

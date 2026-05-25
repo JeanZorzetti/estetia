@@ -20,7 +20,7 @@ export function PacienteTabs({ patientId }: PacienteTabsProps) {
   const pathname = usePathname()
 
   return (
-    <div className="flex items-center gap-1 border-b border-border">
+    <div className="mb-6 bg-muted/20 dark:bg-zinc-900/40 p-1 rounded-2xl border border-border/40 flex flex-wrap gap-1 w-fit max-w-full shadow-inner backdrop-blur-md relative z-10">
       {TABS.map(tab => {
         const href = tab.href(patientId)
         // Strip locale prefix for matching
@@ -34,10 +34,10 @@ export function PacienteTabs({ patientId }: PacienteTabsProps) {
             key={tab.label}
             href={href}
             className={cn(
-              'px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 -mb-px transition-colors',
+              'rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 border border-transparent shadow-sm flex items-center gap-1.5 cursor-pointer',
               isActive
-                ? 'border-[#489FB5] text-[#489FB5]'
-                : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                ? 'bg-navy text-white dark:bg-navy-500/20 dark:text-navy-200 border-navy-500/20'
+                : 'text-muted-foreground hover:text-navy dark:hover:text-navy-200'
             )}
           >
             {tab.label}
