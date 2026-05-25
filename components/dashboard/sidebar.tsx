@@ -15,7 +15,7 @@ import {
   MessageCircle, Repeat2, Megaphone,
   DollarSign, BarChart3, ShieldCheck,
   Users, UserCheck, DoorOpen, Plug, CreditCard,
-  Building2,
+  Building2, FileHeart,
   // Gating icon
   Lock,
   // UI & account icons
@@ -50,6 +50,7 @@ const navSections: NavSection[] = [
       { title: 'Agenda',        href: '/dashboard/agenda',             icon: CalendarDays },
       { title: 'Pacientes',     href: '/dashboard/pacientes',          icon: Heart },
       { title: 'Prontuários',   href: '/dashboard/prontuarios',        icon: ClipboardList },
+      { title: 'Anamneses',     href: '/dashboard/anamnese',           icon: FileHeart },
       { title: 'Procedimentos', href: '/dashboard/procedimentos',      icon: Syringe },
       { title: 'Fotos',         href: '/dashboard/fotos',              icon: Camera },
       { title: 'Pacotes',       href: '/dashboard/pacotes',            icon: Package },
