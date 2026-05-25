@@ -388,29 +388,11 @@
 
   /* Custom scrollbar for chat */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: hsl(var(--muted));
-    border-radius: 4px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground) / 0.3);
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-button {
-    display: none;
+    width: 0px;
   }
 
   .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: hsl(var(--muted)) transparent;
+    scrollbar-width: none;
   }
 
   /* Glass morphism effect */
