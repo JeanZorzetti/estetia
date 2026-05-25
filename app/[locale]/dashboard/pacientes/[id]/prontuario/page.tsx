@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import { logMedicalAccess } from '@/lib/audit/medical-access-log'
 import { headers } from 'next/headers'
 import { ProntuarioClient } from './prontuario-client'
+import { PacienteTabs } from '@/components/pacientes/paciente-tabs'
 
 export const dynamic = 'force-dynamic'
 
@@ -119,13 +120,16 @@ export default async function ProntuarioPage({
     JSON.parse(JSON.stringify(obj))
 
   return (
-    <ProntuarioClient
-      patient={serialize(patient)}
-      records={serialize(records)}
-      anamneses={serialize(anamneses)}
-      treatments={serialize(treatments)}
-      consentLogs={serialize(consentLogs)}
-      canEdit={user.orgRole !== 'MEMBER'}
-    />
+    <div className="flex flex-col">
+      <PacienteTabs patientId={pacienteId} />
+      <ProntuarioClient
+        patient={serialize(patient)}
+        records={serialize(records)}
+        anamneses={serialize(anamneses)}
+        treatments={serialize(treatments)}
+        consentLogs={serialize(consentLogs)}
+        canEdit={user.orgRole !== 'MEMBER'}
+      />
+    </div>
   )
 }
