@@ -82,7 +82,8 @@ export function SessionDrawer({ session, open, onOpenChange, onUpdated, onDelete
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto bg-card/95 backdrop-blur-md border-l border-border/40 relative shadow-2xl p-6">
+      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto bg-card/95 backdrop-blur-md border-l border-border/40 shadow-2xl p-6">
+
         {/* Ambient mesh glow decoration at the top right */}
         <div className="absolute top-0 right-0 w-[300px] h-[200px] bg-gradient-to-bl from-indigo-500/[0.04] via-transparent to-transparent rounded-full blur-3xl pointer-events-none z-0" />
 
