@@ -4,7 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import { logMedicalAccess } from '@/lib/audit/medical-access-log'
 import { PacienteHeader } from '@/components/pacientes/paciente-header'
 import { PacienteTabs } from '@/components/pacientes/paciente-tabs'
-import { Heart, ClipboardList, Syringe, Camera, Calendar } from 'lucide-react'
+import { Syringe, Calendar } from 'lucide-react'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -104,7 +104,7 @@ export default async function PacienteOverviewPage({
 
       <PacienteTabs patientId={pacienteId} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Próxima sessão */}
         <div className="lg:col-span-1">
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
@@ -132,30 +132,6 @@ export default async function PacienteOverviewPage({
               </Link>
             </div>
           )}
-        </div>
-
-        {/* Atalhos */}
-        <div className="lg:col-span-1">
-          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-            Ações rápidas
-          </h2>
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { label: 'Prontuário', href: `/dashboard/pacientes/${pacienteId}/prontuario`, icon: ClipboardList, color: 'text-[#0A1F3D]', bg: 'bg-[#0A1F3D]/5 hover:bg-[#0A1F3D]/10 border-[#0A1F3D]/10' },
-              { label: 'Anamnese', href: `/dashboard/pacientes/${pacienteId}/anamnese`, icon: Heart, color: 'text-[#E05A4E]', bg: 'bg-[#E05A4E]/5 hover:bg-[#E05A4E]/10 border-[#E05A4E]/10' },
-              { label: 'Agendar', href: '/dashboard/agenda', icon: Calendar, color: 'text-[#489FB5]', bg: 'bg-[#489FB5]/5 hover:bg-[#489FB5]/10 border-[#489FB5]/10' },
-              { label: 'Fotos', href: `/dashboard/pacientes/${pacienteId}/fotos`, icon: Camera, color: 'text-[#C5A059]', bg: 'bg-[#C5A059]/5 hover:bg-[#C5A059]/10 border-[#C5A059]/10' },
-            ].map(({ label, href, icon: Icon, color, bg }) => (
-              <Link
-                key={label}
-                href={href}
-                className={`flex flex-col items-center gap-1.5 rounded-lg border px-3 py-4 text-center transition-colors ${bg}`}
-              >
-                <Icon className={`w-5 h-5 ${color}`} />
-                <span className={`text-xs font-medium ${color}`}>{label}</span>
-              </Link>
-            ))}
-          </div>
         </div>
 
         {/* Tratamentos recentes */}

@@ -73,7 +73,7 @@ export default async function DashboardLayout({
           <MobileAppBar />
 
           {/* Page content */}
-          <main className="flex-1 overflow-y-auto pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] md:p-4 md:pb-4 lg:p-6 lg:pb-6">
+          <main className="custom-scrollbar flex-1 overflow-y-auto pb-[calc(3.5rem+env(safe-area-inset-bottom)+1rem)] md:p-4 md:pb-4 lg:p-6 lg:pb-6">
             {children}
           </main>
         </div>

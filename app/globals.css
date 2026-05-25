@@ -404,6 +404,15 @@
     background: hsl(var(--muted-foreground) / 0.3);
   }
 
+  .custom-scrollbar::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
   /* Glass morphism effect */
   .glass-effect {
     background: rgba(255, 255, 255, 0.05);
