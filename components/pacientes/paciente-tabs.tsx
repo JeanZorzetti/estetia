@@ -3,27 +3,28 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { LayoutDashboard, FileText, ClipboardList, Calendar, Camera, Shield } from 'lucide-react'
 
 interface PacienteTabsProps {
   patientId: string
 }
 
 const TABS = [
-  { label: 'Visão Geral', href: (id: string) => `/dashboard/pacientes/${id}`, exact: true },
-  { label: 'Prontuário', href: (id: string) => `/dashboard/pacientes/${id}/prontuario`, exact: false },
-  { label: 'Anamneses', href: (id: string) => `/dashboard/pacientes/${id}/anamnese`, exact: false },
-  { label: 'Tratamentos', href: (id: string) => `/dashboard/pacientes/${id}/tratamentos`, exact: false },
-  { label: 'Fotos', href: (id: string) => `/dashboard/pacientes/${id}/fotos`, exact: false },
+  { label: 'Visão Geral', href: (id: string) => `/dashboard/pacientes/${id}`, exact: true, icon: LayoutDashboard },
+  { label: 'Prontuário', href: (id: string) => `/dashboard/pacientes/${id}/prontuario`, exact: false, icon: FileText },
+  { label: 'Anamnese', href: (id: string) => `/dashboard/pacientes/${id}/anamnese`, exact: false, icon: ClipboardList },
+  { label: 'Tratamentos', href: (id: string) => `/dashboard/pacientes/${id}/tratamentos`, exact: false, icon: Calendar },
+  { label: 'Fotos', href: (id: string) => `/dashboard/pacientes/${id}/fotos`, exact: false, icon: Camera },
+  { label: 'Consentimentos', href: (id: string) => `/dashboard/pacientes/${id}/consentimentos`, exact: false, icon: Shield },
 ]
 
 export function PacienteTabs({ patientId }: PacienteTabsProps) {
   const pathname = usePathname()
 
   return (
-    <div className="mb-6 bg-muted/20 dark:bg-zinc-900/40 p-1 rounded-2xl border border-border/40 flex flex-wrap gap-1 w-fit max-w-full shadow-inner backdrop-blur-md relative z-10">
+    <div className="bg-muted/20 dark:bg-zinc-900/40 p-1 rounded-2xl border border-border/40 flex flex-wrap gap-1 w-fit max-w-full shadow-inner backdrop-blur-md relative z-10">
       {TABS.map(tab => {
         const href = tab.href(patientId)
-        // Strip locale prefix for matching
         const cleanPath = pathname.replace(/^\/(en|pt-BR)/, '')
         const isActive = tab.exact
           ? cleanPath === href
@@ -40,6 +41,7 @@ export function PacienteTabs({ patientId }: PacienteTabsProps) {
                 : 'text-muted-foreground hover:text-navy dark:hover:text-navy-200'
             )}
           >
+            <tab.icon className="h-3.5 w-3.5 shrink-0" />
             {tab.label}
           </Link>
         )

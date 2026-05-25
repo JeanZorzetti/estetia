@@ -2,12 +2,11 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { notFound, redirect } from 'next/navigation'
 import { logMedicalAccess } from '@/lib/audit/medical-access-log'
-import { ProntuarioTimeline } from '@/components/pacientes/prontuario/prontuario-timeline'
-import { MedicalAlertPanel } from '@/components/pacientes/shared/medical-alert-panel'
+import { FotosGridClient } from '@/components/pacientes/fotos/fotos-grid-client'
 
 export const dynamic = 'force-dynamic'
 
-export default async function ProntuarioPage({
+export default async function FotosPage({
   params,
 }: {
   params: Promise<{ locale: string; id: string }>
@@ -19,31 +18,28 @@ export default async function ProntuarioPage({
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    select: { id: true, organizationId: true },
+    select: { id: true, organizationId: true, orgRole: true },
   })
   if (!user?.organizationId) redirect('/login')
 
   const patient = await prisma.patient.findFirst({
     where: { id: pacienteId, organizationId: user.organizationId },
-    select: { id: true, medicacoesUso: true, contraindicacoes: true },
+    select: { id: true },
   })
   if (!patient) notFound()
 
-  const records = await prisma.medicalRecord.findMany({
-    where: { pacienteId, organizationId: user.organizationId },
+  const fotos = await prisma.patientPhoto.findMany({
+    where: { patientId: pacienteId, organizationId: user.organizationId },
     select: {
       id: true,
-      dataAtendimento: true,
-      queixaPrincipal: true,
-      hipoteseDiagnostica: true,
-      planoTratamento: true,
-      historiaClinica: true,
-      avaliacaoFisica: true,
-      profissional: { select: { nome: true } },
+      url: true,
+      tipo: true,
+      areaCorpo: true,
+      anguloPadronizado: true,
       createdAt: true,
+      consentimentoConcedido: true,
     },
-    orderBy: { dataAtendimento: 'desc' },
-    take: 20,
+    orderBy: { createdAt: 'desc' },
   })
 
   await logMedicalAccess({
@@ -53,18 +49,22 @@ export default async function ProntuarioPage({
     recordType: 'Patient',
     recordId: pacienteId,
     action: 'VIEW',
-    metadata: { page: 'prontuario' },
+    metadata: { page: 'fotos' },
   })
 
   const serialize = <T,>(v: T): T => JSON.parse(JSON.stringify(v))
 
   return (
-    <div className="flex flex-col gap-6">
-      <MedicalAlertPanel
-        medicacoesUso={patient.medicacoesUso}
-        contraindicacoes={patient.contraindicacoes}
+    <div className="flex flex-col gap-4">
+      <div>
+        <h2 className="text-sm font-black text-foreground">Fotos Clínicas</h2>
+        <p className="text-xs text-muted-foreground mt-0.5">Registro fotográfico de evolução dos tratamentos</p>
+      </div>
+      <FotosGridClient
+        fotos={serialize(fotos)}
+        patientId={pacienteId}
+        canUpload={user.orgRole !== 'MEMBER'}
       />
-      <ProntuarioTimeline records={serialize(records)} />
     </div>
   )
 }
