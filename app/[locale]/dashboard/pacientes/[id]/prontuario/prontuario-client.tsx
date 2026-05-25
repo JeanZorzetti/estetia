@@ -8,10 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Calendar, FileText, ClipboardList, Shield,
-  Phone, Mail, AlertTriangle, CheckCircle, Clock,
-  ChevronRight,
+  Phone, Mail, AlertTriangle, Clock,
+  ChevronRight, Loader2, ChevronLeft, Award, Sparkles
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -90,12 +91,14 @@ const CONSENT_LABELS: Record<string, string> = {
 }
 
 const STATUS_BADGE: Record<string, string> = {
-  AVALIACAO: 'bg-blue-100 text-blue-700',
-  ORCAMENTO_ENVIADO: 'bg-yellow-100 text-yellow-700',
-  AGENDADO: 'bg-purple-100 text-purple-700',
-  EM_ANDAMENTO: 'bg-rose-100 text-rose-700',
-  FINALIZADO: 'bg-green-100 text-green-700',
-  RETORNO: 'bg-cyan-100 text-cyan-700',
+  AVALIACAO: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 font-bold px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wide leading-none',
+  ORCAMENTO_ENVIADO: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 font-bold px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wide leading-none',
+  AGENDADO: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20 font-bold px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wide leading-none',
+  EM_ANDAMENTO: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 font-bold px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wide leading-none',
+  EM_TRATAMENTO: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 font-bold px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wide leading-none',
+  FINALIZADO: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 font-bold px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wide leading-none',
+  CONCLUIDO: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 font-bold px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wide leading-none',
+  RETORNO: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20 font-bold px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wide leading-none',
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -106,13 +109,18 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
   const [loadingRecord, setLoadingRecord] = useState(false)
 
   const loadRecord = async (id: string) => {
-    if (activeRecord === id) { setActiveRecord(null); return }
+    if (activeRecord === id) {
+      setActiveRecord(null)
+      return
+    }
     setLoadingRecord(true)
     setActiveRecord(id)
     try {
       const res = await fetch(`/api/clinica/prontuario/${id}`)
       const data = await res.json()
       setRecordContent(data.record)
+    } catch (e) {
+      console.error(e)
     } finally {
       setLoadingRecord(false)
     }
@@ -122,126 +130,217 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
     ? Math.floor((Date.now() - new Date(patient.dataNascimento).getTime()) / (365.25 * 24 * 3600 * 1000))
     : null
 
+  const initials = patient.nome.trim().split(' ').map(n => n.charAt(0)).slice(0, 2).join('').toUpperCase()
+
   return (
-    <div className="flex h-full flex-col gap-6 p-4 md:p-6">
-      {/* Patient header */}
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="text-xl font-semibold">{patient.nome}</h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            {age && <span>{age} anos</span>}
-            {patient.telefone && (
-              <span className="flex items-center gap-1">
-                <Phone className="h-3.5 w-3.5" />{patient.telefone}
-              </span>
-            )}
-            {patient.email && (
-              <span className="flex items-center gap-1">
-                <Mail className="h-3.5 w-3.5" />{patient.email}
-              </span>
-            )}
+    <div className="flex h-full flex-col gap-6 p-4 md:p-6 relative overflow-hidden min-h-screen">
+      {/* Premium multi-layered decorative gradient glows */}
+      <div className="absolute top-0 right-0 w-[550px] h-[350px] bg-gradient-to-bl from-indigo-500/10 via-violet-500/3 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
+      <div className="absolute bottom-10 left-10 w-[350px] h-[350px] bg-gradient-to-tr from-cyan-500/5 via-blue-500/2 to-transparent rounded-full blur-3xl pointer-events-none z-0" />
+
+      {/* Breadcrumb Navigation */}
+      <div className="relative z-10 flex items-center justify-between">
+        <Link
+          href="/dashboard/pacientes"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Voltar para Pacientes
+        </Link>
+        <span className="flex items-center gap-1 text-[10px] font-bold text-indigo-500 uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/15 px-2.5 py-1 rounded-full shadow-inner select-none">
+          <Sparkles className="w-3 h-3 text-indigo-500 animate-pulse" />
+          Painel Clínico
+        </span>
+      </div>
+
+      {/* Patient header card (Glassmorphism Premium) */}
+      <div className="relative z-10 bg-card/40 dark:bg-zinc-950/40 backdrop-blur-md border border-border/40 rounded-3xl p-6 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden group">
+        <div className="absolute top-0 right-0 w-[250px] h-[150px] bg-gradient-to-bl from-indigo-500/[0.04] via-transparent to-transparent rounded-full blur-2xl pointer-events-none" />
+        
+        <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center w-full md:w-auto">
+          {/* Glowing Avatar */}
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-600 text-white font-extrabold text-2xl flex items-center justify-center shadow-lg shadow-indigo-500/15 ring-2 ring-indigo-500/20 dark:ring-indigo-500/10 shrink-0 select-none relative overflow-hidden group-hover:scale-[1.03] transition-transform duration-300">
+            {initials || patient.nome.charAt(0).toUpperCase()}
+            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            {patient.alergias.map(a => (
-              <Badge key={a} className="bg-red-100 text-red-700 text-xs">
-                <AlertTriangle className="mr-1 h-2.5 w-2.5" />{a}
-              </Badge>
-            ))}
-            {patient.tags.map(t => (
-              <Badge key={t} variant="secondary" className="text-xs">{t}</Badge>
-            ))}
+
+          <div className="space-y-2 min-w-0">
+            <h1 className="text-xl font-extrabold tracking-tight text-foreground truncate">{patient.nome}</h1>
+            
+            <div className="flex flex-wrap items-center gap-2.5 text-xs text-muted-foreground font-semibold">
+              {age && (
+                <span className="bg-muted/60 dark:bg-zinc-900/60 border border-border/20 px-2.5 py-0.5 rounded-lg tabular-nums">
+                  {age} anos
+                </span>
+              )}
+              {patient.telefone && (
+                <span className="flex items-center gap-1.5 bg-muted/60 dark:bg-zinc-900/60 border border-border/20 px-2.5 py-0.5 rounded-lg">
+                  <Phone className="h-3.5 w-3.5 text-indigo-500 shrink-0" />
+                  {patient.telefone}
+                </span>
+              )}
+              {patient.email && (
+                <span className="flex items-center gap-1.5 bg-muted/60 dark:bg-zinc-900/60 border border-border/20 px-2.5 py-0.5 rounded-lg truncate max-w-[200px]" title={patient.email}>
+                  <Mail className="h-3.5 w-3.5 text-indigo-500 shrink-0" />
+                  {patient.email}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-wrap gap-1.5 pt-0.5">
+              {patient.alergias.map(a => (
+                <Badge key={a} className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1">
+                  <AlertTriangle className="h-3 w-3 shrink-0" />
+                  {a}
+                </Badge>
+              ))}
+              {patient.tags.map(t => (
+                <Badge key={t} className="bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm">
+                  {t}
+                </Badge>
+              ))}
+            </div>
           </div>
         </div>
+
         {canEdit && (
-          <Button size="sm" className="bg-rose-500 hover:bg-rose-600">
+          <Button size="sm" className="rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/30 px-5 py-2.5 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 shrink-0 w-full md:w-auto flex items-center justify-center gap-2 border border-indigo-400/20 cursor-pointer">
             + Novo Registro
           </Button>
         )}
       </div>
 
-      {/* Alertas clínicos */}
+      {/* Alertas clínicos (Glassmorphism Warning Panel) */}
       {(patient.medicacoesUso.length > 0 || patient.contraindicacoes.length > 0) && (
-        <Card className="border-amber-200 bg-amber-50">
-          <CardContent className="pt-4 text-sm space-y-1">
+        <div className="relative z-10 bg-amber-500/[0.03] dark:bg-amber-500/[0.01] border border-amber-500/20 dark:border-amber-500/10 rounded-2xl p-4 flex gap-4 items-start overflow-hidden shadow-sm backdrop-blur-sm">
+          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 dark:border-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5 shadow-inner">
+            <AlertTriangle className="w-4.5 h-4.5" />
+          </div>
+          <div className="flex-1 space-y-2.5 text-xs">
             {patient.medicacoesUso.length > 0 && (
-              <p><strong>Medicamentos:</strong> {patient.medicacoesUso.join(', ')}</p>
+              <p className="text-foreground/80 leading-relaxed font-semibold">
+                <strong className="text-amber-600 dark:text-amber-400 font-extrabold uppercase text-[9px] tracking-wider block mb-0.5">Medicamentos em uso</strong> 
+                {patient.medicacoesUso.join(', ')}
+              </p>
             )}
             {patient.contraindicacoes.length > 0 && (
-              <p className="text-red-700"><strong>Contraindicações:</strong> {patient.contraindicacoes.join(', ')}</p>
+              <p className="text-red-600 dark:text-red-400 leading-relaxed font-semibold">
+                <strong className="text-red-600 dark:text-red-400 font-extrabold uppercase text-[9px] tracking-wider block mb-0.5">Contraindicações clínicas</strong> 
+                {patient.contraindicacoes.join(', ')}
+              </p>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      <Tabs defaultValue="historico" className="flex-1">
-        <TabsList className="mb-4">
-          <TabsTrigger value="historico">
-            <FileText className="mr-1.5 h-3.5 w-3.5" />
+      {/* Navigation tabs */}
+      <Tabs defaultValue="historico" className="flex-1 flex flex-col relative z-10">
+        <TabsList className="mb-6 bg-muted/20 dark:bg-zinc-900/40 p-1 rounded-2xl border border-border/40 flex flex-wrap gap-1 w-fit max-w-full shadow-inner backdrop-blur-md">
+          <TabsTrigger 
+            value="historico" 
+            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-indigo-600 data-[state=active]:text-white dark:data-[state=active]:bg-indigo-500/20 dark:data-[state=active]:text-indigo-400 border border-transparent data-[state=active]:border-indigo-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400"
+          >
+            <FileText className="h-3.5 w-3.5 shrink-0" />
             Prontuário ({records.length})
           </TabsTrigger>
-          <TabsTrigger value="anamnese">
-            <ClipboardList className="mr-1.5 h-3.5 w-3.5" />
+          <TabsTrigger 
+            value="anamnese" 
+            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-indigo-600 data-[state=active]:text-white dark:data-[state=active]:bg-indigo-500/20 dark:data-[state=active]:text-indigo-400 border border-transparent data-[state=active]:border-indigo-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400"
+          >
+            <ClipboardList className="h-3.5 w-3.5 shrink-0" />
             Anamneses ({anamneses.length})
           </TabsTrigger>
-          <TabsTrigger value="tratamentos">
-            <Calendar className="mr-1.5 h-3.5 w-3.5" />
+          <TabsTrigger 
+            value="tratamentos" 
+            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-indigo-600 data-[state=active]:text-white dark:data-[state=active]:bg-indigo-500/20 dark:data-[state=active]:text-indigo-400 border border-transparent data-[state=active]:border-indigo-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400"
+          >
+            <Calendar className="h-3.5 w-3.5 shrink-0" />
             Tratamentos ({treatments.length})
           </TabsTrigger>
-          <TabsTrigger value="consentimentos">
-            <Shield className="mr-1.5 h-3.5 w-3.5" />
-            Consentimentos
+          <TabsTrigger 
+            value="consentimentos" 
+            className="rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 data-[state=active]:bg-indigo-600 data-[state=active]:text-white dark:data-[state=active]:bg-indigo-500/20 dark:data-[state=active]:text-indigo-400 border border-transparent data-[state=active]:border-indigo-500/20 shadow-sm flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400"
+          >
+            <Shield className="h-3.5 w-3.5 shrink-0" />
+            Consentimentos ({consentLogs.length})
           </TabsTrigger>
         </TabsList>
 
         {/* Prontuário tab */}
-        <TabsContent value="historico">
-          <ScrollArea className="h-[calc(100vh-22rem)]">
-            <div className="space-y-3 pr-4">
+        <TabsContent value="historico" className="flex-1 outline-none">
+          <ScrollArea className="h-[calc(100vh-23rem)]">
+            <div className="space-y-4 pr-4 pb-8">
               {records.length === 0 && (
-                <p className="text-center text-sm text-muted-foreground py-8">
-                  Nenhum registro clínico ainda.
-                </p>
+                <div className="text-center py-16 bg-card/20 backdrop-blur-sm rounded-3xl border border-border/40 flex flex-col items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-4">
+                    <FileText className="h-6 w-6 text-indigo-500" />
+                  </div>
+                  <p className="text-sm font-bold text-foreground">Nenhum registro clínico ainda</p>
+                  <p className="text-xs text-muted-foreground mt-1">Registre o histórico de atendimentos do paciente</p>
+                </div>
               )}
               {records.map(r => (
-                <Card key={r.id} className="overflow-hidden">
+                <Card key={r.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-indigo-500/25 hover:shadow-md hover:shadow-indigo-500/[0.01] rounded-2xl group relative pl-3">
+                  {/* Left accent color bar */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 to-violet-600 rounded-l-2xl" />
+                  
                   <button
-                    className="w-full text-left"
+                    className="w-full text-left focus-visible:outline-none cursor-pointer"
                     onClick={() => loadRecord(r.id)}
                   >
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-sm font-medium">
-                          {new Date(r.dataAtendimento).toLocaleDateString('pt-BR', {
-                            weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
-                          })}
-                        </CardTitle>
-                        <ChevronRight className={cn(
-                          'h-4 w-4 text-muted-foreground transition-transform',
-                          activeRecord === r.id && 'rotate-90'
-                        )} />
+                    <CardHeader className="pb-3.5 p-5">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="space-y-1 min-w-0">
+                          <CardTitle className="text-sm font-extrabold text-foreground group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors truncate capitalize">
+                            {new Date(r.dataAtendimento).toLocaleDateString('pt-BR', {
+                              weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
+                            })}
+                          </CardTitle>
+                          {r.profissional && (
+                            <p className="text-[10px] text-muted-foreground font-bold flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                              Profissional: {r.profissional.nome}
+                            </p>
+                          )}
+                        </div>
+                        <div className="w-8 h-8 rounded-xl bg-muted/40 dark:bg-zinc-900/60 border border-border/10 flex items-center justify-center shrink-0">
+                          <ChevronRight className={cn(
+                            'h-4 w-4 text-muted-foreground transition-transform duration-300',
+                            activeRecord === r.id && 'rotate-90 text-indigo-500'
+                          )} />
+                        </div>
                       </div>
-                      {r.profissional && (
-                        <p className="text-xs text-muted-foreground">{r.profissional.nome}</p>
-                      )}
                     </CardHeader>
                   </button>
 
                   {activeRecord === r.id && (
-                    <CardContent className="border-t bg-gray-50 pt-3 text-sm space-y-2">
+                    <CardContent className="border-t border-border/10 bg-muted/10 dark:bg-zinc-900/10 p-5 text-xs space-y-4 font-medium leading-relaxed">
                       {loadingRecord ? (
-                        <p className="text-muted-foreground">Carregando...</p>
+                        <div className="flex items-center gap-2 text-muted-foreground justify-center py-4">
+                          <Loader2 className="w-4 h-4 animate-spin text-indigo-500" />
+                          <span>Carregando detalhes clínicos...</span>
+                        </div>
                       ) : recordContent ? (
-                        <>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
                           {(recordContent as { queixaPrincipal?: string }).queixaPrincipal && (
-                            <div><strong>Queixa:</strong> {(recordContent as { queixaPrincipal: string }).queixaPrincipal}</div>
+                            <div className="space-y-1.5 p-3.5 rounded-xl bg-white/40 dark:bg-black/10 border border-border/20">
+                              <span className="text-indigo-600 dark:text-indigo-400 font-extrabold uppercase text-[9px] tracking-wider block">Queixa Principal</span>
+                              <p className="text-foreground/90 font-semibold">{(recordContent as { queixaPrincipal: string }).queixaPrincipal}</p>
+                            </div>
                           )}
                           {(recordContent as { hipoteseDiagnostica?: string }).hipoteseDiagnostica && (
-                            <div><strong>Hipótese:</strong> {(recordContent as { hipoteseDiagnostica: string }).hipoteseDiagnostica}</div>
+                            <div className="space-y-1.5 p-3.5 rounded-xl bg-white/40 dark:bg-black/10 border border-border/20">
+                              <span className="text-violet-600 dark:text-violet-400 font-extrabold uppercase text-[9px] tracking-wider block">Hipótese Diagnóstica</span>
+                              <p className="text-foreground/90 font-semibold">{(recordContent as { hipoteseDiagnostica: string }).hipoteseDiagnostica}</p>
+                            </div>
                           )}
                           {(recordContent as { planoTratamento?: string }).planoTratamento && (
-                            <div><strong>Plano:</strong> {(recordContent as { planoTratamento: string }).planoTratamento}</div>
+                            <div className="space-y-1.5 p-3.5 rounded-xl bg-white/40 dark:bg-black/10 border border-border/20">
+                              <span className="text-cyan-600 dark:text-cyan-400 font-extrabold uppercase text-[9px] tracking-wider block">Plano de Tratamento</span>
+                              <p className="text-foreground/90 font-semibold">{(recordContent as { planoTratamento: string }).planoTratamento}</p>
+                            </div>
                           )}
-                        </>
+                        </div>
                       ) : (
                         <p className="text-xs text-muted-foreground">{r.queixaPrincipal ?? 'Sem detalhes registrados.'}</p>
                       )}
@@ -254,40 +353,60 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
         </TabsContent>
 
         {/* Anamneses tab */}
-        <TabsContent value="anamnese">
-          <ScrollArea className="h-[calc(100vh-22rem)]">
-            <div className="space-y-3 pr-4">
+        <TabsContent value="anamnese" className="flex-1 outline-none">
+          <ScrollArea className="h-[calc(100vh-23rem)]">
+            <div className="space-y-4 pr-4 pb-8">
               {anamneses.length === 0 && (
-                <p className="text-center text-sm text-muted-foreground py-8">
-                  Nenhuma anamnese preenchida ainda.
-                </p>
+                <div className="text-center py-16 bg-card/20 backdrop-blur-sm rounded-3xl border border-border/40 flex flex-col items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
+                    <ClipboardList className="h-6 w-6 text-emerald-500" />
+                  </div>
+                  <p className="text-sm font-bold text-foreground">Nenhuma anamnese preenchida ainda</p>
+                  <p className="text-xs text-muted-foreground mt-1">Fichas e questionários de saúde do paciente</p>
+                </div>
               )}
               {anamneses.map(a => (
-                <Card key={a.id}>
-                  <CardContent className="pt-4 text-sm space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">
-                        {new Date(a.createdAt).toLocaleDateString('pt-BR')}
+                <Card key={a.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-emerald-500/25 hover:shadow-md hover:shadow-emerald-500/[0.01] rounded-2xl group relative pl-3">
+                  {/* Left accent color bar */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500 to-teal-600 rounded-l-2xl" />
+
+                  <CardContent className="p-5 text-xs space-y-3 font-semibold">
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <span className="font-extrabold text-sm text-foreground/90 flex items-center gap-1.5">
+                        <Award className="w-4 h-4 text-emerald-500" />
+                        Ficha de Anamnese Clínico-Estética
                       </span>
                       {a.assinadoEm && (
-                        <span className="flex items-center gap-1 text-green-600 text-xs">
-                          <CheckCircle className="h-3 w-3" />
+                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold shadow-sm relative overflow-hidden select-none">
+                          <span className="relative flex h-1.5 w-1.5 shrink-0">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                          </span>
                           Assinada
                         </span>
                       )}
                     </div>
-                    <div className="text-muted-foreground text-xs">
-                      Preenchida por: {a.preenchidoPor}
-                      {a.profissional && ` · ${a.profissional.nome}`}
+                    <div className="text-muted-foreground font-semibold text-[10px] flex items-center gap-1.5 flex-wrap">
+                      <span>Preenchida em: {new Date(a.createdAt).toLocaleDateString('pt-BR')}</span>
+                      <span>·</span>
+                      <span>Responsável: {a.preenchidoPor}</span>
+                      {a.profissional && (
+                        <>
+                          <span>·</span>
+                          <span>Profissional: {a.profissional.nome}</span>
+                        </>
+                      )}
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 px-2 text-xs"
-                      onClick={() => window.open(`/api/clinica/anamnese/${a.id}`, '_blank')}
-                    >
-                      Ver respostas →
-                    </Button>
+                    <div className="pt-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 rounded-xl border border-indigo-500/20 bg-indigo-500/5 hover:bg-indigo-600 hover:text-white transition-all duration-300 text-xs font-bold text-indigo-600 dark:text-indigo-400 shadow-sm hover:shadow-indigo-500/10 cursor-pointer"
+                        onClick={() => window.open(`/api/clinica/anamnese/${a.id}`, '_blank')}
+                      >
+                        Visualizar questionário completo →
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -296,80 +415,134 @@ export function ProntuarioClient({ patient, records, anamneses, treatments, cons
         </TabsContent>
 
         {/* Tratamentos tab */}
-        <TabsContent value="tratamentos">
-          <ScrollArea className="h-[calc(100vh-22rem)]">
-            <div className="space-y-3 pr-4">
+        <TabsContent value="tratamentos" className="flex-1 outline-none">
+          <ScrollArea className="h-[calc(100vh-23rem)]">
+            <div className="space-y-4 pr-4 pb-8">
               {treatments.length === 0 && (
-                <p className="text-center text-sm text-muted-foreground py-8">
-                  Nenhum tratamento registrado.
-                </p>
+                <div className="text-center py-16 bg-card/20 backdrop-blur-sm rounded-3xl border border-border/40 flex flex-col items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-4">
+                    <Calendar className="h-6 w-6 text-rose-500" />
+                  </div>
+                  <p className="text-sm font-bold text-foreground">Nenhum tratamento em andamento</p>
+                  <p className="text-xs text-muted-foreground mt-1">Planos e cronogramas de sessões estéticas del paciente</p>
+                </div>
               )}
-              {treatments.map(t => (
-                <Card key={t.id}>
-                  <CardContent className="pt-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-sm">
-                        {t.descricaoCustomizada ?? t.tipoTratamento}
-                      </span>
-                      <Badge className={cn('text-xs', STATUS_BADGE[t.status] ?? 'bg-gray-100 text-gray-600')}>
-                        {t.status}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {t.sessoesRealizadas}/{t.sessoesPrevistas} sessões
-                      </span>
-                      <span>{new Date(t.createdAt).toLocaleDateString('pt-BR')}</span>
-                    </div>
-                    {t.sessions.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {t.sessions.map(s => (
-                          <Badge
-                            key={s.id}
-                            className={cn(
-                              'text-xs',
-                              s.status === 'REALIZADA' ? 'bg-green-100 text-green-700' :
-                              s.status === 'NO_SHOW' ? 'bg-red-100 text-red-700' :
-                              'bg-gray-100 text-gray-600'
-                            )}
-                          >
-                            {new Date(s.dataAgendada).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
-                            {' · '}{s.status}
-                          </Badge>
-                        ))}
+              {treatments.map(t => {
+                const percent = Math.min(100, Math.round((t.sessoesRealizadas / t.sessoesPrevistas) * 100))
+                return (
+                  <Card key={t.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-rose-500/25 hover:shadow-md hover:shadow-rose-500/[0.01] rounded-2xl group relative pl-3">
+                    {/* Left accent color bar */}
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-rose-500 to-pink-600 rounded-l-2xl" />
+                    
+                    <CardContent className="p-5 space-y-4">
+                      <div className="flex items-center justify-between gap-4 flex-wrap">
+                        <span className="font-extrabold text-sm text-foreground/90 leading-tight">
+                          {t.descricaoCustomizada ?? t.tipoTratamento}
+                        </span>
+                        <span className={cn('shrink-0 border', STATUS_BADGE[t.status] ?? 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20 font-bold px-2.5 py-0.5 rounded-full text-[9px] uppercase tracking-wide')}>
+                          {t.status}
+                        </span>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+
+                      <div className="flex items-center gap-3 text-[10px] text-muted-foreground font-semibold flex-wrap">
+                        <span className="flex items-center gap-1.5 bg-muted/60 dark:bg-zinc-900/60 border border-border/15 px-2.5 py-1 rounded-lg">
+                          <Clock className="h-3.5 w-3.5 text-rose-500 shrink-0" />
+                          Sessões: {t.sessoesRealizadas}/{t.sessoesPrevistas} realizadas
+                        </span>
+                        <span className="flex items-center gap-1.5 bg-muted/60 dark:bg-zinc-900/60 border border-border/15 px-2.5 py-1 rounded-lg">
+                          <Calendar className="h-3.5 w-3.5 text-rose-500 shrink-0" />
+                          Início: {new Date(t.createdAt).toLocaleDateString('pt-BR')}
+                        </span>
+                      </div>
+
+                      {/* Visual progress bar */}
+                      <div className="space-y-1.5 pt-1">
+                        <div className="flex items-center justify-between text-[10px] text-muted-foreground font-bold">
+                          <span>Progresso do Tratamento</span>
+                          <span className="font-extrabold text-foreground">{percent}%</span>
+                        </div>
+                        <div className="w-full h-2 rounded-full bg-muted/50 dark:bg-zinc-800/40 overflow-hidden border border-border/10">
+                          <div 
+                            className="h-full rounded-full bg-gradient-to-r from-rose-500 to-pink-500 shadow-sm shadow-rose-500/20 transition-all duration-500" 
+                            style={{ width: `${percent}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {t.sessions.length > 0 && (
+                        <div className="space-y-2 pt-3 border-t border-border/10">
+                          <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">Histórico de Sessões Recentes</p>
+                          <div className="flex flex-wrap gap-2 pt-0.5">
+                            {t.sessions.map(s => {
+                              const isRealized = s.status === 'REALIZADA'
+                              const isNoShow = s.status === 'NO_SHOW'
+                              return (
+                                <Badge
+                                  key={s.id}
+                                  className={cn(
+                                    'text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm border select-none',
+                                    isRealized 
+                                      ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400' 
+                                      : isNoShow 
+                                        ? 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400' 
+                                        : 'bg-zinc-500/10 border-zinc-500/20 text-zinc-600 dark:text-zinc-400'
+                                  )}
+                                >
+                                  {new Date(s.dataAgendada).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
+                                  {' · '}
+                                  {s.status}
+                                </Badge>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )
+              })}
             </div>
           </ScrollArea>
         </TabsContent>
 
         {/* Consentimentos tab */}
-        <TabsContent value="consentimentos">
-          <ScrollArea className="h-[calc(100vh-22rem)]">
-            <div className="space-y-3 pr-4">
+        <TabsContent value="consentimentos" className="flex-1 outline-none">
+          <ScrollArea className="h-[calc(100vh-23rem)]">
+            <div className="space-y-4 pr-4 pb-8">
               {consentLogs.length === 0 && (
-                <p className="text-center text-sm text-muted-foreground py-8">
-                  Nenhum consentimento registrado.
-                </p>
+                <div className="text-center py-16 bg-card/20 backdrop-blur-sm rounded-3xl border border-border/40 flex flex-col items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-4">
+                    <Shield className="h-6 w-6 text-indigo-500" />
+                  </div>
+                  <p className="text-sm font-bold text-foreground">Nenhum consentimento ativo</p>
+                  <p className="text-xs text-muted-foreground mt-1">Termos de privacidade LGPD e imagem do paciente</p>
+                </div>
               )}
               {consentLogs.map(c => (
-                <Card key={c.id}>
-                  <CardContent className="pt-4 flex items-center justify-between text-sm">
-                    <div>
-                      <p className="font-medium">{CONSENT_LABELS[c.tipo] ?? c.tipo}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(c.aceitoEm).toLocaleDateString('pt-BR')}
+                <Card key={c.id} className="overflow-hidden border-border/40 bg-card/45 backdrop-blur-sm transition-all duration-300 hover:border-violet-500/25 hover:shadow-md hover:shadow-violet-500/[0.01] rounded-2xl group relative pl-3">
+                  {/* Left accent color bar */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-violet-500 to-cyan-500 rounded-l-2xl" />
+
+                  <CardContent className="p-5 flex items-center justify-between text-xs font-semibold gap-4 flex-wrap">
+                    <div className="space-y-1 min-w-0">
+                      <p className="font-extrabold text-sm text-foreground/90 truncate">
+                        {CONSENT_LABELS[c.tipo] ?? c.tipo}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground font-semibold">
+                        Aceito em: {new Date(c.aceitoEm).toLocaleDateString('pt-BR')}
                       </p>
                     </div>
                     {c.revokedAt ? (
-                      <Badge className="bg-red-100 text-red-700 text-xs">Revogado</Badge>
+                      <Badge className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full shrink-0 shadow-sm select-none">
+                        Revogado
+                      </Badge>
                     ) : (
-                      <Badge className="bg-green-100 text-green-700 text-xs flex items-center gap-1">
-                        <CheckCircle className="h-3 w-3" />Ativo
+                      <Badge className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold px-2.5 py-1.5 rounded-full shrink-0 shadow-sm flex items-center gap-1.5 select-none">
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                        </span>
+                        Concedido
                       </Badge>
                     )}
                   </CardContent>
