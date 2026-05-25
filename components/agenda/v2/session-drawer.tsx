@@ -13,6 +13,8 @@ import {
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type { AgendaSession } from './types'
+import { cn } from '@/lib/utils'
+
 
 interface Props {
   session: AgendaSession | null

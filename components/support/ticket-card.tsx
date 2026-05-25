@@ -5,6 +5,8 @@ import { MessageCircle, Circle } from 'lucide-react'
 import { TicketStatusBadge } from './ticket-status-badge'
 import { TicketPriorityBadge } from './ticket-priority-badge'
 import type { TicketStatus, TicketPriority, TicketCategory } from '@prisma/client'
+import { cn } from '@/lib/utils'
+
 
 const CATEGORY_LABELS: Record<TicketCategory, string> = {
   BUG: 'Bug',
