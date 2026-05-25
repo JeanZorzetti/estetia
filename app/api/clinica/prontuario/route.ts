@@ -17,7 +17,7 @@ const CreateRecordSchema = z.object({
   avaliacaoFisica: z.string().optional(),
   hipoteseDiagnostica: z.string().optional(),
   planoTratamento: z.string().optional(),
-  dadosExtras: z.record(z.unknown()).optional(),
+  dadosExtras: z.record(z.string(), z.unknown()).optional(),
 })
 
 /**

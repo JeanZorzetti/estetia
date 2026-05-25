@@ -11,7 +11,7 @@ const CreateAnamnesisSchema = z.object({
   treatmentId: z.string().uuid().optional(),
   profissionalId: z.string().uuid().optional(),
   templateHash: z.string().optional(),
-  respostas: z.record(z.unknown()),
+  respostas: z.record(z.string(), z.unknown()),
   assinaturaDigital: z.string().optional(),
   preenchidoPor: z.enum(['profissional', 'paciente', 'recepcao']).default('profissional'),
 })
@@ -88,8 +88,13 @@ export async function POST(req: NextRequest) {
   })
   if (!patient) return NextResponse.json({ error: 'Patient not found' }, { status: 404 })
 
-  // Encrypt answers (LGPD Art. 11 — dados sensíveis de saúde)
-  const respostasEncrypted = encrypt(JSON.stringify(respostas))
+  let respostasEncrypted: string
+  try {
+    respostasEncrypted = encrypt(JSON.stringify(respostas))
+  } catch (err) {
+    console.error('[anamnese POST] encrypt error:', err)
+    return NextResponse.json({ error: 'Encryption unavailable' }, { status: 500 })
+  }
 
   // Hash signature if provided
   const sigHash = assinaturaDigital
