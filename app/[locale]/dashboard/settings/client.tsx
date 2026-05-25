@@ -183,7 +183,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
             description: 'Lembretes de retorno',
           },
           {
-            href: '/dashboard/anamnese',
+            href: '/dashboard/settings/anamnese',
             icon: ClipboardList,
             iconColor: 'text-blue-500',
             iconBg: 'bg-blue-500/10',

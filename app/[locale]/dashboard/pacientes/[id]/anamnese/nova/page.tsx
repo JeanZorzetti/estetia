@@ -4,6 +4,8 @@ import { notFound, redirect } from 'next/navigation'
 import { AnamnesesNovaClient } from './anamnese-nova-client'
 import { ClipboardList } from 'lucide-react'
 import { EmptyState } from '@/components/pacientes/shared/empty-state'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,7 +33,7 @@ export default async function NovaAnamnесePage({
 
   // Get the most recent active template for this org
   const templateRecord = await prisma.anamnesisTemplate.findFirst({
-    where: { organizationId: user.organizationId },
+    where: { organizationId: user.organizationId, ativo: true },
     orderBy: { updatedAt: 'desc' },
     select: { template: true, templateHash: true },
   })
@@ -43,7 +45,14 @@ export default async function NovaAnamnесePage({
       <EmptyState
         icon={ClipboardList}
         title="Nenhum template de anamnese configurado"
-        description="Configure um template em Configurações → Anamnese antes de preencher fichas"
+        description="Você precisa criar um template antes de preencher fichas"
+        action={
+          <Button asChild size="sm" className="rounded-xl text-xs font-bold h-8">
+            <Link href="/dashboard/settings/anamnese">
+              Configurar templates
+            </Link>
+          </Button>
+        }
       />
     )
   }
@@ -56,7 +65,7 @@ export default async function NovaAnamnесePage({
       </div>
       <AnamnesesNovaClient
         patientId={pacienteId}
-        template={serialize(templateRecord.template) as Parameters<typeof AnamnesesNovaClient>[0]['template']}
+        template={serialize(templateRecord.template) as unknown as Parameters<typeof AnamnesesNovaClient>[0]['template']}
         templateHash={templateRecord.templateHash}
       />
     </div>
