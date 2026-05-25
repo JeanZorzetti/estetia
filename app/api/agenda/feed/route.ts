@@ -36,21 +36,37 @@ export async function GET(req: Request) {
   if (salaIds.length > 0) where.salaId = { in: salaIds }
   if (statuses.length > 0) where.status = { in: statuses }
 
-  const sessions = await prisma.treatmentSession.findMany({
+  const rawSessions = await prisma.treatmentSession.findMany({
     where,
     include: {
       profissional: { select: { id: true, nome: true } },
       sala: { select: { id: true, nome: true, cor: true } },
       treatment: {
-        include: {
-          paciente: { select: { id: true, nome: true, telefone: true } },
-          procedure: { select: { id: true, nome: true, categoria: true } },
+        select: {
+          id: true,
+          valorTotal: true,
+          sessoesPrevistas: true,
+          sessoesRealizadas: true,
+          paciente: { select: { id: true, nome: true, telefone: true, email: true } },
+          procedure: { select: { id: true, nome: true, categoria: true, valorPadrao: true, duracaoMinutos: true } },
         },
       },
     },
     orderBy: { dataAgendada: 'asc' },
     take: 1000,
   })
+
+  const sessions = rawSessions.map(s => ({
+    ...s,
+    treatment: {
+      ...s.treatment,
+      valorTotal: s.treatment.valorTotal !== null ? Number(s.treatment.valorTotal) : null,
+      procedure: s.treatment.procedure ? {
+        ...s.treatment.procedure,
+        valorPadrao: s.treatment.procedure.valorPadrao !== null ? Number(s.treatment.procedure.valorPadrao) : null,
+      } : null,
+    },
+  }))
 
   return NextResponse.json({ sessions })
 }

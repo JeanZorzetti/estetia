@@ -58,6 +58,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (d.profissionalId !== undefined) data.profissionalId = d.profissionalId
   if (d.salaId !== undefined) data.salaId = d.salaId
   if (d.observacoes !== undefined) data.observacoes = d.observacoes || null
+  if (d.procedureId !== undefined) data.treatment = { update: { procedureId: d.procedureId || null } }
 
   // Re-check conflicts when datetime/professional/sala changes
   if (d.dataAgendada || d.profissionalId !== undefined || d.salaId !== undefined || d.duracaoMinutos !== undefined) {
@@ -83,20 +84,36 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     data.googleSyncStatus = 'PENDING'
   }
 
-  const session = await prisma.treatmentSession.update({
+  const rawSession = await prisma.treatmentSession.update({
     where: { id },
     data,
     include: {
       profissional: { select: { id: true, nome: true } },
       sala: { select: { id: true, nome: true, cor: true } },
       treatment: {
-        include: {
-          paciente: { select: { id: true, nome: true, telefone: true } },
-          procedure: { select: { id: true, nome: true } },
+        select: {
+          id: true,
+          valorTotal: true,
+          sessoesPrevistas: true,
+          sessoesRealizadas: true,
+          paciente: { select: { id: true, nome: true, telefone: true, email: true } },
+          procedure: { select: { id: true, nome: true, categoria: true, valorPadrao: true, duracaoMinutos: true } },
         },
       },
     },
   })
+
+  const session = {
+    ...rawSession,
+    treatment: {
+      ...rawSession.treatment,
+      valorTotal: rawSession.treatment.valorTotal !== null ? Number(rawSession.treatment.valorTotal) : null,
+      procedure: rawSession.treatment.procedure ? {
+        ...rawSession.treatment.procedure,
+        valorPadrao: rawSession.treatment.procedure.valorPadrao !== null ? Number(rawSession.treatment.procedure.valorPadrao) : null,
+      } : null,
+    },
+  }
 
   return NextResponse.json({ session })
 }

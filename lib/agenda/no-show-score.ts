@@ -8,9 +8,9 @@ export function categorizeRisk(score: number | null | undefined): NoShowRisk | n
 }
 
 export const RISK_COLORS: Record<NoShowRisk, string> = {
-  low: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
-  medium: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
-  high: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
+  low: 'bg-teal-50 text-teal-600 border border-teal/20',
+  medium: 'bg-gold-50 text-gold-600 border border-gold/30',
+  high: 'bg-red-50 text-red-600 border border-red-300',
 }
 
 export const RISK_LABELS: Record<NoShowRisk, string> = {

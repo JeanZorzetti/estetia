@@ -11,8 +11,7 @@ import { Textarea } from '@/components/ui/textarea'
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select'
-import { Search, Loader2, AlertCircle } from 'lucide-react'
-import { format } from 'date-fns'
+import { Search, Loader2, AlertCircle, User } from 'lucide-react'
 import type { AgendaProfissional, AgendaSala, AgendaProcedure, AgendaSession } from './types'
 
 interface Patient { id: string; nome: string; telefone: string | null }
@@ -26,19 +25,24 @@ interface Props {
   salas: AgendaSala[]
   procedures: AgendaProcedure[]
   onCreated: (session: AgendaSession) => void
+  onUpdated?: (session: AgendaSession) => void
+  session?: AgendaSession | null
 }
 
 export function NovaSessaoDialog({
   open, onOpenChange, initialDate, initialProfissionalId,
-  profissionais, salas, procedures, onCreated,
+  profissionais, salas, procedures, onCreated, onUpdated,
+  session: editSession,
 }: Props) {
+  const isEdit = !!editSession
+
   const [saving, setSaving] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [patients, setPatients] = useState<Patient[]>([])
   const [searching, setSearching] = useState(false)
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
   const [procedureId, setProcedureId] = useState<string>('')
-  const [profissionalId, setProfissionalId] = useState<string>(initialProfissionalId ?? '')
+  const [profissionalId, setProfissionalId] = useState<string>('')
   const [salaId, setSalaId] = useState<string>('')
   const [dataAgendada, setDataAgendada] = useState<string>('')
   const [duracaoMinutos, setDuracaoMinutos] = useState<number>(60)
@@ -48,21 +52,39 @@ export function NovaSessaoDialog({
 
   useEffect(() => {
     if (!open) return
-    setSelectedPatient(null)
-    setSearchQuery('')
-    setPatients([])
-    setProcedureId('')
-    setProfissionalId(initialProfissionalId ?? '')
-    setSalaId('')
-    setObservacoes('')
     setConflicts([])
     setError(null)
-    setDuracaoMinutos(60)
-    if (initialDate) {
-      const local = new Date(initialDate.getTime() - initialDate.getTimezoneOffset() * 60_000)
+    setPatients([])
+    setSearchQuery('')
+
+    if (editSession) {
+      // Modo edição: pré-preencher
+      const { paciente, procedure } = editSession.treatment
+      setSelectedPatient({ id: paciente.id, nome: paciente.nome, telefone: paciente.telefone })
+      setProcedureId(procedure?.id ?? '')
+      setProfissionalId(editSession.profissional?.id ?? '')
+      setSalaId(editSession.sala?.id ?? '')
+      setObservacoes(editSession.observacoes ?? '')
+      setDuracaoMinutos(editSession.duracaoMinutos ?? 60)
+      const dt = new Date(editSession.dataAgendada)
+      const local = new Date(dt.getTime() - dt.getTimezoneOffset() * 60_000)
       setDataAgendada(local.toISOString().slice(0, 16))
+    } else {
+      // Modo criação
+      setSelectedPatient(null)
+      setProcedureId('')
+      setProfissionalId(initialProfissionalId ?? '')
+      setSalaId('')
+      setObservacoes('')
+      setDuracaoMinutos(60)
+      if (initialDate) {
+        const local = new Date(initialDate.getTime() - initialDate.getTimezoneOffset() * 60_000)
+        setDataAgendada(local.toISOString().slice(0, 16))
+      } else {
+        setDataAgendada('')
+      }
     }
-  }, [open, initialDate, initialProfissionalId])
+  }, [open, editSession, initialDate, initialProfissionalId])
 
   const searchPatients = useCallback(async (q: string) => {
     if (!q.trim()) { setPatients([]); return }
@@ -74,7 +96,6 @@ export function NovaSessaoDialog({
     } finally { setSearching(false) }
   }, [])
 
-  // Update duration when procedure picked
   useEffect(() => {
     if (procedureId) {
       const p = procedures.find(p => p.id === procedureId)
@@ -82,7 +103,6 @@ export function NovaSessaoDialog({
     }
   }, [procedureId, procedures])
 
-  // Check conflicts when key fields change
   useEffect(() => {
     if (!dataAgendada || (!profissionalId && !salaId)) {
       setConflicts([])
@@ -99,6 +119,7 @@ export function NovaSessaoDialog({
             duracaoMinutos,
             profissionalId: profissionalId || undefined,
             salaId: salaId || undefined,
+            ignoreSessionId: editSession?.id,
           }),
           signal: ctrl.signal,
         })
@@ -107,33 +128,54 @@ export function NovaSessaoDialog({
       } catch { /* ignore */ }
     }, 300)
     return () => { clearTimeout(t); ctrl.abort() }
-  }, [dataAgendada, duracaoMinutos, profissionalId, salaId])
+  }, [dataAgendada, duracaoMinutos, profissionalId, salaId, editSession?.id])
 
   const submit = async () => {
     if (!selectedPatient || !dataAgendada) return
     setSaving(true)
     setError(null)
     try {
-      const res = await fetch('/api/treatment-sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          pacienteId: selectedPatient.id,
-          procedureId: procedureId || null,
-          profissionalId: profissionalId || null,
-          salaId: salaId || null,
-          dataAgendada: new Date(dataAgendada).toISOString(),
-          duracaoMinutos,
-          observacoes: observacoes || null,
-        }),
-      })
+      let res: Response
+      if (isEdit && editSession) {
+        res = await fetch(`/api/treatment-sessions/${editSession.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            procedureId: procedureId || null,
+            profissionalId: profissionalId || null,
+            salaId: salaId || null,
+            dataAgendada: new Date(dataAgendada).toISOString(),
+            duracaoMinutos,
+            observacoes: observacoes || null,
+          }),
+        })
+      } else {
+        res = await fetch('/api/treatment-sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pacienteId: selectedPatient.id,
+            procedureId: procedureId || null,
+            profissionalId: profissionalId || null,
+            salaId: salaId || null,
+            dataAgendada: new Date(dataAgendada).toISOString(),
+            duracaoMinutos,
+            observacoes: observacoes || null,
+          }),
+        })
+      }
+
       if (res.ok) {
         const data = await res.json()
-        onCreated(data.session)
+        if (isEdit) {
+          onUpdated?.(data.session)
+        } else {
+          onCreated(data.session)
+        }
         onOpenChange(false)
       } else {
         const data = await res.json()
-        setError(data.error?.formErrors?.join(', ') ?? data.error ?? 'Falha ao criar sessão')
+        setError(data.error?.formErrors?.join(', ') ?? data.error ?? 'Erro ao salvar sessão')
       }
     } finally {
       setSaving(false)
@@ -142,58 +184,87 @@ export function NovaSessaoDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Nova Sessão</DialogTitle>
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto bg-white border-navy/10">
+        {/* Header */}
+        <DialogHeader className="pb-2 border-b border-navy/10">
+          <DialogTitle className="font-serif text-navy text-lg">
+            {isEdit ? 'Editar Sessão' : 'Nova Sessão'}
+          </DialogTitle>
+          {isEdit && editSession && (
+            <p className="text-xs text-slate-400 mt-1">
+              Paciente: <span className="font-semibold text-navy">{editSession.treatment.paciente.nome}</span>
+            </p>
+          )}
         </DialogHeader>
-        <div className="flex flex-col gap-4 mt-2">
-          <div className="flex flex-col gap-1.5">
-            <Label className="text-sm font-medium">Paciente *</Label>
-            {selectedPatient ? (
-              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border">
-                <div>
-                  <p className="font-medium text-sm">{selectedPatient.nome}</p>
-                  {selectedPatient.telefone && (
-                    <p className="text-xs text-muted-foreground">{selectedPatient.telefone}</p>
-                  )}
-                </div>
-                <Button type="button" variant="ghost" size="sm" onClick={() => setSelectedPatient(null)}>
-                  Trocar
-                </Button>
-              </div>
-            ) : (
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  className="pl-9"
-                  placeholder="Buscar paciente..."
-                  value={searchQuery}
-                  onChange={e => { setSearchQuery(e.target.value); searchPatients(e.target.value) }}
-                />
-                {patients.length > 0 && (
-                  <div className="absolute top-full mt-1 w-full bg-background border border-border rounded-lg shadow-lg z-50 overflow-hidden">
-                    {patients.map(p => (
-                      <button
-                        key={p.id}
-                        type="button"
-                        className="w-full text-left px-3 py-2.5 hover:bg-muted/50 transition-colors text-sm"
-                        onClick={() => { setSelectedPatient(p); setPatients([]); setSearchQuery('') }}
-                      >
-                        <span className="font-medium">{p.nome}</span>
-                        {p.telefone && <span className="text-muted-foreground ml-2 text-xs">{p.telefone}</span>}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {searching && <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-muted-foreground" />}
-              </div>
-            )}
-          </div>
 
+        <div className="flex flex-col gap-4 mt-2">
+
+          {/* Paciente — somente leitura em modo edição */}
+          {isEdit && editSession ? (
+            <div className="flex items-center gap-3 p-4 bg-navy-50 border border-navy/10 rounded-2xl">
+              <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal/20 flex items-center justify-center shrink-0">
+                <User className="w-4 h-4 text-teal" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-navy">{editSession.treatment.paciente.nome}</p>
+                {editSession.treatment.paciente.telefone && (
+                  <p className="text-xs text-slate-400">{editSession.treatment.paciente.telefone}</p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-1.5">
+              <Label className="text-xs font-bold uppercase tracking-widest text-slate-400">Paciente *</Label>
+              {selectedPatient ? (
+                <div className="flex items-center justify-between p-4 bg-navy-50 border border-navy/10 rounded-2xl">
+                  <div>
+                    <p className="text-sm font-bold text-navy">{selectedPatient.nome}</p>
+                    {selectedPatient.telefone && (
+                      <p className="text-xs text-slate-400">{selectedPatient.telefone}</p>
+                    )}
+                  </div>
+                  <Button type="button" variant="ghost" size="sm" onClick={() => setSelectedPatient(null)}
+                    className="text-xs text-slate-400 hover:text-navy">
+                    Trocar
+                  </Button>
+                </div>
+              ) : (
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Input
+                    className="pl-9 border-navy/20 focus-visible:ring-teal"
+                    placeholder="Buscar paciente por nome, telefone..."
+                    value={searchQuery}
+                    onChange={e => { setSearchQuery(e.target.value); searchPatients(e.target.value) }}
+                  />
+                  {patients.length > 0 && (
+                    <div className="absolute top-full mt-1 w-full bg-white border border-navy/10 rounded-2xl shadow-lg z-50 overflow-hidden">
+                      {patients.map(p => (
+                        <button
+                          key={p.id}
+                          type="button"
+                          className="w-full text-left px-4 py-3 hover:bg-navy-50 transition-colors text-sm border-b border-navy/5 last:border-0"
+                          onClick={() => { setSelectedPatient(p); setPatients([]); setSearchQuery('') }}
+                        >
+                          <span className="font-semibold text-navy">{p.nome}</span>
+                          {p.telefone && <span className="text-slate-400 ml-2 text-xs">{p.telefone}</span>}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {searching && <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-slate-400" />}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Procedimento */}
           <div className="flex flex-col gap-1.5">
-            <Label className="text-sm font-medium">Procedimento</Label>
+            <Label className="text-xs font-bold uppercase tracking-widest text-slate-400">Procedimento</Label>
             <Select value={procedureId || 'none'} onValueChange={v => setProcedureId(v === 'none' ? '' : v)}>
-              <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+              <SelectTrigger className="border-navy/20 focus:ring-teal">
+                <SelectValue placeholder="Selecionar procedimento" />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="none">— Sem procedimento —</SelectItem>
                 {procedures.map(p => (
@@ -203,11 +274,14 @@ export function NovaSessaoDialog({
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          {/* Profissional + Sala */}
+          <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1.5">
-              <Label className="text-sm font-medium">Profissional</Label>
+              <Label className="text-xs font-bold uppercase tracking-widest text-slate-400">Profissional</Label>
               <Select value={profissionalId || 'none'} onValueChange={v => setProfissionalId(v === 'none' ? '' : v)}>
-                <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                <SelectTrigger className="border-navy/20 focus:ring-teal">
+                  <SelectValue placeholder="Selecionar" />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">— Nenhum —</SelectItem>
                   {profissionais.map(p => (
@@ -217,9 +291,11 @@ export function NovaSessaoDialog({
               </Select>
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label className="text-sm font-medium">Sala</Label>
+              <Label className="text-xs font-bold uppercase tracking-widest text-slate-400">Sala</Label>
               <Select value={salaId || 'none'} onValueChange={v => setSalaId(v === 'none' ? '' : v)}>
-                <SelectTrigger><SelectValue placeholder="Selecionar" /></SelectTrigger>
+                <SelectTrigger className="border-navy/20 focus:ring-teal">
+                  <SelectValue placeholder="Selecionar" />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">— Nenhuma —</SelectItem>
                   {salas.map(s => (
@@ -230,43 +306,48 @@ export function NovaSessaoDialog({
             </div>
           </div>
 
-          <div className="grid grid-cols-[1fr_120px] gap-3">
+          {/* Data/hora + Duração */}
+          <div className="grid grid-cols-[1fr_110px] gap-4">
             <div className="flex flex-col gap-1.5">
-              <Label className="text-sm font-medium">Data e hora *</Label>
+              <Label className="text-xs font-bold uppercase tracking-widest text-slate-400">Data e hora *</Label>
               <Input
                 type="datetime-local"
+                className="border-navy/20 focus-visible:ring-teal"
                 value={dataAgendada}
                 onChange={e => setDataAgendada(e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label className="text-sm font-medium">Duração (min)</Label>
+              <Label className="text-xs font-bold uppercase tracking-widest text-slate-400">Duração (min)</Label>
               <Input
                 type="number"
                 min="5"
                 max="600"
                 step="5"
+                className="border-navy/20 focus-visible:ring-teal"
                 value={duracaoMinutos}
                 onChange={e => setDuracaoMinutos(Number(e.target.value))}
               />
             </div>
           </div>
 
+          {/* Observações */}
           <div className="flex flex-col gap-1.5">
-            <Label className="text-sm font-medium">Observações</Label>
+            <Label className="text-xs font-bold uppercase tracking-widest text-slate-400">Observações</Label>
             <Textarea
               placeholder="Observações sobre a sessão..."
-              className="resize-none h-16"
+              className="resize-none h-16 border-navy/20 focus-visible:ring-teal"
               value={observacoes}
               onChange={e => setObservacoes(e.target.value)}
             />
           </div>
 
+          {/* Conflitos */}
           {conflicts.length > 0 && (
-            <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" />
-              <div className="text-xs text-destructive">
-                <p className="font-semibold mb-1">Conflito detectado:</p>
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-4 flex items-start gap-3">
+              <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+              <div className="text-xs text-red-700">
+                <p className="font-bold mb-1">Conflito detectado:</p>
                 {conflicts.map((c, i) => (
                   <p key={i}>· {c.pacienteNome} ({c.reason === 'PROFISSIONAL_OCUPADO' ? 'profissional ocupado' : 'sala ocupada'})</p>
                 ))}
@@ -274,16 +355,22 @@ export function NovaSessaoDialog({
             </div>
           )}
 
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && (
+            <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2">{error}</p>
+          )}
 
-          <div className="flex justify-end gap-2 pt-2">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
+          {/* Botões */}
+          <div className="flex justify-end gap-2 pt-2 border-t border-navy/10">
+            <Button variant="outline" className="border-navy/20 text-navy hover:bg-navy-50 rounded-xl" onClick={() => onOpenChange(false)}>
+              Cancelar
+            </Button>
             <Button
+              className="bg-navy text-white hover:bg-navy-600 rounded-xl font-bold"
               onClick={submit}
               disabled={saving || !selectedPatient || !dataAgendada || conflicts.length > 0}
             >
               {saving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Criar sessão
+              {isEdit ? 'Salvar alterações' : 'Criar sessão'}
             </Button>
           </div>
         </div>

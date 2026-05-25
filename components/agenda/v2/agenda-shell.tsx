@@ -34,6 +34,7 @@ export function AgendaShell({ initialSessions, profissionais, salas, procedures 
   const [novaInitialDate, setNovaInitialDate] = useState<Date | null>(null)
   const [novaInitialProf, setNovaInitialProf] = useState<string | undefined>()
   const [drawerSession, setDrawerSession] = useState<AgendaSession | null>(null)
+  const [editingSession, setEditingSession] = useState<AgendaSession | null>(null)
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }))
 
@@ -219,14 +220,19 @@ export function AgendaShell({ initialSessions, profissionais, salas, procedures 
         </div>
 
         <NovaSessaoDialog
-          open={novaOpen}
-          onOpenChange={setNovaOpen}
+          open={novaOpen || !!editingSession}
+          onOpenChange={(v) => {
+            if (!v) { setNovaOpen(false); setEditingSession(null) }
+            else setNovaOpen(true)
+          }}
           initialDate={novaInitialDate}
           initialProfissionalId={novaInitialProf}
           profissionais={profissionais}
           salas={salas}
           procedures={procedures}
           onCreated={onSessionCreated}
+          onUpdated={(s) => { onSessionUpdated(s); toast.success('Sessão atualizada') }}
+          session={editingSession}
         />
 
         <SessionDrawer
@@ -235,6 +241,7 @@ export function AgendaShell({ initialSessions, profissionais, salas, procedures 
           onOpenChange={(v) => { if (!v) setDrawerSession(null) }}
           onUpdated={onSessionUpdated}
           onDeleted={onSessionDeleted}
+          onEdit={(s) => { setDrawerSession(null); setEditingSession(s) }}
         />
       </div>
     </DndContext>

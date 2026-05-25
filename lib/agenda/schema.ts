@@ -21,6 +21,7 @@ export const SessionUpdateSchema = z.object({
   status: SessionStatusEnum.optional(),
   profissionalId: z.string().uuid().optional().nullable(),
   salaId: z.string().uuid().optional().nullable(),
+  procedureId: z.string().uuid().optional().nullable(),
   observacoes: z.string().max(2000).optional().or(z.literal('')),
 })
 

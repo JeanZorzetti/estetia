@@ -10,8 +10,11 @@ export interface AgendaSession {
   sala: { id: string; nome: string; cor: string | null } | null
   treatment: {
     id: string
-    paciente: { id: string; nome: string; telefone: string | null }
-    procedure: { id: string; nome: string; categoria: string | null } | null
+    valorTotal: number | null
+    sessoesPrevistas: number | null
+    sessoesRealizadas: number | null
+    paciente: { id: string; nome: string; telefone: string | null; email: string | null }
+    procedure: { id: string; nome: string; categoria: string | null; valorPadrao: number | null; duracaoMinutos: number | null } | null
   }
 }
 
