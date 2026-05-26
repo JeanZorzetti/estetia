@@ -159,6 +159,7 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
                   src={`/api/clinica/fotos/${foto.id}/blob`}
                   alt={`${foto.tipo} - ${foto.areaCorpo ?? ''}`}
                   fill
+                  unoptimized
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                   sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
                 />
@@ -197,6 +198,7 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
               alt="Foto clínica"
               width={900}
               height={700}
+              unoptimized
               className="rounded-2xl object-contain max-h-[80vh] w-auto mx-auto"
             />
             <div className="mt-3 text-center text-xs text-white/70">
