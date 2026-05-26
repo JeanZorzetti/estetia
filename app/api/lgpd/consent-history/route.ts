@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 const CreateConsentSchema = z.object({
   pacienteId: z.string().uuid(),
-  tipo: z.enum(['LGPD_DADOS_SAUDE', 'USO_FOTO', 'AUTORIZACAO_PROCEDIMENTO', 'TERMO_RISCO']),
+  tipo: z.enum(['LGPD_DADOS_SAUDE', 'USO_FOTO_MARKETING', 'AUTORIZACAO_PROCEDIMENTO', 'TERMO_RISCO', 'TERMO_MENOR_IDADE']),
   versaoDocumento: z.string().min(1),
   evidencia: z
     .object({
