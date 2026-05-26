@@ -26,8 +26,10 @@ export function PinFeatures() {
     if (!wrapperRef.current || !stagesRef.current) return
 
     registerGsap()
+    console.log('[PinFeatures] mount, ScrollTrigger:', typeof ScrollTrigger, 'wrapper:', !!wrapperRef.current)
 
     const ctx = gsap.context(() => {
+      console.log('[PinFeatures] context callback running')
       const stages = Array.from(stagesRef.current!.children) as HTMLElement[]
 
       stages.forEach((stage, idx) => {
@@ -49,6 +51,7 @@ export function PinFeatures() {
       const STAGGER = 0.2
 
       const master = gsap.timeline({ paused: true })
+      console.log('[PinFeatures] about to create ScrollTrigger')
 
       const st = ScrollTrigger.create({
         trigger: wrapperRef.current,
@@ -63,6 +66,8 @@ export function PinFeatures() {
           setActiveIndex(idx)
         },
       })
+
+      console.log('[PinFeatures] ScrollTrigger created:', { start: st.start, end: st.end, progress: st.progress })
 
       if (typeof window !== 'undefined') {
         ;(window as unknown as { __pinST: typeof st }).__pinST = st
