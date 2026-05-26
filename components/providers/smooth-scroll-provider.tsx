@@ -2,7 +2,11 @@
 
 import { useEffect } from 'react'
 import { createLenis, destroyLenis } from '@/lib/animation/lenis'
-import { connectScrollTriggerToLenis, ScrollTrigger } from '@/lib/animation/gsap'
+import {
+  connectScrollTriggerToLenis,
+  disconnectScrollTriggerFromLenis,
+  ScrollTrigger,
+} from '@/lib/animation/gsap'
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -15,15 +19,8 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     const lenis = createLenis()
     connectScrollTriggerToLenis(lenis)
 
-    let rafId = 0
-    const raf = (time: number) => {
-      lenis.raf(time)
-      rafId = window.requestAnimationFrame(raf)
-    }
-    rafId = window.requestAnimationFrame(raf)
-
     return () => {
-      window.cancelAnimationFrame(rafId)
+      disconnectScrollTriggerFromLenis()
       ScrollTrigger.getAll().forEach((t) => t.kill())
       destroyLenis()
     }

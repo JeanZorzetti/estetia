@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type Lenis from 'lenis'
 
 let registered = false
+let tickerCallback: ((time: number) => void) | null = null
 
 export function registerGsap(): void {
   if (registered || typeof window === 'undefined') return
@@ -15,29 +16,18 @@ export function connectScrollTriggerToLenis(lenis: Lenis): void {
 
   lenis.on('scroll', ScrollTrigger.update)
 
-  ScrollTrigger.scrollerProxy(document.documentElement, {
-    scrollTop(value) {
-      if (arguments.length && value !== undefined) {
-        lenis.scrollTo(value, { immediate: true })
-      }
-      return lenis.scroll
-    },
-    getBoundingClientRect() {
-      return {
-        top: 0,
-        left: 0,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      }
-    },
-    pinType: 'transform',
-  })
+  tickerCallback = (time: number) => {
+    lenis.raf(time * 1000)
+  }
+  gsap.ticker.add(tickerCallback)
+  gsap.ticker.lagSmoothing(0)
+}
 
-  ScrollTrigger.defaults({ scroller: document.documentElement })
-
-  requestAnimationFrame(() => {
-    ScrollTrigger.refresh()
-  })
+export function disconnectScrollTriggerFromLenis(): void {
+  if (tickerCallback) {
+    gsap.ticker.remove(tickerCallback)
+    tickerCallback = null
+  }
 }
 
 export { gsap, ScrollTrigger }
