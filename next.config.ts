@@ -137,15 +137,21 @@ const nextConfig: NextConfig = {
         destination: '/blog/spin-selling-para-clinicas-de-estetica',
         permanent: true,
       },
+      // /pricing → /precos (permanent, eliminates 308 chain from server component)
+      {
+        source: '/pricing',
+        destination: '/precos',
+        permanent: true,
+      },
       // Pricing billing fragments crawled as paths
       {
         source: '/ano',
-        destination: '/pricing',
+        destination: '/precos',
         permanent: false,
       },
       {
         source: '/m%C3%AAs',
-        destination: '/pricing',
+        destination: '/precos',
         permanent: false,
       },
       // Malformed URLs crawled by Google

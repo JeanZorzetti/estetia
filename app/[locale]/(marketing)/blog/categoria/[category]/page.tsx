@@ -24,7 +24,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; category: string }>
 }): Promise<Metadata> {
-  const { locale, category: categorySlug } = await params
+  const { category: categorySlug } = await params
   const categoryName = getCategoryFromSlug(categorySlug)
 
   if (!categoryName) return { title: 'Categoria não encontrada' }
@@ -36,17 +36,12 @@ export async function generateMetadata({
     .map((p) => p.title)
     .join(', ')}.`
 
-  const ptUrl = `https://estetiacrm.com.br/blog/categoria/${categorySlug}`
-  const enUrl = `https://estetiacrm.com.br/en/blog/categoria/${categorySlug}`
-  const canonicalUrl = locale === 'en' ? enUrl : ptUrl
+  const canonicalUrl = `https://estetiacrm.com.br/blog/categoria/${categorySlug}`
 
   return {
     title,
     description,
-    alternates: {
-      canonical: canonicalUrl,
-      languages: { 'pt-BR': ptUrl, 'en': enUrl, 'x-default': ptUrl },
-    },
+    alternates: { canonical: canonicalUrl },
     openGraph: { title, description, url: canonicalUrl },
   }
 }

@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { pt: '' },
         { pt: '/features', priority: 0.9 },
         { pt: '/solucoes', priority: 0.9 },
-        { pt: '/pricing', priority: 0.9 },
+        { pt: '/precos', priority: 0.9 },
         { pt: '/blog' },
         { pt: '/about' },
         { pt: '/help' },
