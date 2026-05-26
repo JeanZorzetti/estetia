@@ -111,7 +111,12 @@ export function PinFeatures() {
       })
     }, wrapperRef)
 
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 100)
+
     return () => {
+      clearTimeout(refreshTimer)
       ctx.revert()
     }
   }, [reducedMotion])
