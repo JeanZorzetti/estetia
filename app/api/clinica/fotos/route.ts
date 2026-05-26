@@ -7,6 +7,7 @@ import { z } from 'zod'
 const CreateFotoSchema = z.object({
   patientId: z.string().uuid(),
   url: z.string().url(),
+  objectKey: z.string().optional(),
   tipo: z.enum(['BEFORE', 'AFTER', 'EVOLUTION']),
   anguloPadronizado: z.string().optional(),
   areaCorpo: z.string().optional(),
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
   const parsed = CreateFotoSchema.safeParse(body)
   if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
 
-  const { patientId, url, tipo, anguloPadronizado, areaCorpo, consentimentoConcedido, treatmentSessionId } = parsed.data
+  const { patientId, url, objectKey, tipo, anguloPadronizado, areaCorpo, consentimentoConcedido, treatmentSessionId } = parsed.data
 
   const patient = await prisma.patient.findFirst({
     where: { id: patientId, organizationId: user.organizationId },
@@ -78,6 +79,7 @@ export async function POST(req: NextRequest) {
       organizationId: user.organizationId,
       patientId,
       url,
+      objectKey: objectKey ?? null,
       tipo,
       anguloPadronizado: anguloPadronizado ?? null,
       areaCorpo: areaCorpo ?? null,

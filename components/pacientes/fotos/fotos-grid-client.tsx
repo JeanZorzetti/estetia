@@ -68,7 +68,7 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
         body: JSON.stringify({ patientId, contentType: file.type }),
       })
       if (!presignRes.ok) throw new Error('Falha ao iniciar upload')
-      const { uploadUrl, publicUrl } = await presignRes.json()
+      const { uploadUrl, publicUrl, objectKey } = await presignRes.json()
 
       // 2. PUT direto no MinIO com a URL assinada
       const putRes = await fetch(uploadUrl, {
@@ -85,6 +85,7 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
         body: JSON.stringify({
           patientId,
           url: publicUrl,
+          objectKey,
           tipo: 'EVOLUTION',
           consentimentoConcedido: true,
         }),
@@ -155,7 +156,7 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
                 onClick={() => setLightbox(foto)}
               >
                 <Image
-                  src={foto.url}
+                  src={`/api/clinica/fotos/${foto.id}/blob`}
                   alt={`${foto.tipo} - ${foto.areaCorpo ?? ''}`}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -192,7 +193,7 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
               <X className="w-4 h-4" />
             </button>
             <Image
-              src={lightbox.url}
+              src={`/api/clinica/fotos/${lightbox.id}/blob`}
               alt="Foto clínica"
               width={900}
               height={700}

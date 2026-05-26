@@ -2,9 +2,11 @@ import {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
+  GetObjectCommand,
   HeadBucketCommand,
   CreateBucketCommand,
 } from '@aws-sdk/client-s3'
+import type { Readable } from 'node:stream'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 const BUCKET = 'patient-photos'
@@ -85,4 +87,22 @@ export async function deletePhoto(objectKey: string): Promise<void> {
   await getClient().send(
     new DeleteObjectCommand({ Bucket: BUCKET, Key: objectKey })
   )
+}
+
+/**
+ * Stream a photo from MinIO. Used by the authenticated proxy route.
+ */
+export async function getPhotoStream(objectKey: string): Promise<{
+  body: Readable
+  contentType: string
+  contentLength: number | undefined
+}> {
+  const res = await getClient().send(
+    new GetObjectCommand({ Bucket: BUCKET, Key: objectKey })
+  )
+  return {
+    body: res.Body as Readable,
+    contentType: res.ContentType ?? 'application/octet-stream',
+    contentLength: res.ContentLength,
+  }
 }
