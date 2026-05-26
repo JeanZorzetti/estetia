@@ -38,13 +38,21 @@ export function PinFeatures() {
         }
       })
 
+      const PHASE_LENGTH = 3
+      const HOLD = 1.5
+      const FADE_OUT = 0.6
+      const REVEAL = 1.0
+      const STAGGER = 0.2
+
+      const totalEnd = `+=${stations.length * 150}%`
+
       const master = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: '+=400%',
+          end: totalEnd,
           pin: true,
-          scrub: 1,
+          scrub: 1.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
@@ -55,6 +63,8 @@ export function PinFeatures() {
         },
       })
 
+      master.to({}, { duration: HOLD })
+
       stages.forEach((stage, idx) => {
         if (idx === 0) return
 
@@ -64,42 +74,44 @@ export function PinFeatures() {
         const elements = stage.querySelectorAll<HTMLElement>('[data-station-element]')
         const visual = stage.querySelector<HTMLElement>('[data-station-visual]')
 
-        const phase = idx
+        const phase = idx * PHASE_LENGTH
         master.addLabel(`station-${idx}`, phase)
 
         master.to(
           prevElements,
-          { autoAlpha: 0, y: -40, duration: 0.4, ease: 'power3.out' },
+          { autoAlpha: 0, y: -40, duration: FADE_OUT, ease: 'power3.out' },
           phase,
         )
         if (prevVisual) {
           master.to(
             prevVisual,
-            { autoAlpha: 0, x: -60, duration: 0.4, ease: 'power3.out' },
+            { autoAlpha: 0, x: -60, duration: FADE_OUT, ease: 'power3.out' },
             phase,
           )
         }
-        master.set(prev, { autoAlpha: 0 }, phase + 0.4)
-        master.set(stage, { autoAlpha: 1 }, phase + 0.4)
+        master.set(prev, { autoAlpha: 0 }, phase + FADE_OUT)
+        master.set(stage, { autoAlpha: 1 }, phase + FADE_OUT)
 
         master.to(
           elements,
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.8,
+            duration: REVEAL,
             ease: 'power3.out',
-            stagger: 0.2,
+            stagger: STAGGER,
           },
-          phase + 0.4,
+          phase + FADE_OUT,
         )
         if (visual) {
           master.to(
             visual,
-            { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out' },
-            phase + 0.4 + 0.2 * 3,
+            { autoAlpha: 1, x: 0, duration: REVEAL, ease: 'power3.out' },
+            phase + FADE_OUT + STAGGER * 3,
           )
         }
+
+        master.to({}, { duration: HOLD }, `>`)
       })
     }, sectionRef)
 
