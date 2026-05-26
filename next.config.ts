@@ -165,6 +165,51 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: false,
       },
+      // PT slugs from old links → actual EN routes (404 fixes from Ahrefs 2026-05-26)
+      {
+        source: '/comunidade',
+        destination: '/community',
+        permanent: true,
+      },
+      {
+        source: '/ajuda',
+        destination: '/help',
+        permanent: true,
+      },
+      {
+        source: '/cadastrar',
+        destination: '/register',
+        permanent: true,
+      },
+      // Wrong feature slugs that were linked internally
+      {
+        source: '/features/ia',
+        destination: '/features/estetia-ia',
+        permanent: true,
+      },
+      {
+        source: '/features/prontuario-digital',
+        destination: '/features/prontuario-eletronico',
+        permanent: true,
+      },
+      // Help article that doesn't exist → help index
+      {
+        source: '/help/planos/free-vs-pro',
+        destination: '/precos',
+        permanent: true,
+      },
+      // EN help routes don't exist (site is PT-only) → redirect to PT equivalent
+      {
+        source: '/en/help/:path*',
+        destination: '/help/:path*',
+        permanent: true,
+      },
+      // Literal [slug] crawled from broken HTML
+      {
+        source: '/blog/:slug([\\[\\]]+.*)',
+        destination: '/blog',
+        permanent: false,
+      },
     ]
   },
 
