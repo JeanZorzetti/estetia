@@ -7,6 +7,7 @@ export interface BlogPost {
   lastModified?: string
   category: string
   image: string
+  imageAlt?: string
   author: string
   relatedSlugs?: string[]
   // Set to true to preserve SEO juice while hiding from listing pages

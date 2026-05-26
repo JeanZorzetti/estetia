@@ -7,7 +7,8 @@ export const post: BlogPost = {
   date: '2026-05-08',
   lastModified: '2026-05-08',
   category: 'Gestão Clínica',
-  image: '/og-image.png',
+  image: 'https://images.unsplash.com/photo-1552693673-1bf958298935?w=1200&q=80',
+  imageAlt: 'Recepcionista de clínica de estética gerenciando agenda de agendamentos — como reduzir no-show',
   author: 'Equipe Estetia',
   relatedSlugs: [
     'kpis-essenciais-clinica-de-estetica',

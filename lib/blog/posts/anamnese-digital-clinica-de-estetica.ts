@@ -7,7 +7,8 @@ export const post: BlogPost = {
   date: '2026-05-04',
   lastModified: '2026-05-04',
   category: 'Tecnologia & IA',
-  image: '/og-image.png',
+  image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1200&q=80',
+  imageAlt: 'Anamnese digital em clínica de estética via tablet — digitalização de fichas de pacientes',
   author: 'Equipe Estetia',
   relatedSlugs: [
     'lgpd-para-clinicas-de-estetica-guia-2026',

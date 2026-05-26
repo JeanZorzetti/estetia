@@ -138,7 +138,7 @@ export function BlogClientContent({ sortedPosts, allCategoryLabel, locale }: Blo
                   <div className="absolute inset-0 z-0 transition-transform duration-700 ease-out group-hover:scale-105 group-hover:rotate-1">
                     <PostCover
                       src={featuredPost.image}
-                      alt={featuredPost.title}
+                      alt={featuredPost.imageAlt || featuredPost.title}
                       color={getCategoryColor(featuredPost.category)}
                       category={featuredPost.category}
                     />
@@ -238,7 +238,7 @@ export function BlogClientContent({ sortedPosts, allCategoryLabel, locale }: Blo
                         <div className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105">
                           <PostCover
                             src={post.image}
-                            alt={displayTitle}
+                            alt={post.imageAlt || displayTitle}
                             color={catColor}
                             category={post.category}
                           />

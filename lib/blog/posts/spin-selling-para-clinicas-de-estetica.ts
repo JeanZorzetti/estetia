@@ -7,7 +7,8 @@ export const post: BlogPost = {
   date: '2026-05-10',
   lastModified: '2026-05-10',
   category: 'Marketing & Captação',
-  image: '/og-image.png',
+  image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&q=80',
+  imageAlt: 'Profissional de estética em consulta de avaliação com cliente — SPIN Selling para clínicas de estética',
   author: 'Equipe Estetia',
   relatedSlugs: [
     'como-reduzir-no-show-em-clinicas-de-estetica',

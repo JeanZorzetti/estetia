@@ -7,7 +7,8 @@ export const post: BlogPost = {
   date: '2026-05-06',
   lastModified: '2026-05-06',
   category: 'Compliance & LGPD',
-  image: '/og-image.png',
+  image: 'https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1200&q=80',
+  imageAlt: 'Proteção de dados e conformidade LGPD em clínicas de estética — guia prático 2026',
   author: 'Equipe Estetia',
   relatedSlugs: [
     'anamnese-digital-clinica-de-estetica',
