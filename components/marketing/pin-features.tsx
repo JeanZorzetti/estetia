@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { gsap, ScrollTrigger } from '@/lib/animation/gsap'
+import { gsap, ScrollTrigger, registerGsap } from '@/lib/animation/gsap'
 import { stations } from './pin-features/stations-data'
 import { StationContent } from './pin-features/station-content'
 import { StationVisual } from './pin-features/station-visual'
@@ -25,6 +25,8 @@ export function PinFeatures() {
     if (reducedMotion) return
     if (!wrapperRef.current || !stagesRef.current) return
 
+    registerGsap()
+
     const ctx = gsap.context(() => {
       const stages = Array.from(stagesRef.current!.children) as HTMLElement[]
 
@@ -46,17 +48,18 @@ export function PinFeatures() {
       const REVEAL = 1.0
       const STAGGER = 0.2
 
-      const master = gsap.timeline({
-        scrollTrigger: {
-          trigger: wrapperRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const idx = Math.min(STATIONS_COUNT - 1, Math.floor(self.progress * STATIONS_COUNT))
-            setActiveIndex(idx)
-          },
+      const master = gsap.timeline({ paused: true })
+
+      ScrollTrigger.create({
+        trigger: wrapperRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1.5,
+        invalidateOnRefresh: true,
+        animation: master,
+        onUpdate: (self) => {
+          const idx = Math.min(STATIONS_COUNT - 1, Math.floor(self.progress * STATIONS_COUNT))
+          setActiveIndex(idx)
         },
       })
 
