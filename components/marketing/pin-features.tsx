@@ -21,6 +21,8 @@ export function PinFeatures() {
     if (reducedMotion) return
     if (!sectionRef.current || !stagesRef.current) return
 
+    let refreshTimer: ReturnType<typeof setTimeout> | undefined
+
     const ctx = gsap.context(() => {
       const stages = Array.from(stagesRef.current!.children) as HTMLElement[]
 
@@ -51,7 +53,8 @@ export function PinFeatures() {
           trigger: sectionRef.current,
           start: 'top top',
           end: totalEnd,
-          pin: true,
+          pin: sectionRef.current,
+          pinSpacing: true,
           scrub: 1.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -115,7 +118,12 @@ export function PinFeatures() {
       })
     }, sectionRef)
 
+    refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 200)
+
     return () => {
+      if (refreshTimer) clearTimeout(refreshTimer)
       ctx.revert()
       ScrollTrigger.refresh()
     }

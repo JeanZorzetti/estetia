@@ -30,11 +30,14 @@ export function connectScrollTriggerToLenis(lenis: Lenis): void {
         height: window.innerHeight,
       }
     },
-    pinType: document.documentElement.style.transform ? 'transform' : 'fixed',
+    pinType: 'transform',
   })
 
   ScrollTrigger.defaults({ scroller: document.documentElement })
-  ScrollTrigger.refresh()
+
+  requestAnimationFrame(() => {
+    ScrollTrigger.refresh()
+  })
 }
 
 export { gsap, ScrollTrigger }
