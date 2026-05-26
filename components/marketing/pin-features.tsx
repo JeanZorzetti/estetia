@@ -124,12 +124,23 @@ export function PinFeatures() {
       })
     }, wrapperRef)
 
-    const refreshTimer = setTimeout(() => {
-      ScrollTrigger.refresh()
-    }, 100)
+    const refreshTimers = [
+      setTimeout(() => {
+        console.log('[PinFeatures] refresh @ 100ms')
+        ScrollTrigger.refresh()
+      }, 100),
+      setTimeout(() => {
+        console.log('[PinFeatures] refresh @ 500ms')
+        ScrollTrigger.refresh()
+      }, 500),
+      setTimeout(() => {
+        console.log('[PinFeatures] refresh @ 1500ms')
+        ScrollTrigger.refresh()
+      }, 1500),
+    ]
 
     return () => {
-      clearTimeout(refreshTimer)
+      refreshTimers.forEach(clearTimeout)
       ctx.revert()
     }
   }, [reducedMotion])
