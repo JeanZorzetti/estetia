@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Camera, Upload, X, ZoomIn } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -12,10 +12,12 @@ import { toast } from 'sonner'
 const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp']
 const MAX_BYTES = 10 * 1024 * 1024
 
+type PhotoTipo = 'BEFORE' | 'AFTER' | 'EVOLUTION'
+
 interface PatientPhoto {
   id: string
   url: string
-  tipo: 'BEFORE' | 'AFTER' | 'EVOLUTION'
+  tipo: PhotoTipo
   areaCorpo: string | null
   anguloPadronizado: string | null
   createdAt: string
@@ -36,15 +38,23 @@ const TIPO_LABELS: Record<string, { label: string; bg: string; text: string }> =
 
 const TIPO_FILTERS = ['TODOS', 'BEFORE', 'AFTER', 'EVOLUTION'] as const
 
+const TIPO_OPTIONS: { value: PhotoTipo; label: string; color: string }[] = [
+  { value: 'BEFORE', label: 'Antes', color: 'border-navy/30 hover:border-navy hover:bg-navy/5 text-navy' },
+  { value: 'AFTER', label: 'Depois', color: 'border-teal-500/30 hover:border-teal-500 hover:bg-teal-500/5 text-teal-600' },
+  { value: 'EVOLUTION', label: 'Evolução', color: 'border-gold-500/30 hover:border-gold-500 hover:bg-gold-500/5 text-gold-600' },
+]
+
 export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
   const router = useRouter()
-  const [filter, setFilter] = useState<'TODOS' | 'BEFORE' | 'AFTER' | 'EVOLUTION'>('TODOS')
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [filter, setFilter] = useState<'TODOS' | PhotoTipo>('TODOS')
   const [lightbox, setLightbox] = useState<PatientPhoto | null>(null)
   const [uploading, setUploading] = useState(false)
+  const [pendingFile, setPendingFile] = useState<File | null>(null)
 
   const filtered = filter === 'TODOS' ? fotos : fotos.filter(f => f.tipo === filter)
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
@@ -59,13 +69,21 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
       return
     }
 
+    setPendingFile(file)
+  }
+
+  const handleUpload = async (tipo: PhotoTipo) => {
+    if (!pendingFile) return
+    setPendingFile(null)
     setUploading(true)
+    if (inputRef.current) inputRef.current.value = ''
+
     try {
       // 1. Solicitar presigned URL
       const presignRes = await fetch('/api/clinica/fotos/upload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patientId, contentType: file.type }),
+        body: JSON.stringify({ patientId, contentType: pendingFile.type }),
       })
       if (!presignRes.ok) throw new Error('Falha ao iniciar upload')
       const { uploadUrl, publicUrl, objectKey } = await presignRes.json()
@@ -73,8 +91,8 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
       // 2. PUT direto no MinIO com a URL assinada
       const putRes = await fetch(uploadUrl, {
         method: 'PUT',
-        body: file,
-        headers: { 'Content-Type': file.type },
+        body: pendingFile,
+        headers: { 'Content-Type': pendingFile.type },
       })
       if (!putRes.ok) throw new Error('Falha ao enviar para o storage')
 
@@ -86,7 +104,7 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
           patientId,
           url: publicUrl,
           objectKey,
-          tipo: 'EVOLUTION',
+          tipo,
           consentimentoConcedido: true,
         }),
       })
@@ -98,7 +116,6 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
       toast.error(err instanceof Error ? err.message : 'Erro no upload')
     } finally {
       setUploading(false)
-      e.target.value = ''
     }
   }
 
@@ -133,10 +150,36 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
                 {uploading ? 'Enviando...' : 'Upload foto'}
               </span>
             </Button>
-            <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleUpload} disabled={uploading} />
+            <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleFileSelect} disabled={uploading} />
           </label>
         )}
       </div>
+
+      {/* Tipo picker modal */}
+      {pendingFile && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => { setPendingFile(null); if (inputRef.current) inputRef.current.value = '' }}>
+          <div className="bg-background rounded-2xl border border-border/60 shadow-2xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-1">
+              <h3 className="text-sm font-black text-foreground">Tipo da foto</h3>
+              <button onClick={() => { setPendingFile(null); if (inputRef.current) inputRef.current.value = '' }} className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-xs text-muted-foreground mb-4">{pendingFile.name}</p>
+            <div className="flex flex-col gap-2">
+              {TIPO_OPTIONS.map(opt => (
+                <button
+                  key={opt.value}
+                  onClick={() => handleUpload(opt.value)}
+                  className={cn('w-full px-4 py-3 rounded-xl border text-sm font-bold text-left transition-all duration-150', opt.color)}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Grid */}
       {filtered.length === 0 ? (
