@@ -32,16 +32,26 @@ export default async function VisualizarAnamnesePage({
 
   let respostas: Record<string, unknown> = {}
   try {
-    respostas = JSON.parse(decrypt(anamnesis.respostas))
+    const raw = decrypt(anamnesis.respostas)
+    const parsed = JSON.parse(raw)
+    respostas = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {}
   } catch {
     // encrypted but unreadable — show empty
   }
 
-  const template = await prisma.anamnesisTemplate.findFirst({
-    where: { organizationId: user.organizationId },
+  const templateRecord = await prisma.anamnesisTemplate.findFirst({
+    where: { organizationId: user.organizationId, ativo: true },
     orderBy: { updatedAt: 'desc' },
     select: { template: true },
   })
+
+  const templateData =
+    templateRecord?.template &&
+    typeof templateRecord.template === 'object' &&
+    !Array.isArray(templateRecord.template) &&
+    templateRecord.template !== null
+      ? (templateRecord.template as unknown as AnamnesisTemplate)
+      : null
 
   await logMedicalAccess({
     organizationId: user.organizationId,
@@ -52,8 +62,6 @@ export default async function VisualizarAnamnesePage({
     action: 'VIEW',
     metadata: { page: 'anamnese-view' },
   })
-
-  const serialize = <T,>(v: T): T => JSON.parse(JSON.stringify(v))
 
   return (
     <div className="flex flex-col gap-6 max-w-3xl">
@@ -76,9 +84,9 @@ export default async function VisualizarAnamnesePage({
         )}
       </div>
 
-      {template ? (
+      {templateData ? (
         <AnamnesisFormBuilder
-          template={serialize(template.template) as AnamnesisTemplate}
+          template={templateData}
           onSubmit={async () => {}}
           readOnly
           initialValues={respostas}
