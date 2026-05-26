@@ -1,11 +1,16 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Camera, Upload, X, ZoomIn } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { EmptyState } from '@/components/pacientes/shared/empty-state'
 import Image from 'next/image'
+import { toast } from 'sonner'
+
+const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp']
+const MAX_BYTES = 10 * 1024 * 1024
 
 interface PatientPhoto {
   id: string
@@ -32,6 +37,7 @@ const TIPO_LABELS: Record<string, { label: string; bg: string; text: string }> =
 const TIPO_FILTERS = ['TODOS', 'BEFORE', 'AFTER', 'EVOLUTION'] as const
 
 export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
+  const router = useRouter()
   const [filter, setFilter] = useState<'TODOS' | 'BEFORE' | 'AFTER' | 'EVOLUTION'>('TODOS')
   const [lightbox, setLightbox] = useState<PatientPhoto | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -41,19 +47,57 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+
+    if (!ALLOWED_MIME.includes(file.type)) {
+      toast.error('Formato não suportado. Use JPG, PNG ou WEBP.')
+      e.target.value = ''
+      return
+    }
+    if (file.size > MAX_BYTES) {
+      toast.error('Arquivo maior que 10MB.')
+      e.target.value = ''
+      return
+    }
+
     setUploading(true)
     try {
-      const form = new FormData()
-      form.append('file', file)
-      form.append('patientId', patientId)
-      form.append('tipo', 'EVOLUTION')
-      form.append('consentimentoConcedido', 'true')
-      const res = await fetch('/api/clinica/fotos/upload', { method: 'POST', body: form })
-      if (res.ok) window.location.reload()
-    } catch {
-      // silent
+      // 1. Solicitar presigned URL
+      const presignRes = await fetch('/api/clinica/fotos/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ patientId, contentType: file.type }),
+      })
+      if (!presignRes.ok) throw new Error('Falha ao iniciar upload')
+      const { uploadUrl, publicUrl } = await presignRes.json()
+
+      // 2. PUT direto no MinIO com a URL assinada
+      const putRes = await fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type },
+      })
+      if (!putRes.ok) throw new Error('Falha ao enviar para o storage')
+
+      // 3. Persistir registro no DB
+      const saveRes = await fetch('/api/clinica/fotos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientId,
+          url: publicUrl,
+          tipo: 'EVOLUTION',
+          consentimentoConcedido: true,
+        }),
+      })
+      if (!saveRes.ok) throw new Error('Upload feito, mas falhou ao salvar registro')
+
+      toast.success('Foto enviada com sucesso')
+      router.refresh()
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erro no upload')
     } finally {
       setUploading(false)
+      e.target.value = ''
     }
   }
 
@@ -88,7 +132,7 @@ export function FotosGridClient({ fotos, patientId, canUpload }: Props) {
                 {uploading ? 'Enviando...' : 'Upload foto'}
               </span>
             </Button>
-            <input type="file" accept="image/*" className="hidden" onChange={handleUpload} disabled={uploading} />
+            <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleUpload} disabled={uploading} />
           </label>
         )}
       </div>
