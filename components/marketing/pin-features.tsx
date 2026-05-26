@@ -50,18 +50,23 @@ export function PinFeatures() {
 
       const master = gsap.timeline({ paused: true })
 
-      ScrollTrigger.create({
+      const st = ScrollTrigger.create({
         trigger: wrapperRef.current,
         start: 'top top',
         end: 'bottom bottom',
         scrub: 1.5,
         invalidateOnRefresh: true,
         animation: master,
+        markers: true,
         onUpdate: (self) => {
           const idx = Math.min(STATIONS_COUNT - 1, Math.floor(self.progress * STATIONS_COUNT))
           setActiveIndex(idx)
         },
       })
+
+      if (typeof window !== 'undefined') {
+        ;(window as unknown as { __pinST: typeof st }).__pinST = st
+      }
 
       master.to({}, { duration: HOLD })
 
