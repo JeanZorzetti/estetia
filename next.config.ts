@@ -34,6 +34,13 @@ const nextConfig: NextConfig = {
   /* SEO Redirects - Fix 404s from Ahrefs */
   async redirects() {
     return [
+      // www → apex (non-www canonical)
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.estetiacrm.com.br' }],
+        destination: 'https://estetiacrm.com.br/:path*',
+        permanent: true,
+      },
       // Legacy EasyPanel host → estetiacrm.com.br (preserve path/query)
       {
         source: '/:path*',

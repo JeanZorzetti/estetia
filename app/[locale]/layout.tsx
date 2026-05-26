@@ -55,78 +55,31 @@ import { AiTrafficMonitor } from '@/components/analytics/ai-traffic-monitor'
 
 // ─── Metadata dinâmica por locale ──────────────────────────────────────────────
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}): Promise<Metadata> {
-  const { locale } = await params
-
-  const isPtBR = locale === 'pt-BR'
+export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = 'https://estetiacrm.com.br'
-  const enUrl = `${baseUrl}/en`
 
-  if (isPtBR) {
-    return {
-      title: 'Estetia CRM | Gestão para Clínicas de Estética',
-      description:
-        'CRM completo para clínicas de estética e dermatologia. Agenda inteligente, anamnese digital, WhatsApp automático e conformidade LGPD.',
-      keywords: ['CRM Estética', 'Clínica Estética', 'Agenda Online', 'Anamnese Digital', 'LGPD', 'Estetia', 'ROI Labs'],
-      metadataBase: new URL(baseUrl),
-      alternates: {
-        canonical: baseUrl,
-        languages: {
-          'pt-BR': baseUrl,
-          en: enUrl,
-          'x-default': baseUrl,
-        },
-      },
-      openGraph: {
-        title: 'Estetia CRM | Sua clínica sempre cheia',
-        description:
-          'CRM para clínicas de estética: agenda, anamnese digital, recall automático, WhatsApp e LGPD. 14 dias grátis.',
-        url: baseUrl,
-        siteName: 'Estetia CRM',
-        locale: 'pt_BR',
-        type: 'website',
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: 'Estetia CRM',
-        description: 'Transforme leads em receita recorrente.',
-        creator: '@roilabs',
-      },
-    }
-  }
-
-  // ── English metadata ─────────────────────────────────────────────────────────
   return {
-    title: 'Estetia CRM | Clinic Management for Aesthetics',
+    title: 'Estetia CRM | Gestão para Clínicas de Estética',
     description:
-      'Complete CRM for aesthetic and dermatology clinics. Smart scheduling, digital intake forms, WhatsApp automation and LGPD compliance.',
-    keywords: ['Aesthetics CRM', 'Clinic Management', 'Appointment Scheduling', 'Digital Intake', 'Estetia', 'ROI Labs'],
+      'CRM completo para clínicas de estética e dermatologia. Agenda inteligente, anamnese digital, WhatsApp automático e conformidade LGPD.',
+    keywords: ['CRM Estética', 'Clínica Estética', 'Agenda Online', 'Anamnese Digital', 'LGPD', 'Estetia', 'ROI Labs'],
     metadataBase: new URL(baseUrl),
     alternates: {
-      canonical: enUrl,
-      languages: {
-        'pt-BR': baseUrl,
-        en: enUrl,
-        'x-default': baseUrl,
-      },
+      canonical: baseUrl,
     },
     openGraph: {
-      title: 'Estetia CRM | Keep Your Clinic Full',
+      title: 'Estetia CRM | Sua clínica sempre cheia',
       description:
-        'CRM for aesthetic clinics: scheduling, digital intake, automatic recall, WhatsApp and LGPD compliance. 14-day free trial.',
-      url: enUrl,
+        'CRM para clínicas de estética: agenda, anamnese digital, recall automático, WhatsApp e LGPD. 14 dias grátis.',
+      url: baseUrl,
       siteName: 'Estetia CRM',
-      locale: 'en_US',
+      locale: 'pt_BR',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
       title: 'Estetia CRM',
-      description: 'Turn leads into recurring revenue.',
+      description: 'Transforme leads em receita recorrente.',
       creator: '@roilabs',
     },
   }
@@ -140,8 +93,7 @@ export function generateStaticParams() {
 
 // ─── Schema.org dinâmico por locale ────────────────────────────────────────────
 
-function buildSchemaOrg(locale: Locale) {
-  const isPtBR = locale === 'pt-BR'
+function buildSchemaOrg() {
   const baseUrl = 'https://estetiacrm.com.br'
 
   return {
@@ -150,13 +102,11 @@ function buildSchemaOrg(locale: Locale) {
       {
         '@type': 'WebSite',
         '@id': `${baseUrl}/#website`,
-        url: isPtBR ? baseUrl : `${baseUrl}/en`,
+        url: baseUrl,
         name: 'Estetia CRM',
-        description: isPtBR
-          ? 'CRM intuitivo para gestão de vendas com pipeline visual, contatos inteligentes e métricas em tempo real.'
-          : 'Intuitive CRM for sales management with visual pipeline, smart contacts and real-time metrics.',
+        description: 'CRM intuitivo para gestão de clínicas de estética com agenda inteligente, anamnese digital, WhatsApp integrado e métricas em tempo real.',
         publisher: { '@id': `${baseUrl}/#organization` },
-        inLanguage: isPtBR ? 'pt-BR' : 'en',
+        inLanguage: 'pt-BR',
       },
       {
         '@type': 'Organization',
@@ -164,9 +114,7 @@ function buildSchemaOrg(locale: Locale) {
         name: 'ROI Labs',
         legalName: 'ROI Labs Tecnologia',
         url: 'https://roilabs.com.br',
-        description: isPtBR
-          ? 'ROI Labs é a empresa de tecnologia por trás do Estetia CRM, plataforma SaaS de gestão clínica para clínicas de estética e dermatologia no Brasil.'
-          : 'ROI Labs is the technology company behind Estetia CRM, a SaaS clinical management platform for aesthetic and dermatology clinics in Brazil.',
+        description: 'ROI Labs é a empresa de tecnologia por trás do Estetia CRM, plataforma SaaS de gestão clínica para clínicas de estética e dermatologia no Brasil.',
         foundingDate: '2024-01-01',
         logo: {
           '@type': 'ImageObject',
@@ -187,8 +135,8 @@ function buildSchemaOrg(locale: Locale) {
           telephone: '+55-62-98344-3919',
           email: 'roilabs.ia@gmail.com',
           contactOption: 'TollFree',
-          areaServed: isPtBR ? 'BR' : ['BR', 'US', 'GB', 'AU', 'CA'],
-          availableLanguage: ['Portuguese', 'English'],
+          areaServed: 'BR',
+          availableLanguage: ['Portuguese'],
         },
         sameAs: [
           'https://twitter.com/roilabs',
@@ -204,7 +152,7 @@ function buildSchemaOrg(locale: Locale) {
         offers: {
           '@type': 'Offer',
           price: '0',
-          priceCurrency: isPtBR ? 'BRL' : 'USD',
+          priceCurrency: 'BRL',
           availability: 'https://schema.org/InStock',
         },
         aggregateRating: {
@@ -215,28 +163,17 @@ function buildSchemaOrg(locale: Locale) {
           worstRating: '1',
         },
         provider: { '@id': `${baseUrl}/#organization` },
-        description: isPtBR
-          ? 'CRM intuitivo para gestão de vendas brasileiras. Pipeline Kanban visual, gestão de contatos, WhatsApp integrado e métricas em tempo real.'
-          : 'Intuitive CRM for sales management. Visual Kanban pipeline, contact management, integrated WhatsApp and real-time metrics.',
-        featureList: isPtBR
-          ? [
-              'Pipeline Kanban Visual',
-              'Gestão de Contatos',
-              'WhatsApp com 1 Clique',
-              'Métricas e Analytics em Tempo Real',
-              'Gestão Multi-usuário',
-              'Temas Claro e Escuro',
-            ]
-          : [
-              'Visual Kanban Pipeline',
-              'Contact Management',
-              '1-Click WhatsApp',
-              'Real-Time Analytics & Metrics',
-              'Multi-user Management',
-              'Light & Dark Themes',
-            ],
+        description: 'CRM intuitivo para gestão de clínicas de estética. Agenda inteligente, anamnese digital, WhatsApp integrado, recall automático e métricas em tempo real.',
+        featureList: [
+          'Agenda Inteligente Online',
+          'Anamnese Digital',
+          'WhatsApp com 1 Clique',
+          'Recall Automático',
+          'Métricas e Analytics em Tempo Real',
+          'Conformidade LGPD',
+        ],
         screenshot: `${baseUrl}/og-image.png`,
-        url: isPtBR ? baseUrl : `${baseUrl}/en`,
+        url: baseUrl,
         softwareVersion: '1.0',
       },
     ],
@@ -275,7 +212,7 @@ export default async function LocaleLayout({
   // Carrega as mensagens para o locale atual (passadas ao client via NextIntlClientProvider)
   const messages = await getMessages()
 
-  const schemaOrg = buildSchemaOrg(locale as Locale)
+  const schemaOrg = buildSchemaOrg()
 
   return (
     <html lang={locale} suppressHydrationWarning>

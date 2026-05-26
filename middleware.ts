@@ -15,29 +15,24 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url))
     }
 
-    // 2. Strip /en prefix for locale-agnostic auth checks
-    const pathnameWithoutLocale = pathname.replace(/^\/en/, '') || '/'
-
     const sessionCookie = request.cookies.get('session')?.value
 
-    // 3. Protected routes — redirect to login if no session
+    // 2. Protected routes — redirect to login if no session
     if (
-        pathnameWithoutLocale.startsWith('/dashboard') ||
-        pathnameWithoutLocale.startsWith('/IA')
+        pathname.startsWith('/dashboard') ||
+        pathname.startsWith('/IA')
     ) {
         if (!sessionCookie) {
-            const isEnglish = pathname.startsWith('/en')
-            const loginPath = isEnglish ? '/en/login' : '/login'
-            const loginUrl = new URL(loginPath, request.url)
+            const loginUrl = new URL('/login', request.url)
             loginUrl.searchParams.set('callbackUrl', pathname)
             return NextResponse.redirect(loginUrl)
         }
     }
 
-    // 4. Auth routes — redirect to dashboard if already logged in
+    // 3. Auth routes — redirect to dashboard if already logged in
     if (
-        pathnameWithoutLocale.startsWith('/login') ||
-        pathnameWithoutLocale.startsWith('/register')
+        pathname.startsWith('/login') ||
+        pathname.startsWith('/register')
     ) {
         if (sessionCookie) {
             return NextResponse.redirect(new URL('/dashboard', request.url))
@@ -57,7 +52,7 @@ export async function middleware(request: NextRequest) {
     const refreshResult = await maybeRefreshSession(request)
     if ('invalid' in refreshResult && refreshResult.invalid) {
         // Skip redirect loop: if we're already on /login or /register, just clear the cookie and continue
-        const isAuthPage = pathnameWithoutLocale.startsWith('/login') || pathnameWithoutLocale.startsWith('/register')
+        const isAuthPage = pathname.startsWith('/login') || pathname.startsWith('/register')
         const redirect = isAuthPage ? NextResponse.next() : NextResponse.redirect(new URL('/login', request.url))
         redirect.cookies.set('session', '', { expires: new Date(0), path: '/' })
         return redirect

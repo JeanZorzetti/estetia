@@ -18,7 +18,7 @@ const FEATURES = [
             'Lista de espera inteligente de alta conversão',
             'Lembretes multi-canal por WhatsApp e e-mail',
         ],
-        href: '/features/agenda',
+        href: '/features/agenda-inteligente',
         mockup: 'calendar',
     },
     {
@@ -34,7 +34,7 @@ const FEATURES = [
             'Programa de fidelidade inteligente por pontos',
             'Memberships VIP e pacotes de tratamento recorrentes',
         ],
-        href: '/features/marketing',
+        href: '/features/marketing-clinico',
         mockup: 'chat',
     },
     {
@@ -50,7 +50,7 @@ const FEATURES = [
             'Performance financeira por profissional e sala',
             'Previsão de receitas baseada em comportamento e IA',
         ],
-        href: '/features/analytics',
+        href: '/features/analytics-pro',
         mockup: 'chart',
     },
 ]
