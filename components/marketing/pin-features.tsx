@@ -7,8 +7,12 @@ import { StationContent } from './pin-features/station-content'
 import { StationVisual } from './pin-features/station-visual'
 import { ProgressRail } from './pin-features/progress-rail'
 
+const STATIONS_COUNT = stations.length
+const VIEWPORTS_PER_STATION = 1.5
+
 export function PinFeatures() {
-  const sectionRef = useRef<HTMLElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const stickyRef = useRef<HTMLDivElement>(null)
   const stagesRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [reducedMotion, setReducedMotion] = useState(false)
@@ -19,20 +23,18 @@ export function PinFeatures() {
 
   useEffect(() => {
     if (reducedMotion) return
-    if (!sectionRef.current || !stagesRef.current) return
+    if (!wrapperRef.current || !stagesRef.current) return
 
     const ctx = gsap.context(() => {
       const stages = Array.from(stagesRef.current!.children) as HTMLElement[]
 
       stages.forEach((stage, idx) => {
+        const elements = stage.querySelectorAll<HTMLElement>('[data-station-element]')
+        const visual = stage.querySelector<HTMLElement>('[data-station-visual]')
         if (idx === 0) {
           gsap.set(stage, { autoAlpha: 1 })
         } else {
           gsap.set(stage, { autoAlpha: 0 })
-        }
-        const elements = stage.querySelectorAll<HTMLElement>('[data-station-element]')
-        const visual = stage.querySelector<HTMLElement>('[data-station-visual]')
-        if (idx > 0) {
           gsap.set(elements, { autoAlpha: 0, y: 40 })
           if (visual) gsap.set(visual, { autoAlpha: 0, x: 60 })
         }
@@ -44,21 +46,15 @@ export function PinFeatures() {
       const REVEAL = 1.0
       const STAGGER = 0.2
 
-      const totalEnd = `+=${stations.length * 150}%`
-
       const master = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: wrapperRef.current,
           start: 'top top',
-          end: totalEnd,
-          pin: sectionRef.current,
-          pinSpacing: true,
+          end: 'bottom bottom',
           scrub: 1.5,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            const progress = self.progress
-            const idx = Math.min(stations.length - 1, Math.floor(progress * stations.length))
+            const idx = Math.min(STATIONS_COUNT - 1, Math.floor(self.progress * STATIONS_COUNT))
             setActiveIndex(idx)
           },
         },
@@ -76,7 +72,6 @@ export function PinFeatures() {
         const visual = stage.querySelector<HTMLElement>('[data-station-visual]')
 
         const phase = idx * PHASE_LENGTH
-        master.addLabel(`station-${idx}`, phase)
 
         master.to(
           prevElements,
@@ -114,7 +109,7 @@ export function PinFeatures() {
 
         master.to({}, { duration: HOLD }, `>`)
       })
-    }, sectionRef)
+    }, wrapperRef)
 
     return () => {
       ctx.revert()
@@ -124,7 +119,7 @@ export function PinFeatures() {
   if (reducedMotion) {
     return (
       <section className="bg-[#0A1F3D] text-white">
-        {stations.map((station, i) => (
+        {stations.map((station) => (
           <article key={station.id} className="flex min-h-screen items-center px-8 py-24">
             <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 lg:grid-cols-2">
               <StationContent station={station} totalStations={stations.length} />
@@ -138,45 +133,53 @@ export function PinFeatures() {
     )
   }
 
+  const wrapperHeight = `${STATIONS_COUNT * VIEWPORTS_PER_STATION * 100}vh`
+
   return (
     <section
-      ref={sectionRef}
-      className="relative h-screen overflow-hidden bg-[#0A1F3D] text-white"
+      ref={wrapperRef}
+      className="relative bg-[#0A1F3D] text-white"
+      style={{ height: wrapperHeight }}
       aria-label="Tour de funcionalidades do Estetia"
     >
-      <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-        }}
-      />
-
-      <div className="absolute left-8 top-1/2 z-20 -translate-y-1/2 lg:left-12">
-        <ProgressRail total={stations.length} activeIndex={activeIndex} />
-      </div>
-
       <div
-        ref={stagesRef}
-        className="relative z-10 grid h-full w-full place-items-center px-8 lg:px-20"
+        ref={stickyRef}
+        className="sticky top-0 h-screen w-full overflow-hidden"
       >
-        {stations.map((station, i) => (
-          <article
-            key={station.id}
-            className="absolute inset-0 grid place-items-center px-8 lg:px-20"
-            style={{ gridArea: '1 / 1' }}
-          >
-            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 lg:grid-cols-2">
-              <StationContent station={station} totalStations={stations.length} />
-              <div data-station-visual>
-                <StationVisual id={station.id} />
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
+            backgroundSize: '60px 60px',
+          }}
+        />
 
-      <div className="absolute bottom-8 right-8 z-20 hidden text-[10px] font-bold uppercase tracking-[0.25em] text-white/40 lg:block">
-        Continue rolando
+        <div className="absolute left-8 top-1/2 z-20 -translate-y-1/2 lg:left-12">
+          <ProgressRail total={stations.length} activeIndex={activeIndex} />
+        </div>
+
+        <div
+          ref={stagesRef}
+          className="relative z-10 grid h-full w-full place-items-center px-8 lg:px-20"
+        >
+          {stations.map((station) => (
+            <article
+              key={station.id}
+              className="grid place-items-center px-8 lg:px-20"
+              style={{ gridArea: '1 / 1' }}
+            >
+              <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 lg:grid-cols-2">
+                <StationContent station={station} totalStations={stations.length} />
+                <div data-station-visual>
+                  <StationVisual id={station.id} />
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="absolute bottom-8 right-8 z-20 hidden text-[10px] font-bold uppercase tracking-[0.25em] text-white/40 lg:block">
+          Continue rolando
+        </div>
       </div>
     </section>
   )
