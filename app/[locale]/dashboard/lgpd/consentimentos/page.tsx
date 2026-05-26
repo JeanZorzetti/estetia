@@ -6,6 +6,7 @@ import { ChevronLeft, ShieldCheck, Activity, Camera, Sparkles, ShieldAlert, User
 import { Card, CardContent } from '@/components/ui/card'
 import { ConsentimentosTable } from '@/components/lgpd/consentimentos/consentimentos-table'
 import { NovoConsentimentoDialog } from '@/components/lgpd/consentimentos/novo-consentimento-dialog'
+import { cn } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
