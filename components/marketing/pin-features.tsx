@@ -26,10 +26,8 @@ export function PinFeatures() {
     if (!wrapperRef.current || !stagesRef.current) return
 
     registerGsap()
-    console.log('[PinFeatures] mount, ScrollTrigger:', typeof ScrollTrigger, 'wrapper:', !!wrapperRef.current)
 
     const ctx = gsap.context(() => {
-      console.log('[PinFeatures] context callback running')
       const stages = Array.from(stagesRef.current!.children) as HTMLElement[]
 
       stages.forEach((stage, idx) => {
@@ -51,27 +49,19 @@ export function PinFeatures() {
       const STAGGER = 0.2
 
       const master = gsap.timeline({ paused: true })
-      console.log('[PinFeatures] about to create ScrollTrigger')
 
-      const st = ScrollTrigger.create({
+      ScrollTrigger.create({
         trigger: wrapperRef.current,
         start: 'top top',
         end: 'bottom bottom',
         scrub: 1.5,
         invalidateOnRefresh: true,
         animation: master,
-        markers: true,
         onUpdate: (self) => {
           const idx = Math.min(STATIONS_COUNT - 1, Math.floor(self.progress * STATIONS_COUNT))
           setActiveIndex(idx)
         },
       })
-
-      console.log('[PinFeatures] ScrollTrigger created:', { start: st.start, end: st.end, progress: st.progress })
-
-      if (typeof window !== 'undefined') {
-        ;(window as unknown as { __pinST: typeof st }).__pinST = st
-      }
 
       master.to({}, { duration: HOLD })
 
@@ -125,18 +115,9 @@ export function PinFeatures() {
     }, wrapperRef)
 
     const refreshTimers = [
-      setTimeout(() => {
-        console.log('[PinFeatures] refresh @ 100ms')
-        ScrollTrigger.refresh()
-      }, 100),
-      setTimeout(() => {
-        console.log('[PinFeatures] refresh @ 500ms')
-        ScrollTrigger.refresh()
-      }, 500),
-      setTimeout(() => {
-        console.log('[PinFeatures] refresh @ 1500ms')
-        ScrollTrigger.refresh()
-      }, 1500),
+      setTimeout(() => ScrollTrigger.refresh(), 100),
+      setTimeout(() => ScrollTrigger.refresh(), 500),
+      setTimeout(() => ScrollTrigger.refresh(), 1500),
     ]
 
     return () => {
