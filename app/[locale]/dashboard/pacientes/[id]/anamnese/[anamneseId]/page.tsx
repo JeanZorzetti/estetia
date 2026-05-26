@@ -3,7 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { notFound, redirect } from 'next/navigation'
 import { logMedicalAccess } from '@/lib/audit/medical-access-log'
 import { decrypt } from '@/lib/encryption'
-import { AnamnesisFormBuilder, type AnamnesisTemplate } from '@/components/anamnese/form-builder'
+import { AnamneseViewer } from '@/components/anamnese/anamnese-viewer'
+import type { AnamnesisTemplate } from '@/components/anamnese/form-builder'
 import { Award, Shield } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -85,10 +86,8 @@ export default async function VisualizarAnamnesePage({
       </div>
 
       {templateData ? (
-        <AnamnesisFormBuilder
+        <AnamneseViewer
           template={templateData}
-          onSubmit={async () => {}}
-          readOnly
           initialValues={respostas}
         />
       ) : (
