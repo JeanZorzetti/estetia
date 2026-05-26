@@ -27,13 +27,11 @@ interface BlogPostPageProps {
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const { slug, locale } = await params
+  const { slug } = await params
   const post = blogPosts.find((p) => p.slug === slug)
   if (!post) return { title: 'Post não encontrado' }
 
-  const ptUrl = `https://estetiacrm.com.br/blog/${slug}`
-  const enUrl = `https://estetiacrm.com.br/en/blog/${slug}`
-  const url = locale === 'en' ? enUrl : ptUrl
+  const url = `https://estetiacrm.com.br/blog/${slug}`
 
   // OG Image dinâmica para todos os posts (branded com título + categoria)
   const ogParams = new URLSearchParams({ title: post.title, category: post.category })
@@ -64,27 +62,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = '5 KPIs prioritários para clínicas de estética: taxa de ocupação (ideal 80-90%), no-show (meta < 10%), recompra em 90 dias (saudável > 40%), LTV por paciente, ticket médio por procedimento. Dashboard em tempo real no Estetia CRM.'
   }
 
-  const isEnLocale = locale === 'en'
-  const hasEnContent = !!(post.titleEn && post.excerptEn)
-  const displayTitle = isEnLocale && post.titleEn ? post.titleEn : post.title
-  const displayDescription = isEnLocale && post.excerptEn ? post.excerptEn : aiOptimizedDescription
-
   return {
-    title: `${displayTitle} | Estetia Blog`,
-    description: displayDescription,
-    keywords: isEnLocale ? (post.keywordsEn ?? [post.category]) : post.category,
-    // Noindex for EN pages without translated content — avoids wrong-language SEO penalty
-    ...(isEnLocale && !hasEnContent ? { robots: { index: false, follow: false } } : {}),
+    title: `${post.title} | Estetia Blog`,
+    description: aiOptimizedDescription,
+    keywords: post.category,
     alternates: {
       canonical: url,
-      languages: {
-        'pt-BR': ptUrl,
-        ...(hasEnContent ? { 'en': enUrl, 'x-default': ptUrl } : {}),
-      },
     },
     openGraph: {
-      title: displayTitle,
-      description: displayDescription,
+      title: post.title,
+      description: aiOptimizedDescription,
       url,
       siteName: 'Estetia CRM',
       images: [
@@ -92,18 +79,18 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: displayTitle,
+          alt: post.title,
         },
       ],
-      locale: isEnLocale ? 'en_US' : 'pt_BR',
+      locale: 'pt_BR',
       type: 'article',
       publishedTime: post.date,
       authors: [post.author || 'Equipe Estetia'],
     },
     twitter: {
       card: 'summary_large_image',
-      title: displayTitle,
-      description: displayDescription,
+      title: post.title,
+      description: aiOptimizedDescription,
       images: [imageUrl],
       creator: '@roilabs',
     },

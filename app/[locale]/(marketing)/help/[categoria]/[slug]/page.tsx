@@ -41,35 +41,24 @@ export async function generateMetadata({
     };
   }
 
-  const ptUrl = `https://estetiacrm.com.br/help/${categoria}/${slug}`;
-  const enUrl = `https://estetiacrm.com.br/en/help/${categoria}/${slug}`;
-  const canonicalUrl = locale === 'en' ? enUrl : ptUrl;
-  const isEn = locale === 'en'
-  const hasEnContent = !!(article.titleEn && article.descriptionEn)
-  const displayTitle = isEn && article.titleEn ? article.titleEn : article.title
-  const displayDescription = isEn && article.descriptionEn ? article.descriptionEn : article.description
-  const helpLabel = isEn ? 'Help Center' : 'Central de Ajuda'
+  const canonicalUrl = `https://estetiacrm.com.br/help/${categoria}/${slug}`;
+  const helpLabel = 'Central de Ajuda'
 
   return {
-    title: `${displayTitle} - ${helpLabel} | Estetia CRM`,
-    description: displayDescription,
-    keywords: [article.category, isEn ? 'help' : 'ajuda', 'tutorial', 'CRM', 'Estetia'],
-    ...(isEn && !hasEnContent ? { robots: { index: false, follow: false } } : {}),
+    title: `${article.title} - ${helpLabel} | Estetia CRM`,
+    description: article.description,
+    keywords: [article.category, 'ajuda', 'tutorial', 'CRM', 'Estetia'],
     alternates: {
       canonical: canonicalUrl,
-      languages: {
-        'pt-BR': ptUrl,
-        ...(hasEnContent ? { 'en': enUrl, 'x-default': ptUrl } : {}),
-      },
     },
     openGraph: {
-      title: `${displayTitle} - ${helpLabel} | Estetia CRM`,
-      description: displayDescription,
+      title: `${article.title} - ${helpLabel} | Estetia CRM`,
+      description: article.description,
       url: canonicalUrl,
     },
     twitter: {
       card: 'summary',
-      title: `${displayTitle} - ${helpLabel}`,
+      title: `${article.title} - ${helpLabel}`,
       description: article.description,
     },
   };
