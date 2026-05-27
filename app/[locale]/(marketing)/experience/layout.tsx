@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ExperienceLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-[#04080F] text-white overflow-x-hidden">
+    <div className="bg-[#04080F] text-white">
       {children}
     </div>
   )
