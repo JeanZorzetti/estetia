@@ -6,6 +6,7 @@ import { ParticlesSvg } from './particles-svg'
 
 const HEADLINE = 'Gestão clínica que encanta'
 const SUBWORDS = ['Menos papel.', 'Mais presença.', 'Resultados que ficam.']
+const WORDS = HEADLINE.split(' ')
 
 export function StaggerHero() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -40,15 +41,34 @@ export function StaggerHero() {
     }, 400)
   }, [])
 
-  const letters = HEADLINE.split('').map((char, i) => (
-    <span
-      key={i}
-      ref={el => { if (el) lettersRef.current[i] = el }}
-      style={{ display: 'inline-block', opacity: 0, whiteSpace: char === ' ' ? 'pre' : 'normal' }}
-    >
-      {char === ' ' ? ' ' : char}
-    </span>
-  ))
+  // Render words as nowrap blocks; letters inside each word
+  let letterIdx = 0
+  const renderedWords = WORDS.map((word, wi) => {
+    const letterSpans = word.split('').map((char) => {
+      const idx = letterIdx++
+      return (
+        <span
+          key={idx}
+          ref={el => { if (el) lettersRef.current[idx] = el }}
+          style={{ display: 'inline-block', opacity: 0 }}
+        >
+          {char}
+        </span>
+      )
+    })
+    return (
+      <span
+        key={wi}
+        style={{
+          display: 'inline-block',
+          whiteSpace: 'nowrap',
+          marginRight: wi < WORDS.length - 1 ? '0.28em' : 0,
+        }}
+      >
+        {letterSpans}
+      </span>
+    )
+  })
 
   return (
     <section
@@ -96,7 +116,7 @@ export function StaggerHero() {
           }}
           aria-label={HEADLINE}
         >
-          {letters}
+          {renderedWords}
         </h1>
 
         {/* Subwords stagger */}

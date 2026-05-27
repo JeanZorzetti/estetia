@@ -9,6 +9,13 @@ export const metadata: Metadata = {
 export default function ExperienceV2Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-[#04080F] text-white">
+      {/* Hide marketing navbar + footer + padding-top imposed by parent (marketing)/layout */}
+      <style>{`
+        body > div > nav,
+        body > div > footer,
+        body > div > main > footer { display: none !important; }
+        body > div > main { padding-top: 0 !important; }
+      `}</style>
       {children}
     </div>
   )
