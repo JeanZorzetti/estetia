@@ -1,110 +1,74 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { animate, stagger } from 'animejs'
+import { useRef } from 'react'
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type Variants,
+} from 'framer-motion'
 import { ParticlesSvg } from './particles-svg'
 import { GoldenParticle } from '../shared/golden-particle'
-import { watchSection } from '@/lib/animation/anime-scroll'
+import { ScrambleText } from '../shared/scramble-text'
+import { Magnetic } from '../shared/magnetic'
 
 const HEADLINE = 'Gestão clínica que encanta'
-const SUBWORDS = ['Menos papel.', 'Mais presença.', 'Resultados que ficam.']
 const WORDS = HEADLINE.split(' ')
 
+const SUBWORDS = [
+  { text: 'Menos papel.', color: '#C5A059' },
+  { text: 'Mais presença.', color: '#489FB5' },
+  { text: 'Resultados que ficam.', color: 'rgba(240,237,232,0.5)' },
+]
+
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
+  },
+}
+
+const wordVariants: Variants = {
+  hidden: { opacity: 0, y: '0.7em' },
+  visible: {
+    opacity: 1,
+    y: '0em',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] as any },
+  },
+}
+
+const subVariants: Variants = {
+  hidden: { opacity: 0, y: '0.8em' },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  visible: ((i: number) => ({
+    opacity: 1,
+    y: '0em',
+    transition: { duration: 0.55, ease: [0.34, 1.56, 0.64, 1] as any, delay: 0.45 + i * 0.12 },
+  })) as any,
+}
+
 export function StaggerHero() {
-  const containerRef = useRef<HTMLElement>(null)
-  const lettersRef = useRef<HTMLSpanElement[]>([])
-  const wordsRef = useRef<HTMLSpanElement[]>([])
-  const hasAnimated = useRef(false)
-  const [particlePhase, setParticlePhase] = useState<'hero-enter' | 'hero-exit'>('hero-enter')
-  const [scrollProgress, setScrollProgress] = useState(0)
+  const sectionRef = useRef<HTMLElement>(null)
+  const shouldReduce = useReducedMotion()
 
-  useEffect(() => {
-    if (hasAnimated.current) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      // Static beautiful state for reduced-motion
-      lettersRef.current.filter(Boolean).forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)' })
-      wordsRef.current.filter(Boolean).forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)' })
-      return
-    }
-
-    hasAnimated.current = true
-
-    // Letter stagger from center
-    animate(lettersRef.current.filter(Boolean), {
-      opacity: [0, 1],
-      translateY: ['0.8em', '0em'],
-      delay: stagger(35, { from: 'center' }),
-      duration: 700,
-      ease: 'outExpo',
-    })
-
-    // Words stagger with offset after letters finish
-    setTimeout(() => {
-      animate(wordsRef.current.filter(Boolean), {
-        opacity: [0, 1],
-        translateY: ['1em', '0em'],
-        delay: stagger(120, { from: 'first' }),
-        duration: 600,
-        ease: 'outBack(1.4)',
-      })
-    }, 400)
-
-    // Track scroll to drive particle handoff
-    const section = containerRef.current
-    if (section) {
-      const watcher = watchSection(section, (p) => {
-        setScrollProgress(p)
-        if (p > 0.75) setParticlePhase('hero-exit')
-        else setParticlePhase('hero-enter')
-      })
-      return () => watcher.destroy()
-    }
-  }, [])
-
-  // Render words as nowrap blocks; letters inside each word
-  let letterIdx = 0
-  const renderedWords = WORDS.map((word, wi) => {
-    const letterSpans = word.split('').map((char) => {
-      const idx = letterIdx++
-      return (
-        <span
-          key={idx}
-          ref={el => { if (el) lettersRef.current[idx] = el }}
-          style={{ display: 'inline-block', opacity: 0 }}
-        >
-          {char}
-        </span>
-      )
-    })
-    return (
-      <span
-        key={wi}
-        style={{
-          display: 'inline-block',
-          whiteSpace: 'nowrap',
-          marginRight: wi < WORDS.length - 1 ? '0.28em' : 0,
-        }}
-      >
-        {letterSpans}
-      </span>
-    )
-  })
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] })
+  const particleOpacity = useTransform(scrollYProgress, [0.7, 1], [1, 0])
+  const particleY = useTransform(scrollYProgress, [0.7, 1], [0, 60])
 
   return (
     <section
-      ref={containerRef}
+      ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
       style={{ background: 'transparent' }}
     >
-      {/* Gradient vignette */}
+      {/* Radial vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at 50% 50%, transparent 30%, #04080F 95%)',
-        }}
+        style={{ background: 'radial-gradient(ellipse at 50% 50%, transparent 30%, #04080F 95%)' }}
       />
 
-      {/* Particles layer */}
       <ParticlesSvg />
 
       {/* Section number */}
@@ -115,18 +79,39 @@ export function StaggerHero() {
         01 — Stagger
       </div>
 
-      {/* Golden particle motif */}
-      <GoldenParticle phase={particlePhase} scrollProgress={scrollProgress} />
+      {/* Golden particle — fades out on scroll */}
+      <motion.div
+        className="absolute z-20 pointer-events-none"
+        style={{ opacity: particleOpacity, y: particleY, left: '50%', top: '50%', translateX: '-50%', translateY: '-50%' }}
+      >
+        <GoldenParticle phase="hero-enter" />
+      </motion.div>
 
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl">
-        {/* Gold accent line */}
+        {/* Gold divider */}
         <div
           className="mx-auto mb-8 h-px w-16 opacity-60"
           style={{ background: 'linear-gradient(90deg, transparent, #C5A059, transparent)' }}
         />
 
-        {/* Headline letter-by-letter */}
+        {/* Scramble caption */}
+        <p
+          style={{
+            fontFamily: "'Manrope', sans-serif",
+            fontSize: '0.65rem',
+            fontWeight: 600,
+            letterSpacing: '0.35em',
+            textTransform: 'uppercase',
+            color: '#C5A059',
+            opacity: 0.7,
+            marginBottom: '1.5rem',
+          }}
+        >
+          <ScrambleText text="ESTETIA CRM" duration={900} delay={200} />
+        </p>
+
+        {/* Headline — word stagger */}
         <h1
           className="mb-6 leading-tight"
           style={{
@@ -139,32 +124,49 @@ export function StaggerHero() {
           }}
           aria-label={HEADLINE}
         >
-          {renderedWords}
+          <motion.span
+            style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0 0.28em' }}
+            variants={containerVariants}
+            initial={shouldReduce ? false : 'hidden'}
+            animate="visible"
+          >
+            {WORDS.map((word, i) => (
+              <motion.span
+                key={i}
+                style={{ display: 'inline-block', whiteSpace: 'nowrap' }}
+                variants={wordVariants}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </motion.span>
         </h1>
 
-        {/* Subwords stagger */}
+        {/* Sub-words */}
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-          {SUBWORDS.map((word, i) => (
-            <span
+          {SUBWORDS.map(({ text, color }, i) => (
+            <motion.span
               key={i}
-              ref={el => { if (el) wordsRef.current[i] = el }}
+              custom={i}
+              variants={subVariants}
+              initial={shouldReduce ? false : 'hidden'}
+              animate="visible"
               style={{
                 display: 'inline-block',
-                opacity: 0,
                 fontFamily: "'Manrope', sans-serif",
                 fontSize: '0.85rem',
                 fontWeight: 500,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: i === 0 ? '#C5A059' : i === 1 ? '#489FB5' : 'rgba(240,237,232,0.5)',
+                color,
               }}
             >
-              {word}
-            </span>
+              {text}
+            </motion.span>
           ))}
         </div>
 
-        {/* CTA hint */}
+        {/* CTA scroll hint */}
         <div className="mt-16 flex flex-col items-center gap-2 opacity-40">
           <p
             style={{
@@ -178,19 +180,21 @@ export function StaggerHero() {
           >
             Role para explorar
           </p>
-          <div className="flex flex-col items-center gap-1">
-            {[0, 1, 2].map(i => (
-              <div
-                key={i}
-                className="w-px rounded-full"
-                style={{
-                  height: '6px',
-                  background: '#C5A059',
-                  animation: `fade-pulse 1.5s ease-in-out ${i * 0.2}s infinite`,
-                }}
-              />
-            ))}
-          </div>
+          <Magnetic strength={0.3}>
+            <div className="flex flex-col items-center gap-1">
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="w-px rounded-full"
+                  style={{
+                    height: '6px',
+                    background: '#C5A059',
+                    animation: `fade-pulse 1.5s ease-in-out ${i * 0.2}s infinite`,
+                  }}
+                />
+              ))}
+            </div>
+          </Magnetic>
         </div>
       </div>
 
