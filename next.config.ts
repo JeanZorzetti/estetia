@@ -275,6 +275,7 @@ const nextConfig: NextConfig = {
               "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://vercel.live https://www.mercadopago.com https://sdk.mercadopago.com",
               "base-uri 'self'",
               "form-action 'self'",
+              "worker-src 'self' blob:",
               "frame-ancestors 'none'",
               "upgrade-insecure-requests",
             ].join('; '),
