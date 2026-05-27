@@ -78,21 +78,32 @@ function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRef
 }
 
 function ScrollWatcher({ onScroll }: { onScroll: (p: number) => void }) {
-  const containerRef = useRef<HTMLDivElement | null>(null)
-
   useEffect(() => {
     registerGsap()
-    const section = document.getElementById('procedural-3d-trigger')
+    // O wrapper outer é uma <section> com aria-label específico; usamos isso pra ancorar.
+    // Se não achar, cai num fallback genérico.
+    const section =
+      document.querySelector<HTMLElement>('section[aria-label="Tecnologia 3D do Estetia"]') ||
+      document.getElementById('procedural-3d-trigger')
     if (!section) return
 
     const st = ScrollTrigger.create({
       trigger: section,
-      start: 'top center',
-      end: 'bottom center',
+      start: 'top top',
+      end: 'bottom bottom',
       onUpdate: (self) => onScroll(self.progress),
     })
 
-    return () => st.kill()
+    const refreshTimers = [
+      setTimeout(() => ScrollTrigger.refresh(), 100),
+      setTimeout(() => ScrollTrigger.refresh(), 500),
+      setTimeout(() => ScrollTrigger.refresh(), 1500),
+    ]
+
+    return () => {
+      refreshTimers.forEach(clearTimeout)
+      st.kill()
+    }
   }, [onScroll])
 
   return null
