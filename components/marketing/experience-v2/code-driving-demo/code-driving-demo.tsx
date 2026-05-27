@@ -191,6 +191,7 @@ export function CodeDrivingDemo() {
 
   return (
     <section
+      id="demo"
       aria-label="Demo de código ao vivo"
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-24 px-6"
       style={{ background: 'transparent' }}

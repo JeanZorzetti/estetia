@@ -3,8 +3,28 @@
 import dynamic from 'next/dynamic'
 import { LenisProvider } from '@/components/marketing/experience-v2/shared/lenis-provider'
 
+const CustomCursor = dynamic(
+  () => import('@/components/marketing/experience-v2/shared/custom-cursor').then(m => m.CustomCursor),
+  { ssr: false },
+)
+
+const ScrollProgress = dynamic(
+  () => import('@/components/marketing/experience-v2/shared/scroll-progress').then(m => m.ScrollProgress),
+  { ssr: false },
+)
+
+const PersistentLogo = dynamic(
+  () => import('@/components/marketing/experience-v2/shared/persistent-logo').then(m => m.PersistentLogo),
+  { ssr: false },
+)
+
 const StaggerHero = dynamic(
   () => import('@/components/marketing/experience-v2/stagger-hero/stagger-hero').then(m => m.StaggerHero),
+  { ssr: false },
+)
+
+const ProductShowcase = dynamic(
+  () => import('@/components/marketing/experience-v2/product-showcase/product-showcase').then(m => m.ProductShowcase),
   { ssr: false },
 )
 
@@ -41,7 +61,11 @@ const ClosingWave = dynamic(
 export function ExperienceV2Client() {
   return (
     <LenisProvider>
+      <CustomCursor />
+      <ScrollProgress />
+      <PersistentLogo />
       <StaggerHero />
+      <ProductShowcase />
       <MagneticShowcase />
       <MorphingManifesto />
       <NumberStats />

@@ -1,214 +1,286 @@
 'use client'
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion'
-import { TiltCard } from '../shared/tilt-card'
+import { useRef } from 'react'
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from 'framer-motion'
+import {
+  LayoutGrid,
+  Brain,
+  BarChart3,
+  Mail,
+  Calendar,
+  CreditCard,
+  type LucideIcon,
+} from 'lucide-react'
 import { Spotlight } from '../shared/spotlight'
-import { BENTO_ITEMS } from './bento-data'
+import { TiltCard } from '../shared/tilt-card'
+import { KanbanMockup } from '../shared/kanban-mockup'
+import { ChartMockup } from '../shared/chart-mockup'
+import { InboxMockup } from '../shared/inbox-mockup'
+import { CalendarMockup } from '../shared/calendar-mockup'
+import { PaymentMockup } from '../shared/payment-mockup'
+import { TriageMockup } from '../shared/triage-mockup'
+import { BENTO_ITEMS, type MockupKind } from './bento-data'
 
-const containerVariants: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+const ICON_MAP: Record<string, LucideIcon> = {
+  LayoutGrid,
+  Brain,
+  BarChart3,
+  Mail,
+  Calendar,
+  CreditCard,
 }
 
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 32, scale: 0.96 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as any },
-  },
+function MockupFor({ kind }: { kind: MockupKind }) {
+  switch (kind) {
+    case 'kanban': return <KanbanMockup animate={false} />
+    case 'triage': return <TriageMockup />
+    case 'chart': return <ChartMockup />
+    case 'inbox': return <InboxMockup />
+    case 'calendar': return <CalendarMockup />
+    case 'payment': return <PaymentMockup />
+  }
 }
 
 export function MagneticShowcase() {
+  const sectionRef = useRef<HTMLElement>(null)
   const shouldReduce = useReducedMotion()
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  })
+
+  // Horizontal travel: 0 → ~-72% (6 cards × 480px + gaps)
+  const x = useTransform(scrollYProgress, [0.05, 0.95], ['2%', '-72%'])
+
+  if (shouldReduce) {
+    // Reduced motion: render as vertical grid
+    return (
+      <section
+        id="features"
+        aria-label="Funcionalidades Estetia"
+        className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-24 px-6"
+        style={{ background: 'transparent' }}
+      >
+        <div
+          className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
+          style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
+        >
+          03 — Showcase
+        </div>
+
+        <div className="relative z-10 text-center mb-12 max-w-2xl">
+          <p style={{ fontFamily: "'Manrope', sans-serif", fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#C5A059', opacity: 0.7, marginBottom: '0.75rem' }}>
+            Tudo em um só lugar
+          </p>
+          <h2 style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: 'clamp(1.8rem, 4vw, 3.2rem)', fontWeight: 300, fontStyle: 'italic', color: '#F0EDE8', letterSpacing: '-0.02em' }}>
+            Cada ferramenta que sua clínica precisa
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+          {BENTO_ITEMS.map(item => (
+            <FeatureCard key={item.id} item={item} />
+          ))}
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section
+      id="features"
+      ref={sectionRef}
       aria-label="Funcionalidades Estetia"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-24 px-6"
-      style={{ background: 'transparent' }}
+      style={{
+        height: '420vh',
+        position: 'relative',
+        background: 'transparent',
+      }}
     >
-      {/* Section number */}
       <div
-        className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
-        style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
+        className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden"
+        style={{ background: 'transparent' }}
       >
-        02 — Showcase
-      </div>
+        {/* Section number */}
+        <div
+          className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
+          style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
+        >
+          03 — Showcase
+        </div>
 
-      {/* Header */}
-      <div className="relative z-10 text-center mb-16 max-w-2xl">
-        <p
+        {/* Header */}
+        <div className="relative z-10 text-center mb-12 px-6 max-w-2xl mx-auto">
+          <p style={{ fontFamily: "'Manrope', sans-serif", fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#C5A059', opacity: 0.7, marginBottom: '0.75rem' }}>
+            Tudo em um só lugar
+          </p>
+          <h2 style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: 'clamp(1.8rem, 4vw, 3.2rem)', fontWeight: 300, fontStyle: 'italic', color: '#F0EDE8', letterSpacing: '-0.02em' }}>
+            Cada ferramenta que sua clínica precisa
+          </h2>
+        </div>
+
+        {/* Horizontal rail */}
+        <motion.div
+          style={{
+            x,
+            display: 'flex',
+            gap: '32px',
+            paddingLeft: '8vw',
+            paddingRight: '8vw',
+            width: 'max-content',
+          }}
+        >
+          {BENTO_ITEMS.map(item => (
+            <FeatureCard key={item.id} item={item} />
+          ))}
+        </motion.div>
+
+        {/* Scroll hint */}
+        <div
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-3"
           style={{
             fontFamily: "'Manrope', sans-serif",
-            fontSize: '0.65rem',
+            fontSize: '0.55rem',
             fontWeight: 600,
-            letterSpacing: '0.35em',
+            letterSpacing: '0.3em',
             textTransform: 'uppercase',
-            color: '#C5A059',
-            opacity: 0.7,
-            marginBottom: '0.75rem',
+            color: 'rgba(240,237,232,0.35)',
           }}
         >
-          Tudo em um só lugar
-        </p>
-        <h2
-          style={{
-            fontFamily: "'Newsreader', Georgia, serif",
-            fontSize: 'clamp(1.8rem, 4vw, 3.2rem)',
-            fontWeight: 300,
-            fontStyle: 'italic',
-            color: '#F0EDE8',
-            letterSpacing: '-0.02em',
-          }}
-        >
-          Cada ferramenta que sua clínica precisa
-        </h2>
+          <span>Role para explorar</span>
+          <motion.span
+            animate={{ x: [0, 8, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ color: '#C5A059' }}
+          >
+            →
+          </motion.span>
+        </div>
       </div>
-
-      {/* Bento Grid */}
-      <motion.div
-        className="relative z-10 w-full max-w-5xl grid gap-4"
-        style={{
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gridTemplateRows: 'repeat(2, auto)',
-        }}
-        variants={containerVariants}
-        initial={shouldReduce ? false : 'hidden'}
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-      >
-        {BENTO_ITEMS.map((item, i) => {
-          const isLarge = item.size === 'large'
-          return (
-            <motion.div
-              key={item.id}
-              variants={cardVariants}
-              style={{
-                gridColumn: isLarge ? 'span 1' : 'span 1',
-                gridRow: isLarge ? 'span 2' : 'span 1',
-              }}
-            >
-              <TiltCard
-                maxTilt={isLarge ? 8 : 12}
-                style={{ height: '100%' }}
-              >
-                <Spotlight
-                  color={`${item.accent}22`}
-                  size={240}
-                  style={{ height: '100%' }}
-                >
-                  <article
-                    style={{
-                      height: '100%',
-                      minHeight: isLarge ? '320px' : '140px',
-                      padding: isLarge ? '2rem' : '1.25rem',
-                      borderRadius: '8px',
-                      border: `1px solid ${item.accent}28`,
-                      background: isLarge
-                        ? `linear-gradient(135deg, rgba(10,31,61,0.95) 0%, rgba(4,8,15,0.98) 100%)`
-                        : 'rgba(10,31,61,0.6)',
-                      backdropFilter: 'blur(20px)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      transition: 'border-color 300ms ease',
-                    }}
-                  >
-                    {/* Accent glow top-right */}
-                    <div
-                      aria-hidden="true"
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        width: '60%',
-                        height: '40%',
-                        background: `radial-gradient(ellipse at 80% 0%, ${item.accent}18, transparent 70%)`,
-                        pointerEvents: 'none',
-                      }}
-                    />
-
-                    <div>
-                      {/* Tag */}
-                      <span
-                        style={{
-                          fontFamily: "'Manrope', sans-serif",
-                          fontSize: '0.6rem',
-                          fontWeight: 700,
-                          letterSpacing: '0.25em',
-                          textTransform: 'uppercase',
-                          color: item.accent,
-                          opacity: 0.8,
-                          display: 'block',
-                          marginBottom: isLarge ? '1.5rem' : '0.75rem',
-                        }}
-                      >
-                        {item.tag}
-                      </span>
-
-                      {/* Icon */}
-                      <div
-                        style={{
-                          fontSize: isLarge ? '1.8rem' : '1.2rem',
-                          color: item.accent,
-                          marginBottom: isLarge ? '1.25rem' : '0.75rem',
-                          lineHeight: 1,
-                        }}
-                      >
-                        {item.icon}
-                      </div>
-
-                      {/* Title */}
-                      <h3
-                        style={{
-                          fontFamily: "'Newsreader', Georgia, serif",
-                          fontSize: isLarge ? 'clamp(1.3rem, 2.5vw, 1.9rem)' : '1rem',
-                          fontWeight: 400,
-                          fontStyle: 'italic',
-                          color: '#F0EDE8',
-                          letterSpacing: '-0.01em',
-                          marginBottom: '0.75rem',
-                          lineHeight: 1.25,
-                        }}
-                      >
-                        {item.title}
-                      </h3>
-
-                      {/* Description */}
-                      <p
-                        style={{
-                          fontFamily: "'Manrope', sans-serif",
-                          fontSize: isLarge ? '0.85rem' : '0.75rem',
-                          color: 'rgba(240,237,232,0.45)',
-                          lineHeight: 1.6,
-                          fontWeight: 400,
-                        }}
-                      >
-                        {item.description}
-                      </p>
-                    </div>
-
-                    {/* Bottom line accent */}
-                    <div
-                      style={{
-                        marginTop: '1.5rem',
-                        height: '1px',
-                        background: `linear-gradient(90deg, ${item.accent}50, transparent)`,
-                        width: isLarge ? '60%' : '40%',
-                      }}
-                    />
-                  </article>
-                </Spotlight>
-              </TiltCard>
-            </motion.div>
-          )
-        })}
-      </motion.div>
     </section>
+  )
+}
+
+function FeatureCard({ item }: { item: (typeof BENTO_ITEMS)[number] }) {
+  const Icon = ICON_MAP[item.iconName] ?? LayoutGrid
+  return (
+    <div style={{ width: '460px', flexShrink: 0 }}>
+      <TiltCard maxTilt={6}>
+        <Spotlight color={`${item.accent}22`} size={300} style={{ height: '100%' }}>
+          <article
+            style={{
+              height: '560px',
+              padding: '24px',
+              borderRadius: '10px',
+              border: `1px solid ${item.accent}28`,
+              background: 'rgba(10,31,61,0.65)',
+              backdropFilter: 'blur(18px)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Glow corner */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                width: '70%',
+                height: '40%',
+                background: `radial-gradient(ellipse at 80% 0%, ${item.accent}22, transparent 70%)`,
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: '8px',
+                  background: `linear-gradient(135deg, ${item.accent}28, ${item.accent}10)`,
+                  border: `1px solid ${item.accent}40`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Icon size={20} color={item.accent} strokeWidth={1.6} />
+              </div>
+              <span
+                style={{
+                  fontFamily: "'Manrope', sans-serif",
+                  fontSize: '0.55rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.25em',
+                  textTransform: 'uppercase',
+                  color: item.accent,
+                  background: `${item.accent}14`,
+                  padding: '4px 8px',
+                  borderRadius: '2px',
+                  border: `1px solid ${item.accent}30`,
+                }}
+              >
+                {item.tag}
+              </span>
+            </div>
+
+            {/* Title + Description */}
+            <div>
+              <h3
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontSize: '1.5rem',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: '#F0EDE8',
+                  letterSpacing: '-0.01em',
+                  marginBottom: '8px',
+                  lineHeight: 1.2,
+                }}
+              >
+                {item.title}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "'Manrope', sans-serif",
+                  fontSize: '0.78rem',
+                  color: 'rgba(240,237,232,0.5)',
+                  lineHeight: 1.55,
+                }}
+              >
+                {item.description}
+              </p>
+            </div>
+
+            {/* Mockup */}
+            <div style={{ flex: 1, minHeight: 0, display: 'flex' }}>
+              <MockupFor kind={item.mockup} />
+            </div>
+
+            {/* Bottom accent */}
+            <div
+              style={{
+                height: '1px',
+                background: `linear-gradient(90deg, ${item.accent}80, transparent)`,
+                width: '40%',
+              }}
+            />
+          </article>
+        </Spotlight>
+      </TiltCard>
+    </div>
   )
 }

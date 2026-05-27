@@ -34,6 +34,7 @@ export function MorphingManifesto() {
 
   return (
     <section
+      id="manifesto"
       ref={wrapperRef}
       aria-label="Manifesto — formas e frases"
       style={{ height: `${VIEWPORTS_TALL * 100}vh` }}

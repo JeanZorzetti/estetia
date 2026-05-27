@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import dynamic from 'next/dynamic'
 import {
   motion,
   useReducedMotion,
@@ -8,10 +9,14 @@ import {
   useTransform,
   type Variants,
 } from 'framer-motion'
-import { ParticlesSvg } from './particles-svg'
 import { GoldenParticle } from '../shared/golden-particle'
 import { ScrambleText } from '../shared/scramble-text'
 import { Magnetic } from '../shared/magnetic'
+
+const ShaderHero = dynamic(
+  () => import('../shared/shader-hero').then(m => m.ShaderHero),
+  { ssr: false },
+)
 
 const HEADLINE = 'Gestão clínica que encanta'
 const WORDS = HEADLINE.split(' ')
@@ -59,17 +64,13 @@ export function StaggerHero() {
 
   return (
     <section
+      id="hero"
       ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
       style={{ background: 'transparent' }}
     >
-      {/* Radial vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 50% 50%, transparent 30%, #04080F 95%)' }}
-      />
-
-      <ParticlesSvg />
+      {/* WebGL shader background */}
+      <ShaderHero />
 
       {/* Section number */}
       <div

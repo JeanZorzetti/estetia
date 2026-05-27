@@ -100,6 +100,7 @@ export function TimelineJourney() {
 
   return (
     <section
+      id="journey"
       ref={wrapperRef}
       aria-label="Jornada do paciente"
       style={{ height: `${VIEWPORTS_TALL * 100}vh` }}

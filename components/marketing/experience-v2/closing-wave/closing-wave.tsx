@@ -94,6 +94,7 @@ export function ClosingWave() {
 
   return (
     <section
+      id="closing"
       ref={wrapperRef}
       aria-label="CTA final"
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
@@ -177,6 +178,8 @@ export function ClosingWave() {
             <Magnetic strength={0.35}>
               <motion.a
                 href="/cadastro"
+                data-cursor="cta"
+                data-cursor-label="Começar"
                 whileHover={shouldReduce ? undefined : {
                   scale: 1.05,
                   boxShadow: '0 0 24px rgba(197,160,89,0.5), 0 8px 32px rgba(197,160,89,0.2)',
@@ -205,6 +208,28 @@ export function ClosingWave() {
                 <span aria-hidden="true">→</span>
               </motion.a>
             </Magnetic>
+          </div>
+
+          {/* Secondary link */}
+          <div style={{ marginTop: '1.5rem' }}>
+            <a
+              href="/demo"
+              data-cursor="link"
+              data-cursor-label="Agendar demo"
+              style={{
+                fontFamily: "'Manrope', sans-serif",
+                fontSize: '0.65rem',
+                fontWeight: 600,
+                letterSpacing: '0.25em',
+                textTransform: 'uppercase',
+                color: 'rgba(240,237,232,0.5)',
+                textDecoration: 'none',
+                borderBottom: '1px solid rgba(240,237,232,0.15)',
+                paddingBottom: '2px',
+              }}
+            >
+              Agendar demo guiada
+            </a>
           </div>
         </div>
       </div>
