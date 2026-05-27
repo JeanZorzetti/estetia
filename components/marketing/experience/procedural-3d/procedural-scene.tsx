@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, Float, MeshDistortMaterial } from '@react-three/drei'
+import { Float, MeshDistortMaterial } from '@react-three/drei'
 import * as THREE from 'three'
 import { gsap, ScrollTrigger, registerGsap } from '@/lib/animation/gsap'
 
@@ -36,13 +36,11 @@ function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRef
         <meshPhysicalMaterial
           color="#489FB5"
           emissive="#1A4F5C"
-          emissiveIntensity={0.4}
-          metalness={0.9}
-          roughness={0.1}
-          transmission={0.3}
-          thickness={0.5}
+          emissiveIntensity={0.6}
+          metalness={0.85}
+          roughness={0.15}
           transparent
-          opacity={0.7}
+          opacity={0.85}
         />
       </mesh>
 
@@ -51,16 +49,16 @@ function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRef
         <icosahedronGeometry args={[1, 4]} />
         <MeshDistortMaterial
           color="#C5A059"
-          emissive="#5C3B00"
-          emissiveIntensity={0.3}
-          metalness={0.95}
-          roughness={0.05}
+          emissive="#8B6E32"
+          emissiveIntensity={0.5}
+          metalness={0.7}
+          roughness={0.15}
           distort={0.3}
           speed={2}
           iridescence={1}
           iridescenceIOR={1.8}
           iridescenceThicknessRange={[100, 800]}
-          envMapIntensity={2}
+          envMapIntensity={1}
         />
       </mesh>
 
@@ -105,13 +103,16 @@ function SceneContent() {
 
   return (
     <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[5, 5, 5]} intensity={2} color="#C5A059" />
-      <pointLight position={[-5, -3, -5]} intensity={1.5} color="#489FB5" />
+      {/* Iluminação manual — sem HDRI externo (CSP-safe) */}
+      <ambientLight intensity={0.4} />
+      <pointLight position={[5, 5, 5]} intensity={3} color="#C5A059" />
+      <pointLight position={[-5, -3, -5]} intensity={2} color="#489FB5" />
+      <pointLight position={[0, 8, -3]} intensity={1.5} color="#F0EDE8" />
+      <pointLight position={[3, -5, 4]} intensity={1.2} color="#E3C97C" />
+      <directionalLight position={[2, 4, 6]} intensity={0.8} color="#FFFFFF" />
       <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.5}>
         <IridescentSphere scrollProgress={scrollProgress} />
       </Float>
-      <Environment preset="city" />
       <ScrollWatcher onScroll={(p) => { scrollProgress.current = p }} />
     </>
   )
