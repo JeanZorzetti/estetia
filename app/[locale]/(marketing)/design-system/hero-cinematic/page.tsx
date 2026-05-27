@@ -3,7 +3,6 @@ import { PinFeatures } from '@/components/marketing/pin-features'
 
 export const metadata = {
   title: 'Hero Cinematic — Design System',
-  robots: { index: false, follow: false },
 }
 
 export default function HeroCinematicDemoPage() {
