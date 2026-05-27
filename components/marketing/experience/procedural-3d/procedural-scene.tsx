@@ -1,10 +1,9 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { Float, MeshDistortMaterial } from '@react-three/drei'
 import * as THREE from 'three'
-import { gsap, ScrollTrigger, registerGsap } from '@/lib/animation/gsap'
 
 function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRefObject<number> }) {
   const meshRef = useRef<THREE.Mesh>(null)
@@ -15,12 +14,10 @@ function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRef
     const t = state.clock.elapsedTime
     const p = scrollProgress.current
 
-    // Rotação baseada no scroll + idle rotation
     meshRef.current.rotation.y = t * 0.2 + p * Math.PI * 2
     meshRef.current.rotation.x = Math.sin(t * 0.15) * 0.4 + p * 0.5
     meshRef.current.rotation.z = Math.cos(t * 0.1) * 0.2
 
-    // Escala ao scroll
     const scale = 1.0 + p * 0.4
     meshRef.current.scale.setScalar(scale)
 
@@ -30,7 +27,6 @@ function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRef
 
   return (
     <group>
-      {/* Anel externo */}
       <mesh ref={outerRef}>
         <torusKnotGeometry args={[1.4, 0.06, 200, 16, 2, 3]} />
         <meshPhysicalMaterial
@@ -44,7 +40,6 @@ function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRef
         />
       </mesh>
 
-      {/* Esfera iridescente central */}
       <mesh ref={meshRef}>
         <icosahedronGeometry args={[1, 4]} />
         <MeshDistortMaterial
@@ -62,7 +57,6 @@ function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRef
         />
       </mesh>
 
-      {/* Anéis de fundo */}
       {[1.8, 2.3, 2.9].map((r, i) => (
         <mesh key={i} rotation={[Math.PI / (i + 2), 0, i * 0.7]}>
           <torusGeometry args={[r, 0.012, 8, 80]} />
@@ -77,44 +71,19 @@ function IridescentSphere({ scrollProgress }: { scrollProgress: React.MutableRef
   )
 }
 
-function ScrollWatcher({ onScroll }: { onScroll: (p: number) => void }) {
-  useEffect(() => {
-    registerGsap()
-    // O wrapper outer é uma <section> com aria-label específico; usamos isso pra ancorar.
-    // Se não achar, cai num fallback genérico.
-    const section =
-      document.querySelector<HTMLElement>('section[aria-label="Tecnologia 3D do Estetia"]') ||
-      document.getElementById('procedural-3d-trigger')
-    if (!section) return
-
-    const st = ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      end: 'bottom bottom',
-      onUpdate: (self) => onScroll(self.progress),
-    })
-
-    const refreshTimers = [
-      setTimeout(() => ScrollTrigger.refresh(), 100),
-      setTimeout(() => ScrollTrigger.refresh(), 500),
-      setTimeout(() => ScrollTrigger.refresh(), 1500),
-    ]
-
-    return () => {
-      refreshTimers.forEach(clearTimeout)
-      st.kill()
-    }
-  }, [onScroll])
-
-  return null
+interface SceneProps {
+  externalProgress?: number
 }
 
-function SceneContent() {
-  const scrollProgress = useRef(0)
+function SceneContent({ externalProgress }: SceneProps) {
+  const scrollProgress = useRef(externalProgress ?? 0)
+
+  useEffect(() => {
+    scrollProgress.current = externalProgress ?? 0
+  }, [externalProgress])
 
   return (
     <>
-      {/* Iluminação manual — sem HDRI externo (CSP-safe) */}
       <ambientLight intensity={0.4} />
       <pointLight position={[5, 5, 5]} intensity={3} color="#C5A059" />
       <pointLight position={[-5, -3, -5]} intensity={2} color="#489FB5" />
@@ -124,20 +93,19 @@ function SceneContent() {
       <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.5}>
         <IridescentSphere scrollProgress={scrollProgress} />
       </Float>
-      <ScrollWatcher onScroll={(p) => { scrollProgress.current = p }} />
     </>
   )
 }
 
-export default function ProceduralScene() {
+export default function ProceduralScene({ externalProgress }: SceneProps = {}) {
   return (
-    <div id="procedural-3d-trigger" className="w-full h-full">
+    <div className="w-full h-full">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent' }}
       >
-        <SceneContent />
+        <SceneContent externalProgress={externalProgress} />
       </Canvas>
     </div>
   )

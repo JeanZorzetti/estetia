@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { GALLERY_CARDS } from './gallery-data'
+import { PinnedSection } from '../pinned-section'
 
 const CARD_W = 280
 const CARD_H = 200
@@ -103,9 +104,10 @@ export function InfiniteGallery() {
   const dataCards = GALLERY_CARDS
 
   return (
-    <section
-      className="relative overflow-hidden"
-      style={{ height: '100vh', background: 'linear-gradient(180deg, #04080F 0%, #040C18 100%)' }}
+    <PinnedSection
+      label="Galéria XY infinita"
+      viewportsTall={2.5}
+      background="linear-gradient(180deg, #04080F 0%, #040C18 100%)"
     >
       {/* Número seção */}
       <div
@@ -206,6 +208,6 @@ export function InfiniteGallery() {
           )
         })}
       </div>
-    </section>
+    </PinnedSection>
   )
 }
