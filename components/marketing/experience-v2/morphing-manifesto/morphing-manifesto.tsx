@@ -6,10 +6,17 @@ import { watchSection } from '@/lib/animation/anime-scroll'
 import { PHRASES, SHAPES } from './shapes-data'
 
 const VIEWPORTS_TALL = 4
+const SHAPE_KEYS = ['circle', 'triangle', 'line', 'asterisk'] as const
 
 export function MorphingManifesto() {
   const wrapperRef = useRef<HTMLElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
+  const refTargets = useRef<Record<string, SVGPathElement | null>>({
+    circle: null,
+    triangle: null,
+    line: null,
+    asterisk: null,
+  })
   const [activeIdx, setActiveIdx] = useState(0)
   const prevIdxRef = useRef(0)
 
@@ -30,14 +37,16 @@ export function MorphingManifesto() {
     return () => watcher.destroy()
   }, [])
 
-  // Morph SVG shape whenever activeIdx changes
+  // Morph visible path to match the active hidden reference path
   useEffect(() => {
     const path = pathRef.current
     if (!path) return
-    const nextShape = SHAPES[PHRASES[activeIdx].shape]
+    const shapeKey = PHRASES[activeIdx].shape
+    const targetEl = refTargets.current[shapeKey]
+    if (!targetEl) return
 
     animate(path, {
-      d: morphTo(nextShape),
+      d: morphTo(targetEl),
       duration: 600,
       ease: 'inOutExpo',
     })
@@ -77,13 +86,26 @@ export function MorphingManifesto() {
           ))}
         </div>
 
+        {/* Hidden reference paths used as morphTo targets */}
+        <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+          <defs>
+            {SHAPE_KEYS.map((key) => (
+              <path
+                key={key}
+                ref={(el) => { refTargets.current[key] = el }}
+                d={SHAPES[key]}
+              />
+            ))}
+          </defs>
+        </svg>
+
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-12 md:gap-20 px-8 max-w-5xl w-full">
           {/* SVG Shape */}
           <div className="flex-shrink-0 w-40 h-40 md:w-56 md:h-56">
             <svg viewBox="0 0 100 100" className="w-full h-full">
               <path
                 ref={pathRef}
-                d={SHAPES[PHRASES[0].shape]}
+                d={SHAPES.circle}
                 fill="none"
                 stroke={phrase.accent}
                 strokeWidth="2.5"
