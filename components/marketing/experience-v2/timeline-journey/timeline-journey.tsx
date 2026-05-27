@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { animate, stagger } from 'animejs'
 import { watchSection } from '@/lib/animation/anime-scroll'
 import { JOURNEY_STEPS, buildPath } from '@/components/marketing/experience/svg-journey/journey-data'
 
@@ -20,9 +19,21 @@ export function TimelineJourney() {
   const hasSetup = useRef(false)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const wrapper = wrapperRef.current
     const line = lineRef.current
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Static state: line fully drawn, all dots visible
+      if (line) {
+        const total = line.getTotalLength()
+        line.style.strokeDasharray = String(total)
+        line.style.strokeDashoffset = '0'
+      }
+      dotRefs.current.forEach(d => { if (d) { d.style.opacity = '1'; d.style.transform = 'scale(1)' } })
+      labelRefs.current.forEach(l => { if (l) l.style.opacity = '1' })
+      return
+    }
+
     if (!wrapper || !line) return
 
     // Measure total path length for stroke animation
@@ -77,12 +88,12 @@ export function TimelineJourney() {
     >
       <div
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #040C18 0%, #04080F 100%)' }}
+        style={{ background: 'transparent' }}
       >
         {/* Section number */}
         <div
           className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
-          style={{ fontFamily: 'monospace', color: '#C5A059' }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
         >
           03 — Jornada
         </div>
@@ -91,8 +102,9 @@ export function TimelineJourney() {
         <div className="relative z-10 text-center mb-8 px-6">
           <p
             style={{
-              fontFamily: 'monospace',
+              fontFamily: "'Manrope', sans-serif",
               fontSize: '0.65rem',
+              fontWeight: 600,
               letterSpacing: '0.35em',
               textTransform: 'uppercase',
               color: '#C5A059',
@@ -175,8 +187,9 @@ export function TimelineJourney() {
               >
                 <div
                   style={{
-                    fontFamily: 'monospace',
+                    fontFamily: "'Manrope', sans-serif",
                     fontSize: '9px',
+                    fontWeight: 500,
                     letterSpacing: '0.08em',
                     textAlign: 'center',
                     lineHeight: 1.4,

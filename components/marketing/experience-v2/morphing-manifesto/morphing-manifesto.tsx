@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { animate, morphTo } from 'animejs'
 import { watchSection } from '@/lib/animation/anime-scroll'
 import { PHRASES, SHAPES } from './shapes-data'
+import { GoldenParticle } from '../shared/golden-particle'
 
 const VIEWPORTS_TALL = 4
 const SHAPE_KEYS = ['circle', 'triangle', 'line', 'asterisk'] as const
@@ -18,14 +19,22 @@ export function MorphingManifesto() {
     asterisk: null,
   })
   const [activeIdx, setActiveIdx] = useState(0)
+  const [showParticle, setShowParticle] = useState(false)
   const prevIdxRef = useRef(0)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Static beautiful state: show last phrase, shape fully visible
+      if (pathRef.current) pathRef.current.style.opacity = '1'
+      return
+    }
     const wrapper = wrapperRef.current
     if (!wrapper) return
 
     const watcher = watchSection(wrapper, (progress) => {
+      // Show particle motif on first scroll entry
+      if (progress > 0.02) setShowParticle(true)
+
       const segSize = 1 / PHRASES.length
       const idx = Math.min(Math.floor(progress / segSize), PHRASES.length - 1)
       if (idx !== prevIdxRef.current) {
@@ -62,12 +71,12 @@ export function MorphingManifesto() {
     >
       <div
         className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #04080F 0%, #040C18 100%)' }}
+        style={{ background: 'transparent' }}
       >
         {/* Section number */}
         <div
           className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
-          style={{ fontFamily: 'monospace', color: '#C5A059' }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
         >
           02 — Morfose
         </div>
@@ -85,6 +94,9 @@ export function MorphingManifesto() {
             />
           ))}
         </div>
+
+        {/* Golden particle motif — arrives from hero */}
+        {showParticle && <GoldenParticle phase="manifesto-enter" />}
 
         {/* Hidden reference paths used as morphTo targets */}
         <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
@@ -121,8 +133,9 @@ export function MorphingManifesto() {
             <p
               key={activeIdx}
               style={{
-                fontFamily: 'monospace',
+                fontFamily: "'Manrope', sans-serif",
                 fontSize: '0.7rem',
+                fontWeight: 600,
                 letterSpacing: '0.3em',
                 textTransform: 'uppercase',
                 color: phrase.accent,
@@ -143,6 +156,7 @@ export function MorphingManifesto() {
                 color: '#F0EDE8',
                 lineHeight: 1.3,
                 letterSpacing: '-0.01em',
+                textShadow: '0 0 40px rgba(10,31,61,0.6)',
                 animation: 'slide-up 500ms ease forwards',
               }}
             >

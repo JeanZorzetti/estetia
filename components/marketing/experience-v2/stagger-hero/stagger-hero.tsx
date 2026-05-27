@@ -1,22 +1,31 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { animate, stagger } from 'animejs'
 import { ParticlesSvg } from './particles-svg'
+import { GoldenParticle } from '../shared/golden-particle'
+import { watchSection } from '@/lib/animation/anime-scroll'
 
 const HEADLINE = 'Gestão clínica que encanta'
 const SUBWORDS = ['Menos papel.', 'Mais presença.', 'Resultados que ficam.']
 const WORDS = HEADLINE.split(' ')
 
 export function StaggerHero() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLElement>(null)
   const lettersRef = useRef<HTMLSpanElement[]>([])
   const wordsRef = useRef<HTMLSpanElement[]>([])
   const hasAnimated = useRef(false)
+  const [particlePhase, setParticlePhase] = useState<'hero-enter' | 'hero-exit'>('hero-enter')
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
     if (hasAnimated.current) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Static beautiful state for reduced-motion
+      lettersRef.current.filter(Boolean).forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)' })
+      wordsRef.current.filter(Boolean).forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)' })
+      return
+    }
 
     hasAnimated.current = true
 
@@ -39,6 +48,17 @@ export function StaggerHero() {
         ease: 'outBack(1.4)',
       })
     }, 400)
+
+    // Track scroll to drive particle handoff
+    const section = containerRef.current
+    if (section) {
+      const watcher = watchSection(section, (p) => {
+        setScrollProgress(p)
+        if (p > 0.75) setParticlePhase('hero-exit')
+        else setParticlePhase('hero-enter')
+      })
+      return () => watcher.destroy()
+    }
   }, [])
 
   // Render words as nowrap blocks; letters inside each word
@@ -74,13 +94,13 @@ export function StaggerHero() {
     <section
       ref={containerRef}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: 'radial-gradient(ellipse at 50% 60%, #040C18 0%, #04080F 100%)' }}
+      style={{ background: 'transparent' }}
     >
       {/* Gradient vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 50%, transparent 30%, #04080F 100%)',
+          background: 'radial-gradient(ellipse at 50% 50%, transparent 30%, #04080F 95%)',
         }}
       />
 
@@ -90,10 +110,13 @@ export function StaggerHero() {
       {/* Section number */}
       <div
         className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
-        style={{ fontFamily: 'monospace', color: '#C5A059' }}
+        style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
       >
         01 — Stagger
       </div>
+
+      {/* Golden particle motif */}
+      <GoldenParticle phase={particlePhase} scrollProgress={scrollProgress} />
 
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl">
@@ -108,7 +131,7 @@ export function StaggerHero() {
           className="mb-6 leading-tight"
           style={{
             fontFamily: "'Newsreader', Georgia, serif",
-            fontSize: 'clamp(2.8rem, 7vw, 6rem)',
+            fontSize: 'clamp(2.2rem, 7vw, 6rem)',
             fontWeight: 300,
             fontStyle: 'italic',
             color: '#F0EDE8',
@@ -128,11 +151,12 @@ export function StaggerHero() {
               style={{
                 display: 'inline-block',
                 opacity: 0,
-                fontFamily: 'monospace',
+                fontFamily: "'Manrope', sans-serif",
                 fontSize: '0.85rem',
+                fontWeight: 500,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: i === 0 ? '#C5A059' : 'rgba(240,237,232,0.5)',
+                color: i === 0 ? '#C5A059' : i === 1 ? '#489FB5' : 'rgba(240,237,232,0.5)',
               }}
             >
               {word}
@@ -144,8 +168,9 @@ export function StaggerHero() {
         <div className="mt-16 flex flex-col items-center gap-2 opacity-40">
           <p
             style={{
-              fontFamily: 'monospace',
+              fontFamily: "'Manrope', sans-serif",
               fontSize: '0.65rem',
+              fontWeight: 500,
               letterSpacing: '0.3em',
               textTransform: 'uppercase',
               color: '#C5A059',
