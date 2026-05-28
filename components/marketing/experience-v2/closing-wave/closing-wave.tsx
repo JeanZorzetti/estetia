@@ -6,6 +6,9 @@ import { animate } from 'animejs'
 import { watchSection } from '@/lib/animation/anime-scroll'
 import { Magnetic } from '../shared/magnetic'
 import { Marquee } from '../shared/marquee'
+import { TiltCard } from '../shared/tilt-card'
+import { ParticleBurst } from '../shared/particle-burst'
+import { ExperienceFooter } from '../shared/experience-footer'
 
 const BAR_COUNT = 80
 const MAX_BAR_H = 120
@@ -28,6 +31,7 @@ export function ClosingWave() {
   const curtainRef = useRef<HTMLDivElement>(null)
   const [triggered, setTriggered] = useState(false)
   const triggeredRef = useRef(false)
+  const [ctaPulsed, setCtaPulsed] = useState(false)
   const shouldReduce = useReducedMotion()
 
   useEffect(() => {
@@ -90,6 +94,9 @@ export function ClosingWave() {
       ease: 'inOutExpo',
       delay: 800,
     })
+
+    // Trigger CTA pulse + particle burst after wave completes
+    setTimeout(() => setCtaPulsed(true), 1200)
   }, [triggered])
 
   return (
@@ -97,173 +104,191 @@ export function ClosingWave() {
       id="closing"
       ref={wrapperRef}
       aria-label="CTA final"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      className="relative overflow-hidden"
       style={{ background: 'transparent' }}
     >
-      {/* Section number */}
-      <div
-        className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
-        style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
-      >
-        07 — Onda
-      </div>
-
-      {/* Wave bars */}
-      <div
-        ref={barsContainerRef}
-        className="absolute inset-x-0 bottom-0 flex items-end justify-center gap-[2px] px-4"
-        style={{ height: `${MAX_BAR_H + 20}px` }}
-      >
-        {Array.from({ length: BAR_COUNT }, (_, i) => (
-          <div
-            key={i}
-            data-bar={i}
-            style={{
-              flex: '1',
-              height: `${MAX_BAR_H}px`,
-              transformOrigin: 'bottom center',
-              transform: 'scaleY(0)',
-              opacity: 0,
-              borderRadius: '2px 2px 0 0',
-              background:
-                i % 3 === 0
-                  ? 'linear-gradient(180deg, #C5A059 0%, rgba(197,160,89,0.15) 100%)'
-                  : i % 3 === 1
-                  ? 'linear-gradient(180deg, #489FB5 0%, rgba(72,159,181,0.15) 100%)'
-                  : 'linear-gradient(180deg, rgba(197,160,89,0.6) 0%, rgba(10,31,61,0.1) 100%)',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Center content */}
-      <div className="relative z-10 text-center px-6 max-w-3xl">
-        <div ref={headlineRef} style={{ opacity: 0 }}>
-          <p
-            style={{
-              fontFamily: "'Manrope', sans-serif",
-              fontSize: '0.7rem',
-              fontWeight: 600,
-              letterSpacing: '0.35em',
-              textTransform: 'uppercase',
-              color: '#C5A059',
-              opacity: 0.7,
-              marginBottom: '1.5rem',
-            }}
-          >
-            Estetia CRM
-          </p>
-
-          <h2
-            style={{
-              fontFamily: "'Newsreader', Georgia, serif",
-              fontSize: 'clamp(2.2rem, 5vw, 4.5rem)',
-              fontWeight: 300,
-              fontStyle: 'italic',
-              color: '#F0EDE8',
-              letterSpacing: '-0.02em',
-              lineHeight: 1.2,
-              marginBottom: '2.5rem',
-            }}
-          >
-            Sua clínica merece<br />
-            <span style={{ color: '#C5A059' }}>tecnologia à altura.</span>
-          </h2>
-
-          {/* Magnetic CTA */}
-          <div
-            ref={curtainRef}
-            style={{ display: 'inline-block', clipPath: 'inset(0 50% 0 50%)' }}
-          >
-            <Magnetic strength={0.35}>
-              <motion.a
-                href="/cadastro"
-                data-cursor="cta"
-                data-cursor-label="Começar"
-                whileHover={shouldReduce ? undefined : {
-                  scale: 1.05,
-                  boxShadow: '0 0 24px rgba(197,160,89,0.5), 0 8px 32px rgba(197,160,89,0.2)',
-                }}
-                whileTap={shouldReduce ? undefined : { scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  padding: '1rem 2.5rem',
-                  background: '#C5A059',
-                  color: '#0A1F3D',
-                  fontFamily: "'Manrope', sans-serif",
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  textDecoration: 'none',
-                  borderRadius: '2px',
-                  outline: 'none',
-                }}
-                className="focus-visible:ring-2 focus-visible:ring-[#489FB5] focus-visible:ring-offset-2 focus-visible:ring-offset-[#04080F]"
-              >
-                Começar agora
-                <span aria-hidden="true">→</span>
-              </motion.a>
-            </Magnetic>
-          </div>
-
-          {/* Secondary link */}
-          <div style={{ marginTop: '1.5rem' }}>
-            <a
-              href="/demo"
-              data-cursor="link"
-              data-cursor-label="Agendar demo"
-              style={{
-                fontFamily: "'Manrope', sans-serif",
-                fontSize: '0.65rem',
-                fontWeight: 600,
-                letterSpacing: '0.25em',
-                textTransform: 'uppercase',
-                color: 'rgba(240,237,232,0.5)',
-                textDecoration: 'none',
-                borderBottom: '1px solid rgba(240,237,232,0.15)',
-                paddingBottom: '2px',
-              }}
-            >
-              Agendar demo guiada
-            </a>
-          </div>
+      <div className="min-h-screen flex flex-col items-center justify-center relative">
+        {/* Section number */}
+        <div
+          className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
+          style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
+        >
+          09 — Onda
         </div>
-      </div>
 
-      {/* Keyword marquee */}
-      <div
-        className="absolute bottom-[160px] inset-x-0 z-10 opacity-25"
-        aria-hidden="true"
-      >
-        <Marquee speed={35}>
-          {KEYWORDS.map((kw) => (
-            <span
-              key={kw}
+        {/* Wave bars */}
+        <div
+          ref={barsContainerRef}
+          className="absolute inset-x-0 bottom-0 flex items-end justify-center gap-[2px] px-4"
+          style={{ height: `${MAX_BAR_H + 20}px` }}
+        >
+          {Array.from({ length: BAR_COUNT }, (_, i) => (
+            <div
+              key={i}
+              data-bar={i}
+              style={{
+                flex: '1',
+                height: `${MAX_BAR_H}px`,
+                transformOrigin: 'bottom center',
+                transform: 'scaleY(0)',
+                opacity: 0,
+                borderRadius: '2px 2px 0 0',
+                background:
+                  i % 3 === 0
+                    ? 'linear-gradient(180deg, #C5A059 0%, rgba(197,160,89,0.15) 100%)'
+                    : i % 3 === 1
+                    ? 'linear-gradient(180deg, #489FB5 0%, rgba(72,159,181,0.15) 100%)'
+                    : 'linear-gradient(180deg, rgba(197,160,89,0.6) 0%, rgba(10,31,61,0.1) 100%)',
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Center content */}
+        <div className="relative z-10 text-center px-6 max-w-3xl">
+          <div ref={headlineRef} style={{ opacity: 0 }}>
+            <p
               style={{
                 fontFamily: "'Manrope', sans-serif",
-                fontSize: '0.6rem',
+                fontSize: '0.7rem',
                 fontWeight: 600,
-                letterSpacing: '0.3em',
+                letterSpacing: '0.35em',
                 textTransform: 'uppercase',
                 color: '#C5A059',
-                whiteSpace: 'nowrap',
+                opacity: 0.7,
+                marginBottom: '1.5rem',
               }}
             >
-              {kw} &nbsp;·&nbsp;
-            </span>
-          ))}
-        </Marquee>
+              Estetia CRM
+            </p>
+
+            <h2
+              style={{
+                fontFamily: "'Newsreader', Georgia, serif",
+                fontSize: 'clamp(2.2rem, 5vw, 4.5rem)',
+                fontWeight: 300,
+                fontStyle: 'italic',
+                color: '#F0EDE8',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.2,
+                marginBottom: '2.5rem',
+              }}
+            >
+              Sua clínica merece<br />
+              <span style={{ color: '#C5A059' }}>tecnologia à altura.</span>
+            </h2>
+
+            {/* CTA with particle burst + 3D tilt */}
+            <div
+              ref={curtainRef}
+              style={{ display: 'inline-block', clipPath: 'inset(0 50% 0 50%)', position: 'relative' }}
+            >
+              {/* Particle burst origin */}
+              <ParticleBurst triggered={ctaPulsed} count={36} />
+
+              <TiltCard maxTilt={8}>
+                <Magnetic strength={0.35}>
+                  <motion.a
+                    href="/cadastro"
+                    data-cursor="cta"
+                    data-cursor-label="Começar"
+                    animate={ctaPulsed && !shouldReduce ? {
+                      scale: [1, 1.08, 1],
+                      boxShadow: [
+                        '0 0 0px rgba(197,160,89,0)',
+                        '0 0 32px rgba(197,160,89,0.6), 0 8px 32px rgba(197,160,89,0.25)',
+                        '0 0 16px rgba(197,160,89,0.25)',
+                      ],
+                    } : {}}
+                    transition={ctaPulsed ? { duration: 0.7, ease: [0.22, 1, 0.36, 1] } : {}}
+                    whileHover={shouldReduce ? undefined : {
+                      scale: 1.05,
+                      boxShadow: '0 0 24px rgba(197,160,89,0.5), 0 8px 32px rgba(197,160,89,0.2)',
+                    }}
+                    whileTap={shouldReduce ? undefined : { scale: 0.98 }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      padding: '1rem 2.5rem',
+                      background: '#C5A059',
+                      color: '#0A1F3D',
+                      fontFamily: "'Manrope', sans-serif",
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      textDecoration: 'none',
+                      borderRadius: '2px',
+                      outline: 'none',
+                    }}
+                    className="focus-visible:ring-2 focus-visible:ring-[#489FB5] focus-visible:ring-offset-2 focus-visible:ring-offset-[#04080F]"
+                  >
+                    Começar agora
+                    <span aria-hidden="true">→</span>
+                  </motion.a>
+                </Magnetic>
+              </TiltCard>
+            </div>
+
+            {/* Secondary link */}
+            <div style={{ marginTop: '1.5rem' }}>
+              <a
+                href="/demo"
+                data-cursor="link"
+                data-cursor-label="Agendar demo"
+                style={{
+                  fontFamily: "'Manrope', sans-serif",
+                  fontSize: '0.65rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.25em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(240,237,232,0.5)',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid rgba(240,237,232,0.15)',
+                  paddingBottom: '2px',
+                }}
+              >
+                Agendar demo guiada
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Keyword marquee */}
+        <div
+          className="absolute bottom-[160px] inset-x-0 z-10 opacity-25"
+          aria-hidden="true"
+        >
+          <Marquee speed={35}>
+            {KEYWORDS.map((kw) => (
+              <span
+                key={kw}
+                style={{
+                  fontFamily: "'Manrope', sans-serif",
+                  fontSize: '0.6rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.3em',
+                  textTransform: 'uppercase',
+                  color: '#C5A059',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {kw} &nbsp;·&nbsp;
+              </span>
+            ))}
+          </Marquee>
+        </div>
+
+        {/* Bottom gradient */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+          style={{ background: 'linear-gradient(0deg, #04080F 0%, transparent 100%)', zIndex: 5 }}
+        />
       </div>
 
-      {/* Bottom gradient */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
-        style={{ background: 'linear-gradient(0deg, #04080F 0%, transparent 100%)', zIndex: 5 }}
-      />
+      {/* Real footer */}
+      <ExperienceFooter />
     </section>
   )
 }

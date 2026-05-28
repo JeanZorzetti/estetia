@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import {
   motion,
@@ -9,23 +10,20 @@ import {
   useTransform,
   type Variants,
 } from 'framer-motion'
+import { ArrowRight } from 'lucide-react'
 import { GoldenParticle } from '../shared/golden-particle'
 import { ScrambleText } from '../shared/scramble-text'
 import { Magnetic } from '../shared/magnetic'
+import { KineticWord } from '../shared/kinetic-word'
+import { TrustStack } from '../shared/trust-stack'
 
 const ShaderHero = dynamic(
   () => import('../shared/shader-hero').then(m => m.ShaderHero),
   { ssr: false },
 )
 
-const HEADLINE = 'Gestão clínica que encanta'
-const WORDS = HEADLINE.split(' ')
-
-const SUBWORDS = [
-  { text: 'Menos papel.', color: '#C5A059' },
-  { text: 'Mais presença.', color: '#489FB5' },
-  { text: 'Resultados que ficam.', color: 'rgba(240,237,232,0.5)' },
-]
+// Words that cycle in the headline kinetic slot
+const KINETIC_WORDS = ['encanta', 'fideliza', 'faz crescer']
 
 const containerVariants: Variants = {
   hidden: {},
@@ -44,14 +42,14 @@ const wordVariants: Variants = {
   },
 }
 
-const subVariants: Variants = {
-  hidden: { opacity: 0, y: '0.8em' },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  visible: ((i: number) => ({
+const ctaVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
     opacity: 1,
-    y: '0em',
-    transition: { duration: 0.55, ease: [0.34, 1.56, 0.64, 1] as any, delay: 0.45 + i * 0.12 },
-  })) as any,
+    y: 0,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as any, delay: 0.7 },
+  },
 }
 
 export function StaggerHero() {
@@ -67,10 +65,35 @@ export function StaggerHero() {
       id="hero"
       ref={sectionRef}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: 'transparent' }}
     >
-      {/* WebGL shader background */}
-      <ShaderHero />
+      {/* Human photo background */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1920&q=80"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
+        />
+        {/* Navy overlay for readability */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(180deg, rgba(10,31,61,0.82) 0%, rgba(4,8,15,0.92) 100%)',
+          }}
+        />
+      </div>
+
+      {/* WebGL shader blended over photo */}
+      {!shouldReduce && (
+        <div
+          className="absolute inset-0 z-[1]"
+          style={{ mixBlendMode: 'screen', opacity: 0.5, pointerEvents: 'none' }}
+        >
+          <ShaderHero />
+        </div>
+      )}
 
       {/* Section number */}
       <div
@@ -112,9 +135,9 @@ export function StaggerHero() {
           <ScrambleText text="ESTETIA CRM" duration={900} delay={200} />
         </p>
 
-        {/* Headline — word stagger */}
+        {/* Headline — word stagger + kinetic last word */}
         <h1
-          className="mb-6 leading-tight"
+          className="mb-2 leading-tight"
           style={{
             fontFamily: "'Newsreader', Georgia, serif",
             fontSize: 'clamp(2.2rem, 7vw, 6rem)',
@@ -123,7 +146,6 @@ export function StaggerHero() {
             color: '#F0EDE8',
             letterSpacing: '-0.02em',
           }}
-          aria-label={HEADLINE}
         >
           <motion.span
             style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0 0.28em' }}
@@ -131,7 +153,7 @@ export function StaggerHero() {
             initial={shouldReduce ? false : 'hidden'}
             animate="visible"
           >
-            {WORDS.map((word, i) => (
+            {['Gestão', 'clínica', 'que'].map((word, i) => (
               <motion.span
                 key={i}
                 style={{ display: 'inline-block', whiteSpace: 'nowrap' }}
@@ -140,39 +162,106 @@ export function StaggerHero() {
                 {word}
               </motion.span>
             ))}
+            <motion.span
+              style={{ display: 'inline-block', whiteSpace: 'nowrap' }}
+              variants={wordVariants}
+            >
+              <KineticWord words={KINETIC_WORDS} intervalMs={2500} color="#C5A059" />
+            </motion.span>
           </motion.span>
         </h1>
 
-        {/* Sub-words */}
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-          {SUBWORDS.map(({ text, color }, i) => (
-            <motion.span
-              key={i}
-              custom={i}
-              variants={subVariants}
-              initial={shouldReduce ? false : 'hidden'}
-              animate="visible"
-              style={{
-                display: 'inline-block',
-                fontFamily: "'Manrope', sans-serif",
-                fontSize: '0.85rem',
-                fontWeight: 500,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color,
-              }}
-            >
-              {text}
-            </motion.span>
-          ))}
-        </div>
+        {/* Trust stack — rating + LGPD + social */}
+        <TrustStack />
 
-        {/* CTA scroll hint */}
-        <div className="mt-16 flex flex-col items-center gap-2 opacity-40">
+        {/* Dual CTA — primary + secondary */}
+        <motion.div
+          variants={ctaVariants}
+          initial={shouldReduce ? false : 'hidden'}
+          animate="visible"
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '1rem',
+            marginTop: '2rem',
+          }}
+        >
+          {/* Primary CTA */}
+          <Magnetic strength={0.25}>
+            <motion.a
+              href="/cadastro"
+              data-cursor="cta"
+              data-cursor-label="Começar"
+              whileHover={shouldReduce ? undefined : {
+                scale: 1.04,
+                boxShadow: '0 0 24px rgba(197,160,89,0.45), 0 8px 28px rgba(197,160,89,0.18)',
+              }}
+              whileTap={shouldReduce ? undefined : { scale: 0.97 }}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              transition={{ type: 'spring', stiffness: 320, damping: 22 } as any}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.6rem',
+                padding: '0.85rem 2.2rem',
+                background: '#C5A059',
+                color: '#0A1F3D',
+                fontFamily: "'Manrope', sans-serif",
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                borderRadius: '2px',
+              }}
+              className="focus-visible:ring-2 focus-visible:ring-[#489FB5] focus-visible:ring-offset-2"
+            >
+              Começar grátis
+              <ArrowRight size={14} strokeWidth={2.5} />
+            </motion.a>
+          </Magnetic>
+
+          {/* Secondary CTA */}
+          <motion.a
+            href="#product"
+            data-cursor="link"
+            data-cursor-label="Ver produto"
+            whileHover={shouldReduce ? undefined : { x: 4 }}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            transition={{ duration: 0.2 } as any}
+            onClick={(e) => {
+              e.preventDefault()
+              document.getElementById('product')?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.85rem 2rem',
+              border: '1px solid rgba(197,160,89,0.35)',
+              color: 'rgba(240,237,232,0.8)',
+              fontFamily: "'Manrope', sans-serif",
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              borderRadius: '2px',
+              background: 'transparent',
+            }}
+            className="focus-visible:ring-2 focus-visible:ring-[#489FB5] focus-visible:ring-offset-2"
+          >
+            Ver o produto
+          </motion.a>
+        </motion.div>
+
+        {/* Scroll hint — smaller, below CTAs */}
+        <div className="mt-12 flex flex-col items-center gap-2 opacity-30">
           <p
             style={{
               fontFamily: "'Manrope', sans-serif",
-              fontSize: '0.65rem',
+              fontSize: '0.6rem',
               fontWeight: 500,
               letterSpacing: '0.3em',
               textTransform: 'uppercase',
@@ -181,21 +270,19 @@ export function StaggerHero() {
           >
             Role para explorar
           </p>
-          <Magnetic strength={0.3}>
-            <div className="flex flex-col items-center gap-1">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="w-px rounded-full"
-                  style={{
-                    height: '6px',
-                    background: '#C5A059',
-                    animation: `fade-pulse 1.5s ease-in-out ${i * 0.2}s infinite`,
-                  }}
-                />
-              ))}
-            </div>
-          </Magnetic>
+          <div className="flex flex-col items-center gap-1">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="w-px rounded-full"
+                style={{
+                  height: '6px',
+                  background: '#C5A059',
+                  animation: `fade-pulse 1.5s ease-in-out ${i * 0.2}s infinite`,
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

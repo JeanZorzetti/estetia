@@ -1,6 +1,4 @@
 // SVG paths normalized to 100×100 viewBox
-// Each shape interpolatable via Anime.js morphTo
-
 export const SHAPES = {
   circle: 'M 50,10 A 40,40 0 1,1 50,90 A 40,40 0 1,1 50,10 Z',
   triangle: 'M 50,5 L 95,90 L 5,90 Z',
@@ -14,23 +12,43 @@ export const PHRASES = [
     shape: 'circle' as const,
     accent: '#C5A059',
     caption: 'Relacionamento',
+    metric: 92,
+    metricPrefix: '',
+    metricSuffix: '%',
+    metricLabel: 'retenção de pacientes',
+    metricColor: '#E8917A',
   },
   {
     text: 'Protocolos que não se perdem em papel.',
     shape: 'triangle' as const,
     accent: '#489FB5',
     caption: 'Precisão',
+    metric: 0,
+    metricPrefix: '',
+    metricSuffix: '',
+    metricLabel: 'prontuários perdidos',
+    metricColor: '#9CAF88',
   },
   {
     text: 'Uma linha do tempo clínica clara.',
     shape: 'line' as const,
     accent: '#F0EDE8',
     caption: 'Clareza',
+    metric: 3,
+    metricPrefix: '',
+    metricSuffix: 'M+',
+    metricLabel: 'sessões registradas',
+    metricColor: '#489FB5',
   },
   {
     text: 'Resultados que viram indicações.',
     shape: 'asterisk' as const,
     accent: '#C5A059',
     caption: 'Crescimento',
+    metric: 58,
+    metricPrefix: '+',
+    metricSuffix: '%',
+    metricLabel: 'mais indicações',
+    metricColor: '#C5A059',
   },
 ]

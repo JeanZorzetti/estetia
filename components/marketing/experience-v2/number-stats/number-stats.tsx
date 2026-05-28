@@ -19,7 +19,7 @@ const STATS = [
     suffix: '%',
     label: 'em no-shows',
     description: 'Confirmações automáticas e lembretes inteligentes eliminam as faltas.',
-    accent: '#489FB5',
+    accent: '#E8917A',
   },
   {
     value: 2.4,
@@ -28,7 +28,7 @@ const STATS = [
     decimals: 1,
     label: 'economizadas por dia',
     description: 'Menos burocracia, mais tempo com quem realmente importa: seus pacientes.',
-    accent: '#C5A059',
+    accent: '#9CAF88',
   },
 ]
 
@@ -58,7 +58,7 @@ export function NumberStats() {
         className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
         style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
       >
-        04 — Métricas
+        05 — Métricas
       </div>
 
       {/* Header */}

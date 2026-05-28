@@ -58,6 +58,11 @@ const ClosingWave = dynamic(
   { ssr: false },
 )
 
+const FAQSection = dynamic(
+  () => import('@/components/marketing/experience-v2/faq/faq-section').then(m => m.FAQSection),
+  { ssr: false },
+)
+
 export function ExperienceV2Client() {
   return (
     <LenisProvider>
@@ -71,6 +76,7 @@ export function ExperienceV2Client() {
       <NumberStats />
       <TimelineJourney />
       <CodeDrivingDemo />
+      <FAQSection />
       <ClosingWave />
     </LenisProvider>
   )
