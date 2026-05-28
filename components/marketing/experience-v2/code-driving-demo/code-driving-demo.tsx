@@ -2,197 +2,111 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { animate, stagger } from 'animejs'
-import { SNIPPETS } from './snippets-data'
+import { KanbanMockup } from '../shared/kanban-mockup'
+import { CalendarMockup } from '../shared/calendar-mockup'
+import { PaymentMockup } from '../shared/payment-mockup'
 
-const CYCLE_MS = 4200
+const CYCLE_MS = 4500
 
-// Syntax-highlight the code string
-function highlight(code: string) {
-  return code
-    .replace(/\/\/.*/g, (m) => `<span style="color:rgba(240,237,232,0.3)">${m}</span>`)
-    .replace(/\b(animate|stagger|morphTo|Math\.round)\b/g, '<span style="color:#489FB5">$1</span>')
-    .replace(/\b(duration|ease|delay|opacity|scale|innerHTML|modifier|from|d)\b/g, '<span style="color:#C5A059">$1</span>')
-    .replace(/'([^']+)'/g, '<span style="color:#a8d8b2">\'$1\'</span>')
-    .replace(/\b(\d+(\.\d+)?)\b/g, '<span style="color:#f4a76f">$1</span>')
+interface DemoScenario {
+  id: string
+  label: string
+  title: string
+  action: string   // what the "action line" shows (typewriter)
+  result: string   // result label shown below action
+  mockup: 'kanban' | 'calendar' | 'payment'
 }
 
-function DemoMorph() {
-  const pathRef = useRef<SVGPathElement>(null)
-  const frameRef = useRef<number>(0)
-  const tRef = useRef(0)
+const SCENARIOS: DemoScenario[] = [
+  {
+    id: 'patient',
+    label: 'Novo paciente',
+    title: 'Pipeline de pacientes',
+    action: 'Maria Souza — Botox · Avaliação',
+    result: '→ Card adicionado ao Kanban',
+    mockup: 'kanban',
+  },
+  {
+    id: 'schedule',
+    label: 'Agendamento',
+    title: 'Agenda inteligente',
+    action: 'Retorno: Pedro Lima · Qui 14h',
+    result: '→ Slot bloqueado na agenda',
+    mockup: 'calendar',
+  },
+  {
+    id: 'payment',
+    label: 'Pagamento',
+    title: 'Cobrança integrada',
+    action: 'Cobrança enviada: R$ 850,00 · PIX',
+    result: '→ Confirmação em tempo real',
+    mockup: 'payment',
+  },
+]
+
+function MockupPanel({ mockup, active }: { mockup: DemoScenario['mockup']; active: boolean }) {
+  if (mockup === 'kanban') return <KanbanMockup animate={active} />
+  if (mockup === 'calendar') return <CalendarMockup />
+  return <PaymentMockup />
+}
+
+// Typewriter that types a string char by char
+function Typewriter({ text, active, speed = 38 }: { text: string; active: boolean; speed?: number }) {
+  const [displayed, setDisplayed] = useState('')
   const shouldReduce = useReducedMotion()
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    if (shouldReduce) return
-    function tick() {
-      tRef.current += 0.012
-      const t = tRef.current
-      const r = 28 + Math.sin(t * 1.7) * 10
-      const pts: [number, number][] = Array.from({ length: 6 }, (_, i) => {
-        const a = (i / 6) * Math.PI * 2
-        const rr = r + Math.sin(t * 2.3 + i * 1.2) * 8
-        return [50 + Math.cos(a) * rr, 50 + Math.sin(a) * rr]
-      })
-      const d = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ') + ' Z'
-      if (pathRef.current) pathRef.current.setAttribute('d', d)
-      frameRef.current = requestAnimationFrame(tick)
+    if (!active) return
+    setDisplayed('')
+    if (shouldReduce) { setDisplayed(text); return }
+    let i = 0
+    const step = () => {
+      i++
+      setDisplayed(text.slice(0, i))
+      if (i < text.length) timerRef.current = setTimeout(step, speed)
     }
-    frameRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frameRef.current)
-  }, [shouldReduce])
+    timerRef.current = setTimeout(step, 300)
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, text])
 
   return (
-    <svg viewBox="0 0 100 100" className="w-full h-full">
-      <defs>
-        <linearGradient id="morphGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#C5A059" />
-          <stop offset="100%" stopColor="#489FB5" />
-        </linearGradient>
-      </defs>
-      <path ref={pathRef} fill="none" stroke="url(#morphGrad)" strokeWidth="2" strokeLinejoin="round" />
-    </svg>
+    <span>
+      {displayed}
+      {active && displayed.length < text.length && (
+        <span style={{ animation: 'blink 0.8s ease infinite' }}>▌</span>
+      )}
+    </span>
   )
-}
-
-function DemoStagger() {
-  const cellsRef = useRef<(HTMLDivElement | null)[]>([])
-  const didAnimate = useRef(false)
-  const shouldReduce = useReducedMotion()
-
-  useEffect(() => {
-    if (didAnimate.current || shouldReduce) return
-    didAnimate.current = true
-    const cells = cellsRef.current.filter(Boolean) as HTMLDivElement[]
-    cells.forEach(c => { c.style.opacity = '0'; c.style.transform = 'scale(0)' })
-    setTimeout(() => {
-      animate(cells, {
-        scale: [0, 1],
-        opacity: [0, 1],
-        delay: stagger(55, { from: 'center' }),
-        duration: 450,
-        ease: 'outBack(1.4)',
-      })
-    }, 300)
-  }, [shouldReduce])
-
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '6px',
-        width: '100%',
-        height: '100%',
-        placeContent: 'center',
-        padding: '8px',
-      }}
-    >
-      {Array.from({ length: 16 }, (_, i) => (
-        <div
-          key={i}
-          ref={(el) => { cellsRef.current[i] = el }}
-          style={{
-            aspectRatio: '1',
-            borderRadius: '4px',
-            background: i % 3 === 0
-              ? 'rgba(197,160,89,0.6)'
-              : i % 3 === 1
-              ? 'rgba(72,159,181,0.5)'
-              : 'rgba(240,237,232,0.15)',
-          }}
-        />
-      ))}
-    </div>
-  )
-}
-
-function DemoCounter({ active }: { active: boolean }) {
-  const elRef = useRef<HTMLDivElement>(null)
-  const didAnimate = useRef(false)
-  const shouldReduce = useReducedMotion()
-
-  useEffect(() => {
-    if (!active || didAnimate.current) return
-    didAnimate.current = true
-    if (shouldReduce) {
-      if (elRef.current) elRef.current.textContent = '+340%'
-      return
-    }
-    const obj = { val: 0 }
-    animate(obj, {
-      val: [0, 340],
-      duration: 1800,
-      ease: 'outExpo',
-      onUpdate: () => { if (elRef.current) elRef.current.textContent = `+${Math.round(obj.val)}%` },
-    })
-  }, [active, shouldReduce])
-
-  return (
-    <div className="flex items-center justify-center w-full h-full">
-      <div
-        ref={elRef}
-        style={{
-          fontFamily: "'Newsreader', Georgia, serif",
-          fontSize: 'clamp(2.5rem, 8vw, 4rem)',
-          fontWeight: 300,
-          fontStyle: 'italic',
-          color: '#C5A059',
-          letterSpacing: '-0.03em',
-        }}
-      >
-        +0%
-      </div>
-    </div>
-  )
-}
-
-function LiveDemo({ type, active }: { type: 'morph' | 'stagger' | 'counter'; active: boolean }) {
-  if (type === 'morph') return <DemoMorph />
-  if (type === 'stagger') return <DemoStagger />
-  return <DemoCounter active={active} />
 }
 
 export function CodeDrivingDemo() {
   const [activeIdx, setActiveIdx] = useState(0)
-  const [typewritten, setTypewritten] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
-  const typeRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [typing, setTyping] = useState(true)
   const shouldReduce = useReducedMotion()
 
-  function typeCode(code: string) {
-    setTypewritten('')
-    setIsTyping(true)
-    let i = 0
-    function step() {
-      i++
-      setTypewritten(code.slice(0, i))
-      if (i < code.length) typeRef.current = setTimeout(step, shouldReduce ? 0 : 18)
-      else setIsTyping(false)
-    }
-    typeRef.current = setTimeout(step, 100)
-  }
-
+  // Reset typing state when scenario changes
   useEffect(() => {
-    typeCode(SNIPPETS[activeIdx].code)
-    return () => { if (typeRef.current) clearTimeout(typeRef.current) }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setTyping(true)
+    const t = setTimeout(() => setTyping(false), SCENARIOS[activeIdx].action.length * 38 + 800)
+    return () => clearTimeout(t)
   }, [activeIdx])
 
   // Auto-cycle
   useEffect(() => {
     const id = setInterval(() => {
-      setActiveIdx((i) => (i + 1) % SNIPPETS.length)
+      setActiveIdx(i => (i + 1) % SCENARIOS.length)
     }, CYCLE_MS)
     return () => clearInterval(id)
   }, [])
 
-  const snippet = SNIPPETS[activeIdx]
+  const scenario = SCENARIOS[activeIdx]
 
   return (
     <section
       id="demo"
-      aria-label="Demo de código ao vivo"
+      aria-label="Demo do produto Estetia"
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-24 px-6"
       style={{ background: 'transparent' }}
     >
@@ -201,7 +115,7 @@ export function CodeDrivingDemo() {
         className="absolute top-8 right-8 z-10 text-[10px] tracking-[0.4em] uppercase opacity-30"
         style={{ fontFamily: "'Manrope', sans-serif", color: '#C5A059' }}
       >
-        06 — Demo
+        07 — Demo
       </div>
 
       {/* Header */}
@@ -218,7 +132,7 @@ export function CodeDrivingDemo() {
             marginBottom: '0.75rem',
           }}
         >
-          Animações que encantam
+          Veja o Estetia em ação
         </p>
         <h2
           style={{
@@ -230,21 +144,22 @@ export function CodeDrivingDemo() {
             letterSpacing: '-0.02em',
           }}
         >
-          Código que ganha vida
+          Cada ação, uma tarefa a menos
         </h2>
       </div>
 
       {/* Tab selector */}
-      <div className="relative z-10 flex gap-2 mb-8">
-        {SNIPPETS.map((s, i) => (
+      <div className="relative z-10 flex gap-2 mb-8 flex-wrap justify-center">
+        {SCENARIOS.map((s, i) => (
           <button
             key={s.id}
             onClick={() => setActiveIdx(i)}
+            aria-pressed={i === activeIdx}
             style={{
               fontFamily: "'Manrope', sans-serif",
               fontSize: '0.65rem',
               fontWeight: 600,
-              letterSpacing: '0.2em',
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
               padding: '0.4rem 1rem',
               borderRadius: '2px',
@@ -262,7 +177,8 @@ export function CodeDrivingDemo() {
 
       {/* Split pane */}
       <div className="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Code panel */}
+
+        {/* LEFT — action panel (replaces code editor) */}
         <div
           style={{
             background: 'rgba(4,8,15,0.9)',
@@ -271,8 +187,8 @@ export function CodeDrivingDemo() {
             padding: '1.5rem',
             backdropFilter: 'blur(20px)',
             minHeight: '220px',
-            position: 'relative',
-            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
           {/* Window dots */}
@@ -282,21 +198,97 @@ export function CodeDrivingDemo() {
             ))}
           </div>
 
-          <pre
+          {/* App bar */}
+          <div
             style={{
-              fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-              fontSize: '0.72rem',
-              lineHeight: 1.7,
-              color: '#F0EDE8',
-              margin: 0,
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-all',
+              fontFamily: "'Manrope', sans-serif",
+              fontSize: '0.6rem',
+              fontWeight: 600,
+              letterSpacing: '0.2em',
+              color: 'rgba(240,237,232,0.25)',
+              textTransform: 'uppercase',
+              marginBottom: '1.5rem',
             }}
-            dangerouslySetInnerHTML={{ __html: highlight(typewritten) + (isTyping ? '<span style="animation:blink 0.8s ease infinite">▌</span>' : '') }}
-          />
+          >
+            estetia / {scenario.title.toLowerCase()}
+          </div>
+
+          {/* Action line — typewriter */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`action-${activeIdx}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}
+            >
+              {/* Input field mockup */}
+              <div
+                style={{
+                  background: 'rgba(10,31,61,0.6)',
+                  border: '1px solid rgba(197,160,89,0.2)',
+                  borderRadius: '4px',
+                  padding: '0.65rem 0.85rem',
+                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                  fontSize: '0.78rem',
+                  color: '#F0EDE8',
+                  minHeight: '46px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Typewriter text={scenario.action} active={true} speed={36} key={`tw-${activeIdx}`} />
+              </div>
+
+              {/* Result badge — appears after typing */}
+              <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                animate={!typing ? { opacity: 1, x: 0 } : { opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  padding: '0.4rem 0.75rem',
+                  background: 'rgba(72,159,181,0.1)',
+                  border: '1px solid rgba(72,159,181,0.25)',
+                  borderRadius: '3px',
+                  fontFamily: "'Manrope', sans-serif",
+                  fontSize: '0.65rem',
+                  fontWeight: 600,
+                  color: '#489FB5',
+                  letterSpacing: '0.05em',
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12 L10 17 L19 7" stroke="#489FB5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {scenario.result}
+              </motion.div>
+
+              {/* Label hint */}
+              <p
+                style={{
+                  fontFamily: "'Manrope', sans-serif",
+                  fontSize: '0.6rem',
+                  color: 'rgba(240,237,232,0.2)',
+                  letterSpacing: '0.12em',
+                  marginTop: 'auto',
+                }}
+              >
+                atualização em tempo real →
+              </p>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* Live demo panel */}
+        {/* RIGHT — live product mockup */}
         <div
           style={{
             background: 'rgba(10,31,61,0.7)',
@@ -321,21 +313,21 @@ export function CodeDrivingDemo() {
               marginBottom: '1rem',
             }}
           >
-            {snippet.title} — ao vivo
+            {scenario.title} — ao vivo
           </p>
 
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ flex: 1, display: 'flex', alignItems: 'stretch' }}>
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeIdx}
-                className="w-full h-full"
+                key={`mockup-${activeIdx}`}
+                className="w-full"
                 style={{ minHeight: '140px' }}
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.92 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               >
-                <LiveDemo type={snippet.demo} active={!isTyping} />
+                <MockupPanel mockup={scenario.mockup} active={!shouldReduce} />
               </motion.div>
             </AnimatePresence>
           </div>
