@@ -15,6 +15,11 @@
 | LGPD para Clínicas de Estética Guia 2026 | `lgpd-para-clinicas-de-estetica-guia-2026` | ✅ Publicado |
 | Anamnese Digital em Clínicas de Estética | `anamnese-digital-clinica-de-estetica` | ✅ Publicado |
 | KPIs Essenciais para Clínicas de Estética | `kpis-essenciais-clinica-de-estetica` | ✅ Publicado |
+| CRM para Clínica de Estética: Guia Completo 2026 | `crm-para-clinica-de-estetica-guia-completo` | ✅ Publicado |
+| Software de Gestão para Dermatologia: O Guia Definitivo | `software-gestao-dermatologia-guia` | ✅ Publicado |
+| Prontuário Eletrônico para Clínicas de Estética | `prontuario-eletronico-clinica-estetica` | ✅ Publicado |
+| Agendamento Online para Clínicas de Estética | `agendamento-online-clinica-estetica` | ✅ Publicado |
+| WhatsApp Business para Clínicas de Estética: Automação | `whatsapp-business-clinica-estetica-automacao` | ✅ Publicado |
 
 ---
 

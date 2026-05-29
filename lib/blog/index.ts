@@ -5,6 +5,11 @@ import { post as noShowPost } from './posts/como-reduzir-no-show-em-clinicas-de-
 import { post as lgpdPost } from './posts/lgpd-para-clinicas-de-estetica-guia-2026'
 import { post as anamnesePost } from './posts/anamnese-digital-clinica-de-estetica'
 import { post as kpisPost } from './posts/kpis-essenciais-clinica-de-estetica'
+import { post as crmGuiaPost } from './posts/crm-para-clinica-de-estetica-guia-completo'
+import { post as softwareDermatologiaPost } from './posts/software-gestao-dermatologia-guia'
+import { post as prontuarioEletronicoPost } from './posts/prontuario-eletronico-clinica-estetica'
+import { post as agendamentoOnlinePost } from './posts/agendamento-online-clinica-estetica'
+import { post as whatsappBusinessPost } from './posts/whatsapp-business-clinica-estetica-automacao'
 
 export const blogPosts: BlogPost[] = [
   spinSellingPost,
@@ -12,6 +17,11 @@ export const blogPosts: BlogPost[] = [
   lgpdPost,
   anamnesePost,
   kpisPost,
+  crmGuiaPost,
+  softwareDermatologiaPost,
+  prontuarioEletronicoPost,
+  agendamentoOnlinePost,
+  whatsappBusinessPost,
 ]
 
 export const CATEGORY_COLORS: Record<string, string> = {

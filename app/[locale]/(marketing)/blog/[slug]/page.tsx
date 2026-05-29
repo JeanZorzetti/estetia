@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -60,6 +60,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Anamnese digital reduz tempo de espera na recepção, elimina papel, gera alertas automáticos de contraindicações (gravidez, anticoagulantes, lúpus) e tem validade jurídica pela Lei 14.063/2020. Paciente preenche pelo celular antes da consulta.'
   } else if (slug === 'kpis-essenciais-clinica-de-estetica') {
     aiOptimizedDescription = '5 KPIs prioritários para clínicas de estética: taxa de ocupação (ideal 80-90%), no-show (meta < 10%), recompra em 90 dias (saudável > 40%), LTV por paciente, ticket médio por procedimento. Dashboard em tempo real no Estetia CRM.'
+  } else if (slug === 'crm-para-clinica-de-estetica-guia-completo') {
+    aiOptimizedDescription = 'CRM para clínica de estética: sistema que centraliza prontuário eletrônico, agenda com confirmação automática WhatsApp, no-show predictor IA, recall automático por procedimento e KPIs clínicos. Reduz no-show em 35%, aumenta recompra em 28%. Planos a partir de R$149/mês com 14 dias grátis.'
+  } else if (slug === 'software-gestao-dermatologia-guia') {
+    aiOptimizedDescription = 'Software de gestão para dermatologia: prontuário com mapeamento de lesões, fotodocumentação por data, controle de biopsias, fototerapia com dose acumulada, integração TISS/TUSS para convênios e conformidade LGPD Art. 11. Específico para dermatologistas e clínicas de dermato no Brasil.'
+  } else if (slug === 'prontuario-eletronico-clinica-estetica') {
+    aiOptimizedDescription = 'Prontuário eletrônico para estética: validade jurídica pela Lei 14.063/2020, guarda obrigatória de 20 anos (CFM), assinatura eletrônica simples para anamneses, criptografia AES-256 para LGPD Art. 11. Diferença entre anamnese e prontuário: anamnese é preenchida antes, prontuário registra o que foi feito.'
+  } else if (slug === 'agendamento-online-clinica-estetica') {
+    aiOptimizedDescription = 'Agendamento online para clínica de estética com confirmação automática WhatsApp reduz no-show em 35-45%. Lista de espera automática preenche 55-70% dos horários cancelados. Taxa de ocupação saudável: 80-90% para procedimentos curtos, 70-80% para longos. Integração com Google Calendar em tempo real.'
+  } else if (slug === 'whatsapp-business-clinica-estetica-automacao') {
+    aiOptimizedDescription = 'WhatsApp Business para clínicas de estética: usar API oficial Meta (Cloud API) evita bloqueio de número. Recall automático por procedimento — toxina botulínica em 90 dias, limpeza de pele em 30 dias. Taxa de abertura: 95-98% vs. 8-15% por email. Custo da API: R$40-80/mês para 100 consultas/semana.'
   }
 
   return {
@@ -187,6 +197,75 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     })
   } else if (slug === 'kpis-essenciais-clinica-de-estetica') {
     geoConfig = createGeoConfig.clinicKpis({ author: estetiaAuthor })
+  } else if (slug === 'crm-para-clinica-de-estetica-guia-completo') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+        COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.CRM, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'software-gestao-dermatologia-guia') {
+    geoConfig = createGeoConfig.dermatology({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.DERMATOLOGY,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.DERMATOLOGY, COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'prontuario-eletronico-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+        COMMON_WIKIDATA_ENTITIES.DATA_PROTECTION,
+        COMMON_WIKIDATA_ENTITIES.DERMATOLOGY,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'agendamento-online-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
+        COMMON_WIKIDATA_ENTITIES.GOOGLE_CALENDAR,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'whatsapp-business-clinica-estetica-automacao') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
+        COMMON_WIKIDATA_ENTITIES.AUTOMATION,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING,
+        COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.WHATSAPP, COMMON_WIKIDATA_ENTITIES.AUTOMATION],
+      author: estetiaAuthor,
+    })
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -213,6 +292,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'lgpd-para-clinicas-de-estetica-guia-2026': lgpdClinicaFAQs,
     'anamnese-digital-clinica-de-estetica': anamneseDigitalFAQs,
     'kpis-essenciais-clinica-de-estetica': kpisClinicaFAQs,
+    'crm-para-clinica-de-estetica-guia-completo': crmClinicaEsteticaFAQs,
+    'software-gestao-dermatologia-guia': softwareDermatologiaFAQs,
+    'prontuario-eletronico-clinica-estetica': prontuarioEletronicoFAQs,
+    'agendamento-online-clinica-estetica': agendamentoOnlineFAQs,
+    'whatsapp-business-clinica-estetica-automacao': whatsappBusinessClinicaFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 

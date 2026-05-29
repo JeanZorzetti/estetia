@@ -109,3 +109,45 @@ export const howToSchemas: Record<string, HowToSchema> = {
 export function getHowToSchema(slug: string): HowToSchema | null {
   return howToSchemas[slug] ?? null
 }
+
+// Adicionar HowTo schemas para os novos posts
+Object.assign(howToSchemas, {
+  'prontuario-eletronico-clinica-estetica': buildHowTo(
+    'Como Implementar Prontuário Eletrônico na Clínica de Estética',
+    'Passo a passo para substituir fichas físicas por prontuário eletrônico — com fotodocumentação, assinatura digital e conformidade LGPD.',
+    [
+      { name: 'Configure os templates de prontuário por procedimento', text: 'Crie templates específicos para cada procedimento realizado na clínica: toxina botulínica, preenchimento, laser, microagulhamento, limpeza de pele. Cada template tem campos obrigatórios configurados — garantindo completude dos registros sem esforço adicional do profissional.' },
+      { name: 'Ative a anamnese digital pré-consulta', text: 'Configure o envio automático do link de anamnese digital via WhatsApp quando um agendamento é confirmado. O paciente preenche antes de chegar à clínica — e os dados já estão no prontuário eletrônico quando o profissional abre o sistema.' },
+      { name: 'Configure consentimento digital para fotodocumentação', text: 'Crie e ative o termo de consentimento específico para fotodocumentação clínica. O paciente assina digitalmente antes da primeira foto — com registro de data/hora e hash do documento para validade jurídica. Inclua finalidades separadas: uso clínico interno e divulgação externa (se autorizado).' },
+      { name: 'Treine a equipe em 2 horas', text: 'Realize um treinamento prático de 2 horas cobrindo: abrir prontuário do paciente, registrar um procedimento, fotografar corretamente com os guias de enquadramento do sistema, e assinar digitalmente uma anamnese. Enfatize o protocolo de fotografia padronizado — fundo neutro, iluminação uniforme, ângulo consistente por região tratada.' },
+      { name: 'Migre o histórico gradualmente', text: 'Não tente digitalizar todo o histórico em papel de uma vez. Adote a regra "migrar quando o paciente retornar": na próxima consulta, digitalize o histórico relevante. Em 3-6 meses, a maioria dos pacientes ativos terá prontuário digital completo sem nenhum esforço concentrado de migração.' },
+    ],
+    { totalTime: 'PT180M', cost: '0' }
+  ),
+
+  'agendamento-online-clinica-estetica': buildHowTo(
+    'Como Configurar Agendamento Online para Clínica de Estética em 7 Dias',
+    'Passo a passo para implementar agendamento online com confirmação automática, lista de espera e integração com WhatsApp na sua clínica de estética.',
+    [
+      { name: 'Configure a agenda por profissional e procedimento', text: 'Cadastre os profissionais, configure os tipos de procedimento com duração e intervalo de preparação entre consultas, defina os horários de atendimento por profissional e bloqueie feriados e folgas. Cada procedimento pode ter duração, sala e profissionais específicos configurados independentemente.' },
+      { name: 'Conecte o WhatsApp Business API', text: 'Acesse Configurações > Integrações > WhatsApp no Estetia CRM. Conecte o número da clínica via Meta Business Manager. Configure os templates de mensagem para confirmação, lembrete 48h, lembrete 2h e follow-up pós-procedimento. A aprovação dos templates pela Meta leva até 24 horas.' },
+      { name: 'Ative a lista de espera', text: 'Ative a lista de espera por procedimento nas configurações da agenda. Configure o tempo de resposta esperado (ex: 30 minutos para o paciente confirmar antes do horário ser oferecido ao próximo). Defina quais procedimentos têm lista de espera ativa.' },
+      { name: 'Gere e distribua o link de agendamento', text: 'Crie o link público de agendamento da clínica e adicione ao: bio do Instagram, site da clínica, assinatura do WhatsApp Business e Google Business Profile. O link mostra automaticamente os procedimentos disponíveis, profissionais e horários livres.' },
+      { name: 'Monitore e otimize a taxa de ocupação', text: 'No dashboard do Estetia CRM, acompanhe semanalmente: taxa de ocupação da agenda, taxa de no-show, taxa de preenchimento da lista de espera e taxa de confirmação via WhatsApp. Ajuste timings de lembrete e configurações de lista de espera com base nos dados das primeiras semanas.' },
+    ],
+    { totalTime: 'PT240M', cost: '0' }
+  ),
+
+  'whatsapp-business-clinica-estetica-automacao': buildHowTo(
+    'Como Configurar WhatsApp Business API para Automação em Clínica de Estética',
+    'Passo a passo para integrar WhatsApp Business API ao Estetia CRM e automatizar confirmações, recalls e anamneses sem risco de bloqueio do número.',
+    [
+      { name: 'Crie conta no Meta Business Manager', text: 'Acesse business.facebook.com e crie uma conta Business Manager com os dados da clínica. É necessário ter uma página do Facebook da clínica. Adicione o número de telefone dedicado da clínica ao WhatsApp Business — o número não pode estar ativo em outro WhatsApp.' },
+      { name: 'Gere o token de acesso da API', text: 'No Meta Business Manager, acesse WhatsApp > Configuração da API e gere o token de acesso permanente. Guarde esse token com segurança — ele é necessário para conectar qualquer sistema ao WhatsApp da clínica.' },
+      { name: 'Conecte ao Estetia CRM', text: 'No painel do Estetia CRM, acesse Configurações > Integrações > WhatsApp Business API. Cole o token de acesso e o número de telefone. Clique em Salvar e faça um envio de teste para confirmar que a conexão está funcionando. O processo leva menos de 5 minutos.' },
+      { name: 'Crie e submeta os templates de mensagem', text: 'Crie os templates para cada tipo de automação: confirmação de agendamento, lembrete 48h, lembrete 2h, follow-up pós-procedimento e recall por procedimento. Submeta para aprovação da Meta (até 24h). O Estetia CRM tem templates pré-prontos em português que aceleram o processo.' },
+      { name: 'Configure as automações e o recall por procedimento', text: 'Ative as automações: confirmação imediata ao agendar, lembretes 48h e 2h antes, follow-up 48h após procedimento. Configure o recall por procedimento: toxina botulínica em 90 dias, limpeza de pele em 30 dias, laser em 45 dias. Cada recall é enviado automaticamente no timing configurado, sem esforço manual.' },
+    ],
+    { totalTime: 'PT60M', cost: '0' }
+  ),
+})

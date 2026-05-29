@@ -230,3 +230,197 @@ export const kpisClinicaFAQs: FAQItem[] = [
     answer: 'O dashboard do Estetia CRM exibe em tempo real: taxa de ocupação da agenda, alertas de pacientes em risco de churn, receita do dia/semana/mês, procedimentos mais realizados e taxa de recompra por período. Relatórios automáticos semanais são enviados por email para a gestão. Todos os KPIs podem ser filtrados por profissional, procedimento, período e unidade (em plano multi-unidade).',
   },
 ]
+
+/**
+ * FAQ data for CRM para Clínica de Estética blog post
+ */
+export const crmClinicaEsteticaFAQs: FAQItem[] = [
+  {
+    question: 'O que é CRM para clínica de estética?',
+    answer: 'CRM para clínica de estética é um sistema de gestão que centraliza o relacionamento com pacientes: histórico de procedimentos, agenda inteligente com confirmação automática, prontuário eletrônico, recall automático de recompra e dashboard de KPIs clínicos. Diferencia-se de um software de agendamento genérico por incluir funcionalidades específicas do setor clínico: anamnese digital com alertas de contraindicação, no-show predictor com IA e conformidade LGPD para dados sensíveis de saúde.',
+  },
+  {
+    question: 'Qual o melhor CRM para clínica de estética?',
+    answer: 'O melhor CRM para clínica de estética é o especializado no setor clínico — não um CRM genérico adaptado. Os critérios de avaliação são: prontuário eletrônico com fotodocumentação, anamnese digital com alertas de contraindicação, integração com WhatsApp Business API oficial, no-show predictor com IA, recall automático por procedimento, conformidade LGPD Art. 11 e suporte em português. O Estetia CRM foi desenvolvido especificamente para clínicas de estética e dermatologia no Brasil.',
+  },
+  {
+    question: 'CRM é diferente de software de agendamento para clínicas?',
+    answer: 'Sim. Software de agendamento organiza horários. CRM clínico gerencia o relacionamento completo com o paciente: histórico de procedimentos, comunicação automatizada, prontuário eletrônico, recall de recompra, KPIs e LGPD compliance. Um CRM clínico inclui agendamento, mas vai muito além — aumenta o LTV do paciente e reduz o no-show de forma sistemática.',
+  },
+  {
+    question: 'Vale a pena CRM para clínica de estética pequena (1-2 profissionais)?',
+    answer: 'Sim. Para clínicas pequenas, o CRM resolve os gargalos de crescimento: tempo gasto em confirmações manuais, falta de recall sistemático e ausência de dados para decisões. Uma clínica solo com 80 pacientes ativos e ticket médio de R$400 pode recuperar R$5.600/mês combinando redução de no-show com recall automático — sobre investimento de R$149/mês. O ROI se paga em menos de 30 dias.',
+  },
+  {
+    question: 'CRM funciona com WhatsApp para clínicas de estética?',
+    answer: 'Sim. O Estetia CRM integra com WhatsApp Business API oficial (não ferramentas não homologadas que causam bloqueio de número). Isso permite envio automático de confirmações, lembretes, links de anamnese e recalls de recompra — tudo personalizado por paciente e procedimento, sem esforço da recepção.',
+  },
+  {
+    question: 'Quanto custa um CRM para clínica de estética?',
+    answer: 'O custo varia de R$100 a R$1.200/mês dependendo do porte e funcionalidades. O Estetia CRM tem planos a partir de R$149/mês para clínicas com 1 profissional e até 300 pacientes. O plano Pro (R$349/mês) inclui no-show predictor IA e recall automático para até 3 profissionais. Todos os planos têm 14 dias de teste gratuito sem cartão de crédito.',
+  },
+  {
+    question: 'Em quanto tempo vejo resultado com CRM para clínica de estética?',
+    answer: 'Confirmações automáticas têm impacto imediato — redução de no-show visível na primeira semana. Recall automático começa a gerar retorno em 30-45 dias (tempo mínimo para o primeiro ciclo de recall). Dashboard de KPIs com dados confiáveis: 60-90 dias de uso. ROI positivo na maioria das clínicas: antes de 30 dias, com base na redução de no-show isolada.',
+  },
+  {
+    question: 'CRM para clínica de estética é obrigatório para conformidade com LGPD?',
+    answer: 'A LGPD não exige especificamente um CRM, mas exige controles que são praticamente impossíveis sem sistema adequado: criptografia de prontuários, audit trail de acessos, coleta de consentimento digital específico e mecanismos para resposta a solicitações de titulares. Um CRM clínico LGPD-compliant é o caminho prático para atender esses requisitos sem contratar consultoria jurídica custosa.',
+  },
+  {
+    question: 'Como migrar para CRM sem perder o histórico de pacientes?',
+    answer: 'A migração é feita em 3 etapas: (1) importação da base de pacientes via planilha CSV, que leva 1-2 dias; (2) operação paralela de 2-4 semanas onde novos agendamentos entram no CRM enquanto o sistema antigo fica em modo leitura; (3) transição completa após validar que os dados críticos foram migrados. O Estetia CRM oferece suporte de migração assistida para clínicas com histórico extenso.',
+  },
+]
+
+/**
+ * FAQ data for Software de Gestão para Dermatologia blog post
+ */
+export const softwareDermatologiaFAQs: FAQItem[] = [
+  {
+    question: 'Software de gestão para dermatologia é diferente de software para clínica de estética?',
+    answer: 'Sim. Software para dermatologia precisa ter campos específicos para diagnósticos dermatológicos (CID-10 de dermato), mapeamento de lesões com diagrama corporal, controle de biopsias e laudos anatomopatológicos, fototerapia com controle de dose acumulada e integração TISS/TUSS para convênios. Clínicas de estética focam em procedimentos estéticos sem necessidade de diagnóstico clínico. Sistemas como o Estetia CRM atendem ambos com módulos configuráveis por especialidade.',
+  },
+  {
+    question: 'Software de dermatologia precisa de integração TISS?',
+    answer: 'Depende do perfil de atendimento. Se a clínica atende convênios de saúde, o padrão TISS (Troca de Informações em Saúde Suplementar) da ANS é obrigatório para faturamento eletrônico. Clínicas 100% particulares não precisam do módulo TISS. O Estetia CRM oferece o módulo TISS/TUSS no plano Business, com suporte para emissão de guias, controle de glosas e faturamento eletrônico às operadoras.',
+  },
+  {
+    question: 'Como funciona o prontuário eletrônico para dermatologia?',
+    answer: 'O prontuário dermatológico eletrônico inclui: diagrama corporal clicável para mapeamento de lesões, fotodocumentação por região com comparação temporal (before/after por data), CID-10 de dermatologia com busca rápida, registro de biopsias e laudos, controle de retorno por condição clínica e histórico de fototerapia com dose acumulada. Todos os dados são criptografados e acessíveis com controle de permissão por perfil de profissional.',
+  },
+  {
+    question: 'Dermatologista pode usar CRM genérico (Salesforce, HubSpot)?',
+    answer: 'Pode, mas com lacunas críticas. CRMs genéricos não têm prontuário eletrônico, mapeamento de lesões, anamnese com alertas de contraindicação, controle de biopsias ou módulo TISS. Adaptar um CRM genérico para uso clínico gera retrabalho manual, riscos de conformidade (LGPD Art. 11) e ausência de funcionalidades específicas que impactam a qualidade clínica. CRM especializado para dermato é o caminho mais seguro e eficiente.',
+  },
+  {
+    question: 'Software de dermato funciona para convênio e particular no mesmo sistema?',
+    answer: 'Sim. O Estetia CRM gerencia os dois fluxos no mesmo sistema: consultas cobertas por convênio (com TISS, CID-10 e guia eletrônica) e procedimentos particulares de estética (com anamnese por procedimento, fotodocumentação e recall). O prontuário do paciente é unificado, mas o faturamento é separado por tipo de atendimento, facilitando a contabilidade e os relatórios por convênio.',
+  },
+  {
+    question: 'Quanto tempo leva para implementar software de gestão de dermatologia?',
+    answer: 'Configuração básica (cadastros, agenda, confirmações automáticas): 2-3 dias. Operação plena com prontuário eletrônico: 2-3 semanas para a equipe se adaptar completamente. Módulo TISS com convênios: 1-2 semanas adicionais para configurar guias e testar envio às operadoras. Total esperado para operação 100% digital: 30 dias. O Estetia CRM tem onboarding guiado e suporte via chat para acelerar o processo.',
+  },
+  {
+    question: 'Como migrar prontuários físicos para sistema digital de dermato?',
+    answer: 'A migração é feita gradualmente para não travar a operação: (1) dados cadastrais são importados via planilha CSV; (2) prontuários históricos em papel são digitalizados quando o paciente retorna — na próxima consulta, a recepção digitaliza o histórico relevante; (3) em 3-6 meses, a maioria dos pacientes ativos tem prontuário digital completo. Para clínicas com volume alto de histórico em papel, o Estetia CRM oferece serviço de migração assistida.',
+  },
+  {
+    question: 'O sistema de gestão para dermato é compatível com receituário digital?',
+    answer: 'Sim. O Estetia CRM gera receituário digital com assinatura eletrônica válida via certificado digital ICP-Brasil. O paciente recebe o receituário por WhatsApp ou email com autenticidade verificável. A validade jurídica é garantida pelo CFM Resolução 2.299/2021, que homologou o receituário digital para médicos. Para biomédicos e enfermeiros, a assinatura eletrônica simples (Lei 14.063/2020) é suficiente para documentos clínicos.',
+  },
+]
+
+/**
+ * FAQ data for Prontuário Eletrônico para Clínica de Estética blog post
+ */
+export const prontuarioEletronicoFAQs: FAQItem[] = [
+  {
+    question: 'O que é prontuário eletrônico para clínica de estética?',
+    answer: 'Prontuário eletrônico é o registro digital completo do paciente na clínica: anamneses realizadas, procedimentos executados, fotos de evolução (before/after), termos de consentimento assinados digitalmente, observações clínicas e histórico de retornos. Substitui as fichas físicas em papel e tem validade jurídica garantida pela Lei 14.063/2020. É acessível de qualquer dispositivo da clínica com controle de acesso por perfil de profissional.',
+  },
+  {
+    question: 'Prontuário eletrônico é obrigatório por lei para clínicas de estética?',
+    answer: 'Para procedimentos realizados por médicos, sim — o CFM exige prontuário para todo atendimento médico (Res. 1.638/2002). Para biomédicos e enfermeiros, os respectivos Conselhos têm obrigação equivalente. Para esteticistas, não há obrigação formal, mas a LGPD exige controles de dados de saúde (criptografia, consentimento, audit trail) que são inviáveis sem sistema digital. Na prática, toda clínica que coleta dados de saúde deve ter documentação estruturada.',
+  },
+  {
+    question: 'Qual a diferença entre anamnese e prontuário eletrônico?',
+    answer: 'A anamnese é o questionário de saúde preenchido pelo paciente antes do procedimento: histórico clínico, alergias, medicamentos, contraindicações e consentimento informado. O prontuário é o registro completo do que foi feito na clínica: procedimentos realizados, materiais usados, fotos de evolução, intercorrências, orientações pós-procedimento. A anamnese é o primeiro documento do prontuário — ela se torna parte do histórico do paciente.',
+  },
+  {
+    question: 'Prontuário eletrônico vale como prova jurídica em caso de processo?',
+    answer: 'Sim. Prontuários eletrônicos com assinatura eletrônica têm validade jurídica plena pela Lei 14.063/2020. O documento precisa ter: registro de data/hora (timestamp), identificação de quem preencheu, hash do conteúdo (detecta alterações posteriores) e assinatura do paciente para consentimentos. O Estetia CRM registra automaticamente todos esses elementos, garantindo que o prontuário seja prova robusta em caso de questionamento judicial.',
+  },
+  {
+    question: 'Por quanto tempo guardar prontuário de clínica de estética?',
+    answer: 'O prazo mínimo recomendado é 20 anos após o último atendimento (padrão CFM para médicos). Para biomédicos: mínimo 5 anos (CFBio). Para esteticistas: recomendação de 5 anos mínimo com base em jurisprudência civil. Adotar 20 anos como padrão para toda a clínica é a decisão mais segura — o custo de armazenamento digital é irrisório comparado ao risco de descarte precoce em caso de ação judicial tardia.',
+  },
+  {
+    question: 'Como armazenar fotos de pacientes em conformidade com a LGPD?',
+    answer: 'Fotos de procedimentos estéticos são dados sensíveis de saúde pela LGPD Art. 11. Devem ser armazenadas em sistema com: criptografia AES-256 em repouso, acesso restrito por perfil, consentimento específico do paciente para cada finalidade (prontuário clínico vs. divulgação em redes sociais), e audit trail de todos os acessos. WhatsApp pessoal, Google Drive sem criptografia e armazenamento local sem backup não são conformes com a LGPD.',
+  },
+  {
+    question: 'É possível implementar prontuário eletrônico sem parar a operação da clínica?',
+    answer: 'Sim, com migração gradual. A estratégia mais segura é: (1) novos pacientes entram diretamente no sistema digital; (2) pacientes existentes têm o histórico digitalizado na próxima consulta; (3) em 3-6 meses, a maioria dos ativos tem prontuário digital completo. O sistema antigo (papel ou sistema legado) fica em modo leitura para consultas de histórico durante a transição. O treinamento da equipe leva menos de 2 horas para sistemas bem desenhados.',
+  },
+  {
+    question: 'Como funciona a fotodocumentação clínica no prontuário eletrônico?',
+    answer: 'A fotodocumentação no Estetia CRM é organizada por data e procedimento com comparação temporal (before/after lado a lado). O sistema tem guias de enquadramento por procedimento para garantir padronização. O paciente deve assinar consentimento digital específico para fotodocumentação antes de qualquer registro fotográfico. As fotos são armazenadas com criptografia e acesso controlado — não saem do sistema para WhatsApp ou drives externos.',
+  },
+]
+
+/**
+ * FAQ data for Agendamento Online para Clínica de Estética blog post
+ */
+export const agendamentoOnlineFAQs: FAQItem[] = [
+  {
+    question: 'Agendamento online reduz no-show em clínicas de estética?',
+    answer: 'Sim, diretamente. O agendamento online com confirmação automática via WhatsApp em 3 momentos (48h, 24h, 2h antes) elimina o principal motivo de no-show: esquecimento. Clínicas que implementam esse sistema reportam redução de 35-45% no no-show nos primeiros 60 dias. A lista de espera automática complementa: mesmo quando o no-show ocorre, 55-70% dos horários cancelados são preenchidos automaticamente por pacientes da lista.',
+  },
+  {
+    question: 'O paciente pode agendar pelo WhatsApp sem falar com a recepcionista?',
+    answer: 'Sim. Com o Estetia CRM integrado à WhatsApp Business API, o paciente envia uma mensagem para o WhatsApp da clínica e recebe automaticamente um menu interativo com os procedimentos disponíveis, profissionais e horários livres. O agendamento é confirmado sem nenhuma intervenção da recepcionista — ela só é acionada se o paciente tiver uma dúvida específica.',
+  },
+  {
+    question: 'Lista de espera automática realmente funciona para preencher horários vagos?',
+    answer: 'Sim, com alta taxa de conversão. Quando um cancelamento ocorre, o sistema notifica imediatamente os pacientes na lista de espera para aquele procedimento via WhatsApp. Como a mensagem chega em tempo real e exige apenas 1 clique para confirmar, a taxa de aceite é de 55-70% nos primeiros 30 minutos. É muito mais eficiente do que a recepcionista ligar manualmente — e funciona 24/7, inclusive para cancelamentos de última hora.',
+  },
+  {
+    question: 'O agendamento online integra com Google Agenda do profissional?',
+    answer: 'Sim. O Estetia CRM sincroniza bidirecionalmente com Google Calendar: todo agendamento feito no sistema aparece automaticamente na agenda Google do profissional, e bloqueios no Google Calendar (reunião pessoal, horário reservado) travam automaticamente a disponibilidade no sistema da clínica. Funciona também com Apple Calendar via iCloud. A sincronização é em tempo real — sem delay.',
+  },
+  {
+    question: 'Como calcular a taxa de ocupação de uma clínica de estética?',
+    answer: 'Taxa de ocupação = (Horários preenchidos ÷ Total de horários disponíveis no período) × 100. A meta saudável varia por modelo: clínicas com procedimentos curtos (30min) buscam 80-90%, clínicas com procedimentos longos (1h+) operam bem com 70-80%. Abaixo de 60% por mais de 30 dias indica problema de captação ou no-show que precisa de ação. O dashboard do Estetia CRM exibe essa taxa em tempo real com alertas configuráveis.',
+  },
+  {
+    question: 'Posso personalizar os horários disponíveis por tipo de procedimento?',
+    answer: 'Sim. No Estetia CRM, cada procedimento tem configuração independente: duração do atendimento, intervalo de preparação entre consultas, quais profissionais realizam e em quais horários ficam disponíveis. Uma limpeza de pele de 60 minutos não ocupa o mesmo slot que um botox de 30 minutos. Procedimentos que exigem sala específica (laser, por exemplo) só aparecem quando aquela sala está livre.',
+  },
+  {
+    question: 'Quanto tempo leva para configurar o agendamento online na clínica?',
+    answer: 'Com o Estetia CRM, a configuração básica leva 2-3 horas: cadastrar profissionais, configurar procedimentos com duração e intervalo, definir horários de atendimento e conectar o WhatsApp Business. Em seguida, gerar o link de agendamento e adicioná-lo ao Instagram, site e Google Business Profile. A lista de espera é ativada com 1 toggle. Em menos de 1 dia útil, a clínica já está recebendo agendamentos automáticos.',
+  },
+  {
+    question: 'O agendamento online funciona para clínicas com múltiplos profissionais e salas?',
+    answer: 'Sim. O Estetia CRM gerencia múltiplos profissionais e salas simultaneamente. Cada profissional tem sua agenda própria com disponibilidades configuradas independentemente. Salas e equipamentos podem ser associados a procedimentos específicos — o sistema bloqueia automaticamente quando um recurso já está ocupado. Perfeito para clínicas com 2-10 profissionais e múltiplas salas de procedimento.',
+  },
+]
+
+/**
+ * FAQ data for WhatsApp Business para Clínicas de Estética blog post
+ */
+export const whatsappBusinessClinicaFAQs: FAQItem[] = [
+  {
+    question: 'WhatsApp Business é diferente do WhatsApp pessoal para clínicas?',
+    answer: 'Sim. O WhatsApp Business App tem funcionalidades adicionais para empresas: perfil com informações da clínica, catálogo de serviços, respostas rápidas e mensagens de ausência. Mas a diferença mais importante é a WhatsApp Business API — a versão para automação real em escala, que permite integração com sistemas de gestão como o Estetia CRM para envio automático de confirmações, recalls e anamneses sem risco de bloqueio do número.',
+  },
+  {
+    question: 'Posso usar WhatsApp para recall automático de pacientes?',
+    answer: 'Sim, e é a melhor prática para clínicas de estética. Recall enviado por WhatsApp tem taxa de abertura de 95-98% versus 8-15% por email. A base legal pela LGPD é execução de contrato (Art. 7, V) — recalls de procedimentos já realizados não exigem consentimento adicional. O Estetia CRM configura o timing automático por procedimento: toxina botulínica com recall em 90 dias, limpeza de pele em 30 dias, laser em 45 dias.',
+  },
+  {
+    question: 'LGPD permite enviar mensagens automáticas por WhatsApp para pacientes?',
+    answer: 'Sim, com base legal adequada. Confirmações de agendamento e recalls de procedimentos realizados têm base legal em execução de contrato (LGPD Art. 7, V), sem necessidade de consentimento adicional. Mensagens promocionais (descontos, novidades, lançamentos) exigem opt-in explícito prévio. Todo envio automático deve incluir opção de opt-out ("Responda PARAR para não receber mais mensagens"), e o sistema deve honrá-la imediatamente.',
+  },
+  {
+    question: 'Como configurar mensagens automáticas no WhatsApp para clínica de estética?',
+    answer: 'O caminho correto é via WhatsApp Business API (Cloud API da Meta) integrada a um sistema de gestão clínica como o Estetia CRM. O processo: (1) criar conta no Meta Business Manager; (2) registrar o número da clínica na API; (3) conectar ao Estetia CRM em Configurações > Integrações > WhatsApp; (4) criar e submeter templates de mensagem para aprovação Meta (até 24h); (5) ativar as automações de confirmação, lembrete e recall. Total: menos de 30 minutos de configuração.',
+  },
+  {
+    question: 'Quais ferramentas de automação de WhatsApp são seguras para clínicas?',
+    answer: 'Apenas ferramentas que usam a WhatsApp Business API oficial (Cloud API da Meta) são seguras. Ferramentas que usam emulação (Evolution API, whatsapp-web.js, ferramentas de "disparo em massa") violam os Termos de Serviço do WhatsApp e resultam em bloqueio permanente do número. Perder o número WhatsApp da clínica significa perder o histórico de conversas e o acesso a pacientes — prejuízo muito maior que o custo da API oficial.',
+  },
+  {
+    question: 'Qual o custo do WhatsApp Business API para uma clínica de estética?',
+    answer: 'A API é gratuita para conversas iniciadas pelo paciente. Conversas iniciadas pela clínica (confirmações, recalls — chamadas utility conversations) custam entre R$ 0,05 e R$ 0,15 por conversa de 24 horas, independentemente do número de mensagens nessa janela. Uma clínica com 100 consultas/semana e 200 recalls/mês pagaria R$ 40-80/mês de custo de API — irrisório comparado ao retorno da redução de no-show e aumento de recompra.',
+  },
+  {
+    question: 'Como o WhatsApp Business ajuda a reduzir no-show em clínicas?',
+    answer: 'Com confirmações automáticas em 3 momentos: 48h antes (confirmação inicial com opção de cancelar), 24h antes (lembrete com link para reagendar) e 2h antes (lembrete final). Cada mensagem tem botão de confirmação ou cancelamento em 1 clique. Quando o paciente cancela, o sistema ativa automaticamente a lista de espera e oferece o horário a quem está aguardando — via WhatsApp. Clínicas com essa configuração reduzem no-show em 35-45%.',
+  },
+  {
+    question: 'O WhatsApp Business da clínica pode ser usado por múltiplos atendentes?',
+    answer: 'Sim, via WhatsApp Business API. Com a API integrada ao Estetia CRM, múltiplos atendentes podem ver e responder mensagens de pacientes na caixa compartilhada do sistema — cada um com seu login, sem precisar compartilhar o telefone físico. As automações (confirmações, recalls) funcionam independente de qual atendente está online. É a solução correta para clínicas com mais de 1 pessoa na recepção.',
+  },
+]
