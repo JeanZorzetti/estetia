@@ -20,6 +20,11 @@
 | Prontuário Eletrônico para Clínicas de Estética | `prontuario-eletronico-clinica-estetica` | ✅ Publicado |
 | Agendamento Online para Clínicas de Estética | `agendamento-online-clinica-estetica` | ✅ Publicado |
 | WhatsApp Business para Clínicas de Estética: Automação | `whatsapp-business-clinica-estetica-automacao` | ✅ Publicado |
+| Melhor CRM para Clínica de Estética em 2026: Checklist | `melhor-crm-clinica-estetica-2026` | ✅ Publicado |
+| ROI de CRM para Clínicas de Estética: Quanto Fatura sem Sistema | `roi-crm-clinica-estetica-faturamento` | ✅ Publicado |
+| Quanto Custa um CRM para Clínica de Estética em 2026 | `quanto-custa-crm-clinica-estetica` | ✅ Publicado |
+| Como Migrar para CRM Clínico sem Perder Dados | `como-migrar-crm-clinica-estetica` | ✅ Publicado |
+| Sistema de Gestão para Clínica de Estética: Como Comparar | `comparar-sistema-gestao-clinica-estetica` | ✅ Publicado |
 
 ---
 

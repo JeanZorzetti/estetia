@@ -1,5 +1,10 @@
 import { BlogPost } from '../blog-types'
 
+import { post as comparasSistemaPost } from './posts/comparar-sistema-gestao-clinica-estetica'
+import { post as migrarCrmPost } from './posts/como-migrar-crm-clinica-estetica'
+import { post as quantoCustaCrmPost } from './posts/quanto-custa-crm-clinica-estetica'
+import { post as roiCrmPost } from './posts/roi-crm-clinica-estetica-faturamento'
+import { post as melhorCrmPost } from './posts/melhor-crm-clinica-estetica-2026'
 import { post as spinSellingPost } from './posts/spin-selling-para-clinicas-de-estetica'
 import { post as noShowPost } from './posts/como-reduzir-no-show-em-clinicas-de-estetica'
 import { post as lgpdPost } from './posts/lgpd-para-clinicas-de-estetica-guia-2026'
@@ -12,6 +17,11 @@ import { post as agendamentoOnlinePost } from './posts/agendamento-online-clinic
 import { post as whatsappBusinessPost } from './posts/whatsapp-business-clinica-estetica-automacao'
 
 export const blogPosts: BlogPost[] = [
+  comparasSistemaPost,
+  migrarCrmPost,
+  quantoCustaCrmPost,
+  roiCrmPost,
+  melhorCrmPost,
   spinSellingPost,
   noShowPost,
   lgpdPost,

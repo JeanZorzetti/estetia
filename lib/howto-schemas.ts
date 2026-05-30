@@ -150,4 +150,30 @@ Object.assign(howToSchemas, {
     ],
     { totalTime: 'PT60M', cost: '0' }
   ),
+
+  'como-migrar-crm-clinica-estetica': buildHowTo(
+    'Como Migrar para um Novo CRM Clínico sem Perder Dados em 7 Dias',
+    'Roteiro completo para migrar uma clínica de estética para um novo CRM sem downtime operacional, perda de histórico de pacientes ou sobrecarga da equipe.',
+    [
+      { name: 'Exporte todos os dados do sistema atual', text: 'Exporte todos os dados em CSV ou Excel do sistema atual: cadastro de pacientes, histórico de agendamentos, prontuários digitais e configurações. Salve em 3 locais: disco local, Google Drive e pendrive físico. Essa exportação é sua rede de segurança — não avance para o próximo passo sem ela.' },
+      { name: 'Configure o novo sistema antes de importar dados', text: 'No novo CRM, cadastre todos os profissionais com horários de atendimento, configure tipos de procedimento com duração e intervalo, defina perfis de acesso por função e conecte o WhatsApp Business API. Configure as anamneses por procedimento e os templates de mensagem. Teste o fluxo completo de agendamento com dados fictícios.' },
+      { name: 'Importe a base de pacientes com validação por amostra', text: 'Formate o CSV exportado para o padrão do novo sistema. Faça primeiro uma importação de teste com 20-30 pacientes. Confira manualmente 5-10 registros importados: nome, telefone, email, histórico. Se a amostra estiver correta, execute a importação completa. Busque 5 pacientes aleatórios por nome após a importação completa para verificar integridade.' },
+      { name: 'Opere os dois sistemas em paralelo por 48-72 horas', text: 'Novos agendamentos no novo sistema; verifique agendamentos dos próximos 7 dias em ambos os sistemas para garantir que a importação pegou tudo. Qualquer discrepância é corrigida manualmente. Esse período de paralelo é a proteção mais importante contra perda de dados.' },
+      { name: 'Treine a equipe com fluxos reais e desative o sistema antigo', text: 'Realize 2-4 horas de treinamento prático com casos reais para cada função (recepcionista, profissional, gestor). Crie um guia de 1 página por função com os 5 fluxos mais comuns. Após confirmar que todos os agendamentos futuros estão no novo sistema, cancele o sistema antigo — mas mantenha acesso somente leitura por 30 dias para referência histórica.' },
+    ],
+    { totalTime: 'PT420M', cost: '0' }
+  ),
+
+  'melhor-crm-clinica-estetica-2026': buildHowTo(
+    'Como Avaliar e Escolher o Melhor CRM para Clínica de Estética',
+    'Processo estruturado para avaliar, comparar e escolher o CRM clínico certo para sua clínica de estética usando um checklist de 12 critérios e trial com a equipe.',
+    [
+      { name: 'Defina os critérios inegociáveis antes de avaliar', text: 'Liste os 5 critérios eliminatórios: (1) WhatsApp Business API oficial, não ferramentas informais; (2) Prontuário eletrônico com assinatura digital; (3) Conformidade LGPD Art. 11 documentada; (4) Exportação gratuita de dados; (5) Suporte em português em tempo real. Sistemas que não passam em qualquer um desses 5 critérios são eliminados independentemente do preço.' },
+      { name: 'Selecione 2-3 sistemas finalistas', text: 'Com base nos critérios eliminatórios, selecione 2-3 sistemas para trial comparativo. Priorize sistemas construídos especificamente para clínicas de estética/dermatologia — não CRMs genéricos adaptados. Verifique o changelog público e a comunidade de usuários para avaliar estabilidade e evolução do produto.' },
+      { name: 'Execute o trial com fluxos reais, não demos de vendas', text: 'Acesse o trial sem a demo de vendas primeiro. Tente executar os 3 fluxos mais críticos sem ajuda: agendar uma consulta, registrar um procedimento no prontuário e configurar um recall automático. O que você não consegue fazer sozinho em menos de 10 minutos indica problema de usabilidade que afetará a equipe.' },
+      { name: 'Envolva toda a equipe na avaliação', text: 'A recepcionista que vai usar o sistema 8 horas por dia deve testar e avaliar. Peça feedback específico após 5-7 dias de uso real: quais fluxos ficaram mais rápidos? O que ainda parece confuso? Qual o tempo médio para agendar e registrar uma consulta? A avaliação coletiva é mais confiável que a do gestor sozinho.' },
+      { name: 'Compare o custo total de propriedade, não só a mensalidade', text: 'Calcule o TCO para 2 anos incluindo: assinatura mensal, add-ons obrigatórios (WhatsApp, prontuário, recall), taxa de setup, custo da API WhatsApp Meta e custo de tempo de onboarding. O sistema mais transparente na precificação frequentemente é mais barato no longo prazo — mesmo que a mensalidade anunciada seja maior.' },
+    ],
+    { totalTime: 'PT120M', cost: '0' }
+  ),
 })

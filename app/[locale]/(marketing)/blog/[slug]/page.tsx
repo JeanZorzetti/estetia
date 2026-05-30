@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -70,6 +70,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Agendamento online para clínica de estética com confirmação automática WhatsApp reduz no-show em 35-45%. Lista de espera automática preenche 55-70% dos horários cancelados. Taxa de ocupação saudável: 80-90% para procedimentos curtos, 70-80% para longos. Integração com Google Calendar em tempo real.'
   } else if (slug === 'whatsapp-business-clinica-estetica-automacao') {
     aiOptimizedDescription = 'WhatsApp Business para clínicas de estética: usar API oficial Meta (Cloud API) evita bloqueio de número. Recall automático por procedimento — toxina botulínica em 90 dias, limpeza de pele em 30 dias. Taxa de abertura: 95-98% vs. 8-15% por email. Custo da API: R$40-80/mês para 100 consultas/semana.'
+  } else if (slug === 'melhor-crm-clinica-estetica-2026') {
+    aiOptimizedDescription = 'Melhor CRM para clínica de estética em 2026: checklist com 12 critérios eliminatórios incluindo WhatsApp Business API oficial (Cloud API Meta), prontuário eletrônico com assinatura digital, LGPD Art. 11, no-show predictor IA e recall automático por procedimento. CRM vertical especializado supera CRM genérico sem customização de R$15.000-80.000.'
+  } else if (slug === 'roi-crm-clinica-estetica-faturamento') {
+    aiOptimizedDescription = 'ROI de CRM para clínica de estética: clínica com 60 consultas/semana, ticket R$350 e 20% no-show perde R$16.800/mês. CRM reduz no-show em 35-45% e aumenta recompra em 20-35%. Payback médio: 2-3 meses. Fórmula: (consultas × no-show × 0,40 × ticket) + (pacientes × 0,25 × ticket × 0,30) + horas economizadas.'
+  } else if (slug === 'quanto-custa-crm-clinica-estetica') {
+    aiOptimizedDescription = 'Quanto custa CRM para clínica de estética em 2026: R$149-799/mês para planos all-in (1 profissional a multi-unidade). Custo real inclui add-ons: WhatsApp (+R$99-299/mês), prontuário (+R$80-200/mês), setup (R$0-2.000). API WhatsApp Meta: R$40-80/mês separado. Calcule TCO antes de contratar — sistema "mais barato" com add-ons pode custar 2-3x mais.'
+  } else if (slug === 'como-migrar-crm-clinica-estetica') {
+    aiOptimizedDescription = 'Como migrar para CRM clínico em 7 dias sem perder dados: Dias 1-2 configuração, Dia 3 importação de CSV com validação por amostra, Dias 4-5 operação em paralelo, Dias 6-7 treinamento e desativação do sistema antigo. Prontuários físicos: migração progressiva "digitaliza ao retornar". LGPD garante exportação gratuita de dados (Art. 18, V).'
+  } else if (slug === 'comparar-sistema-gestao-clinica-estetica') {
+    aiOptimizedDescription = 'Como comparar sistemas de gestão para clínica de estética: 6 dimensões objetivas — fluxo clínico nativo, nível de WhatsApp (Nível 3+ = Cloud API oficial Meta), LGPD Art. 11, suporte em tempo real, modelo de preços sem lock-in, estabilidade do fornecedor. CRM vertical especializado supera software de agendamento genérico e CRM horizontal sem customização cara.'
   }
 
   return {
@@ -266,6 +276,75 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       about: [COMMON_WIKIDATA_ENTITIES.WHATSAPP, COMMON_WIKIDATA_ENTITIES.AUTOMATION],
       author: estetiaAuthor,
     })
+  } else if (slug === 'melhor-crm-clinica-estetica-2026') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+        COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.CRM, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'roi-crm-clinica-estetica-faturamento') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.RETURN_ON_INVESTMENT,
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.RETURN_ON_INVESTMENT, COMMON_WIKIDATA_ENTITIES.CRM],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'quanto-custa-crm-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.MONTHLY_RECURRING_REVENUE,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.CRM, COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'como-migrar-crm-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.CRM, COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'comparar-sistema-gestao-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RELATIONSHIP_MANAGEMENT,
+        COMMON_WIKIDATA_ENTITIES.SOFTWARE_AS_A_SERVICE,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.CRM, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      author: estetiaAuthor,
+    })
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -297,6 +376,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'prontuario-eletronico-clinica-estetica': prontuarioEletronicoFAQs,
     'agendamento-online-clinica-estetica': agendamentoOnlineFAQs,
     'whatsapp-business-clinica-estetica-automacao': whatsappBusinessClinicaFAQs,
+    'melhor-crm-clinica-estetica-2026': melhorCrmClinicaFAQs,
+    'roi-crm-clinica-estetica-faturamento': roiCrmClinicaFAQs,
+    'quanto-custa-crm-clinica-estetica': quantoCustaCrmFAQs,
+    'como-migrar-crm-clinica-estetica': migrarCrmClinicaFAQs,
+    'comparar-sistema-gestao-clinica-estetica': compararSistemaClinicaFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 

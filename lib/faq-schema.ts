@@ -424,3 +424,177 @@ export const whatsappBusinessClinicaFAQs: FAQItem[] = [
     answer: 'Sim, via WhatsApp Business API. Com a API integrada ao Estetia CRM, múltiplos atendentes podem ver e responder mensagens de pacientes na caixa compartilhada do sistema — cada um com seu login, sem precisar compartilhar o telefone físico. As automações (confirmações, recalls) funcionam independente de qual atendente está online. É a solução correta para clínicas com mais de 1 pessoa na recepção.',
   },
 ]
+
+/**
+ * FAQ data for Melhor CRM para Clínica de Estética blog post
+ */
+export const melhorCrmClinicaFAQs: FAQItem[] = [
+  {
+    question: 'Qual o melhor CRM para clínica de estética pequena em 2026?',
+    answer: 'Para clínicas pequenas (1-2 profissionais), o melhor CRM é o que combina facilidade de uso com funcionalidades clínicas essenciais: confirmação automática via WhatsApp Business API oficial, anamnese digital, prontuário eletrônico e recall automático por procedimento. O Estetia CRM Starter (R$149/mês) foi desenhado para esse perfil — setup em menos de 2 horas, todas as automações incluídas e suporte em português.',
+  },
+  {
+    question: 'CRM genérico ou específico para clínica de estética: qual escolher?',
+    answer: 'Para clínicas de estética, o CRM vertical especializado é claramente superior para fluxos clínicos. CRMs genéricos (HubSpot, Salesforce) exigem customização de R$15.000-80.000 para ter prontuário eletrônico, anamnese com contraindicações e recall por timing de procedimento — funcionalidades que um CRM clínico já inclui no plano base. A exceção é clínicas com TI interna dedicada e requisitos muito atípicos.',
+  },
+  {
+    question: 'Como testar um CRM para clínica de estética antes de contratar?',
+    answer: 'Use o trial de 14 dias estruturado: Dias 1-3 para configuração básica e importação de 20-30 pacientes de teste. Dias 4-7 para fluxo real — 5-10 agendamentos reais, confirmações WhatsApp, registro de procedimento no prontuário. Dias 8-12 para automações — recall, no-show predictor, KPIs. Dias 13-14 para avaliação coletiva da equipe. O que a equipe não consegue usar sem ajuda indica problema de usabilidade.',
+  },
+  {
+    question: 'O que avaliar antes de contratar um CRM para clínica de estética?',
+    answer: 'Os 5 critérios eliminatórios: (1) WhatsApp Business API oficial (Cloud API Meta, não ferramentas informais); (2) Prontuário eletrônico com assinatura digital e validade jurídica; (3) Conformidade LGPD Art. 11 documentada; (4) Exportação gratuita de dados a qualquer momento; (5) Suporte em português com resposta em tempo real. Sistemas que não passam em qualquer um desses 5 critérios devem ser eliminados independentemente do preço.',
+  },
+  {
+    question: 'Em quanto tempo vejo resultado após implementar um CRM para clínica de estética?',
+    answer: 'Primeiros resultados em 15-30 dias: redução imediata de no-show com confirmação automática ativa, economia de 15-20 horas/semana de trabalho manual da recepcionista. Aumento de recompra visível em 60-90 dias, quando os recalls automáticos começam a converter pacientes para retorno. Payback típico do investimento: 2-3 meses para clínicas com 30+ consultas por semana.',
+  },
+  {
+    question: 'CRM para clínica de estética precisa ter prontuário eletrônico integrado?',
+    answer: 'Sim, e essa integração é fundamental. CRM separado do prontuário exige que o profissional alterne entre dois sistemas durante o atendimento — perda de tempo e risco de inconsistência de dados. Com ambos integrados, o profissional abre o prontuário diretamente do agendamento, registra o procedimento e as fotos, e o histórico fica automaticamente vinculado ao perfil do paciente no CRM.',
+  },
+  {
+    question: 'No-show predictor por IA realmente funciona para clínicas de estética?',
+    answer: 'Sim, com precisão crescente. O no-show predictor analisa padrões históricos de cada paciente (frequência de cancelamento, horário preferido, tipo de procedimento, tempo entre agendamento e consulta) para calcular um score de risco. Pacientes com score alto recebem confirmação adicional ou ligação pessoal da recepção. Clínicas com no-show predictor ativo reportam redução adicional de 10-15% de no-show comparado à confirmação automática sozinha.',
+  },
+  {
+    question: 'Qual a diferença entre CRM para estética e software de agendamento para salão?',
+    answer: 'São produtos para fluxos completamente diferentes. Software de agendamento para salão gerencia horários e serviços. CRM clínico para estética gerencia o relacionamento com o paciente ao longo do tempo: prontuário com histórico clínico, anamnese com alertas de contraindicações médicas, recall baseado em timing de procedimento (não de agenda), conformidade LGPD Art. 11 para dados sensíveis de saúde e analytics de LTV e recompra. O fluxo de um procedimento estético tem dimensão clínica que um software de salão não cobre.',
+  },
+]
+
+/**
+ * FAQ data for ROI CRM para Clínicas de Estética blog post
+ */
+export const roiCrmClinicaFAQs: FAQItem[] = [
+  {
+    question: 'Qual o ROI típico de um CRM para clínica de estética?',
+    answer: 'O ROI varia com o volume, mas a média de mercado aponta para 500-2.000% no primeiro ano de uso pleno. Para uma clínica com 60 consultas/semana, ticket médio de R$350 e no-show atual de 20%: recuperação de no-show (R$8.400/mês) + aumento de recompra (R$5.250/mês) + economia de tempo (R$2.100/mês) = R$15.750/mês em valor gerado para um CRM de R$349/mês. ROI de 4.412% no primeiro mês pleno.',
+  },
+  {
+    question: 'Quanto custa o no-show para uma clínica de estética por mês?',
+    answer: 'Fórmula: Consultas/mês × Taxa de no-show × Ticket médio = Custo mensal. Exemplo: 200 consultas × 18% × R$380 = R$13.680/mês perdido em no-show. Com CRM reduzindo no-show em 40%, recuperação de R$5.472/mês — 15x o custo mensal de um CRM profissional.',
+  },
+  {
+    question: 'Como calcular o impacto do recall automático no faturamento?',
+    answer: 'Base de cálculo: Pacientes atendidos/mês × % com procedimento que tem recall × Taxa de conversão do recall × Ticket médio. Exemplo: 200 atendimentos × 60% com recall configurado × 20% taxa de conversão × R$350 = R$8.400/mês de receita adicional gerada pelo recall automático. Clínicas com recall bem configurado reportam crescimento de 20-35% na receita recorrente em 90 dias.',
+  },
+  {
+    question: 'Em quanto tempo um CRM para clínica de estética se paga?',
+    answer: 'O payback depende do volume: clínicas com 20-30 consultas/semana recuperam o investimento em 15-30 dias; com 30-60 consultas/semana, em 10-20 dias; com 60-120 consultas/semana, em 5-12 dias. O payback mais rápido vem da redução de no-show — o resultado é imediato quando as confirmações automáticas são ativadas, ainda na primeira semana de uso.',
+  },
+  {
+    question: 'Qual a diferença de faturamento entre clínicas com e sem CRM?',
+    answer: 'Dados de benchmark do setor (2025): clínicas com CRM clínico completo (confirmação automática + recall + no-show predictor) faturam em média 28-42% mais que clínicas similares sem sistema automatizado, controlando por localização, número de profissionais e ticket médio. A diferença vem de 3 fontes: menor no-show (+10-15% de consultas realizadas), maior taxa de recompra (+20-35%) e melhor ocupação da agenda (+8-12%).',
+  },
+  {
+    question: 'O CRM aumenta o LTV dos pacientes de clínica de estética?',
+    answer: 'Sim, de forma direta. O LTV (valor do ciclo de vida) aumenta por 3 mecanismos: (1) recall automático que traz o paciente de volta no timing correto de cada procedimento; (2) NPS automatizado que identifica detratores antes de perder o paciente; (3) histórico completo de procedimentos que permite ao profissional fazer up-sell contextualizados ("Você fez laser mês passado — já considerou adicionar microagulhamento para potencializar o resultado?"). Clínicas com CRM reportam LTV médio 35-55% maior que sem sistema.',
+  },
+  {
+    question: 'Vale a pena investir em CRM para uma clínica pequena com poucos pacientes?',
+    answer: 'Sim, a partir de 20 consultas por semana. Para uma clínica pequena com 25 consultas/semana, ticket médio R$250 e no-show de 15%: custo do no-show = R$2.250/mês. Com CRM Starter (R$149/mês) reduzindo no-show em 40%, recuperação = R$900/mês. ROI de 504% só na redução de no-show. O recall automático adiciona mais receita. Qualquer clínica com pacientes regulares se beneficia da automação.',
+  },
+]
+
+/**
+ * FAQ data for Quanto Custa CRM para Clínica de Estética blog post
+ */
+export const quantoCustaCrmFAQs: FAQItem[] = [
+  {
+    question: 'Quanto custa um CRM para clínica de estética em 2026?',
+    answer: 'A faixa de mercado em 2026 vai de R$149/mês (planos básicos para 1 profissional) a R$2.500+/mês (enterprise para redes multi-unidade). A mediana para clínicas com 1-5 profissionais está entre R$299-599/mês para um sistema completo com WhatsApp, prontuário e recall incluídos. O Estetia CRM tem 3 planos: Starter R$149/mês, Pro R$349/mês e Business R$799/mês — todos com as funcionalidades essenciais incluídas sem add-ons obrigatórios.',
+  },
+  {
+    question: 'Existe CRM gratuito para clínica de estética?',
+    answer: 'Existem planos freemium, mas invariavelmente com limitações críticas para uso profissional: sem integração WhatsApp, sem prontuário eletrônico ou sem recall automático. Para uso profissional completo, o investimento mínimo realista é R$149-200/mês. Considere: um único paciente que retorna por recall automático em um procedimento de R$250 já cobre o custo mensal de um plano básico.',
+  },
+  {
+    question: 'O WhatsApp Business API tem custo extra no CRM?',
+    answer: 'Depende do sistema. Alguns sistemas cobram a integração WhatsApp como add-on (+R$99-299/mês). No Estetia CRM, a integração está incluída em todos os planos. Separadamente, há o custo da API da Meta por conversa: R$0,05-0,15 por "conversa de 24 horas" — não por mensagem individual. Uma clínica com 100 consultas/semana paga R$40-80/mês de custo de API Meta. Esse valor é cobrado diretamente pela Meta, não pelo sistema de CRM.',
+  },
+  {
+    question: 'Plano anual de CRM compensa para clínica de estética?',
+    answer: 'Compensa após validar o sistema por 30-60 dias. O desconto típico no plano anual é de 15-25% (economizando R$500-1.000/ano no plano Pro). A recomendação: use o trial de 14 dias, fique no plano mensal nos primeiros 2 meses para validar que o sistema funciona para o fluxo da sua clínica, e migre para o anual quando tiver certeza. Fazer o anual antes de validar gera lock-in em um sistema que pode não ser ideal.',
+  },
+  {
+    question: 'Quais custos escondidos devo verificar antes de contratar um CRM?',
+    answer: 'Os mais comuns: (1) limite de pacientes com cobrança por excedente; (2) WhatsApp como add-on pago; (3) prontuário eletrônico separado; (4) taxa de setup/onboarding de R$300-2.000; (5) suporte premium em plano adicional; (6) taxa de exportação de dados ao cancelar. Pergunte por escrito sobre cada um antes de assinar. Um sistema "mais barato" com todos esses extras pode custar 2-3x mais que um sistema all-in.',
+  },
+  {
+    question: 'CRM para dermatologia custa mais que para estética?',
+    answer: 'Não necessariamente. Sistemas verticais como o Estetia CRM cobrem estética e dermatologia no mesmo plano, com configurações específicas para cada especialidade. Sistemas especializados exclusivamente em dermatologia hospitalar ou convênios intensivos podem ter preços diferentes, mas para dermatologistas com foco em procedimentos estéticos, o CRM clínico padrão cobre todas as necessidades.',
+  },
+  {
+    question: 'O custo total de propriedade (TCO) de um CRM muda muito entre sistemas?',
+    answer: 'Sim, e pode ser decisivo. Um sistema com assinatura de R$199/mês mas com add-ons obrigatórios de R$350/mês (WhatsApp + prontuário + recall) tem TCO de R$549/mês — mais caro que um sistema all-in de R$349/mês. Sempre calcule o TCO real: assinatura + add-ons + custo de API WhatsApp + taxa de setup + custo de tempo de onboarding. O sistema mais transparente na precificação é frequentemente mais barato no longo prazo.',
+  },
+]
+
+/**
+ * FAQ data for Como Migrar CRM para Clínica de Estética blog post
+ */
+export const migrarCrmClinicaFAQs: FAQItem[] = [
+  {
+    question: 'Quanto tempo leva a migração para um novo CRM clínico?',
+    answer: 'Com o processo correto, a migração completa leva 5-7 dias úteis: Dias 1-2 para configuração do novo sistema (profissionais, procedimentos, WhatsApp), Dia 3 para importação da base de pacientes, Dias 4-5 para operação em paralelo e validação, Dias 6-7 para treinamento da equipe e desativação do sistema antigo. Para bases acima de 2.000 pacientes ou com muito histórico em papel, planejar 10-14 dias.',
+  },
+  {
+    question: 'Como exportar meus dados do sistema atual de CRM?',
+    answer: 'A maioria dos sistemas modernos permite exportação em CSV ou Excel na área de configurações/conta do usuário. Se não houver essa opção visível, solicite por escrito ao suporte — é obrigação legal do fornecedor pela LGPD (direito à portabilidade de dados, Art. 18, V). Se o fornecedor dificultar ou cobrar pela exportação, isso é sinal de má prática e você deve insistir juridicamente ou buscar outro fornecedor.',
+  },
+  {
+    question: 'Posso perder dados ao migrar para um novo CRM?',
+    answer: 'O risco existe se a migração for feita sem processo adequado, mas é totalmente evitável. As 3 proteções essenciais: (1) exportação completa do sistema antigo como backup antes de qualquer ação; (2) importação com validação de amostra antes da importação completa; (3) operação em paralelo por 48-72 horas conferindo agendamentos futuros em ambos os sistemas. Com essas 3 camadas, a probabilidade de perda de dados é mínima.',
+  },
+  {
+    question: 'Como digitalizar prontuários físicos ao migrar para CRM?',
+    answer: 'A abordagem mais prática é a migração progressiva por atividade: quando um paciente retorna para consulta, a recepcionista digitaliza o histórico relevante da ficha física no prontuário eletrônico. Em 3-6 meses, 80-90% dos pacientes ativos terão prontuário digital completo sem nenhum sprint de digitalização. Para as consultas imediatas, digitalize pelo menos: alergias/contraindicações, últimos 2-3 procedimentos e dados de contato.',
+  },
+  {
+    question: 'A equipe precisa de muito treinamento para o novo CRM?',
+    answer: 'Com um sistema bem projetado, o treinamento efetivo leva 2-4 horas. O treinamento mais eficaz é prático com casos reais: a recepcionista agenda uma consulta real, confirma via WhatsApp e emite um recibo; o profissional acessa um prontuário real e registra um procedimento. Crie um "guia de 1 página" por função com os 5 fluxos mais comuns — é o documento que a equipe vai consultar nos primeiros dias.',
+  },
+  {
+    question: 'Devo cancelar o sistema antigo imediatamente após migrar?',
+    answer: 'Não. Mantenha acesso ao sistema antigo por pelo menos 30 dias após a migração completa. Histórico pré-migração, referências de procedimentos anteriores e dúvidas sobre dados migrados são comuns nas primeiras semanas. Se o sistema antigo cobrar mensalidade, verifique se há opção de "acesso somente leitura" por menos — ou simplesmente inclua no orçamento da transição 1 mês extra de assinatura do sistema antigo.',
+  },
+  {
+    question: 'O suporte do novo CRM ajuda na migração?',
+    answer: 'Deve ajudar — se não oferece suporte à migração, é um sinal de alerta. No Estetia CRM, o onboarding inclui uma chamada dedicada onde o especialista executa a importação junto com você, valida a integridade dos dados e configura as automações de WhatsApp. Para bases acima de 500 pacientes, o onboarding dedicado é a forma mais segura de garantir que a migração ocorra sem perda de dados.',
+  },
+]
+
+/**
+ * FAQ data for Comparar Sistema de Gestão para Clínica de Estética blog post
+ */
+export const compararSistemaClinicaFAQs: FAQItem[] = [
+  {
+    question: 'Qual a diferença entre sistema de gestão clínica e CRM para clínica de estética?',
+    answer: 'Na prática do mercado brasileiro, os termos se sobrepõem para clínicas de estética. Um CRM clínico completo inclui: gestão de relacionamento com paciente (CRM), agenda inteligente com automações, prontuário eletrônico, analytics de KPIs e conformidade LGPD. "Sistema de gestão clínica" enfatiza o operacional; "CRM" enfatiza o relacionamento com o paciente. Os melhores produtos entregam ambos na mesma plataforma integrada.',
+  },
+  {
+    question: 'Como comparar sistemas de gestão para clínica de estética objetivamente?',
+    answer: 'Use um scorecard com 6 dimensões: (1) Fluxo clínico nativo — anamnese, prontuário e recall foram construídos para estética ou adaptados? (2) WhatsApp — usa Cloud API oficial Meta (Nível 3+) ou ferramentas informais? (3) LGPD Art. 11 — conformidade documentada? (4) Suporte — chat em tempo real em português? (5) Modelo de preços — exportação gratuita, sem lock-in? (6) Estabilidade — changelog público, comunidade ativa? Some os pontos, elimine os que não passam nos critérios eliminatórios.',
+  },
+  {
+    question: 'Sistema de agendamento para salão de beleza funciona para clínica de estética?',
+    answer: 'Não para uso profissional completo. Software de salão gerencia horários e serviços; CRM clínico para estética gerencia o relacionamento clínico: prontuário com histórico médico, anamnese com alertas de contraindicações, recall baseado em timing médico de procedimento, conformidade LGPD Art. 11 para dados sensíveis de saúde. Usar software de salão em clínica de estética é como usar Excel para gestão de hospital — funciona para o básico, mas deixa de capturar tudo que realmente importa.',
+  },
+  {
+    question: 'Preciso de sistemas diferentes para estética facial e corporal?',
+    answer: 'Não. Um CRM clínico vertical moderno como o Estetia CRM cobre estética facial (toxina, preenchimento, peelings, laser facial), estética corporal (criolipólise, radiofrequência, laser corporal, depilação) e dermatologia estética na mesma plataforma. Cada área tem seus templates de anamnese, prontuário e recall configurados especificamente. O gestor tem visão unificada de todos os procedimentos no mesmo dashboard.',
+  },
+  {
+    question: 'Como testar um sistema de gestão para clínica sem comprometer a operação?',
+    answer: 'Faça o trial sem migrar dados reais inicialmente. Configure o sistema com 5-10 pacientes fictícios e execute os fluxos críticos: agendar, confirmar via WhatsApp, registrar procedimento, buscar histórico. Se o sistema passar nesse teste básico, importe 20-30 pacientes reais para validar a importação. Só migre a base completa quando confirmar que o sistema funciona como esperado. Nenhuma operação real precisa ser interrompida durante esse processo.',
+  },
+  {
+    question: 'Sistema de gestão clínica precisa ter integração com convênios (TISS)?',
+    answer: 'Depende do perfil da clínica. Clínicas de estética que atendem exclusivamente procedimentos estéticos (não cobertos por planos de saúde) não precisam de TISS. Clínicas mistas que também atendem dermatologia com convênio precisam de suporte TISS/TUSS. O Estetia CRM Business inclui módulo de convênios — para clínicas puramente estéticas, o módulo não é necessário e não agrega custo.',
+  },
+  {
+    question: 'Como saber se um sistema de gestão clínica vai ser adotado pela minha equipe?',
+    answer: 'O teste definitivo: deixe a recepcionista usar o sistema sozinha por 30 minutos, sem treinamento, e execute os 3 fluxos mais comuns da sua clínica. O que ela não consegue fazer intuitivamente será o ponto de resistência no dia a dia. Sistemas com alta taxa de adoção têm fluxos tão óbvios que novos funcionários produzem resultado no primeiro dia. Se a recepcionista precisar de 2+ horas de treinamento para fazer o básico, o sistema tem problemas de usabilidade. <a href="/pt-BR/register">Testar o Estetia CRM grátis →</a>',
+  },
+]
