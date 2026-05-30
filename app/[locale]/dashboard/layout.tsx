@@ -53,14 +53,14 @@ export default async function DashboardLayout({
       }}
     >
     <AppBarProvider>
-      <div className="flex h-screen overflow-hidden">
+      <div className="flex h-screen w-screen overflow-hidden">
         {/* Sidebar — hidden on mobile */}
-        <aside className="hidden md:block">
+        <aside className="hidden md:flex flex-shrink-0">
           <Sidebar user={dbUser} />
         </aside>
 
         {/* Main content area */}
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex flex-1 min-w-0 flex-col overflow-hidden">
           {/* Trial banner — shows for FREE orgs during/after trial */}
           <TrialBanner
             tier={orgTrialInfo.tier}
