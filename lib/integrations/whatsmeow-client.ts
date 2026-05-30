@@ -23,22 +23,34 @@ interface SendTextResponse {
   timestamp: number
 }
 
-async function gatewayFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${GATEWAY_URL}${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-Key': GATEWAY_API_KEY,
-      ...options.headers,
-    },
-  })
+// Status checks on page load use a short timeout to avoid blocking render.
+// Send/control operations get the full 30s default.
+const GATEWAY_STATUS_TIMEOUT_MS = 4000
 
-  if (!res.ok) {
-    const body = await res.text()
-    throw new Error(`Gateway error ${res.status}: ${body}`)
+async function gatewayFetch<T>(path: string, options: RequestInit = {}, timeoutMs?: number): Promise<T> {
+  const controller = new AbortController()
+  const timer = timeoutMs ? setTimeout(() => controller.abort(), timeoutMs) : null
+
+  try {
+    const res = await fetch(`${GATEWAY_URL}${path}`, {
+      ...options,
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': GATEWAY_API_KEY,
+        ...options.headers,
+      },
+    })
+
+    if (!res.ok) {
+      const body = await res.text()
+      throw new Error(`Gateway error ${res.status}: ${body}`)
+    }
+
+    return res.json() as Promise<T>
+  } finally {
+    if (timer) clearTimeout(timer)
   }
-
-  return res.json() as Promise<T>
 }
 
 export const whatsmeowClient = {
@@ -58,7 +70,7 @@ export const whatsmeowClient = {
   },
 
   async getStatus(instanceId: string): Promise<{ status: string; connected: boolean }> {
-    return gatewayFetch(`/api/instances/${instanceId}/status`)
+    return gatewayFetch(`/api/instances/${instanceId}/status`, {}, GATEWAY_STATUS_TIMEOUT_MS)
   },
 
   async restartInstance(instanceId: string): Promise<void> {

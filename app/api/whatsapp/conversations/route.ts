@@ -13,6 +13,7 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
+import { fetchMessageCounts } from '@/lib/whatsapp-conversations'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -191,75 +192,13 @@ export async function GET() {
       }
     }
 
-    // 8. Fetch unread counts from WA DB
-    let unreadRows: { contact_id: string; cnt: bigint }[] = []
-    let totalRows: { contact_id: string; cnt: bigint }[] = []
-
-    if (hasEvolutionConnections && wabaActive) {
-      unreadRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
-        SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
-        FROM "WhatsAppMessage"
-        WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" = ANY(${contactIds}::text[])
-          AND ("connectionId" = ANY(${connectionIds}::text[]) OR "connectionId" IS NULL)
-          AND direction = 'INBOUND'
-          AND "isRead" = false
-        GROUP BY "contactId"
-      `
-      totalRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
-        SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
-        FROM "WhatsAppMessage"
-        WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" = ANY(${contactIds}::text[])
-          AND ("connectionId" = ANY(${connectionIds}::text[]) OR "connectionId" IS NULL)
-          AND direction = 'INBOUND'
-        GROUP BY "contactId"
-      `
-    } else if (hasEvolutionConnections) {
-      unreadRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
-        SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
-        FROM "WhatsAppMessage"
-        WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" = ANY(${contactIds}::text[])
-          AND "connectionId" = ANY(${connectionIds}::text[])
-          AND direction = 'INBOUND'
-          AND "isRead" = false
-        GROUP BY "contactId"
-      `
-      totalRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
-        SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
-        FROM "WhatsAppMessage"
-        WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" = ANY(${contactIds}::text[])
-          AND "connectionId" = ANY(${connectionIds}::text[])
-          AND direction = 'INBOUND'
-        GROUP BY "contactId"
-      `
-    } else {
-      // WABA only
-      unreadRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
-        SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
-        FROM "WhatsAppMessage"
-        WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" = ANY(${contactIds}::text[])
-          AND "connectionId" IS NULL
-          AND direction = 'INBOUND'
-          AND "isRead" = false
-        GROUP BY "contactId"
-      `
-      totalRows = await prismaWa.$queryRaw<{ contact_id: string; cnt: bigint }[]>`
-        SELECT "contactId" AS contact_id, COUNT(id)::bigint AS cnt
-        FROM "WhatsAppMessage"
-        WHERE "organizationId" = ${user.organizationId}
-          AND "contactId" = ANY(${contactIds}::text[])
-          AND "connectionId" IS NULL
-          AND direction = 'INBOUND'
-        GROUP BY "contactId"
-      `
-    }
-
-    const unreadMap = new Map(unreadRows.map(r => [r.contact_id, Number(r.cnt)]))
-    const totalCountMap = new Map(totalRows.map(r => [r.contact_id, Number(r.cnt)]))
+    // 8. Fetch unread and total counts via shared helper (eliminates tripled SQL branches)
+    const { unreadMap, totalCountMap } = await fetchMessageCounts({
+      organizationId: user.organizationId,
+      contactIds,
+      connectionIds,
+      wabaActive,
+    })
 
     // 9. Merge CRM contacts with WA data
     const contactsWithMessages = contacts.map(contact => {

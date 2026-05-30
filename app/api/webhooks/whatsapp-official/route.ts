@@ -23,6 +23,7 @@ import { prismaWa } from '@/lib/prisma-wa'
 import { logWabaActivity, getWhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
 import { triggerAgentsForInboundMessage, triggerAgentsForContactCreated } from '@/lib/agaas-agent-trigger'
 import { uploadMedia } from '@/lib/storage'
+import { ssePublish } from '@/lib/sse'
 import logger from '@/lib/logger'
 
 // ─── GET: Meta webhook verification challenge ─────────────────────────────────
@@ -215,6 +216,20 @@ async function handleIncomingMessage(
     })
     logger.info({ organizationId, messageDbId: saved.id, contactId: contact.id }, 'WhatsApp Official: message saved to WA DB')
 
+    ssePublish(organizationId, 'message:new', {
+      contactId: contact.id,
+      message: {
+        id: saved.id,
+        text: saved.text,
+        direction: saved.direction,
+        status: saved.status,
+        sentAt: saved.sentAt.toISOString(),
+        mediaType: saved.mediaType ?? null,
+      },
+      contactName: contact.name,
+      contactPhone: `+${from.replace(/\D/g, '')}`,
+    })
+
     // Download media in background — don't await, webhook must return fast
     if (mediaId && mediaType) {
       downloadAndCacheWabaMedia({
@@ -329,6 +344,11 @@ async function handleStatusUpdate(organizationId: string, status: any) {
     await prismaWa.whatsAppMessage.updateMany({
       where: { organizationId, messageId },
       data: updateData,
+    })
+
+    ssePublish(organizationId, 'message:status', {
+      messageId,
+      status: newStatus,
     })
 
     await logWabaActivity(

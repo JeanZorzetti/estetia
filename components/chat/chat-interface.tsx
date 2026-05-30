@@ -17,7 +17,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { usePusher } from '@/hooks/use-pusher'
-import type { MessageNewEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
+import type { MessageNewEvent, MessageSentEvent, ConnectionReadyEvent } from '@/hooks/use-pusher'
 import { useAppBar } from '@/components/mobile/app-bar-context'
 
 interface Connection {
@@ -91,6 +91,9 @@ export function ChatInterface({
   const selectedContactRef = useRef(selectedContact)
   selectedContactRef.current = selectedContact
 
+  // Debounce timer ref for the safety-net refetch after SSE events
+  const refetchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   const fetchConversations = useCallback(async (showLoading = false) => {
     if (showLoading) setIsRefreshing(true)
     try {
@@ -113,6 +116,33 @@ export function ChatInterface({
     }
   }, [])
 
+  // Patch a single conversation in state without a full refetch.
+  // Moves the contact to the top of the list and updates the last message preview.
+  const patchConversation = useCallback((contactId: string, lastMessage: Contact['whatsappMessages'][0]) => {
+    setContacts(prev => {
+      const idx = prev.findIndex(c => c.id === contactId)
+      if (idx === -1) {
+        // Unknown contact — schedule a full refetch to pull it in
+        if (refetchTimerRef.current) clearTimeout(refetchTimerRef.current)
+        refetchTimerRef.current = setTimeout(() => fetchConversations(), 1500)
+        return prev
+      }
+      const updated = {
+        ...prev[idx],
+        whatsappMessages: [lastMessage],
+        _count: {
+          ...prev[idx]._count,
+          unreadMessages: lastMessage.direction === 'INBOUND'
+            ? (prev[idx]._count.unreadMessages || 0) + 1
+            : prev[idx]._count.unreadMessages || 0,
+        },
+      }
+      // Move to top (most recent)
+      const next = [updated, ...prev.filter(c => c.id !== contactId)]
+      return next
+    })
+  }, [fetchConversations])
+
   const fetchConnections = useCallback(async () => {
     try {
       const res = await fetch('/api/whatsapp/connections')
@@ -125,15 +155,30 @@ export function ChatInterface({
     }
   }, [])
 
-  // Real-time: Pusher events update conversation list immediately
+  // Real-time: SSE events patch state locally — no full refetch needed per message.
+  // A debounced safety-net refetch runs 1.5s after any patch to catch edge cases
+  // (new contacts, missed events). Polling (20s) is a fallback for SSE disconnects.
   usePusher({
     organizationId,
-    onMessageNew: useCallback((_data: MessageNewEvent) => {
-      fetchConversations()
-    }, [fetchConversations]),
-    onMessageSent: useCallback(() => {
-      fetchConversations()
-    }, [fetchConversations]),
+    onMessageNew: useCallback((data: MessageNewEvent) => {
+      patchConversation(data.contactId, {
+        id: data.message.id,
+        text: data.message.text,
+        direction: data.message.direction,
+        sentAt: new Date(data.message.sentAt),
+      })
+      // Debounced safety-net refetch
+      if (refetchTimerRef.current) clearTimeout(refetchTimerRef.current)
+      refetchTimerRef.current = setTimeout(() => fetchConversations(), 1500)
+    }, [patchConversation, fetchConversations]),
+    onMessageSent: useCallback((data: MessageSentEvent) => {
+      patchConversation(data.contactId, {
+        id: data.message.id,
+        text: data.message.text,
+        direction: data.message.direction,
+        sentAt: new Date(data.message.sentAt),
+      })
+    }, [patchConversation]),
     onConnectionReady: useCallback(async (data: ConnectionReadyEvent & { status?: string }) => {
       // Refresh connections first so the new status is reflected in state.
       await fetchConnections()
@@ -164,12 +209,17 @@ export function ChatInterface({
       .catch(() => setIsSyncing(false))
   }, [connections, fetchConversations])
 
-  // Polling: conversas a cada 5s, conexões a cada 10s
-  // Connections poll at 10s (down from 30s) to detect multi-device status changes faster.
+  // Polling: safety net when SSE is disconnected.
+  // Conversations at 20s (was 5s) — SSE handles real-time; polling is fallback.
+  // Connections at 10s to detect multi-device status changes.
   useEffect(() => {
-    const convInterval = setInterval(() => fetchConversations(), 5000)
+    const convInterval = setInterval(() => fetchConversations(), 20000)
     const connInterval = setInterval(fetchConnections, 10000)
-    return () => { clearInterval(convInterval); clearInterval(connInterval) }
+    return () => {
+      clearInterval(convInterval)
+      clearInterval(connInterval)
+      if (refetchTimerRef.current) clearTimeout(refetchTimerRef.current)
+    }
   }, [fetchConversations, fetchConnections])
 
   // Update document title with unread count

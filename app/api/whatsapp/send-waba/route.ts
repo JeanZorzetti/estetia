@@ -8,6 +8,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
+import { ssePublish } from '@/lib/sse'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -88,7 +89,7 @@ export async function POST(req: NextRequest) {
 
     logger.info({ contactId, wamid, organizationId: user.organizationId }, 'WABA message sent')
 
-    return NextResponse.json({
+    const sentMessage = {
       id: msgId,
       text: message,
       direction: 'OUTBOUND',
@@ -98,7 +99,14 @@ export async function POST(req: NextRequest) {
       status: 'SENT',
       replyToId: replyToId ?? null,
       replyToText: null,
+    }
+
+    ssePublish(user.organizationId, 'message:sent', {
+      contactId,
+      message: sentMessage,
     })
+
+    return NextResponse.json(sentMessage)
   } catch (error: any) {
     logger.error({ error: error.message }, 'Error sending WABA message')
     return NextResponse.json({ error: error.message || 'Falha ao enviar mensagem' }, { status: 500 })
