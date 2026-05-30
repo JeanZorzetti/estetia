@@ -28,24 +28,35 @@ export async function GET() {
       return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
-    // 2. Get user with organization (including WABA status)
+    // 2. Get user with organization
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: {
-        organizationId: true,
-        organization: {
-          select: { wabaEnabled: true, wabaPhoneNumberId: true }
-        }
-      },
+      select: { organizationId: true },
     })
 
     if (!user?.organizationId) {
       return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
-    const wabaActive = user.organization?.wabaEnabled === true && !!user.organization?.wabaPhoneNumberId
+    // Fetch WABA fields via raw SQL — columns may not exist on older DBs before migration
+    let wabaActive = false
+    try {
+      const rows = await prisma.$queryRaw<{ waba_enabled: boolean; waba_phone_number_id: string | null }[]>`
+        SELECT
+          COALESCE("wabaEnabled", false) AS waba_enabled,
+          "wabaPhoneNumberId" AS waba_phone_number_id
+        FROM "Organization"
+        WHERE id = ${user.organizationId}
+        LIMIT 1
+      `
+      if (rows[0]) {
+        wabaActive = rows[0].waba_enabled === true && !!rows[0].waba_phone_number_id
+      }
+    } catch {
+      // Columns don't exist yet — default false
+    }
 
-    logger.info({ organizationId: user.organizationId, wabaActive, wabaEnabled: user.organization?.wabaEnabled, wabaPhoneNumberId: user.organization?.wabaPhoneNumberId }, 'conversations: org waba state')
+    logger.info({ organizationId: user.organizationId, wabaActive }, 'conversations: org waba state')
 
     // 3. Get all Evolution API connections for this org (regardless of status)
     // Filtering by CONNECTED causes conversations to vanish when a phone temporarily

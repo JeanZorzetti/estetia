@@ -48,8 +48,6 @@ export default async function ChatPage({
         organization: {
           select: {
             whatsappInstances: true,
-            wabaEnabled: true,
-            wabaPhoneNumberId: true,
           }
         }
       }
@@ -61,6 +59,27 @@ export default async function ChatPage({
 
   if (!user?.organizationId || !user.organization) {
     return <div>{t('errors.userNoOrg')}</div>
+  }
+
+  // Fetch WABA fields via raw SQL — these columns may not exist yet on older DBs
+  // (migration 20260530000001_add_waba_fields adds them; raw SQL with COALESCE is safe either way)
+  let wabaEnabled = false
+  let wabaPhoneNumberId: string | null = null
+  try {
+    const rows = await prisma.$queryRaw<{ waba_enabled: boolean; waba_phone_number_id: string | null }[]>`
+      SELECT
+        COALESCE("wabaEnabled", false) AS waba_enabled,
+        "wabaPhoneNumberId" AS waba_phone_number_id
+      FROM "Organization"
+      WHERE id = ${user.organizationId}
+      LIMIT 1
+    `
+    if (rows[0]) {
+      wabaEnabled = rows[0].waba_enabled === true
+      wabaPhoneNumberId = rows[0].waba_phone_number_id ?? null
+    }
+  } catch {
+    // Columns don't exist yet — default to false (WABA disabled)
   }
 
   let connections: any[] = []
@@ -99,13 +118,13 @@ export default async function ChatPage({
   // Filter only active connections — prevents mixing messages from old/disconnected instances
   const activeConnections = connections.filter((c: any) => c.status === 'CONNECTED')
   const connectionIds = activeConnections.map((c: any) => c.id)
-  const wabaEnabled = user.organization.wabaEnabled === true && !!user.organization.wabaPhoneNumberId
+  const wabaActive = wabaEnabled && !!wabaPhoneNumberId
   const hasEvolutionConnections = connectionIds.length > 0
 
   let contacts: any[] = []
   try {
     // No active Evolution connections and WABA not active — nothing to show
-    if (!hasEvolutionConnections && !wabaEnabled) {
+    if (!hasEvolutionConnections && !wabaActive) {
       contacts = []
     } else {
       // 1. Get org's contacts from CRM DB first (source of truth),
@@ -118,7 +137,7 @@ export default async function ChatPage({
 
       let rows: { contact_id: string }[] = []
       if (orgContactIds.length > 0) {
-        if (hasEvolutionConnections && wabaEnabled) {
+        if (hasEvolutionConnections && wabaActive) {
           rows = await prismaWa.$queryRaw<{ contact_id: string }[]>`
             SELECT DISTINCT "contactId" AS contact_id
             FROM "WhatsAppMessage"
@@ -163,7 +182,7 @@ export default async function ChatPage({
           organizationId: user.organizationId,
           contactId: { in: contactIds },
         }
-        if (hasEvolutionConnections && wabaEnabled) {
+        if (hasEvolutionConnections && wabaActive) {
           lastMsgWhere.OR = [{ connectionId: { in: connectionIds } }, { connectionId: null }]
         } else if (hasEvolutionConnections) {
           lastMsgWhere.connectionId = { in: connectionIds }
@@ -188,7 +207,7 @@ export default async function ChatPage({
           organizationId: user.organizationId,
           contactIds,
           connectionIds,
-          wabaActive: wabaEnabled,
+          wabaActive,
         })
 
         // 5. Merge CRM contacts with WA data
@@ -227,7 +246,7 @@ export default async function ChatPage({
         organizationId={user.organizationId}
         maxInstances={user.organization.whatsappInstances || 1}
         initialPhone={initialPhone}
-        wabaEnabled={wabaEnabled}
+        wabaEnabled={wabaActive}
       />
     </div>
   )
