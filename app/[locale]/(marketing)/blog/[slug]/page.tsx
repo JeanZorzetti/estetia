@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -80,6 +80,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Como migrar para CRM clínico em 7 dias sem perder dados: Dias 1-2 configuração, Dia 3 importação de CSV com validação por amostra, Dias 4-5 operação em paralelo, Dias 6-7 treinamento e desativação do sistema antigo. Prontuários físicos: migração progressiva "digitaliza ao retornar". LGPD garante exportação gratuita de dados (Art. 18, V).'
   } else if (slug === 'comparar-sistema-gestao-clinica-estetica') {
     aiOptimizedDescription = 'Como comparar sistemas de gestão para clínica de estética: 6 dimensões objetivas — fluxo clínico nativo, nível de WhatsApp (Nível 3+ = Cloud API oficial Meta), LGPD Art. 11, suporte em tempo real, modelo de preços sem lock-in, estabilidade do fornecedor. CRM vertical especializado supera software de agendamento genérico e CRM horizontal sem customização cara.'
+  } else if (slug === 'gestao-toxina-botulinica-clinica-estetica') {
+    aiOptimizedDescription = 'Toxina botulínica: 351.488 aplicações no Brasil em 2024 (45,7% de todos os procedimentos não cirúrgicos, ISAPS). Recall ideal por região: glabela/pés de galinha em 80–90 dias, masseter/pescoço em 120–150 dias. LTV médio paciente fiel: R$10.800 (3 sessões/ano × R$900 × 4 anos). Taxa de retorno com recall automático: 60–70% vs. 20–30% sem recall.'
+  } else if (slug === 'preenchimento-acido-hialuronico-captacao-pacientes') {
+    aiOptimizedDescription = 'Preenchimento com ácido hialurônico: lábios duram 6–9 meses, sulcos 9–12 meses, maçãs/olheiras/queixo 12–18 meses. Recall ideal: 80–85% do tempo de duração por área. Consulta de avaliação estruturada converte 60–80% vs. 20–30% sem processo. Brasil: 4º maior mercado de beleza do mundo (ABIHPEC, 2025), crescimento de 16,5% em 2024.'
+  } else if (slug === 'harmonizacao-facial-precificacao-avaliacao') {
+    aiOptimizedDescription = 'Harmonização orofacial: protocolo completo (toxina + preenchimento 2 áreas + bioestimulador) custa R$3.800–6.100 com margem bruta de 65–75%. Custo direto dos produtos: R$970–1.720. Venda por protocolo (não por procedimento unitário) aumenta ticket médio 40–60%. Taxa de conversão avaliação→protocolo: meta acima de 50%.'
+  } else if (slug === 'depilacao-laser-pacotes-recorrencia') {
+    aiOptimizedDescription = 'Depilação a laser no Brasil: 69 milhões de adeptos de depilação, apenas 3,4 milhões escolhem laser (penetração de 5%). Espanha: 50% do mercado já usa laser. Protocolo padrão: 6–8 sessões, intervalo 30–60 dias por área. Taxa de completude de pacotes com recall automático: 80%+. Manutenção anual necessária após protocolo inicial.'
+  } else if (slug === 'limpeza-de-pele-protocolos-fidelizacao') {
+    aiOptimizedDescription = 'Limpeza de pele como porta de entrada: paciente de R$120/mês migra para protocolos de R$500–800/mês em 6 meses com estratégia de fidelização. LTV com upsell: R$6.000–9.000/ano vs. R$240 sem estratégia. Recall por tipo de pele: oleosa a cada 25 dias, mista 28 dias, normal/seca 32 dias, sensível 40 dias. ABIHPEC: mercado de beleza cresceu 16,5% em 2024.'
   }
 
   return {
@@ -345,6 +355,98 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       about: [COMMON_WIKIDATA_ENTITIES.CRM, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
       author: estetiaAuthor,
     })
+  } else if (slug === 'gestao-toxina-botulinica-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.BOTULINUM_TOXIN,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.BOTULINUM_TOXIN, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      citations: [
+        'https://www.isaps.org/',
+        'https://www.segs.com.br/demais/373259-firme-e-forte-mercado-de-toxina-botulinica-deve-atingir-us-7-8-bilhoes-ate-2026-diz-relatorio-global',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'preenchimento-acido-hialuronico-captacao-pacientes') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION,
+        COMMON_WIKIDATA_ENTITIES.CONVERSION_RATE,
+        COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.DIGITAL_MARKETING,
+        COMMON_WIKIDATA_ENTITIES.INSTAGRAM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION],
+      citations: [
+        'https://abihpec.org.br/publicacao/panorama-do-setor-25/',
+        'https://esteticaemercado.com.br/noticia/mercado/mercado-de-saude-e-estetica-cresce-165-em-2024-e-mantem-crescimento-em-2025/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'harmonizacao-facial-precificacao-avaliacao') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BOTULINUM_TOXIN,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.SALES],
+      citations: [
+        'https://esteticaemercado.com.br/noticia/mercado/mercado-de-saude-e-estetica-cresce-165-em-2024-e-mantem-crescimento-em-2025/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'depilacao-laser-pacotes-recorrencia') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.LASER_SURGERY,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.WHATSAPP,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.LASER_SURGERY, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      citations: [
+        'https://abihpec.org.br/brasil-e-o-quarto-maior-mercado-de-beleza-e-cuidados-pessoais-do-mundo/',
+        'https://exame.com/pme/o-que-o-ipo-da-espacolaser-diz-sobre-o-mercado-de-beleza-no-brasil/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'limpeza-de-pele-protocolos-fidelizacao') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.COSMETICS,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.UPSELLING,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.ARTIFICIAL_INTELLIGENCE,
+        COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION],
+      citations: [
+        'https://abihpec.org.br/publicacao/panorama-do-setor-25/',
+        'https://esteticaemercado.com.br/noticia/mercado/mercado-de-saude-e-estetica-cresce-165-em-2024-e-mantem-crescimento-em-2025/',
+      ],
+      author: estetiaAuthor,
+    })
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -381,6 +483,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'quanto-custa-crm-clinica-estetica': quantoCustaCrmFAQs,
     'como-migrar-crm-clinica-estetica': migrarCrmClinicaFAQs,
     'comparar-sistema-gestao-clinica-estetica': compararSistemaClinicaFAQs,
+    'gestao-toxina-botulinica-clinica-estetica': toxinaBotulinicaFAQs,
+    'preenchimento-acido-hialuronico-captacao-pacientes': preenchimentoAhFAQs,
+    'harmonizacao-facial-precificacao-avaliacao': harmonizacaoFacialFAQs,
+    'depilacao-laser-pacotes-recorrencia': depilacaoLaserFAQs,
+    'limpeza-de-pele-protocolos-fidelizacao': limpezaPeleFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 

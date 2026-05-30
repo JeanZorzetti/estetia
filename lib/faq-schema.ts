@@ -598,3 +598,133 @@ export const compararSistemaClinicaFAQs: FAQItem[] = [
     answer: 'O teste definitivo: deixe a recepcionista usar o sistema sozinha por 30 minutos, sem treinamento, e execute os 3 fluxos mais comuns da sua clínica. O que ela não consegue fazer intuitivamente será o ponto de resistência no dia a dia. Sistemas com alta taxa de adoção têm fluxos tão óbvios que novos funcionários produzem resultado no primeiro dia. Se a recepcionista precisar de 2+ horas de treinamento para fazer o básico, o sistema tem problemas de usabilidade. <a href="/pt-BR/register">Testar o Estetia CRM grátis →</a>',
   },
 ]
+
+/**
+ * FAQ data for Gestão de Toxina Botulínica blog post
+ */
+export const toxinaBotulinicaFAQs: FAQItem[] = [
+  {
+    question: 'Com que frequência devo fazer recall para pacientes de botox?',
+    answer: 'O ideal é configurar o recall por região tratada: 80–90 dias para glabela, pés de galinha e testa; 120–150 dias para masseter e pescoço; 180–240 dias para hiperidrose. Recall enviado cedo (quando o efeito ainda está pleno) tem baixa taxa de conversão. Enviado tarde, o paciente já buscou outra clínica. O timing certo é quando o efeito começa a diminuir — entre 80% e 90% do tempo médio de duração.',
+  },
+  {
+    question: 'Como precificar toxina botulínica de forma competitiva sem comprometer a margem?',
+    answer: 'O modelo híbrido funciona melhor: preço por região com mínimo de unidades incluído, mais custo adicional por unidade extra. Calcule o custo real considerando produto, materiais descartáveis, tempo do profissional e estrutura — muitas clínicas descobrem que preços abaixo de R$500 para glabela operam com margem negativa. A competitividade deve vir da experiência e do resultado, não do menor preço.',
+  },
+  {
+    question: 'Qual é o LTV médio de um paciente fiel de toxina botulínica?',
+    answer: 'Um paciente que retorna 3 vezes por ano com ticket médio de R$900 e permanece ativo por 4 anos tem LTV de R$10.800 — apenas com botox. Com upsell de masseter ou skincare, o LTV pode chegar a R$15.000–20.000 por paciente em 5 anos. Isso muda a perspectiva sobre custo de aquisição: R$150–200 de CAC para um LTV de R$10.000+ é extremamente viável.',
+  },
+  {
+    question: 'Como reduzir o churn de pacientes de botox?',
+    answer: 'As três alavancas principais são: (1) recall automático no timing certo por região tratada; (2) fotodocumentação com comparativo antes/depois no retorno — ver o resultado visualmente é o maior argumento de retenção; (3) plano de tratamento progressivo — quando o paciente sabe que na próxima sessão será avaliada uma nova área, tem motivo concreto para voltar. Clínicas que combinam essas três estratégias reportam churn abaixo de 12% em 6 meses.',
+  },
+  {
+    question: 'É necessário um CRM específico para clínicas de estética ou serve um CRM genérico?',
+    answer: 'Para gestão de botox especificamente, um CRM genérico tem limitações críticas: não tem campo de região tratada, não calcula recall por procedimento, não integra com WhatsApp Business API para disparo automático e não exibe KPIs clínicos. Um CRM vertical como o Estetia CRM tem esses módulos nativos — sem customização cara ou planilhas paralelas.',
+  },
+]
+
+/**
+ * FAQ data for Preenchimento com Ácido Hialurônico blog post
+ */
+export const preenchimentoAhFAQs: FAQItem[] = [
+  {
+    question: 'Qual é o melhor canal para captar pacientes de preenchimento com ácido hialurônico?',
+    answer: 'Instagram e SEO local são os dois canais principais. Instagram funciona para os perfis em fase de conscientização e consideração — conteúdo educativo, antes/depois e depoimentos. SEO local (Google Meu Negócio + site) funciona para quem já decidiu fazer e está buscando clínica na região. O ideal é ter presença em ambos: Instagram nutre, Google converte.',
+  },
+  {
+    question: 'Vale oferecer avaliação gratuita para captar pacientes de preenchimento?',
+    answer: 'Sim, desde que a avaliação seja estruturada para converter. Uma avaliação gratuita sem processo claro vira consulta de cortesia sem resultado comercial. Avaliação bem estruturada converte 60–80% dos pacientes — tornando o custo da avaliação grátis altamente justificável pelo LTV do paciente captado.',
+  },
+  {
+    question: 'Como responder a pacientes que pedem preço por Instagram sem agendar avaliação?',
+    answer: 'Responda com âncora de faixa ("nosso preenchimento de sulco parte de R$X") e convite para avaliação gratuita. Nunca dê preço exato sem ver o paciente. A resposta ideal: "O valor varia conforme a área e o volume indicado — posso te dizer com precisão na avaliação. Você tem disponibilidade essa semana para uma avaliação gratuita?"',
+  },
+  {
+    question: 'Quanto tempo dura o preenchimento com ácido hialurônico?',
+    answer: 'A duração varia por área: lábios duram 6–9 meses; sulcos nasogenianos, 9–12 meses; maçãs do rosto, olheiras, queixo e mandíbula, 12–18 meses. O timing ideal do recall é 80–85% do tempo de duração esperada por área — quando o efeito começa a diminuir mas antes de desaparecer completamente.',
+  },
+  {
+    question: 'Como superar a objeção de preço em preenchimento com ácido hialurônico?',
+    answer: 'Divida o custo no tempo: "O ácido hialurônico dura entre 12 e 18 meses — isso representa um custo por mês de R$X". Além disso, ofereça opção de entrada menor: "Podemos começar com a área que mais te incomoda e ver o resultado antes de decidir sobre as outras." Valor agregado e âncora temporal reduzem a percepção de alto custo.',
+  },
+]
+
+/**
+ * FAQ data for Harmonização Facial blog post
+ */
+export const harmonizacaoFacialFAQs: FAQItem[] = [
+  {
+    question: 'Como precificar harmonização facial em uma cidade com concorrência de preço baixo?',
+    answer: 'Competir por preço em harmonização facial é estratégia de curto prazo com margem baixa. A alternativa sustentável é competir por resultado e experiência: portfólio documentado, depoimentos de pacientes reais, certificações do produto (ANVISA) e da técnica. Pacientes de alto ticket buscam o melhor resultado, não o menor preço.',
+  },
+  {
+    question: 'É possível vender protocolo completo de harmonização na primeira consulta?',
+    answer: 'Sim, para pacientes que chegam já com essa intenção (geralmente indicados). Para pacientes pela primeira vez, o modelo de sessões progressivas funciona melhor — começa por uma área, mostra o resultado, e a segunda sessão é decisão muito mais fácil. Sempre deixe o plano completo documentado no prontuário para que o paciente conheça o caminho.',
+  },
+  {
+    question: 'Quanto custa um protocolo de harmonização facial no Brasil em 2026?',
+    answer: 'Um protocolo completo de harmonização facial (toxina zona superior + preenchimento de 1–2 áreas + bioestimulador) tem custo total de R$3.800 a R$6.100, dependendo das áreas tratadas, dos produtos utilizados e da localidade. O custo direto dos produtos e materiais para o profissional fica entre R$970 e R$1.720, com margem bruta de 65–75%.',
+  },
+  {
+    question: 'Como lidar com pacientes que pedem desconto em pacote de harmonização?',
+    answer: 'Em vez de dar desconto direto (que desvaloriza a expertise), ofereça alternativas: sessão de bônus de acompanhamento sem custo adicional, ou desconto percentual para pagamento à vista (8–10%). Valor agregado funciona melhor do que redução de preço — e não cria o precedente de que o preço é negociável.',
+  },
+  {
+    question: 'Qual é o papel do CRM na gestão de pacientes de harmonização facial?',
+    answer: 'Para harmonização, o CRM precisa registrar: protocolo completo proposto (com itens e quantidades), o que foi feito em cada sessão, fotos de evolução por data, recall configurado por componente e plano de próximas sessões. Sem esse registro sistemático, o profissional depende de memória para atender o mesmo paciente em sessões diferentes — comprometendo a experiência e a continuidade.',
+  },
+]
+
+/**
+ * FAQ data for Depilação a Laser blog post
+ */
+export const depilacaoLaserFAQs: FAQItem[] = [
+  {
+    question: 'Quantas sessões de depilação a laser um paciente precisa?',
+    answer: 'O número padrão recomendado é de 6 a 8 sessões para a maioria das áreas, mas pode variar conforme o fototipo do paciente, a grossura e cor do pelo e a área tratada. Por isso é importante fazer avaliação antes de vender o pacote — para dimensionar corretamente e não gerar expectativas irreais.',
+  },
+  {
+    question: 'Como evitar que pacientes abandonem o pacote de depilação laser no meio?',
+    answer: 'As três alavancas são: (1) agendar a próxima sessão sempre antes do paciente sair — compromisso já marcado tem muito maior taxa de comparecimento; (2) recall automático quando o intervalo ideal está próximo de vencer sem agendamento; (3) atualizações de resultado ao paciente após cada sessão — "você está na sessão 4 de 8, com X% de redução visível" cria engajamento com o processo.',
+  },
+  {
+    question: 'O que é manutenção de depilação a laser e quando é necessária?',
+    answer: 'Após o protocolo inicial (6–8 sessões), a maioria dos pelos é eliminada, mas pelos em fases de crescimento diferentes podem surgir ao longo dos meses. A manutenção é uma sessão anual (ou a cada 12–18 meses) para eliminar pelos residuais e manter o resultado. É muito menos intensa que o protocolo inicial — geralmente 1 sessão por ano é suficiente.',
+  },
+  {
+    question: 'Qual o intervalo correto entre sessões de depilação a laser?',
+    answer: 'O intervalo varia por área: axilas e virilha a cada 30–45 dias; pernas (meia e inteira) a cada 45–60 dias; buço a cada 30–45 dias. O intervalo correto respeita o ciclo de crescimento dos pelos da área tratada. Intervalos muito longos comprometem o resultado e a satisfação do paciente — por isso o recall automático de sessão atrasada é fundamental.',
+  },
+  {
+    question: 'Como estruturar pacotes combo de depilação a laser para aumentar o ticket médio?',
+    answer: 'Combine áreas complementares com desconto por volume: Axilas + Virilha (áreas mais demandadas juntas), Pernas Completas + Virilha, Full Body (todas as áreas com desconto maior). O desconto de pacote combo é justificável porque você concentra múltiplas áreas no mesmo horário, reduzindo o custo de atendimento por área. Repassar parte dessa eficiência como desconto aumenta o ticket médio sem comprometer a margem.',
+  },
+]
+
+/**
+ * FAQ data for Limpeza de Pele e Protocolos Faciais blog post
+ */
+export const limpezaPeleFAQs: FAQItem[] = [
+  {
+    question: 'Com que frequência um paciente deve fazer limpeza de pele?',
+    answer: 'Depende do tipo de pele: oleosas e acneicas se beneficiam de limpeza a cada 28–30 dias; mistas, a cada 30–35 dias; normais e secas, a cada 35–45 dias; sensíveis, a cada 45–60 dias. A regularidade é mais importante do que a frequência absoluta — é melhor fazer de forma consistente do que esporadicamente.',
+  },
+  {
+    question: 'Como usar limpeza de pele como porta de entrada para procedimentos mais avançados?',
+    answer: 'O caminho natural é: primeira sessão (limpeza + diagnóstico detalhado), segunda e terceira sessões (construção de confiança + registro de evolução), terceira ou quarta sessão (apresentação de protocolo complementar baseado na queixa identificada). A chave é registrar cada sessão no prontuário — sem histórico detalhado, a progressão não é personalizada e o paciente não percebe valor na evolução.',
+  },
+  {
+    question: 'Qual é o melhor momento para apresentar procedimentos de alto ticket para pacientes de limpeza?',
+    answer: 'O momento mais eficaz é após o paciente verbalizar satisfação com o resultado — geralmente na 3ª ou 4ª sessão. A abordagem consultiva: "Você está tendo ótimos resultados. Para potencializar ainda mais a [queixa que o paciente mencionou], tenho um protocolo que complementaria perfeitamente." Nunca na primeira sessão — a relação ainda não tem o nível de confiança necessário.',
+  },
+  {
+    question: 'Limpeza de pele tem boa margem para a clínica?',
+    answer: 'A margem bruta da limpeza de pele é razoável (50–65%), mas o que justifica estrategicamente o procedimento é o LTV do paciente que ela origina. Um paciente que paga R$120/mês em limpeza e migra para protocolos de R$500–800/mês em 6 meses representa R$6.000–9.000/ano de receita. Sem a limpeza como porta de entrada, esse paciente nunca teria chegado — ou teria chegado por canal muito mais caro.',
+  },
+  {
+    question: 'Como a tecnologia pode ajudar na fidelização de pacientes de skincare?',
+    answer: 'Três aplicações críticas: (1) anamnese digital com histórico acumulado por sessão — sem papel, sem perda de informação; (2) recall automático segmentado por tipo de pele — o sistema envia o lembrete no timing certo para cada paciente; (3) alerta de risco de churn — quando o intervalo entre sessões aumenta, o sistema avisa proativamente antes que o paciente desapareça.',
+  },
+]

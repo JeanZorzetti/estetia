@@ -15,6 +15,11 @@ import { post as softwareDermatologiaPost } from './posts/software-gestao-dermat
 import { post as prontuarioEletronicoPost } from './posts/prontuario-eletronico-clinica-estetica'
 import { post as agendamentoOnlinePost } from './posts/agendamento-online-clinica-estetica'
 import { post as whatsappBusinessPost } from './posts/whatsapp-business-clinica-estetica-automacao'
+import { post as toxinaBotulinicaPost } from './posts/gestao-toxina-botulinica-clinica-estetica'
+import { post as preenchimentoAhPost } from './posts/preenchimento-acido-hialuronico-captacao-pacientes'
+import { post as harmonizacaoFacialPost } from './posts/harmonizacao-facial-precificacao-avaliacao'
+import { post as depilacaoLaserPost } from './posts/depilacao-laser-pacotes-recorrencia'
+import { post as limpezaPelePost } from './posts/limpeza-de-pele-protocolos-fidelizacao'
 
 export const blogPosts: BlogPost[] = [
   comparasSistemaPost,
@@ -32,6 +37,11 @@ export const blogPosts: BlogPost[] = [
   prontuarioEletronicoPost,
   agendamentoOnlinePost,
   whatsappBusinessPost,
+  toxinaBotulinicaPost,
+  preenchimentoAhPost,
+  harmonizacaoFacialPost,
+  depilacaoLaserPost,
+  limpezaPelePost,
 ]
 
 export const CATEGORY_COLORS: Record<string, string> = {
