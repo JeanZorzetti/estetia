@@ -858,3 +858,133 @@ export const fiosPdoFAQs: FAQItem[] = [
     answer: 'Os preços variam por região e profissional: lifting de mandíbula e jowl fica entre R$2.800 e R$5.000; sobrancelha (Fox Eyes) entre R$1.500 e R$3.000; pescoço entre R$1.800 e R$3.500; Full Face Lifting entre R$6.000 e R$12.000. O custo por mês de resultado é competitivo comparado a manutenções frequentes de preenchimento na mesma área.',
   },
 ]
+
+/**
+ * FAQ data for Enzimas para Papada blog post
+ */
+export const enzimasPapadaFAQs: FAQItem[] = [
+  {
+    question: 'Quantas sessões de enzimas para papada são necessárias?',
+    answer: 'O protocolo padrão é de 2–3 sessões com intervalos de 30–45 dias. O número depende do volume de gordura submentual e da resposta individual à primeira sessão. A avaliação do resultado de cada sessão (após 30 dias) orienta a necessidade de sessões adicionais.',
+  },
+  {
+    question: 'Quanto custa o tratamento de papada com enzimas no Brasil?',
+    answer: 'O protocolo completo de papada com enzimas custa entre R$1.200 e R$3.500 em clínicas brasileiras em 2026, dependendo do número de sessões, do produto utilizado e da localidade. Clínicas em capitais têm preços médios mais altos.',
+  },
+  {
+    question: 'O resultado do tratamento de papada com enzimas é permanente?',
+    answer: 'As células de gordura destruídas são eliminadas permanentemente pelo organismo e não se regeneram. Porém, com ganho de peso significativo, novas células podem acumular na região. Manter peso estável após o tratamento é importante para preservar o resultado.',
+  },
+  {
+    question: 'Qual a diferença entre enzimas para papada e criolipólise?',
+    answer: 'Criolipólise usa frio para destruir células de gordura; enzimas (ácido deoxicólico) usam reação química/inflamatória. Para a região submentual, as enzimas têm vantagem logística — aplicam-se com precisão em área pequena. A criolipólise é mais indicada para áreas maiores (abdômen, flancos). Para papada, ambas são opções válidas conforme o perfil do paciente.',
+  },
+  {
+    question: 'Qualquer profissional pode aplicar enzimas para papada?',
+    answer: 'Não. O procedimento envolve injeções e requer habilitação profissional específica conforme regulamentações do CFM (médicos), CRO (cirurgiões-dentistas) e CREFITO (fisioterapeutas com habilitação). A clínica deve verificar habilitação do profissional e manter documentação atualizada. Produtos utilizados precisam ter registro ANVISA para a via de administração indicada.',
+  },
+]
+
+/**
+ * FAQ data for Radiofrequência e Ultrassom Microfocado blog post
+ */
+export const radiofrequenciaFAQs: FAQItem[] = [
+  {
+    question: 'Quantas sessões de radiofrequência são necessárias para resultado?',
+    answer: 'Para resultado visível, o protocolo padrão é de 6–8 sessões. A radiofrequência é um procedimento de resultado cumulativo — uma sessão isolada tem resultado mínimo; o protocolo completo com manutenção regular entrega firmeza e melhora de textura progressiva. Por isso, vender pacote (não sessão avulsa) é fundamental.',
+  },
+  {
+    question: 'HIFU e ultrassom microfocado são a mesma coisa?',
+    answer: 'Sim. HIFU é a sigla em inglês para High-Intensity Focused Ultrasound — o mesmo que ultrassom microfocado em português. Aparelhos como Ultraformer, Doublo, Sonofocus e outros são todos tecnologias HIFU com variações de configuração e cartuchos.',
+  },
+  {
+    question: 'Com que frequência devo fazer HIFU?',
+    answer: 'Para o rosto, a frequência recomendada é de 1–2 vezes por ano. O resultado de uma sessão se consolida em 3–6 meses e pode durar 12–18 meses. Para o corpo, sessões a cada 3–6 meses são mais comuns. A frequência ideal é definida pelo profissional na avaliação do resultado de cada sessão.',
+  },
+  {
+    question: 'Radiofrequência e HIFU podem ser feitos juntos?',
+    answer: 'Podem ser combinados como protocolo complementar: HIFU para lifting profundo e radiofrequência para manutenção e tratamento de camadas mais superficiais. Como protocolo ao longo do ano, a combinação é altamente eficaz e é a oferta premium de muitas clínicas de referência.',
+  },
+  {
+    question: 'Qual a diferença entre radiofrequência facial e corporal?',
+    answer: 'O mecanismo é o mesmo (calor por ondas eletromagnéticas), mas os parâmetros, profundidade e intensidade variam. A RF facial usa configurações mais suaves para tratar rugas, flacidez e textura; a RF corporal usa intensidades maiores para celulite, flacidez abdominal e remodelamento. Equipamentos profissionais têm cabeçotes distintos para face e corpo.',
+  },
+]
+
+/**
+ * FAQ data for Micropigmentação de Sobrancelha blog post
+ */
+export const micropigmentacaoFAQs: FAQItem[] = [
+  {
+    question: 'Quanto tempo dura a micropigmentação de sobrancelha?',
+    answer: 'Varia pela técnica: fio a fio dura 12–24 meses; ombre/powder brow dura 18–36 meses; nanopigmentação dura 12–18 meses. Fatores que afetam a durabilidade: tipo de pele (oleosa desbota mais rápido), exposição solar, uso de produtos ácidos na região e metabolismo individual.',
+  },
+  {
+    question: 'Qual é o preço médio de micropigmentação de sobrancelha no Brasil em 2026?',
+    answer: 'O preço varia entre R$350 e R$1.500 dependendo da técnica, da cidade e da experiência da profissional, com média nacional entre R$600 e R$850 para procedimentos realizados por profissionais experientes, segundo dados de mercado de 2025. O retoque de correção (30–45 dias) geralmente está incluído no valor da sessão inicial.',
+  },
+  {
+    question: 'Quando é necessário fazer retoque de micropigmentação de sobrancelha?',
+    answer: 'Há dois momentos: (1) retoque de correção — obrigatório 30–45 dias após a sessão inicial, quando a cicatrização está completa; (2) retoque de manutenção — a cada 12–24 meses dependendo da técnica. Não fazer o retoque de correção compromete o resultado final do trabalho.',
+  },
+  {
+    question: 'Micropigmentação pode ser feita em qualquer tipo de pele?',
+    answer: 'Sim, com adaptações de técnica por tipo de pele. Peles oleosas retêm menos pigmento e exigem técnica mais densa — ombre costuma ter melhor resultado do que fio a fio em peles muito oleosas. Peles maduras se beneficiam de nanopigmentação ou técnicas híbridas. A avaliação prévia da pele é essencial.',
+  },
+  {
+    question: 'Como criar um programa de indicações para clínica de micropigmentação?',
+    answer: 'A estratégia mais eficaz: NPS automático 7 dias após o retoque de correção (momento de maior satisfação), seguido de pedido de avaliação Google para NPS 9–10 e convite para indicar amigas com desconto no próximo retoque de manutenção. Clínicas que ativam sistematicamente esse canal reportam 30–45% das novas clientes chegando por indicação.',
+  },
+]
+
+/**
+ * FAQ data for Tratamento Capilar e Calvície blog post
+ */
+export const tratamentoCapilarFAQs: FAQItem[] = [
+  {
+    question: 'Quantas sessões de PRP capilar são necessárias?',
+    answer: 'O protocolo inicial padrão é de 3–4 sessões mensais (fase de ataque). Após o protocolo inicial, a manutenção é recomendada a cada 3–6 meses. Pacientes com alopecia androgenética ativa geralmente necessitam de manutenção indefinida — o PRP não cura a causa genética, mas controla a progressão e estimula os folículos existentes.',
+  },
+  {
+    question: 'PRP capilar funciona para calvície avançada?',
+    answer: 'O PRP é mais eficaz nos estágios iniciais e intermediários da alopecia androgenética (Norwood I–IV em homens; Ludwig I–II em mulheres). Em estágios avançados, os folículos podem já estar atrofiados demais para responder. A avaliação por profissional habilitado é fundamental para avaliar o potencial de resposta antes de iniciar o protocolo.',
+  },
+  {
+    question: 'Intradermoterapia capilar é a mesma coisa que PRP?',
+    answer: 'Não. A intradermoterapia capilar usa coquetéis de vitaminas, aminoácidos e minoxidil; o PRP usa o próprio plasma do paciente, concentrado em fatores de crescimento. Os dois são complementares e frequentemente combinados — cada um com mecanismo de ação diferente. O PRP tem evidência científica mais robusta para alopecia androgenética.',
+  },
+  {
+    question: 'Quanto tempo leva para ver resultado no tratamento capilar?',
+    answer: 'A estabilização da queda costuma ocorrer em 60–90 dias após o início do protocolo. O crescimento de novos fios fica visível em 4–6 meses. O resultado completo do protocolo de ataque é avaliado no final da fase (mês 4–5). Pacientes que esperam resultado em semanas ficam frustrados — a gestão de expectativas antes da primeira sessão é o fator mais importante.',
+  },
+  {
+    question: 'Como o CRM ajuda na gestão do protocolo capilar?',
+    answer: 'O protocolo capilar é longo (4–6 meses de ataque + manutenção indefinida) e tem alta taxa de abandono sem gestão ativa. O CRM pode configurar fases distintas (ataque vs. manutenção), enviar recalls contextualizados por fase, alertar sobre pacientes atrasando sessões e sugerir o próximo procedimento baseado no histórico — reduzindo o abandono e maximizando o LTV.',
+  },
+]
+
+/**
+ * FAQ data for Drenagem Linfática e Pós-Operatório blog post
+ */
+export const drenagemLinfaticaFAQs: FAQItem[] = [
+  {
+    question: 'Quantas sessões de drenagem são necessárias após cirurgia plástica?',
+    answer: 'O número varia pela cirurgia: abdominoplastia requer 15–20 sessões; lipoaspiração de 1–2 áreas requer 10–15 sessões; procedimentos menores como rinoplastia precisam de 6–10 sessões. A frequência é mais intensa na primeira semana e espaça à medida que o edema reduz. O cirurgião responsável define o protocolo adequado para cada paciente.',
+  },
+  {
+    question: 'Quando começar a drenagem linfática após cirurgia plástica?',
+    answer: 'A maioria dos protocolos recomenda início entre o 4º e 7º dia após a cirurgia, após liberação pelo cirurgião. Iniciar muito cedo pode ser contraindicado em alguns procedimentos — a indicação e o timing são definidos exclusivamente pelo cirurgião responsável. A clínica de drenagem deve sempre solicitar liberação antes de iniciar.',
+  },
+  {
+    question: 'Como criar parcerias com cirurgiões plásticos para captar pacientes de pós-operatório?',
+    answer: 'A proposta de valor para o cirurgião deve incluir: protocolo específico por cirurgia, disponibilidade de horários amplos (incluindo sábados), relatório de evolução do paciente enviado ao cirurgião e resposta rápida em complicações. Forneça cartão com QR code para agendamento direto. Um cirurgião com volume moderado (40–60 cirurgias/mês) pode gerar 15–25 novos pacientes mensais.',
+  },
+  {
+    question: 'Qualquer esteticista pode fazer drenagem linfática pós-operatória?',
+    answer: 'O pós-operatório de cirurgia plástica requer treinamento específico — é diferente da drenagem estética convencional. Profissionais habilitados incluem fisioterapeutas com especialização em linfoterapia e esteticistas/técnicos com formação específica em drenagem pós-operatória. A clínica deve verificar e documentar a habilitação dos profissionais.',
+  },
+  {
+    question: 'Como converter pacientes de pós-operatório em clientes regulares da clínica?',
+    answer: 'A abordagem mais eficaz: no último terço do protocolo de drenagem (quando o paciente já vê resultado), apresentar procedimentos complementares que potencializam o resultado da cirurgia (RF para firmar pele pós-lipo, microagulhamento para textura de cicatrizes, criolipólise para áreas residuais). Taxa de conversão: 40–60% quando feita nessa janela, versus quase zero após o paciente sair da última sessão.',
+  },
+]

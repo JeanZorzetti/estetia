@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, enzimasPapadaFAQs, radiofrequenciaFAQs, micropigmentacaoFAQs, tratamentoCapilarFAQs, drenagemLinfaticaFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -100,6 +100,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Peeling químico no Brasil: superficial (salicílico/glicólico/mandélico) — sem downtime, 4–6 sessões com 15–28 dias; médio (TCA 20–35%) — 4–7 dias de recuperação, 2–4 sessões. Integração peeling + microagulhamento: ticket 50–80% maior. Segmento de medicina estética cresceu 8% em 2024. Peeling como porta de entrada: LTV de R$6.000–12.000 com protocolo de fidelização.'
   } else if (slug === 'fios-pdo-lifting-avaliacao-ticket-alto') {
     aiOptimizedDescription = 'Fios de PDO no Brasil: cog/barbed duram 12–18 meses, mono/twist 6–9 meses, PLLA 18–24 meses. Preço Full Face Lifting: R$6.000–12.000. LTV em 24 meses com fidelização: R$20.000–29.000. Taxa de conversão avaliação → protocolo: meta acima de 45%. Recall por tipo: cog em 10–12 meses, PLLA em 15–18 meses. Brasil: 2º em procedimentos não cirúrgicos (ISAPS, 2024).'
+  } else if (slug === 'enzimas-papada-gordura-submentual-captacao') {
+    aiOptimizedDescription = 'Enzimas para papada no Brasil: protocolo de 2–3 sessões com 30–45 dias de intervalo, preço R$1.200–3.500. Resultado permanente para células destruídas. Taxa de conversão de avaliação gratuita alta por queixa objetiva. Inchaço 3–7 dias pós-aplicação é normal — resultado avaliado em 30–45 dias. ANVISA regulamenta uso de injetáveis: habilitação profissional obrigatória (CFM/CRO/CREFITO).'
+  } else if (slug === 'radiofrequencia-ultrassom-microfocado-pacotes') {
+    aiOptimizedDescription = 'Radiofrequência: 6–8 sessões, intervalo 14–21 dias facial / 7–14 dias corporal, ticket R$200–600/sessão. HIFU facial: 1–2×/ano, profundidade 4,5mm, resultado em 3–6 meses, duração 12–18 meses, ticket R$800–2.500. Protocolo combinado RF + HIFU: LTV anual R$3.000–5.500. Mercado de medicina estética cresceu 8% em 2024, projeção 7%/ano até 2029.'
+  } else if (slug === 'micropigmentacao-sobrancelha-recorrencia-retoque') {
+    aiOptimizedDescription = 'Micropigmentação de sobrancelha no Brasil: preço médio R$600–850 (faixa R$350–1.500). Durabilidade: fio a fio 12–24m, ombre 18–36m, nanopigmentação 12–18m. Retoque de correção obrigatório em 30–45 dias. Manutenção fidelidade: 50–60% do preço inicial. Setor gerou 11.000 novos empregos em 2024 (ABIHPEC). 30–45% das clientes chegam por indicação com programa ativo.'
+  } else if (slug === 'tratamento-capilar-calvicie-protocolos-fidelizacao') {
+    aiOptimizedDescription = 'Tratamento capilar não cirúrgico: PRP 3–4 sessões mensais (R$600–1.500/sessão), intradermoterapia 4–8 sessões (R$250–600/sessão). Queda estabiliza em 60–90 dias; crescimento visível em 4–6 meses. LTV protocolo capilar 3 anos: R$14.400+. 95% dos pacientes de transplante capilar em 2024 tinham 20–35 anos (ISHRS 2024). Abandono alto sem gestão ativa de fases.'
+  } else if (slug === 'drenagem-linfatica-pos-operatorio-recorrencia') {
+    aiOptimizedDescription = 'Drenagem linfática pós-operatória: abdominoplastia exige 15–20 sessões (R$2.250–4.000 pacote), lipoaspiração 10–15 sessões (R$1.500–3.000). Brasil lidera cirurgias plásticas no mundo (2M+ procedimentos em 2024, ISAPS/CNN Brasil). Um cirurgião com 40–60 cirurgias/mês gera 15–25 pacientes mensais para clínica parceira. Conversão pós-op → cliente regular: 40–60% com abordagem no último terço do protocolo.'
   }
 
   return {
@@ -544,6 +554,91 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: estetiaAuthor,
     })
+  } else if (slug === 'enzimas-papada-gordura-submentual-captacao') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION,
+        COMMON_WIKIDATA_ENTITIES.CONVERSION_RATE,
+        COMMON_WIKIDATA_ENTITIES.DIGITAL_MARKETING,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION],
+      citations: [
+        'https://www.isaps.org/media/iuuloooz/4184727-1-14-portuguese-latam.pdf',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'radiofrequencia-ultrassom-microfocado-pacotes') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.LASER_SURGERY,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION],
+      citations: [
+        'https://ibramed.com.br/radiofrequencia-e-ultrassom-microfocado-a-combinacao-perfeita-para-resultados-avancados/',
+        'https://blog.bcmed.com.br/ultrassom-focalizado-de-alta-intensidade-hifu/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'micropigmentacao-sobrancelha-recorrencia-retoque') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.COSMETICS,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.NET_PROMOTER_SCORE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION],
+      citations: [
+        'https://abihpec.org.br/publicacao/panorama-do-setor-25/',
+        'https://cosmeticinnovation.com.br/mercado-de-beleza-cresce-com-tendencia-em-micropigmentacao/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'tratamento-capilar-calvicie-protocolos-fidelizacao') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.ARTIFICIAL_INTELLIGENCE,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION],
+      citations: [
+        'https://bjihs.emnuvens.com.br/bjihs/article/view/4405',
+        'https://revistaft.com.br/intradermoterapia-capilar-beneficios-no-tratamento-da-alopecia/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'drenagem-linfatica-pos-operatorio-recorrencia') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.HEALTHCARE,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_ACQUISITION_COST,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.HEALTHCARE],
+      citations: [
+        'https://revistajrg.com/index.php/jrg/article/view/1286',
+        'https://bjihs.emnuvens.com.br/bjihs/article/view/7353',
+        'https://www.cnnbrasil.com.br/saude/brasil-e-o-pais-que-mais-realiza-cirurgia-plastica-no-mundo-diz-relatorio/',
+      ],
+      author: estetiaAuthor,
+    })
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -590,6 +685,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'microagulhamento-protocolos-fidelizacao': microagulhamentoFAQs,
     'peeling-quimico-captacao-jornada-paciente': peelingQuimicoFAQs,
     'fios-pdo-lifting-avaliacao-ticket-alto': fiosPdoFAQs,
+    'enzimas-papada-gordura-submentual-captacao': enzimasPapadaFAQs,
+    'radiofrequencia-ultrassom-microfocado-pacotes': radiofrequenciaFAQs,
+    'micropigmentacao-sobrancelha-recorrencia-retoque': micropigmentacaoFAQs,
+    'tratamento-capilar-calvicie-protocolos-fidelizacao': tratamentoCapilarFAQs,
+    'drenagem-linfatica-pos-operatorio-recorrencia': drenagemLinfaticaFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 

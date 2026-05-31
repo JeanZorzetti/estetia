@@ -25,6 +25,11 @@ import { post as criolipolisePost } from './posts/criolipolise-gordura-localizad
 import { post as microagulhamentoPost } from './posts/microagulhamento-protocolos-fidelizacao'
 import { post as peelingQuimicoPost } from './posts/peeling-quimico-captacao-jornada-paciente'
 import { post as fiosPdoPost } from './posts/fios-pdo-lifting-avaliacao-ticket-alto'
+import { post as enzimasPapadaPost } from './posts/enzimas-papada-gordura-submentual-captacao'
+import { post as radiofrequenciaPost } from './posts/radiofrequencia-ultrassom-microfocado-pacotes'
+import { post as micropigmentacaoPost } from './posts/micropigmentacao-sobrancelha-recorrencia-retoque'
+import { post as tratamentoCapilarPost } from './posts/tratamento-capilar-calvicie-protocolos-fidelizacao'
+import { post as drenagemLinfaticaPost } from './posts/drenagem-linfatica-pos-operatorio-recorrencia'
 
 export const blogPosts: BlogPost[] = [
   comparasSistemaPost,
@@ -52,6 +57,11 @@ export const blogPosts: BlogPost[] = [
   microagulhamentoPost,
   peelingQuimicoPost,
   fiosPdoPost,
+  enzimasPapadaPost,
+  radiofrequenciaPost,
+  micropigmentacaoPost,
+  tratamentoCapilarPost,
+  drenagemLinfaticaPost,
 ]
 
 export const CATEGORY_COLORS: Record<string, string> = {
