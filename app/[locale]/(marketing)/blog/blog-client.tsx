@@ -35,10 +35,13 @@ interface BlogClientContentProps {
   locale: string
 }
 
+const PAGE_SIZE = 6
+
 export function BlogClientContent({ sortedPosts, allCategoryLabel, locale }: BlogClientContentProps) {
   const t = useTranslations('marketing.blog')
   const isEn = locale === 'en'
   const [selectedCategory, setSelectedCategory] = useState(allCategoryLabel)
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
   const uniqueCategories = Array.from(new Set(sortedPosts.map(p => p.category)))
   const categories = [allCategoryLabel, ...uniqueCategories]
@@ -48,8 +51,13 @@ export function BlogClientContent({ sortedPosts, allCategoryLabel, locale }: Blo
     : sortedPosts.filter(p => p.category === selectedCategory)
 
   const featuredPost = filteredPosts[0]
-  // cap at 6 so the grid (3 cols) always fills evenly
-  const recentPosts = filteredPosts.slice(1, 7)
+  const recentPosts = filteredPosts.slice(1, 1 + visibleCount)
+  const hasMore = filteredPosts.length - 1 > visibleCount
+
+  function handleCategoryChange(category: string) {
+    setSelectedCategory(category)
+    setVisibleCount(PAGE_SIZE)
+  }
 
   return (
     <>
@@ -67,7 +75,7 @@ export function BlogClientContent({ sortedPosts, allCategoryLabel, locale }: Blo
                   return (
                     <button
                       key={category}
-                      onClick={() => setSelectedCategory(category)}
+                      onClick={() => handleCategoryChange(category)}
                       className="flex items-center gap-2 whitespace-nowrap px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-500 flex-shrink-0 hover:scale-[1.03] active:scale-95"
                       style={isActive
                         ? {
@@ -199,7 +207,7 @@ export function BlogClientContent({ sortedPosts, allCategoryLabel, locale }: Blo
             </p>
             <div className="flex flex-wrap gap-2.5 justify-center max-w-xl mx-auto px-6">
               {getAllCategories().map(cat => (
-                <button key={cat} onClick={() => setSelectedCategory(cat)}
+                <button key={cat} onClick={() => handleCategoryChange(cat)}
                   className="px-5 py-2.5 rounded-full tracking-[0.1em] uppercase text-[10px] font-bold transition-all hover:scale-105 border border-[#0A1F3D]/10 hover:border-[#C5A059]/40 text-[#64748B] hover:text-[#0A1F3D] bg-white/80 hover:bg-white shadow-sm">
                   {cat}
                 </button>
@@ -281,6 +289,19 @@ export function BlogClientContent({ sortedPosts, allCategoryLabel, locale }: Blo
                 )
               })}
             </div>
+
+            {/* ── Load more ── */}
+            {hasMore && (
+              <div className="flex justify-center pt-8 pb-16">
+                <button
+                  onClick={() => setVisibleCount(v => v + PAGE_SIZE)}
+                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-sm tracking-[0.1em] uppercase border border-[#0A1F3D]/15 bg-white/70 backdrop-blur-md hover:bg-[#0A1F3D] hover:text-white hover:border-[#0A1F3D] text-[#0A1F3D] shadow-sm hover:shadow-[0_8px_24px_rgba(10,31,61,0.15)] transition-all duration-300"
+                >
+                  <span>Ver mais artigos</span>
+                  <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
