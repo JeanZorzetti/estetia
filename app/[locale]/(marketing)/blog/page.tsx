@@ -54,7 +54,7 @@ export default async function BlogPage({
               <div className="absolute inset-y-0 left-2/3 w-px bg-gradient-to-b from-transparent via-[#FFFFFF]/10 to-transparent" />
 
               {[
-                { value: '5', label: 'artigos' },
+                { value: String(sortedPosts.length), label: 'artigos' },
                 { value: '5', label: 'categorias' },
                 { value: '2×', label: 'por mês' },
               ].map(({ value, label }) => (
