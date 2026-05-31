@@ -30,6 +30,11 @@ import { post as radiofrequenciaPost } from './posts/radiofrequencia-ultrassom-m
 import { post as micropigmentacaoPost } from './posts/micropigmentacao-sobrancelha-recorrencia-retoque'
 import { post as tratamentoCapilarPost } from './posts/tratamento-capilar-calvicie-protocolos-fidelizacao'
 import { post as drenagemLinfaticaPost } from './posts/drenagem-linfatica-pos-operatorio-recorrencia'
+import { post as contratarRecepcionistaPost } from './posts/contratar-treinar-recepcionista-clinica-estetica'
+import { post as comissaoProfissionaisPost } from './posts/comissao-profissionais-clinica-estetica-modelos'
+import { post as gestaoEstoquePost } from './posts/gestao-estoque-produtos-clinica-estetica'
+import { post as produtividadeEquipePost } from './posts/produtividade-equipe-clinica-estetica-indicadores'
+import { post as gestaoSalasPost } from './posts/gestao-salas-agenda-equipe-clinica-estetica'
 
 export const blogPosts: BlogPost[] = [
   comparasSistemaPost,
@@ -62,6 +67,11 @@ export const blogPosts: BlogPost[] = [
   micropigmentacaoPost,
   tratamentoCapilarPost,
   drenagemLinfaticaPost,
+  contratarRecepcionistaPost,
+  comissaoProfissionaisPost,
+  gestaoEstoquePost,
+  produtividadeEquipePost,
+  gestaoSalasPost,
 ]
 
 export const CATEGORY_COLORS: Record<string, string> = {

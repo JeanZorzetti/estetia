@@ -988,3 +988,133 @@ export const drenagemLinfaticaFAQs: FAQItem[] = [
     answer: 'A abordagem mais eficaz: no último terço do protocolo de drenagem (quando o paciente já vê resultado), apresentar procedimentos complementares que potencializam o resultado da cirurgia (RF para firmar pele pós-lipo, microagulhamento para textura de cicatrizes, criolipólise para áreas residuais). Taxa de conversão: 40–60% quando feita nessa janela, versus quase zero após o paciente sair da última sessão.',
   },
 ]
+
+/**
+ * FAQ data for Contratar e Treinar Recepcionista blog post
+ */
+export const recepcionistaFAQs: FAQItem[] = [
+  {
+    question: 'Qual o salário médio de recepcionista de clínica de estética no Brasil?',
+    answer: 'O salário médio é de R$1.889/mês, com faixa entre R$1.500 e R$2.500 dependendo da localidade e das responsabilidades, segundo dados do Glassdoor Brasil (2026). Profissionais com experiência em vendas e sistema de gestão recebem valores no topo da faixa. Para funções com responsabilidade de conversão, adicionar variável de desempenho alinha o incentivo com o resultado da clínica.',
+  },
+  {
+    question: 'Preciso de recepcionista com experiência em clínica de estética?',
+    answer: 'Experiência em clínica de estética ajuda, mas não é obrigatória. O que é inegociável: experiência com atendimento ao público, boa comunicação verbal e escrita, domínio de WhatsApp e predisposição para função comercial. Experiência em vendas ou atendimento de saúde/beleza são diferenciais relevantes. Habilidade técnica no sistema se aprende em dias — soft skills de atendimento são muito mais difíceis de desenvolver.',
+  },
+  {
+    question: 'Quantas recepcionistas uma clínica de estética precisa?',
+    answer: 'Uma recepcionista gerencia adequadamente até 25–30 consultas/dia. Clínicas com mais de 30 consultas diárias precisam de pelo menos duas pessoas — uma para atendimento presencial e outra para WhatsApp e confirmações. Clínicas com horário estendido (até 21h) e sábados geralmente precisam de escala com sobreposição de horário.',
+  },
+  {
+    question: 'Como avaliar o desempenho da recepcionista?',
+    answer: 'Com métricas, não com impressão. Defina antes da contratação os KPIs que serão medidos: taxa de conversão de ligações (meta acima de 60%), taxa de confirmação (meta acima de 85%), índice de no-show e NPS de atendimento. Revise mensalmente com conversa de feedback baseada nos números.',
+  },
+  {
+    question: 'Qual o principal erro no processo seletivo de recepcionista para clínica de estética?',
+    answer: 'Não fazer roleplay. A maioria das clínicas avalia a recepcionista pela entrevista convencional e pelo currículo — e descobre os problemas depois da contratação. O roleplay obrigatório (simular atendimento de cancelamento e conversão de lead por WhatsApp) revela mais em 5 minutos do que 30 minutos de conversa sobre experiência anterior.',
+  },
+]
+
+/**
+ * FAQ data for Comissão de Profissionais blog post
+ */
+export const comissaoProfissionaisFAQs: FAQItem[] = [
+  {
+    question: 'Qual o percentual de comissão ideal para esteticista?',
+    answer: 'No modelo CLT com fixo + variável, o percentual de comissão mais comum é de 15–25% sobre o faturamento individual acima da meta base. No modelo de parceria, a clínica retém 20–35%. A legislação limita a retenção pela clínica a no máximo 30% quando há elementos de subordinação. O percentual correto depende do custo de produto do procedimento e da remuneração base já paga.',
+  },
+  {
+    question: 'A comissão de esteticista pode substituir o salário?',
+    answer: 'Não, se houver vínculo CLT. No regime celetista, o salário fixo não pode ser eliminado em favor de comissão pura. A comissão é um adicional ao salário base — e ambos devem constar na CTPS. Comissão como único pagamento em relação com horário fixo e subordinação configura vínculo CLT disfarçado e gera passivo trabalhista.',
+  },
+  {
+    question: 'Como evitar conflitos de comissão com a equipe?',
+    answer: 'Transparência total: documente por escrito as regras de cálculo, a base de comissão (faturamento bruto vs. lucro bruto), os prazos de pagamento e as metas. Mostre o cálculo detalhado mensalmente — profissional que entende como chegou no valor não questiona. Conflitos surgem principalmente de falta de clareza nas regras, não do percentual.',
+  },
+  {
+    question: 'CLT ou parceria: qual modelo funciona melhor para clínica de estética?',
+    answer: 'CLT é obrigatório quando há subordinação, horário fixo e exclusividade — tentar enquadrar essa relação como parceria é risco trabalhista. Parceria legítima funciona quando o profissional tem autonomia real: define seus horários, atende sua própria cartela, pode trabalhar em outros locais. Consulte advogado trabalhista antes de definir o formato.',
+  },
+  {
+    question: 'Como calcular comissão sobre lucro bruto em vez de faturamento bruto?',
+    answer: 'Fórmula: (Valor cobrado do paciente − Custo dos produtos utilizados) × Percentual de comissão. Exemplo: toxina R$900 − custo R$250 = lucro bruto R$650 × 20% = R$130 de comissão. Comparado com comissão sobre faturamento bruto (R$900 × 20% = R$180), a clínica economiza R$50 por procedimento sem reduzir a comissão do profissional em percentual.',
+  },
+]
+
+/**
+ * FAQ data for Gestão de Estoque blog post
+ */
+export const gestaoEstoqueFAQs: FAQItem[] = [
+  {
+    question: 'A ANVISA exige controle de estoque para clínicas de estética?',
+    answer: 'Sim. A Nota Técnica nº 2/2024/GGTES/ANVISA estabelece exigências para serviços de estética: produtos com registro válido, armazenagem conforme temperatura indicada, controle de validade e lote, e rastreabilidade de injetáveis. Em operação de fiscalização de 2025, a ANVISA encontrou irregularidades recorrentes como produtos vencidos e injetáveis reutilizados.',
+  },
+  {
+    question: 'Como controlar a validade de toxina botulínica corretamente?',
+    answer: 'A toxina botulínica requer refrigeração entre 2–8°C, com registro diário de temperatura. O controle de validade deve ser por lote, usando o sistema FEFO (First Expired, First Out). Configure alerta de 90 dias antes do vencimento. Uma vez aberto o frasco, deve ser usado dentro do prazo indicado pelo fabricante (geralmente no mesmo dia).',
+  },
+  {
+    question: 'Como calcular o custo de insumo de um procedimento estético?',
+    answer: 'Some todos os materiais consumidos: produto principal (valor do frasco ÷ número de aplicações), materiais descartáveis (agulhas, seringas, luvas), consumíveis de equipamento e materiais de assepsia. Para a precificação, adicione overhead de sala, custo do profissional e margem de lucro desejada.',
+  },
+  {
+    question: 'Qual é o custo médio de insumos como percentual do faturamento em clínicas de estética?',
+    answer: 'O parâmetro saudável é 15–25% do faturamento em insumos. Clínicas com alto volume de injetáveis tendem para 20–25%; clínicas com foco em aparelhos tendem para 10–18%. Custos de insumo acima de 30% indicam precificação abaixo do custo ou perdas de estoque significativas.',
+  },
+  {
+    question: 'O que é rastreabilidade de injetáveis por lote e por que é obrigatória?',
+    answer: 'Rastreabilidade significa registrar no prontuário de cada paciente: produto utilizado, número de lote e data de validade. Isso permite identificar, em caso de evento adverso ou recall do fabricante, todos os pacientes que receberam produto de um mesmo lote específico. É exigência da ANVISA e é clinicamente fundamental para gestão de incidentes.',
+  },
+]
+
+/**
+ * FAQ data for Produtividade da Equipe blog post
+ */
+export const produtividadeEquipeFAQs: FAQItem[] = [
+  {
+    question: 'Qual é uma taxa de ocupação saudável para profissionais de clínica de estética?',
+    answer: 'A meta saudável é 75–85% da agenda disponível efetivamente ocupada com atendimentos. Abaixo de 70% indica problema de captação, no-show alto ou agenda mal gerenciada. Acima de 90% por períodos prolongados indica necessidade de expansão — profissional sobrecarregada tem queda de qualidade e risco de burnout.',
+  },
+  {
+    question: 'Como aumentar o ticket médio por atendimento sem pressionar o paciente?',
+    answer: 'A forma mais eficaz é o plano de tratamento: apresentar um protocolo com 2–3 etapas na avaliação. O paciente enxerga o caminho completo e decide o ritmo. Isso aumenta o ticket sem pressão de venda porque é uma recomendação clínica, não uma oferta comercial.',
+  },
+  {
+    question: 'Com que frequência devo revisar os KPIs de cada profissional?',
+    answer: 'Mensalmente no mínimo, com reunião individual de 15–20 minutos. O que é medido e discutido regularmente melhora — o que não é medido se deteriora silenciosamente. Gestoras mais proativas revisam semanalmente os KPIs operacionais (ocupação, no-show) e mensalmente os estratégicos (ticket médio, conversão, recompra, NPS).',
+  },
+  {
+    question: 'Quais são os 3 KPIs mais importantes para medir produtividade em clínica de estética?',
+    answer: 'Os 3 com maior impacto no faturamento: (1) Taxa de ocupação — % do tempo disponível efetivamente usado; (2) Taxa de conversão de avaliação — % das consultas de avaliação que geram procedimento; (3) Taxa de recompra em 90 dias — % dos pacientes que voltam dentro de 90 dias. Juntos, esses 3 KPIs explicam a maioria da variação de faturamento entre profissionais com a mesma estrutura.',
+  },
+  {
+    question: 'O que fazer quando um profissional não atinge as metas?',
+    answer: 'Primeiro, entender a causa: é habilidade técnica? Habilidade de comunicação/conversão? Problema de agenda? Problema pessoal? Cada causa exige resposta diferente. Treinamento funciona para habilidade; coaching para comunicação; ajuste de agenda para mix de pacientes. Após 3 meses com suporte e metas claras sem resultado, é uma decisão de gestão de pessoas.',
+  },
+]
+
+/**
+ * FAQ data for Gestão de Salas e Agenda blog post
+ */
+export const gestaoSalasFAQs: FAQItem[] = [
+  {
+    question: 'Qual é a taxa de ocupação ideal para salas de clínica de estética?',
+    answer: 'A meta saudável é 75–85% para salas polivalentes e de injetáveis; 80%+ para salas de aparelho de alto custo (RF, HIFU, laser). Abaixo de 65% indica problema de captação ou no-show alto. Acima de 90% por períodos prolongados indica necessidade de expansão — ocupação muito alta aumenta o risco de erros.',
+  },
+  {
+    question: 'Como montar a escala de equipe para evitar horas ociosas?',
+    answer: 'Mapeie a demanda por dia e horário nos últimos 3 meses (relatório de agendamentos do CRM). Identifique os picos e vales. Concentre profissionais nos picos (geralmente sexta e sábado, 9h–12h e 17h–20h). Use banco de horas ou escala rotativa para equilibrar dias de baixa demanda. Revise trimestralmente.',
+  },
+  {
+    question: 'Como preencher horários vagos de última hora?',
+    answer: 'Três estratégias: (1) lista de espera ativa por procedimento — acionar imediatamente ao receber cancelamento; (2) oferta de encaixe rápido por WhatsApp para pacientes com recall próximo; (3) procedimentos de encaixe de 30–45 minutos para horários que abrem no mesmo dia. Clínicas com lista de espera ativa preenchem 50–70% dos cancelamentos de última hora.',
+  },
+  {
+    question: 'Quando vale a pena abrir horário noturno ou no sábado?',
+    answer: 'Vale quando a demanda existe mas não é atendida. Avalie: quantas solicitações de horário noturno ou de sábado foram recusadas no último mês? Se for mais de 15–20 por mês, há demanda reprimida que justifica expansão. O custo incremental (energia + horas adicionais de equipe) geralmente é coberto com 2–3 atendimentos por noite.',
+  },
+  {
+    question: 'Como calcular o ROI de um equipamento estético (RF, HIFU, laser)?',
+    answer: 'Custo mensal = (Valor do equipamento ÷ meses de depreciação) + manutenção mensal. Sessões para cobrir o custo = Custo mensal ÷ Ticket médio por sessão. Para o equipamento ser lucrativo, precisa fazer mais sessões do que esse break-even. Exemplo: equipamento de R$80.000 depreciado em 60 meses + R$200/mês de manutenção = R$1.533/mês. Com ticket de R$350/sessão, break-even em 4,4 sessões/mês — mas para boa rentabilidade, precisa de 20+ sessões/mês.',
+  },
+]

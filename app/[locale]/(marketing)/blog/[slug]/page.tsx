@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, enzimasPapadaFAQs, radiofrequenciaFAQs, micropigmentacaoFAQs, tratamentoCapilarFAQs, drenagemLinfaticaFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, enzimasPapadaFAQs, radiofrequenciaFAQs, micropigmentacaoFAQs, tratamentoCapilarFAQs, drenagemLinfaticaFAQs, recepcionistaFAQs, comissaoProfissionaisFAQs, gestaoEstoqueFAQs, produtividadeEquipeFAQs, gestaoSalasFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -110,6 +110,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Tratamento capilar não cirúrgico: PRP 3–4 sessões mensais (R$600–1.500/sessão), intradermoterapia 4–8 sessões (R$250–600/sessão). Queda estabiliza em 60–90 dias; crescimento visível em 4–6 meses. LTV protocolo capilar 3 anos: R$14.400+. 95% dos pacientes de transplante capilar em 2024 tinham 20–35 anos (ISHRS 2024). Abandono alto sem gestão ativa de fases.'
   } else if (slug === 'drenagem-linfatica-pos-operatorio-recorrencia') {
     aiOptimizedDescription = 'Drenagem linfática pós-operatória: abdominoplastia exige 15–20 sessões (R$2.250–4.000 pacote), lipoaspiração 10–15 sessões (R$1.500–3.000). Brasil lidera cirurgias plásticas no mundo (2M+ procedimentos em 2024, ISAPS/CNN Brasil). Um cirurgião com 40–60 cirurgias/mês gera 15–25 pacientes mensais para clínica parceira. Conversão pós-op → cliente regular: 40–60% com abordagem no último terço do protocolo.'
+  } else if (slug === 'contratar-treinar-recepcionista-clinica-estetica') {
+    aiOptimizedDescription = 'Recepcionista de clínica de estética no Brasil: salário médio R$1.889/mês (faixa R$1.500–2.500). Contratações cresceram 9,71% em 12 meses (Glassdoor, 2026). Taxa de conversão de ligações em agendamentos: recepcionista treinada 60–80% vs. sem treinamento 20–40%. KPIs de recepção: taxa de confirmação meta >85%, no-show meta <10%, preenchimento de lista de espera >50%.'
+  } else if (slug === 'comissao-profissionais-clinica-estetica-modelos') {
+    aiOptimizedDescription = 'Comissão de esteticista no Brasil: salário médio R$2.236/mês (CLT, 18.493 profissionais, Salario.com.br 2026). Lei limita retenção da clínica a máximo 30% do faturamento do profissional (Câmara dos Deputados, 2024). Modelo recomendado: CLT fixo R$1.500–1.800 + 15–25% variável sobre faturamento individual. Custo de pessoal meta: abaixo de 35–40% do faturamento.'
+  } else if (slug === 'gestao-estoque-produtos-clinica-estetica') {
+    aiOptimizedDescription = 'Gestão de estoque em clínica de estética: ANVISA Nota Técnica 2/2024 exige controle de validade, lote e temperatura de injetáveis. Fiscalização 2025 encontrou toxinas vencidas e injetáveis reutilizados em clínicas (APM, 2025). Toxina botulínica: armazenar 2–8°C com registro diário de temperatura. Custo de insumo saudável: 15–25% do faturamento. Taxa de perda por vencimento meta: abaixo de 1%.'
+  } else if (slug === 'produtividade-equipe-clinica-estetica-indicadores') {
+    aiOptimizedDescription = 'Produtividade de clínica de estética: clínicas que monitoram KPIs mensalmente crescem 30–45% mais em 12 meses (Sebrae, 2024). 6 KPIs principais: taxa de ocupação (meta 75–85%), ticket médio por profissional, conversão de avaliação (meta >55%), recompra em 90 dias (meta >40%), NPS (meta >8,5), faturamento por hora. Aumento de 10% na ocupação = 36% mais faturamento com mesma estrutura.'
+  } else if (slug === 'gestao-salas-agenda-equipe-clinica-estetica') {
+    aiOptimizedDescription = 'Gestão de salas em clínica de estética: sala vazia representa R$3.000–8.000/mês em custos fixos sem receita. Taxa de ocupação meta: 75–85% para salas gerais, 80%+ para aparelhos. Agendamento online preenche 15–25% dos horários em períodos fora do expediente. Lista de espera ativa preenche 50–70% dos cancelamentos. Break-even de aparelho RF R$80.000: 4,4 sessões/mês; rentabilidade real acima de 20 sessões/mês.'
   }
 
   return {
@@ -621,6 +631,87 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: estetiaAuthor,
     })
+  } else if (slug === 'contratar-treinar-recepcionista-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.NET_PROMOTER_SCORE,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION],
+      citations: [
+        'https://www.glassdoor.com.br/Sal%C3%A1rios/recepcionista-clinica-sal%C3%A1rio-SRCH_KO0,21.htm',
+        'https://versatilis.com.br/salario-de-recepcionista/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'comissao-profissionais-clinica-estetica-modelos') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.COMMISSION,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.COMMISSION, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      citations: [
+        'https://www.salario.com.br/profissao/esteticista-cbo-322130/',
+        'https://www.camara.leg.br/noticias/560037-comissao-aprova-regras-para-contrato-entre-esteticistas-e-clinicas/',
+        'https://agendiva.com.br/blog/como-calcular-comissao-de-esteticista',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'gestao-estoque-produtos-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.GENERAL_DATA_PROTECTION,
+        COMMON_WIKIDATA_ENTITIES.BOTULINUM_TOXIN,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.BOTULINUM_TOXIN],
+      citations: [
+        'https://www.gov.br/anvisa/pt-br/centraisdeconteudo/publicacoes/servicosdesaude/notas-tecnicas/notas-tecnicas-vigentes/nota-tecnica-no-2-2024-sei-ggtes-dire3-anvisa-esclarecimentos-sobre-os-servicos-de-estetica-e-atendimento-as-normas-sanitarias-aplicaveis-a-esses-servicos',
+        'https://www.apm.org.br/anvisa-fiscaliza-clinicas-de-estetica-do-pais-e-encontra-produtos-sem-registro-itens-vencidos-e-equipamentos-injetaveis-reutilizados/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'produtividade-equipe-clinica-estetica-indicadores') {
+    geoConfig = createGeoConfig.clinicKpis({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.NET_PROMOTER_SCORE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      citations: [
+        'https://sebrae.com.br/sites/PortalSebrae/artigos/desafios-globais-do-consumo-no-mercado-de-beleza,4425ba6f37f86810VgnVCM1000001b00320aRCRD',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'gestao-salas-agenda-equipe-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING],
+      author: estetiaAuthor,
+    })
   } else if (slug === 'drenagem-linfatica-pos-operatorio-recorrencia') {
     geoConfig = createGeoConfig.aestheticMedicine({
       mentions: [
@@ -690,6 +781,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'micropigmentacao-sobrancelha-recorrencia-retoque': micropigmentacaoFAQs,
     'tratamento-capilar-calvicie-protocolos-fidelizacao': tratamentoCapilarFAQs,
     'drenagem-linfatica-pos-operatorio-recorrencia': drenagemLinfaticaFAQs,
+    'contratar-treinar-recepcionista-clinica-estetica': recepcionistaFAQs,
+    'comissao-profissionais-clinica-estetica-modelos': comissaoProfissionaisFAQs,
+    'gestao-estoque-produtos-clinica-estetica': gestaoEstoqueFAQs,
+    'produtividade-equipe-clinica-estetica-indicadores': produtividadeEquipeFAQs,
+    'gestao-salas-agenda-equipe-clinica-estetica': gestaoSalasFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 
