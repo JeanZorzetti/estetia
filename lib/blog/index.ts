@@ -20,6 +20,11 @@ import { post as preenchimentoAhPost } from './posts/preenchimento-acido-hialuro
 import { post as harmonizacaoFacialPost } from './posts/harmonizacao-facial-precificacao-avaliacao'
 import { post as depilacaoLaserPost } from './posts/depilacao-laser-pacotes-recorrencia'
 import { post as limpezaPelePost } from './posts/limpeza-de-pele-protocolos-fidelizacao'
+import { post as bioestimuladoresPost } from './posts/bioestimuladores-colageno-clinica-estetica'
+import { post as criolipolisePost } from './posts/criolipolise-gordura-localizada-pacotes'
+import { post as microagulhamentoPost } from './posts/microagulhamento-protocolos-fidelizacao'
+import { post as peelingQuimicoPost } from './posts/peeling-quimico-captacao-jornada-paciente'
+import { post as fiosPdoPost } from './posts/fios-pdo-lifting-avaliacao-ticket-alto'
 
 export const blogPosts: BlogPost[] = [
   comparasSistemaPost,
@@ -42,6 +47,11 @@ export const blogPosts: BlogPost[] = [
   harmonizacaoFacialPost,
   depilacaoLaserPost,
   limpezaPelePost,
+  bioestimuladoresPost,
+  criolipolisePost,
+  microagulhamentoPost,
+  peelingQuimicoPost,
+  fiosPdoPost,
 ]
 
 export const CATEGORY_COLORS: Record<string, string> = {

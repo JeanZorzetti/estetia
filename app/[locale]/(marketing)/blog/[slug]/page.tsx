@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -90,6 +90,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Depilação a laser no Brasil: 69 milhões de adeptos de depilação, apenas 3,4 milhões escolhem laser (penetração de 5%). Espanha: 50% do mercado já usa laser. Protocolo padrão: 6–8 sessões, intervalo 30–60 dias por área. Taxa de completude de pacotes com recall automático: 80%+. Manutenção anual necessária após protocolo inicial.'
   } else if (slug === 'limpeza-de-pele-protocolos-fidelizacao') {
     aiOptimizedDescription = 'Limpeza de pele como porta de entrada: paciente de R$120/mês migra para protocolos de R$500–800/mês em 6 meses com estratégia de fidelização. LTV com upsell: R$6.000–9.000/ano vs. R$240 sem estratégia. Recall por tipo de pele: oleosa a cada 25 dias, mista 28 dias, normal/seca 32 dias, sensível 40 dias. ABIHPEC: mercado de beleza cresceu 16,5% em 2024.'
+  } else if (slug === 'bioestimuladores-colageno-clinica-estetica') {
+    aiOptimizedDescription = 'Bioestimuladores de colágeno no Brasil: Sculptra (PLLA), Radiesse (CaHA) e Ellansé aprovados pela ANVISA. Sculptra: 2–4 sessões, duração 2–3 anos, recall em 18–24 meses; Radiesse: 1–2 sessões, 12–18 meses. Custo de protocolo Sculptra: R$4.500–8.000 com margem bruta de 55–70%. LTV em 3 anos: até R$14.000 por paciente fidelizado. Brasil: 2º país em procedimentos não cirúrgicos (ISAPS, 2024).'
+  } else if (slug === 'criolipolise-gordura-localizada-pacotes') {
+    aiOptimizedDescription = 'Criolipólise no Brasil: resultado visível em 8–12 semanas, células destruídas eliminadas permanentemente. Pacote Protocolo Completo (abdômen + flancos + culote): R$3.300 (vs. R$4.200 avulso). Taxa de retorno para 2ª sessão com recall automático de 55 dias: 65–75% vs. 30–40% sem recall. Mercado global de procedimentos estéticos: USD 30 bilhões em 2025.'
+  } else if (slug === 'microagulhamento-protocolos-fidelizacao') {
+    aiOptimizedDescription = 'Microagulhamento para cicatrizes de acne: melhora de 50–70% em estudos. Protocolo: 4–6 sessões com 28–35 dias de intervalo. Drug delivery com fatores de crescimento: +R$200–400 por sessão com absorção até 1.000× maior. LTV em 2 anos com manutenção trimestral: R$4.000–6.000. Segmento cresceu 8% em 2024, projeção 7%/ano até 2029.'
+  } else if (slug === 'peeling-quimico-captacao-jornada-paciente') {
+    aiOptimizedDescription = 'Peeling químico no Brasil: superficial (salicílico/glicólico/mandélico) — sem downtime, 4–6 sessões com 15–28 dias; médio (TCA 20–35%) — 4–7 dias de recuperação, 2–4 sessões. Integração peeling + microagulhamento: ticket 50–80% maior. Segmento de medicina estética cresceu 8% em 2024. Peeling como porta de entrada: LTV de R$6.000–12.000 com protocolo de fidelização.'
+  } else if (slug === 'fios-pdo-lifting-avaliacao-ticket-alto') {
+    aiOptimizedDescription = 'Fios de PDO no Brasil: cog/barbed duram 12–18 meses, mono/twist 6–9 meses, PLLA 18–24 meses. Preço Full Face Lifting: R$6.000–12.000. LTV em 24 meses com fidelização: R$20.000–29.000. Taxa de conversão avaliação → protocolo: meta acima de 45%. Recall por tipo: cog em 10–12 meses, PLLA em 15–18 meses. Brasil: 2º em procedimentos não cirúrgicos (ISAPS, 2024).'
   }
 
   return {
@@ -447,6 +457,93 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: estetiaAuthor,
     })
+  } else if (slug === 'bioestimuladores-colageno-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.COSMETICS,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BOTULINUM_TOXIN,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.COSMETICS],
+      citations: [
+        'https://www.isaps.org/media/iuuloooz/4184727-1-14-portuguese-latam.pdf',
+        'https://www.metropoles.com/saude/anvisa-bioestimulador-colageno-sculptra',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'criolipolise-gordura-localizada-pacotes') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION],
+      citations: [
+        'https://www.isaps.org/media/iuuloooz/4184727-1-14-portuguese-latam.pdf',
+        'https://www.doctorcredit.com.br/elementor-11036/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'microagulhamento-protocolos-fidelizacao') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.COSMETICS,
+        COMMON_WIKIDATA_ENTITIES.CUSTOMER_RETENTION,
+        COMMON_WIKIDATA_ENTITIES.UPSELLING,
+        COMMON_WIKIDATA_ENTITIES.ARTIFICIAL_INTELLIGENCE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.COSMETICS],
+      citations: [
+        'https://www.clinicorp.com/post/servicos-de-estetica-conheca-os-mais-procurados',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'peeling-quimico-captacao-jornada-paciente') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.COSMETICS,
+        COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION,
+        COMMON_WIKIDATA_ENTITIES.CONVERSION_RATE,
+        COMMON_WIKIDATA_ENTITIES.DIGITAL_MARKETING,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.LEAD_GENERATION],
+      citations: [
+        'https://blog.elitedospeelings.com.br/post/peeling-quimico-2026-tendencias-impacto-clinicas',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'fios-pdo-lifting-avaliacao-ticket-alto') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.SALES,
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.CONSULTATIVE_SELLING,
+        COMMON_WIKIDATA_ENTITIES.LIFETIME_VALUE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.SALES],
+      citations: [
+        'https://www.isaps.org/media/iuuloooz/4184727-1-14-portuguese-latam.pdf',
+        'https://www.doctorcredit.com.br/elementor-11036/',
+      ],
+      author: estetiaAuthor,
+    })
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -488,6 +585,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'harmonizacao-facial-precificacao-avaliacao': harmonizacaoFacialFAQs,
     'depilacao-laser-pacotes-recorrencia': depilacaoLaserFAQs,
     'limpeza-de-pele-protocolos-fidelizacao': limpezaPeleFAQs,
+    'bioestimuladores-colageno-clinica-estetica': bioestimuladoresFAQs,
+    'criolipolise-gordura-localizada-pacotes': criolipoliseFAQs,
+    'microagulhamento-protocolos-fidelizacao': microagulhamentoFAQs,
+    'peeling-quimico-captacao-jornada-paciente': peelingQuimicoFAQs,
+    'fios-pdo-lifting-avaliacao-ticket-alto': fiosPdoFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 

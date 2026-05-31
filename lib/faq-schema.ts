@@ -728,3 +728,133 @@ export const limpezaPeleFAQs: FAQItem[] = [
     answer: 'Três aplicações críticas: (1) anamnese digital com histórico acumulado por sessão — sem papel, sem perda de informação; (2) recall automático segmentado por tipo de pele — o sistema envia o lembrete no timing certo para cada paciente; (3) alerta de risco de churn — quando o intervalo entre sessões aumenta, o sistema avisa proativamente antes que o paciente desapareça.',
   },
 ]
+
+/**
+ * FAQ data for Bioestimuladores de Colágeno blog post
+ */
+export const bioestimuladoresFAQs: FAQItem[] = [
+  {
+    question: 'Quantas sessões de bioestimulador de colágeno são necessárias?',
+    answer: 'Depende do produto: Sculptra geralmente requer 2–4 sessões com intervalos de 4–6 semanas; Radiesse e Ellansé costumam precisar de 1–2 sessões. O número varia conforme o grau de flacidez e perda de volume. A avaliação antes de vender o protocolo é fundamental para dimensionar corretamente.',
+  },
+  {
+    question: 'Quanto custa um protocolo de bioestimulador de colágeno no Brasil?',
+    answer: 'Um protocolo completo de Sculptra (2–4 sessões) custa entre R$4.500 e R$8.000 em clínicas brasileiras em 2026. Radiesse e Ellansé têm faixa de R$2.200 a R$7.000 por protocolo. O investimento é mais alto que um preenchedor pontual, mas o resultado dura 2–3× mais tempo.',
+  },
+  {
+    question: 'Como gerenciar as expectativas do paciente de bioestimulador?',
+    answer: 'A chave é educação antes da primeira sessão: explicar que o resultado é progressivo (4–8 semanas para aparecer), que pode haver nódulos temporários com Sculptra, e mostrar fotos de outros pacientes no mesmo timeline. Clínicas que fazem essa gestão têm NPS muito mais alto — mesmo com resultado técnico idêntico.',
+  },
+  {
+    question: 'Como configurar o recall de manutenção de bioestimulador no CRM?',
+    answer: 'Configure o recall por produto: Sculptra em 18–20 meses após a última sessão; Radiesse em 12–13 meses; Ellansé conforme a versão (S: 10m, M: 20m, L: 30m). O recall enviado quando o resultado começa a diminuir tem taxa de conversão de 40–60% para manutenção.',
+  },
+  {
+    question: 'Bioestimulador pode ser combinado com outros procedimentos?',
+    answer: 'Sim, e a combinação é muito comum: bioestimulador para restaurar volume e estimular colágeno, toxina botulínica para relaxar musculatura de expressão, e preenchimento com ácido hialurônico para correção pontual. Cada procedimento age em uma camada diferente — a sinergia melhora o resultado global.',
+  },
+]
+
+/**
+ * FAQ data for Criolipólise e Gordura Localizada blog post
+ */
+export const criolipoliseFAQs: FAQItem[] = [
+  {
+    question: 'Quantas sessões de criolipólise são necessárias para ver resultado?',
+    answer: 'Para a maioria das áreas, 1 sessão já mostra resultado visível em 8–12 semanas. Para resultado mais intenso, 2 sessões com 60–90 dias de intervalo são recomendadas. O resultado máximo de cada sessão é avaliado 10–12 semanas após a aplicação — por isso o cronograma precisa ser respeitado antes de decidir sobre uma segunda sessão.',
+  },
+  {
+    question: 'Como estruturar um pacote de criolipólise para aumentar o ticket médio?',
+    answer: 'Combos de áreas complementares são a forma mais eficaz: abdômen + flancos, culote + face interna da coxa. Ofereça desconto de 15–20% no combo versus áreas separadas — o desconto é viável porque você concentra o atendimento no mesmo horário. Pacotes de 2 sessões por área também têm ticket maior e garantem que o paciente complete o protocolo.',
+  },
+  {
+    question: 'Como reduzir o abandono de protocolo em criolipólise?',
+    answer: 'Três estratégias combinadas: (1) agendar a segunda sessão antes do paciente sair da primeira — compromisso pré-existente tem taxa de comparecimento 2–3× maior; (2) recall automático em 55 dias alertando que está chegando a hora da segunda sessão; (3) compartilhar o resultado parcial com o paciente em 6 semanas — mostrar que está funcionando cria engajamento.',
+  },
+  {
+    question: 'Criolipólise tem manutenção?',
+    answer: 'As células de gordura destruídas pela criolipólise são eliminadas permanentemente. Porém, se o paciente ganhar peso, outras células podem se acumular na região. A manutenção anual (1 sessão por área) é uma boa prática para quem quer garantir o resultado a longo prazo e representa receita recorrente estruturada para a clínica.',
+  },
+  {
+    question: 'Quanto tempo dura o resultado da criolipólise?',
+    answer: 'As células de gordura destruídas não se regeneram — o resultado é permanente para essas células. O resultado completo é visível 8–12 semanas após a sessão. O corpo elimina as células destruídas gradualmente por metabolismo natural. Com estilo de vida saudável, o resultado se mantém por anos; ganho de peso pode resultar em acúmulo de novas células na região.',
+  },
+]
+
+/**
+ * FAQ data for Microagulhamento blog post
+ */
+export const microagulhamentoFAQs: FAQItem[] = [
+  {
+    question: 'Quantas sessões de microagulhamento são necessárias para ver resultado?',
+    answer: 'Melhora visível geralmente aparece a partir da 3ª sessão. O resultado completo do protocolo é avaliado 4–6 semanas após a última sessão. Para cicatrizes de acne, o protocolo típico é de 4–6 sessões; para rejuvenescimento, 3–4 sessões são geralmente suficientes.',
+  },
+  {
+    question: 'O que é drug delivery no microagulhamento e vale a pena?',
+    answer: 'Drug delivery é a aplicação de ativos (vitamina C, fatores de crescimento, ácido hialurônico) imediatamente após o microagulhamento, aproveitando os microcanais para aumentar a absorção. Vale muito: potencializa o resultado e justifica aumento de ticket de R$100–400 por sessão.',
+  },
+  {
+    question: 'Com que frequência deve ser feita a manutenção de microagulhamento?',
+    answer: 'Após o protocolo inicial (3–6 sessões), a manutenção trimestral (a cada 90–120 dias) é suficiente para a maioria dos pacientes de rejuvenescimento. Para tratamento ativo de cicatrizes em progresso, a frequência pode ser mensal. O profissional avalia no retorno o que é mais adequado.',
+  },
+  {
+    question: 'Microagulhamento pode ser feito em qualquer tipo de pele?',
+    answer: 'O microagulhamento tem boa tolerância em diferentes fototipos, mas requer cuidado especial em fototipos mais altos (IV–VI) pelo risco de hiperpigmentação pós-inflamatória. Contraindicações absolutas: acne ativa intensa, dermatites ativas, uso atual de isotretinoína e feridas abertas.',
+  },
+  {
+    question: 'Qual a diferença entre microagulhamento facial e do couro cabeludo?',
+    answer: 'O mecanismo é o mesmo — indução de colágeno e aumento de absorção de ativos — mas as indicações e ativos são diferentes. No couro cabeludo, o microagulhamento é indicado para alopecia androgenética e é combinado com minoxidil, finasterida tópica ou fatores de crescimento (PRP). O intervalo entre sessões no couro cabeludo é menor (14–21 dias) versus o facial (28–35 dias).',
+  },
+]
+
+/**
+ * FAQ data for Peeling Químico blog post
+ */
+export const peelingQuimicoFAQs: FAQItem[] = [
+  {
+    question: 'Qual peeling químico é melhor para manchas no rosto?',
+    answer: 'Depende do tipo de mancha: manchas pós-inflamatórias (acne) respondem bem ao ácido mandélico ou glicólico; melasma exige abordagem cuidadosa com TCA de baixa concentração ou peelings despigmentantes combinados com fotoproteção; manchas solares respondem bem ao glicólico e retinóico. A avaliação por profissional qualificado é fundamental.',
+  },
+  {
+    question: 'Peeling químico dói? Tem tempo de recuperação?',
+    answer: 'Peelings superficiais (salicílico, glicólico, mandélico) causam no máximo ardência leve durante a aplicação, sem downtime significativo — descamação sutil por 2–3 dias. Peelings médios (TCA) causam ardência moderada e descamação visível por 4–7 dias. Para quem não pode ter downtime, os peelings superficiais são a melhor opção.',
+  },
+  {
+    question: 'Quantas sessões de peeling são necessárias?',
+    answer: 'Para peelings superficiais: 4–6 sessões com 15–28 dias de intervalo para resultado consistente. Para peelings médios: 2–4 sessões com 30–45 dias de intervalo. O resultado começa após a 2ª sessão e consolida 4–6 semanas após a última sessão do ciclo. Manutenção mensal ou bimestral é recomendada para acne e melasma.',
+  },
+  {
+    question: 'Peeling químico pode ser feito em pele negra ou morena escura?',
+    answer: 'Sim, mas com escolha criteriosa do ácido e concentração. Fototipos IV–VI têm maior risco de hiperpigmentação pós-inflamatória com peelings mais agressivos. Ácidos mandélico, lático e fítico têm melhor perfil de segurança para fototipos altos. A avaliação do fototipo (escala de Fitzpatrick) e o preparo da pele com despigmentantes antes do peeling são essenciais.',
+  },
+  {
+    question: 'Peeling químico pode ser combinado com microagulhamento?',
+    answer: 'Sim, e a combinação está entre as tendências mais fortes de 2026. O microagulhamento cria microcanais que aumentam a penetração do ácido; o peeling potencializa a renovação celular iniciada pelo microagulhamento. O resultado combinado é superior a qualquer um isolado, com ticket 50–80% maior que o procedimento único.',
+  },
+]
+
+/**
+ * FAQ data for Fios de PDO (Lifting) blog post
+ */
+export const fiosPdoFAQs: FAQItem[] = [
+  {
+    question: 'Quanto dura o resultado de fios de PDO?',
+    answer: 'Depende do tipo: fios mono e twist duram 6–9 meses; fios cog (com ganchos, para sustentação) duram 12–18 meses; fios de PLLA ou PDLLA duram 18–24 meses. Após a absorção do fio, o colágeno estimulado mantém parte do resultado. A manutenção no timing certo preserva o resultado de forma contínua.',
+  },
+  {
+    question: 'Fios de PDO dói? Qual o tempo de recuperação?',
+    answer: 'O procedimento é realizado com anestesia local, tornando o desconforto mínimo. Após, é comum leve inchaço, hematomas pontuais e sensação de tensão por 3–7 dias. Irregularidades táteis nos primeiros 7–14 dias se resolvem espontaneamente. A maioria retorna às atividades normais em 24–48 horas, evitando exercícios intensos por 1 semana.',
+  },
+  {
+    question: 'Qual a diferença entre fios de PDO e preenchimento com ácido hialurônico?',
+    answer: 'Mecanismos complementares: o preenchimento com ácido hialurônico repõe volume dérmico; os fios de PDO criam sustentação mecânica e estímulo de colágeno. Para ptose (queda) de tecidos, os fios são mais indicados; para perda de volume, o preenchimento. Muitos protocolos combinam ambos para resultado completo.',
+  },
+  {
+    question: 'Como a clínica deve registrar o protocolo de fios no prontuário?',
+    answer: 'O prontuário de fios de PDO deve incluir: tipo e quantidade de fios por área, técnica utilizada, fotos padronizadas pré e pós-procedimento, termo de consentimento informado específico, orientações pós-procedimento e data de recall configurada. Sem esse registro, a continuidade do tratamento e a documentação legal ficam comprometidas.',
+  },
+  {
+    question: 'Quanto custa um protocolo de fios de PDO no Brasil?',
+    answer: 'Os preços variam por região e profissional: lifting de mandíbula e jowl fica entre R$2.800 e R$5.000; sobrancelha (Fox Eyes) entre R$1.500 e R$3.000; pescoço entre R$1.800 e R$3.500; Full Face Lifting entre R$6.000 e R$12.000. O custo por mês de resultado é competitivo comparado a manutenções frequentes de preenchimento na mesma área.',
+  },
+]
