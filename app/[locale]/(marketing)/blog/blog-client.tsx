@@ -290,18 +290,19 @@ export function BlogClientContent({ sortedPosts, allCategoryLabel, locale }: Blo
               })}
             </div>
 
-            {/* ── Load more ── */}
-            {hasMore && (
-              <div className="flex justify-center pt-8 pb-16">
-                <button
-                  onClick={() => setVisibleCount(v => v + PAGE_SIZE)}
-                  className="group inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-sm tracking-[0.1em] uppercase border border-[#0A1F3D]/15 bg-white/70 backdrop-blur-md hover:bg-[#0A1F3D] hover:text-white hover:border-[#0A1F3D] text-[#0A1F3D] shadow-sm hover:shadow-[0_8px_24px_rgba(10,31,61,0.15)] transition-all duration-300"
-                >
-                  <span>Ver mais artigos</span>
-                  <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-              </div>
-            )}
+          </div>
+        )}
+
+        {/* ── Load more — fora do bloco condicional recentPosts ── */}
+        {hasMore && (
+          <div className="flex justify-center pt-2 pb-20">
+            <button
+              onClick={() => setVisibleCount(v => v + PAGE_SIZE)}
+              className="group inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-sm tracking-[0.1em] uppercase border border-[#0A1F3D]/15 bg-white/70 backdrop-blur-md hover:bg-[#0A1F3D] hover:text-white hover:border-[#0A1F3D] text-[#0A1F3D] shadow-sm hover:shadow-[0_8px_24px_rgba(10,31,61,0.15)] transition-all duration-300"
+            >
+              <span>Ver mais artigos</span>
+              <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </button>
           </div>
         )}
       </div>
