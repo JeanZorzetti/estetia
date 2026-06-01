@@ -14,7 +14,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Atualizar manualmente quando houver mudanças reais nas páginas estáticas
     const lastSiteUpdate = new Date('2026-05-19')
 
-    // Static routes
+    // Static routes — only SEO-relevant pages that should rank organically.
+    // Internal/legal/support pages (privacy, terms, changelog, contact, about, community,
+    // anuario, followup, proposta, download) remain accessible but are NOT advertised here
+    // to focus Google's crawl budget on revenue-driving content.
     // Priorização Hierárquica (Seção 7.2):
     // - Homepage (1.0): Ponto central da marca
     // - Ferramentas/Conversão (0.9): Ativos de engajamento e conversão
@@ -25,19 +28,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { pt: '/solucoes', priority: 0.9 },
         { pt: '/precos', priority: 0.9 },
         { pt: '/blog' },
-        { pt: '/about' },
         { pt: '/help' },
-        { pt: '/privacy' },
-        { pt: '/terms' },
-        { pt: '/changelog' },
-        { pt: '/community' },
-        { pt: '/contact' },
-        { pt: '/download' },
-        { pt: '/followup' },
-        { pt: '/proposta' },
         { pt: '/vendas-automaticas', priority: 0.9 },
         { pt: '/ferramentas', priority: 0.9 },
-        { pt: '/anuario' },
     ]
 
     const routes = STATIC_ROUTES.map(({ pt, priority }) => ({
@@ -92,14 +85,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.85,
     }))
 
-    const vsSlugs = ['morelo', 'medidata', 'clinicare']
-    const vsPages = vsSlugs.map((slug) => ({
-        url: `${baseUrl}/vs/${slug}`,
-        lastModified: lastSiteUpdate,
-        changeFrequency: 'monthly' as const,
-        priority: 0.85,
-    }))
-
     const featureSlugs = [
         'agenda-inteligente', 'anamnese-digital', 'prontuario-eletronico', 'evolucao-fotos',
         'whatsapp-business', 'recall-automatico', 'estetia-ia', 'marketing-clinico',
@@ -120,6 +105,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...calculatorPages,
         ...solucaoPages,
         ...featurePages,
-        ...vsPages,
     ]
 }

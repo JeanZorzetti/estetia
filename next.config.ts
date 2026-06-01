@@ -198,16 +198,54 @@ const nextConfig: NextConfig = {
         destination: '/precos',
         permanent: true,
       },
-      // EN help routes don't exist (site is PT-only) → redirect to PT equivalent
+      // EN locale doesn't exist (site is PT-only) → redirect every /en/* path to its PT counterpart
+      // This replaces the prior narrow /en/help/:path* rule and also covers /en, /en/blog, /en/features, etc.
       {
-        source: '/en/help/:path*',
-        destination: '/help/:path*',
+        source: '/en',
+        destination: '/',
         permanent: true,
       },
-      // Literal [slug] crawled from broken HTML
+      {
+        source: '/en/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+      // Redundant /pt-BR prefix (next-intl uses 'as-needed' so prefix should never appear)
+      {
+        source: '/pt-BR',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/pt-BR/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+      // Sirius legacy slugs that GSC still crawls (404 cleanup 2026-06-01)
+      {
+        source: '/year',
+        destination: '/precos',
+        permanent: true,
+      },
+      {
+        source: '/vs',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/features/analytics',
+        destination: '/features/analytics-pro',
+        permanent: true,
+      },
+      // Literal [slug] / [category] crawled from broken HTML templates
       {
         source: '/blog/:slug([\\[\\]]+.*)',
         destination: '/blog',
+        permanent: false,
+      },
+      {
+        source: '/help/:category([\\[\\]]+.*)/:slug*',
+        destination: '/help',
         permanent: false,
       },
     ]
