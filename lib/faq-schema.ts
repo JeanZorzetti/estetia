@@ -1118,3 +1118,133 @@ export const gestaoSalasFAQs: FAQItem[] = [
     answer: 'Custo mensal = (Valor do equipamento ÷ meses de depreciação) + manutenção mensal. Sessões para cobrir o custo = Custo mensal ÷ Ticket médio por sessão. Para o equipamento ser lucrativo, precisa fazer mais sessões do que esse break-even. Exemplo: equipamento de R$80.000 depreciado em 60 meses + R$200/mês de manutenção = R$1.533/mês. Com ticket de R$350/sessão, break-even em 4,4 sessões/mês — mas para boa rentabilidade, precisa de 20+ sessões/mês.',
   },
 ]
+
+/**
+ * FAQ data for Fluxo de Caixa blog post
+ */
+export const fluxoCaixaFAQs: FAQItem[] = [
+  {
+    question: 'Qual a diferença entre fluxo de caixa e DRE em clínica de estética?',
+    answer: 'A DRE mostra se a clínica é lucrativa (receitas minus custos, independente de quando o dinheiro entra ou sai). O fluxo de caixa mostra se a clínica tem dinheiro disponível em cada momento. Uma clínica pode ser lucrativa na DRE e estar sem dinheiro no caixa — ex.: vendeu pacote parcelado, mas ainda não recebeu as parcelas. Ambos são necessários: DRE para lucratividade, fluxo de caixa para liquidez.',
+  },
+  {
+    question: 'Com que frequência devo atualizar o fluxo de caixa da clínica?',
+    answer: 'Semanalmente no mínimo; diariamente em clínicas de maior volume ou em períodos de caixa mais apertado. Um fluxo atualizado mensalmente é uma foto do passado, não uma ferramenta de gestão prospectiva. O objetivo é projetar 60 dias à frente para identificar problemas com tempo de agir.',
+  },
+  {
+    question: 'Como lidar com a sazonalidade no fluxo de caixa de clínica de estética?',
+    answer: 'Guarde nos meses de alta (dezembro, janeiro) uma reserva proporcional para os meses de baixa (julho, agosto). A meta é que os meses de baixa não consumam o capital de giro — eles são cobertos pela reserva formada nos meses de alta. Clínicas sem essa reserva entram em crise todo julho, que é uma crise previsível e evitável.',
+  },
+  {
+    question: 'Devo misturar a conta da clínica com a minha conta pessoal?',
+    answer: 'Nunca. A mistura impossibilita saber se a clínica é lucrativa, dificulta a declaração de IR PJ, cria passivos tributários e torna qualquer análise financeira inviável. Abra uma conta PJ, defina um pró-labore fixo mensal e transfira apenas esse valor para sua conta pessoal.',
+  },
+  {
+    question: 'O que incluir no fluxo de caixa de uma clínica de estética?',
+    answer: 'Entradas: pagamentos de procedimentos, parcelas de pacotes recebidas, venda de produtos. Saídas fixas: aluguel, folha, pró-labore, parcelas de equipamentos, contador, software. Saídas variáveis: insumos, comissões, taxas de cartão. Saídas eventuais: manutenção de equipamentos, 13o salário, férias, renovações. O registro deve ser no regime de caixa — quando o dinheiro entra ou sai da conta, não quando a venda é feita.',
+  },
+]
+
+/**
+ * FAQ data for Precificação de Procedimentos blog post
+ */
+export const precificacaoFAQs: FAQItem[] = [
+  {
+    question: 'Qual a margem de lucro ideal para procedimentos em clínica de estética?',
+    answer: 'Para clínicas com boa gestão, a margem de lucro líquida saudável fica entre 20% e 45% sobre o faturamento. Procedimentos com baixo custo de insumo podem ter margens acima de 60%; injetáveis importados têm margens menores. O ponto de atenção é que a margem média ponderada do mix completo precisa ser saudável — acima de 20% para o negócio ser sustentável.',
+  },
+  {
+    question: 'Como calcular o overhead de uma clínica de estética?',
+    answer: 'Some todas as despesas fixas mensais e divida pelo número de horas produtivas mensais (salas × horas de atendimento × dias × taxa de ocupação). Esse é o custo por hora de overhead. Para cada procedimento, multiplique pela duração em horas.',
+  },
+  {
+    question: 'Qual a diferença entre markup e margem de lucro?',
+    answer: 'Markup é porcentagem adicionada ao custo: custo R$200 + 50% markup = preço R$300. Margem é calculada sobre o preço de venda: lucro R$100 ÷ preço R$300 = 33% de margem. Para ter 50% de margem sobre o preço de venda, o markup sobre o custo precisa ser 100% (dobrar o custo). Confundir os dois leva a precificação abaixo do desejado.',
+  },
+  {
+    question: 'Devo cobrar o mesmo preço que a concorrência?',
+    answer: 'Não necessariamente. O preço da concorrência é referência de mercado, não obrigação. Se seu custo é maior (aluguel premium, equipe mais experiente), seu preço pode ser maior com a justificativa correspondente. O que não pode fazer é cobrar abaixo do seu custo de produção para competir.',
+  },
+  {
+    question: 'Como comunicar aumento de preço para pacientes fiéis?',
+    answer: 'Com antecedência e transparência: avise com 30–45 dias de antecedência, explique o contexto (reajuste de insumos, equipamentos) e ofereça condições especiais para agendamentos antes do reajuste. Pacientes fiéis geralmente aceitam reajustes bem comunicados — o que não aceitam é descobrir na hora do pagamento.',
+  },
+]
+
+/**
+ * FAQ data for Inadimplência e Parcelamento blog post
+ */
+export const inadimplenciaFAQs: FAQItem[] = [
+  {
+    question: 'Posso cobrar sinal de agendamento em clínica de estética?',
+    answer: 'Sim. A cobrança de sinal (arras) é garantida pelo Código Civil brasileiro (Art. 417). O valor típico é 20–50% do procedimento ou pacote. Em cancelamento com menos de 24h de antecedência, o sinal pode ser retido como compensação pelo horário perdido — desde que isso esteja claro na política de cancelamento comunicada antes do agendamento.',
+  },
+  {
+    question: 'Como calcular o impacto das taxas de cartão na margem do procedimento?',
+    answer: 'Multiplique o valor do procedimento pela taxa da operadora. Exemplo: R$500 no crédito 3x com taxa de 3,2% = R$16 de taxa. Para incentivar PIX, ofereça desconto de 3–5% — financeiramente neutro ou positivo para a clínica (você dá 3% ao paciente mas economiza 3–5% de taxa da operadora).',
+  },
+  {
+    question: 'Como gerenciar parcelamento de pacotes de procedimentos?',
+    answer: 'Regra de ouro: vincule a liberação de sessões ao pagamento das parcelas. Sessão 1: paga no ato (30–50% do total). Sessão 2: paga antes de começar. Padrão: parcela paga → sessão liberada → próximo agendamento confirmado. Esse modelo elimina a inadimplência porque a sessão só acontece quando o pagamento já foi feito.',
+  },
+  {
+    question: 'O que fazer com paciente inadimplente em pacote de procedimentos?',
+    answer: 'Processo em 4 etapas: (1) Lembrete preventivo WhatsApp 3 dias antes do vencimento; (2) Lembrete no dia do vencimento; (3) Contato pessoal da recepcionista em D+3; (4) Suspensão de agendamentos em D+7 com oferta de renegociação. Para valores acima de R$500 persistentes, considerar registro em Serasa/SPC.',
+  },
+  {
+    question: 'Devo aceitar parcelamento longo (10x, 12x) em pacotes?',
+    answer: 'O parcelamento longo cria dois problemas: taxa de maquininha alta (5–8% em 12x) e alto risco de inadimplência ao longo de um ano. A alternativa mais segura é limitar a 3–6x e, para quem precisa de prazo maior, usar o cartão de crédito próprio do paciente — onde o risco de inadimplência é do banco, não da clínica.',
+  },
+]
+
+/**
+ * FAQ data for Expansão / Segunda Unidade blog post
+ */
+export const expansaoFAQs: FAQItem[] = [
+  {
+    question: 'Quando é o momento certo para abrir uma segunda unidade de clínica de estética?',
+    answer: 'Quando todos os 5 indicadores de prontidão estiverem satisfeitos: margem consistente acima de 20% por 6+ meses, processos documentados e replicáveis, equipe sênior pronta para liderar a primeira, capital de giro para 6–12 meses da segunda e demanda comprovada na nova localização. Falta de qualquer um aumenta significativamente o risco.',
+  },
+  {
+    question: 'Quanto custa abrir uma segunda unidade de clínica de estética?',
+    answer: 'O investimento total varia entre R$82.000 e R$398.000. O componente mais subestimado é o capital de giro para os primeiros 6–9 meses antes do ponto de equilíbrio — que pode representar R$30.000–100.000 além do investimento inicial em estrutura e equipamentos.',
+  },
+  {
+    question: 'Como gerenciar duas unidades de clínica de estética simultaneamente?',
+    answer: 'Com sistema de gestão integrado (KPIs de ambas em tempo real), processos documentados e padronizados, e gestor local de confiança em cada unidade. O proprietário define as políticas, monitora os indicadores e intervém quando necessário — mas não precisa estar presente diariamente em cada unidade.',
+  },
+  {
+    question: 'Quais os maiores riscos de abrir uma segunda unidade prematuramente?',
+    answer: 'Três riscos: (1) drenar o capital de giro da primeira para sustentar a segunda antes do ponto de equilíbrio, colocando ambas em risco; (2) proprietário se dividir entre as duas sem conseguir gerir nenhuma bem; (3) levar os problemas não resolvidos da primeira (processos mal documentados) para a segunda — multiplicando o caos.',
+  },
+  {
+    question: 'Devo abrir a segunda unidade com a mesma marca?',
+    answer: 'Em geral, sim — a mesma marca aproveita a reputação construída e facilita o cross-referral entre unidades. A exceção é quando se quer atingir posicionamento diferente (premium vs. popular) ou especialidade diferente — nesse caso, marcas separadas fazem sentido.',
+  },
+]
+
+/**
+ * FAQ data for Capital de Giro e Saúde Financeira blog post
+ */
+export const capitalGiroFAQs: FAQItem[] = [
+  {
+    question: 'Quanto de capital de giro uma clínica de estética precisa ter?',
+    answer: 'O mínimo recomendado é 60 dias de despesas operacionais (2 meses). O ideal é 90–180 dias (3–6 meses). Para uma clínica com custo operacional de R$20.000/mês, o capital de giro mínimo é R$40.000 e o ideal é R$60.000–120.000. Clínicas com alta sazonalidade ou planejando expansão precisam do teto da faixa.',
+  },
+  {
+    question: 'O lucro e o capital de giro são a mesma coisa?',
+    answer: 'Não. Lucro é o que sobra depois de pagar todos os custos — pode existir no papel sem estar disponível em caixa. Capital de giro é o dinheiro efetivamente disponível. Uma clínica pode ser lucrativa e não ter capital de giro suficiente se a maioria da receita está em parcelas futuras não recebidas.',
+  },
+  {
+    question: 'Como construir reserva de capital de giro partindo do zero?',
+    answer: 'Duas estratégias combinadas: (1) Regra dos 10% — separe 10% do faturamento mensal para conta de reserva separada antes de qualquer retirada de lucro; (2) Capitalizar os meses de alta — em dezembro e janeiro, destine 30–50% do excedente para a reserva. Em 12 meses com faturamento médio de R$50.000, você acumula R$60.000 só com a regra dos 10%.',
+  },
+  {
+    question: 'Como sobreviver ao mês de julho (baixa temporada) em clínica de estética?',
+    answer: 'Julho não pode ser surpresa — é previsível. O plano: guardar reserva nos meses de pico (dezembro/janeiro), ativar recalls intensivos de pacientes com retorno próximo e suspender retiradas de lucro temporariamente. A reserva existe para cobrir os custos fixos nos meses de baixa sem stress nem crédito de emergência.',
+  },
+  {
+    question: 'Quando buscar crédito para capital de giro?',
+    answer: 'Para investimento com ROI calculado, reforma que aumenta capacidade, ou capital de giro temporário em crise com plano claro de recuperação. Não usar para cobrir prejuízo crônico (problema de modelo, não de liquidez). Linhas do Sebrae e BNDES têm taxas mais acessíveis que o crédito bancário convencional.',
+  },
+]

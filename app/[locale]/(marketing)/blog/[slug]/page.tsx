@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, enzimasPapadaFAQs, radiofrequenciaFAQs, micropigmentacaoFAQs, tratamentoCapilarFAQs, drenagemLinfaticaFAQs, recepcionistaFAQs, comissaoProfissionaisFAQs, gestaoEstoqueFAQs, produtividadeEquipeFAQs, gestaoSalasFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, enzimasPapadaFAQs, radiofrequenciaFAQs, micropigmentacaoFAQs, tratamentoCapilarFAQs, drenagemLinfaticaFAQs, recepcionistaFAQs, comissaoProfissionaisFAQs, gestaoEstoqueFAQs, produtividadeEquipeFAQs, gestaoSalasFAQs, fluxoCaixaFAQs, precificacaoFAQs, inadimplenciaFAQs, expansaoFAQs, capitalGiroFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -120,6 +120,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     aiOptimizedDescription = 'Produtividade de clínica de estética: clínicas que monitoram KPIs mensalmente crescem 30–45% mais em 12 meses (Sebrae, 2024). 6 KPIs principais: taxa de ocupação (meta 75–85%), ticket médio por profissional, conversão de avaliação (meta >55%), recompra em 90 dias (meta >40%), NPS (meta >8,5), faturamento por hora. Aumento de 10% na ocupação = 36% mais faturamento com mesma estrutura.'
   } else if (slug === 'gestao-salas-agenda-equipe-clinica-estetica') {
     aiOptimizedDescription = 'Gestão de salas em clínica de estética: sala vazia representa R$3.000–8.000/mês em custos fixos sem receita. Taxa de ocupação meta: 75–85% para salas gerais, 80%+ para aparelhos. Agendamento online preenche 15–25% dos horários em períodos fora do expediente. Lista de espera ativa preenche 50–70% dos cancelamentos. Break-even de aparelho RF R$80.000: 4,4 sessões/mês; rentabilidade real acima de 20 sessões/mês.'
+  } else if (slug === 'fluxo-de-caixa-clinica-estetica-gestao-financeira') {
+    aiOptimizedDescription = 'Fluxo de caixa clínica de estética: Sebrae recomenda 3–6 meses de despesas operacionais em reserva e mínimo 60 dias de capital de giro. 21,6% das microempresas encerram após 5 anos por gestão financeira ineficaz (Sebrae). Separação obrigatória conta PJ/PF. Sazonalidade: janeiro pico, julho baixa. Projeção de 60 dias à frente é o mínimo para gestão reativa útil.'
+  } else if (slug === 'precificacao-procedimentos-esteticos-margem-lucro') {
+    aiOptimizedDescription = 'Precificação de procedimentos estéticos: margem saudável 20–45% do faturamento (GG Contabilidade, 2024). Fórmula: Preço = (Custo direto + Overhead + Custo profissional) ÷ (1 − Margem). Exemplo toxina glabela: custo total R$247, preço mínimo com margem 35% = R$380. Clínicas pequenas faturam ~R$20k/mês; médias ~R$75k. Markup ≠ margem: 50% markup = 33% margem.'
+  } else if (slug === 'inadimplencia-parcelamento-clinica-estetica') {
+    aiOptimizedDescription = 'Inadimplência no cartão: rotativo passou de 55% para 64,7% em 2025 (Infomoney). Taxas por transação: PIX 0%, débito 1–1,5%, crédito à vista 1,8–2,5%, crédito 6× até 5%. Sinal de agendamento garantido pelo Código Civil Art. 417. Parcelamento seguro: vincular sessão ao pagamento da parcela. Desconto PIX 3–5% é financeiramente neutro mas reduz taxa de maquininha.'
+  } else if (slug === 'expansao-segunda-unidade-clinica-estetica') {
+    aiOptimizedDescription = 'Expansão de clínica de estética: 29% dos MEIs encerram em 5 anos (Sebrae). Custo de segunda unidade: R$82.000–398.000 mais capital de giro de 6–9 meses (R$30.000–100.000). 5 indicadores de prontidão: margem >20% por 6 meses, processos documentados, equipe sênior, capital de giro disponível, demanda comprovada na localização. Cronograma realista: 7–9 meses para ponto de equilíbrio.'
+  } else if (slug === 'capital-de-giro-saude-financeira-clinica-estetica') {
+    aiOptimizedDescription = 'Capital de giro clínica de estética: mínimo 60 dias de custos operacionais (2 meses), ideal 90–180 dias. Para R$20.000/mês de custo: mínimo R$40.000, ideal R$60.000–120.000. Regra dos 10%: separar 10% do faturamento mensal para reserva antes de qualquer retirada de lucro. Indicadores de saúde: dias de caixa meta >45; índice de liquidez meta >1,5; margem EBITDA meta >20%.'
   }
 
   return {
@@ -712,6 +722,99 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.APPOINTMENT_SCHEDULING],
       author: estetiaAuthor,
     })
+  } else if (slug === 'fluxo-de-caixa-clinica-estetica-gestao-financeira') {
+    geoConfig = createGeoConfig.clinicKpis({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.PROFIT,
+        COMMON_WIKIDATA_ENTITIES.GROSS_MARGIN,
+        COMMON_WIKIDATA_ENTITIES.FINANCIAL_SERVICES,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.REVENUE, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      citations: [
+        'https://sebrae.com.br/sites/PortalSebrae/artigos/como-elaborar-um-fluxo-de-caixa,cc3f5b5f0a15b510VgnVCM1000004c00210aRCRD',
+        'https://datasebrae.com.br/sobrevivencia-das-empresas/',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'precificacao-procedimentos-esteticos-margem-lucro') {
+    geoConfig = createGeoConfig.clinicKpis({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.GROSS_MARGIN,
+        COMMON_WIKIDATA_ENTITIES.PROFIT,
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.RETURN_ON_INVESTMENT,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.GROSS_MARGIN, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      citations: [
+        'https://sebrae.com.br/sites/PortalSebrae/artigos/como-formar-o-preco-de-venda,32a4cb7e2b226610VgnVCM1000004c00210aRCRD',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'inadimplencia-parcelamento-clinica-estetica') {
+    geoConfig = createGeoConfig.aestheticMedicine({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.FINANCIAL_SERVICES,
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.FINANCIAL_SERVICES, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      citations: [
+        'https://www.bcb.gov.br/publicacoes/notaimprensamercredpf',
+        'https://infomoney.com.br/minhas-financas/inadimplencia-no-cartao-de-credito-sobe-para-64-7-em-janeiro-diz-serasa/',
+        'https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'expansao-segunda-unidade-clinica-estetica') {
+    geoConfig = createGeoConfig.clinicKpis({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.PROFIT,
+        COMMON_WIKIDATA_ENTITIES.GROSS_MARGIN,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.FINANCIAL_SERVICES,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE, COMMON_WIKIDATA_ENTITIES.REVENUE],
+      citations: [
+        'https://datasebrae.com.br/sobrevivencia-das-empresas/',
+        'https://sebrae.com.br/sites/PortalSebrae/artigos/capital-de-giro-o-que-e-e-como-calcular,7d98b6607caad510VgnVCM1000004c00210aRCRD',
+      ],
+      author: estetiaAuthor,
+    })
+  } else if (slug === 'capital-de-giro-saude-financeira-clinica-estetica') {
+    geoConfig = createGeoConfig.clinicKpis({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.REVENUE,
+        COMMON_WIKIDATA_ENTITIES.PROFIT,
+        COMMON_WIKIDATA_ENTITIES.GROSS_MARGIN,
+        COMMON_WIKIDATA_ENTITIES.FINANCIAL_SERVICES,
+        COMMON_WIKIDATA_ENTITIES.RETURN_ON_INVESTMENT,
+        COMMON_WIKIDATA_ENTITIES.KEY_PERFORMANCE_INDICATOR,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.CRM,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.FINANCIAL_SERVICES, COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE],
+      citations: [
+        'https://sebrae.com.br/sites/PortalSebrae/artigos/capital-de-giro-o-que-e-e-como-calcular,7d98b6607caad510VgnVCM1000004c00210aRCRD',
+        'https://datasebrae.com.br/sobrevivencia-das-empresas/',
+        'https://abihpec.org.br/publicacao/panorama-do-setor-25/',
+      ],
+      author: estetiaAuthor,
+    })
   } else if (slug === 'drenagem-linfatica-pos-operatorio-recorrencia') {
     geoConfig = createGeoConfig.aestheticMedicine({
       mentions: [
@@ -786,6 +889,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     'gestao-estoque-produtos-clinica-estetica': gestaoEstoqueFAQs,
     'produtividade-equipe-clinica-estetica-indicadores': produtividadeEquipeFAQs,
     'gestao-salas-agenda-equipe-clinica-estetica': gestaoSalasFAQs,
+    'fluxo-de-caixa-clinica-estetica-gestao-financeira': fluxoCaixaFAQs,
+    'precificacao-procedimentos-esteticos-margem-lucro': precificacaoFAQs,
+    'inadimplencia-parcelamento-clinica-estetica': inadimplenciaFAQs,
+    'expansao-segunda-unidade-clinica-estetica': expansaoFAQs,
+    'capital-de-giro-saude-financeira-clinica-estetica': capitalGiroFAQs,
   }
   const faqSchema = faqDataMap[slug] ? generateFAQSchema(faqDataMap[slug], url) : null
 

@@ -35,6 +35,11 @@ import { post as comissaoProfissionaisPost } from './posts/comissao-profissionai
 import { post as gestaoEstoquePost } from './posts/gestao-estoque-produtos-clinica-estetica'
 import { post as produtividadeEquipePost } from './posts/produtividade-equipe-clinica-estetica-indicadores'
 import { post as gestaoSalasPost } from './posts/gestao-salas-agenda-equipe-clinica-estetica'
+import { post as fluxoCaixaPost } from './posts/fluxo-de-caixa-clinica-estetica-gestao-financeira'
+import { post as precificacaoPost } from './posts/precificacao-procedimentos-esteticos-margem-lucro'
+import { post as inadimplenciaPost } from './posts/inadimplencia-parcelamento-clinica-estetica'
+import { post as expansaoPost } from './posts/expansao-segunda-unidade-clinica-estetica'
+import { post as capitalGiroPost } from './posts/capital-de-giro-saude-financeira-clinica-estetica'
 
 export const blogPosts: BlogPost[] = [
   comparasSistemaPost,
@@ -72,6 +77,11 @@ export const blogPosts: BlogPost[] = [
   gestaoEstoquePost,
   produtividadeEquipePost,
   gestaoSalasPost,
+  fluxoCaixaPost,
+  precificacaoPost,
+  inadimplenciaPost,
+  expansaoPost,
+  capitalGiroPost,
 ]
 
 export const CATEGORY_COLORS: Record<string, string> = {
