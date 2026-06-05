@@ -17,13 +17,29 @@ export function SmoothScrollLazy({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Routes that actually have scroll-driven (GSAP ScrollTrigger) animations and
+// therefore benefit from Lenis. Everywhere else — the landing, pricing, blog,
+// dashboard — native scroll is used and Lenis+GSAP (~111KB) is never fetched,
+// keeping it off the critical path entirely (the dynamic import below only runs
+// for these paths). PageSpeed flagged this JS as the #2 source of TBT.
+// NOTE: /experiencev2 is intentionally excluded — it ships its own Lenis provider
+// (components/marketing/experience-v2/shared/lenis-provider.tsx) and would double-init.
+const SMOOTH_SCROLL_PATHS = ['/experience', '/design-system/hero-cinematic']
+
+function pathNeedsSmoothScroll(pathname: string): boolean {
+  return SMOOTH_SCROLL_PATHS.some(
+    (p) => pathname === p || pathname.endsWith(p) || pathname.includes(`${p}/`)
+  )
+}
+
 function SmoothScrollActivator() {
   const pathname = usePathname()
 
   useEffect(() => {
-    // Lenis intercepts html/body scroll — incompatible with dashboard's internal
-    // overflow-y-auto layout.
-    if (pathname.includes('/dashboard')) return
+    // Only load Lenis+GSAP on routes with real scroll-driven animations.
+    // The landing has none (no ScrollTrigger), so this stays a no-op there and
+    // the heavy animation chunk is never requested.
+    if (!pathNeedsSmoothScroll(pathname)) return
 
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'

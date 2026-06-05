@@ -1,6 +1,4 @@
-'use client'
-
-import { motion } from 'framer-motion'
+import { Reveal } from '@/components/marketing/reveal'
 
 const TESTIMONIALS = [
     { q: '"Reduzi faltas em 60% no primeiro mês. O retorno foi imediato!"', name: 'Dra. Ana Beatriz', role: 'Clínica AB Estética' },
@@ -67,48 +65,37 @@ export function SocialProof() {
             <div className="mx-auto max-w-7xl px-6 relative z-10">
                 {/* Header */}
                 <div className="text-center mb-20">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 15 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
+                    <Reveal
                         className="inline-flex items-center gap-3 mb-6 bg-white/5 border border-white/10 rounded-full px-4.5 py-1.5 shadow-inner"
                     >
                         <span className="h-1.5 w-1.5 rounded-full bg-[#C5A059] animate-pulse" />
                         <span className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-[#C5A059]">Prova social</span>
-                    </motion.div>
-                    
-                    <motion.h2 
-                        initial={{ opacity: 0, y: 15 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
+                    </Reveal>
+
+                    <Reveal
+                        as="h2"
+                        delay={100}
                         className="font-serif text-white leading-tight mb-5 tracking-tight"
                         style={{ fontSize: 'clamp(2rem, 4.5vw, 3.25rem)' }}
                     >
                         Ajudando <span className="text-[#C5A059] relative">120+ clínicas<span className="absolute bottom-0 left-0 w-full h-[3px] bg-gradient-to-r from-[#C5A059]/60 to-transparent rounded-full" /></span> a crescerem<br className="hidden sm:block" /> com tecnologia de ponta
-                    </motion.h2>
-                    
-                    <motion.p 
-                        initial={{ opacity: 0, y: 15 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
+                    </Reveal>
+
+                    <Reveal
+                        as="p"
+                        delay={200}
                         className="text-slate-300 max-w-xl mx-auto leading-relaxed text-sm sm:text-base font-medium"
                     >
                         De pequenos estúdios de estética a redes multi-unidade — clínicas de todo o Brasil usam o Estetia para fidelizar pacientes, reduzir faltas e alavancar a receita.
-                    </motion.p>
+                    </Reveal>
                 </div>
 
                 {/* Stats row - editorial custom cards in glassmorphism */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24 relative z-10">
                     {stats.map((stat, i) => (
-                        <motion.div 
-                            key={i} 
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: i * 0.1 }}
+                        <Reveal
+                            key={i}
+                            delay={i * 100}
                             className="relative bg-gradient-to-b from-white/[0.04] to-transparent backdrop-blur-md rounded-2xl border border-white/[0.08] px-8 py-10 text-center hover:border-[#C5A059]/30 transition-all duration-500 group shadow-lg"
                         >
                             {/* Glow dourado de canto sutil no hover */}
@@ -119,7 +106,7 @@ export function SocialProof() {
                                 {stat.value}
                             </div>
                             <div className="text-[10px] uppercase tracking-[0.2em] font-extrabold text-slate-400 group-hover:text-slate-300 transition-colors duration-300">{stat.label}</div>
-                        </motion.div>
+                        </Reveal>
                     ))}
                 </div>
             </div>
@@ -133,13 +120,11 @@ export function SocialProof() {
                 }}
             >
                 <div
-                    className="flex py-4"
+                    className="flex py-4 hover:[animation-play-state:paused] motion-reduce:[animation:none]"
                     style={{
                         animation: 'testimonial-scroll 45s linear infinite',
                         width: 'max-content',
                     }}
-                    onMouseEnter={e => (e.currentTarget.style.animationPlayState = 'paused')}
-                    onMouseLeave={e => (e.currentTarget.style.animationPlayState = 'running')}
                 >
                     {[...TESTIMONIALS, ...TESTIMONIALS].map((item, i) => (
                         <TestimonialCard key={i} item={item} />

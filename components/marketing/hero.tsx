@@ -1,5 +1,3 @@
-'use client'
-
 import { Link } from "@/i18n/routing"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { useTranslations, useLocale } from "next-intl"

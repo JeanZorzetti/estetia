@@ -1,8 +1,6 @@
-'use client'
-
 import { Link } from "@/i18n/routing"
 import { ArrowRight, Calendar, MessageCircle, TrendingUp, Check } from "lucide-react"
-import { motion } from "framer-motion"
+import { Reveal } from "@/components/marketing/reveal"
 
 const FEATURES = [
     {
@@ -67,10 +65,8 @@ function CalendarMockup() {
         { day: 4, h: '09:30', label: 'Pedro H. — Skinboo.', color: '#C5A059', glow: 'shadow-[#C5A059]/20 bg-[#C5A059]' },
     ]
     return (
-        <motion.div 
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-            className="rounded-2xl bg-gradient-to-br from-slate-50/90 to-white/50 backdrop-blur-xl border border-white/50 p-5 shadow-2xl relative z-10 w-full"
+        <div
+            className="rounded-2xl bg-gradient-to-br from-slate-50/90 to-white/50 backdrop-blur-xl border border-white/50 p-5 shadow-2xl relative z-10 w-full motion-safe:animate-[floatY_6s_ease-in-out_infinite]"
         >
             {/* Inside subtle border */}
             <div className="absolute inset-1.5 rounded-[12px] border border-white/20 pointer-events-none" />
@@ -97,7 +93,7 @@ function CalendarMockup() {
                     </div>
                 ))}
             </div>
-        </motion.div>
+        </div>
     )
 }
 
@@ -110,10 +106,8 @@ function ChatMockup() {
         { from: 'system', text: '✅ Agendado com sucesso! Acabo de enviar a confirmação para seu e-mail e SMS.', time: '09:05' },
     ]
     return (
-        <motion.div 
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 6.5, ease: "easeInOut" }}
-            className="rounded-2xl bg-gradient-to-br from-slate-50/90 to-white/50 backdrop-blur-xl border border-white/50 p-5 shadow-2xl relative z-10 w-full"
+        <div
+            className="rounded-2xl bg-gradient-to-br from-slate-50/90 to-white/50 backdrop-blur-xl border border-white/50 p-5 shadow-2xl relative z-10 w-full motion-safe:animate-[floatYReverse_6.5s_ease-in-out_infinite]"
         >
             <div className="absolute inset-1.5 rounded-[12px] border border-white/20 pointer-events-none" />
 
@@ -147,7 +141,7 @@ function ChatMockup() {
                     </div>
                 ))}
             </div>
-        </motion.div>
+        </div>
     )
 }
 
@@ -155,10 +149,8 @@ function ChartMockup() {
     const bars = [42, 68, 55, 82, 61, 90, 74, 95, 79, 88, 92, 100]
     const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
     return (
-        <motion.div 
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
-            className="rounded-2xl bg-gradient-to-br from-slate-50/90 to-white/50 backdrop-blur-xl border border-white/50 p-5 shadow-2xl relative z-10 w-full"
+        <div
+            className="rounded-2xl bg-gradient-to-br from-slate-50/90 to-white/50 backdrop-blur-xl border border-white/50 p-5 shadow-2xl relative z-10 w-full motion-safe:animate-[floatY_7s_ease-in-out_infinite]"
         >
             <div className="absolute inset-1.5 rounded-[12px] border border-white/20 pointer-events-none" />
 
@@ -203,7 +195,7 @@ function ChartMockup() {
                     <span key={m} className="text-[8px] font-bold text-slate-400 uppercase tracking-wider">{m}</span>
                 ))}
             </div>
-        </motion.div>
+        </div>
     )
 }
 
@@ -223,12 +215,8 @@ export function FeaturesExpanded() {
                     const isEven = idx % 2 === 0
 
                     return (
-                        <motion.div
+                        <Reveal
                             key={feat.eyebrow}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
                             className={`grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center ${
                                 isEven ? '' : 'lg:[&>*:first-child]:order-2'
                             }`}
@@ -285,7 +273,7 @@ export function FeaturesExpanded() {
                                 <div className="absolute inset-0 -z-0 rounded-3xl blur-[100px] opacity-25 pointer-events-none scale-90"
                                     style={{ backgroundColor: feat.accent }} />
                             </div>
-                        </motion.div>
+                        </Reveal>
                     )
                 })}
             </div>

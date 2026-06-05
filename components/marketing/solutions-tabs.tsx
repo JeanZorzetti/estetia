@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Link } from "@/i18n/routing"
 import { ArrowRight, Calendar, FileText, MessageCircle, BarChart3, Shield, Smartphone } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
 
 const CLINIC_TYPES = [
     {
@@ -82,13 +81,11 @@ export function SolutionsTabs() {
                                     : 'text-[#64748B] hover:text-[#0A1F3D] bg-white/40 hover:bg-white/80 border border-slate-200/50'
                             }`}
                         >
-                            {/* Animated sliding background pill */}
+                            {/* Active background pill */}
                             {active === type.id && (
-                                <motion.div
-                                    layoutId="activeSolutionTab"
+                                <span
                                     className="absolute inset-0 rounded-full -z-10 shadow-lg shadow-[#0A1F3D]/10"
                                     style={{ backgroundColor: '#0A1F3D' }}
-                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
                                 />
                             )}
                             <span>{type.emoji}</span>
@@ -102,16 +99,11 @@ export function SolutionsTabs() {
                     ))}
                 </div>
 
-                {/* Content panel with silk transition */}
-                <AnimatePresence mode="wait">
-                    <motion.div 
-                        key={active}
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -15 }}
-                        transition={{ duration: 0.4, ease: "easeInOut" }}
-                        className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center bg-white/40 backdrop-blur-md rounded-[32px] p-8 sm:p-12 border border-white/40 shadow-2xl shadow-[#0A1F3D]/5"
-                    >
+                {/* Content panel — remounts on tab change to replay the fade-in */}
+                <div
+                    key={active}
+                    className="animate-fade-in-up grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center bg-white/40 backdrop-blur-md rounded-[32px] p-8 sm:p-12 border border-white/40 shadow-2xl shadow-[#0A1F3D]/5"
+                >
                         {/* Left: text */}
                         <div className="flex flex-col items-start text-left">
                             <div className="inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-bold mb-6 border shadow-sm"
@@ -223,10 +215,8 @@ export function SolutionsTabs() {
                             </div>
 
                             {/* Floating 3D badge 1 */}
-                            <motion.div 
-                                animate={{ y: [0, -8, 0] }}
-                                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                                className="absolute -bottom-5 -left-5 bg-white rounded-2xl border border-slate-100 shadow-xl px-5 py-3.5 flex items-center gap-3 z-20"
+                            <div
+                                className="absolute -bottom-5 -left-5 bg-white rounded-2xl border border-slate-100 shadow-xl px-5 py-3.5 flex items-center gap-3 z-20 motion-safe:animate-[floatY_4s_ease-in-out_infinite]"
                             >
                                 <div className="h-10 w-10 rounded-xl flex items-center justify-center shadow-inner"
                                     style={{ backgroundColor: `${current.color}15` }}>
@@ -236,13 +226,11 @@ export function SolutionsTabs() {
                                     <div className="text-[11px] font-black text-[#0A1F3D] tracking-tight">100% Protegido</div>
                                     <div className="text-[9px] font-bold text-[#64748B] uppercase tracking-wider mt-0.5">Certificado LGPD</div>
                                 </div>
-                            </motion.div>
+                            </div>
 
                             {/* Floating 3D badge 2 */}
-                            <motion.div 
-                                animate={{ y: [0, 8, 0] }}
-                                transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
-                                className="absolute -top-5 -right-5 bg-white rounded-2xl border border-slate-100 shadow-xl px-5 py-3.5 flex items-center gap-3 z-20"
+                            <div
+                                className="absolute -top-5 -right-5 bg-white rounded-2xl border border-slate-100 shadow-xl px-5 py-3.5 flex items-center gap-3 z-20 motion-safe:animate-[floatYReverse_4.5s_ease-in-out_infinite]"
                             >
                                 <div className="h-10 w-10 rounded-xl flex items-center justify-center shadow-inner"
                                     style={{ backgroundColor: `${current.color}15` }}>
@@ -252,10 +240,9 @@ export function SolutionsTabs() {
                                     <div className="text-[11px] font-black text-[#0A1F3D] tracking-tight">iOS & Android</div>
                                     <div className="text-[9px] font-bold text-[#64748B] uppercase tracking-wider mt-0.5">App Gestão Integrado</div>
                                 </div>
-                            </motion.div>
+                            </div>
                         </div>
-                    </motion.div>
-                </AnimatePresence>
+                    </div>
             </div>
         </section>
     )
