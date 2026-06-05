@@ -7,14 +7,10 @@ import { motion } from "framer-motion"
 
 function EliteDashboardMockup() {
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.2, ease: "easeOut" }}
-      className="relative w-full max-w-xl mx-auto lg:max-w-none z-10 mt-12 lg:mt-0"
-    >
+    <div className="relative w-full max-w-xl mx-auto lg:max-w-none z-10 mt-12 lg:mt-0 animate-[fadeInUp_1.2s_ease-out_both]" style={{ animationDelay: '0.1s' }}>
       {/* Background radial glow specifically for this dashboard */}
       <div className="absolute -inset-8 bg-gradient-to-tr from-[#489FB5]/20 via-transparent to-[#C5A059]/20 rounded-[32px] blur-3xl opacity-70 pointer-events-none" />
+
 
       {/* Floating 3D elements behind the dashboard for layer depth */}
       <motion.div 
@@ -171,7 +167,7 @@ function EliteDashboardMockup() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -204,15 +200,10 @@ export function Hero() {
                     <div className="lg:col-span-7 text-left flex flex-col items-start">
                         
                         {/* Elite Badge */}
-                        <motion.div 
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8 }}
-                            className="inline-flex items-center gap-2 mb-6 bg-white/70 backdrop-blur-sm px-4 py-1.5 rounded-full border border-[#C5A059]/20 shadow-sm"
-                        >
+                        <div className="inline-flex items-center gap-2 mb-6 bg-white/70 backdrop-blur-sm px-4 py-1.5 rounded-full border border-[#C5A059]/20 shadow-sm">
                             <Sparkles className="h-3.5 w-3.5 text-[#C5A059]" />
                             <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C5A059]">{t('badge' as any) || 'Tecnologia Estética de Elite'}</span>
-                        </motion.div>
+                        </div>
 
                         {/* Title - Boulevard style aligned left */}
                         <h1 className="font-serif leading-[1.05] tracking-[-0.035em] text-[#0A1F3D]"

@@ -20,14 +20,14 @@ const geistMono = Geist_Mono({
   preload: false,
 })
 
-// Estetia CRM Identity — headline serif
+// Estetia CRM Identity — headline serif (preload:true = LCP element, o <h1> usa esta fonte)
 const newsreader = Newsreader({
   variable: '--font-newsreader',
   subsets: ['latin'],
   weight: ['400', '500', '600'],
   style: ['normal', 'italic'],
   display: 'swap',
-  preload: false,
+  preload: true,
 })
 
 // Estetia CRM Identity — body sans
@@ -46,7 +46,6 @@ import { PWARegister } from '@/components/pwa-register'
 import { PushNotificationManager } from '@/components/push-notification-manager'
 import { OfflineStatus } from '@/components/offline-status'
 import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components/google-tag-manager'
-import { GoogleAnalytics } from '@/components/google-analytics'
 import { analyticsConfig } from '@/lib/analytics-config'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster } from '@/components/ui/sonner'
@@ -185,8 +184,6 @@ function buildSchemaOrg() {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#FFFFFF' },
@@ -237,8 +234,6 @@ export default async function LocaleLayout({
         )}
         {/* Google Tag Manager */}
         {analyticsConfig.gtm.enabled && <GoogleTagManager gtmId={analyticsConfig.gtm.id} />}
-        {/* Google Analytics (GA4) — direct gtag.js for guaranteed detection */}
-        {analyticsConfig.ga.enabled && <GoogleAnalytics gaId={analyticsConfig.ga.id} />}
 
         {/* Provedor de i18n — passa mensagens ao client */}
         <NextIntlClientProvider messages={messages}>
