@@ -3,7 +3,6 @@
 import { Link } from "@/i18n/routing"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { useTranslations, useLocale } from "next-intl"
-import { motion } from "framer-motion"
 
 function EliteDashboardMockup() {
   return (
@@ -13,10 +12,8 @@ function EliteDashboardMockup() {
 
 
       {/* Floating 3D elements behind the dashboard for layer depth */}
-      <motion.div 
-        animate={{ y: [0, -12, 0] }}
-        transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-        className="absolute -top-6 -left-6 bg-white/80 backdrop-blur-md rounded-2xl border border-white/40 shadow-2xl p-4 flex items-center gap-3 z-30 max-w-[195px]"
+      <div
+        className="absolute -top-6 -left-6 bg-white/80 backdrop-blur-md rounded-2xl border border-white/40 shadow-2xl p-4 flex items-center gap-3 z-30 max-w-[195px] motion-safe:animate-[floatY_6s_ease-in-out_infinite]"
       >
         <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[#489FB5] to-[#2A7A94] flex items-center justify-center shadow-lg shadow-[#489FB5]/20">
           <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,12 +24,10 @@ function EliteDashboardMockup() {
           <div className="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">Faturamento</div>
           <div className="text-sm font-black text-[#0A1F3D]">R$ 43.300<span className="text-[10px] text-emerald-500 font-semibold ml-1">↑</span></div>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div 
-        animate={{ y: [0, 12, 0] }}
-        transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
-        className="absolute -bottom-8 -right-4 bg-white/95 backdrop-blur-md rounded-2xl border border-white/50 shadow-2xl p-4 flex items-center gap-3 z-30 max-w-[210px]"
+      <div
+        className="absolute -bottom-8 -right-4 bg-white/95 backdrop-blur-md rounded-2xl border border-white/50 shadow-2xl p-4 flex items-center gap-3 z-30 max-w-[210px] motion-safe:animate-[floatYReverse_7s_ease-in-out_infinite]"
       >
         <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[#C5A059] to-[#9E7D3B] flex items-center justify-center shadow-lg shadow-[#C5A059]/20">
           <Sparkles className="h-5 w-5 text-white" />
@@ -44,7 +39,7 @@ function EliteDashboardMockup() {
             <span className="text-[9px] text-slate-400">retorno</span>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Main Glassmorphism Frame */}
       <div className="relative rounded-[24px] border border-white/30 bg-white/30 backdrop-blur-xl shadow-2xl overflow-hidden aspect-[4/3] w-full flex flex-col">
