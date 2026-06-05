@@ -43,13 +43,19 @@ const newsreaderItalic = Newsreader({
   preload: false,
 })
 
-// Estetia CRM Identity — body sans
+// Estetia CRM Identity — body sans.
+// preload:true because the landing's LCP element is the hero subtitle <p>, which
+// uses this font (font-medium). Measured on prod: LCP was the Manrope <p>, not the
+// serif <h1> — so this is the font on the critical path that must paint fast.
+// adjustFontFallback (default, set explicit) keeps a metric-matched system fallback
+// so the text paints immediately on swap without shifting the LCP.
 const manrope = Manrope({
   variable: '--font-manrope',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   display: 'swap',
-  preload: false,
+  preload: true,
+  adjustFontFallback: true,
 })
 
 import { Suspense } from 'react'

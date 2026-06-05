@@ -22,9 +22,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'date-fns', 'recharts'],
     staleTimes: { dynamic: 30, static: 180 },
-    // Inline critical CSS into <head> to remove the render-blocking CSS request
-    // (the Tailwind 4 bundle was ~78KB gzip blocking LCP for ~1.8s)
-    inlineCss: true,
+    // inlineCss was disabled: it inlined ~711KB of (uncompressed) CSS into every
+    // page, bloating the homepage HTML to ~1.9MB, delaying FCP, and — critically —
+    // suppressing next/font's <link rel=preload> for fonts (0 preloads were
+    // emitted), which left the Newsreader woff2 on the LCP critical path. A single
+    // cacheable external stylesheet (~78KB gzip, shared across navigations) is the
+    // better trade-off here. Re-evaluate if the external CSS request ever blocks LCP.
+    // inlineCss: true,
   },
 
   /* Drop Next's unconditional legacy polyfills (Turbopack path) */
