@@ -64,7 +64,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster } from '@/components/ui/sonner'
 import { PostHogProvider } from '../providers'
 import { AiTrafficMonitor } from '@/components/analytics/ai-traffic-monitor'
-import { SmoothScrollProvider } from '@/components/providers/smooth-scroll-provider'
+import { SmoothScrollLazy } from '@/components/providers/smooth-scroll-lazy'
 
 // ─── Metadata dinâmica por locale ──────────────────────────────────────────────
 
@@ -262,7 +262,7 @@ export default async function LocaleLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <SmoothScrollProvider>{children}</SmoothScrollProvider>
+              <SmoothScrollLazy>{children}</SmoothScrollLazy>
               <SpeedInsights />
               <PWARegister />
               <PWAInstallPrompt />
