@@ -1,11 +1,21 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 import createNextIntlPlugin from 'next-intl/plugin';
+import path from 'node:path';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
+// Next bundles core-js polyfills (Array.prototype.at, Object.hasOwn,
+// String.prototype.trimStart, URL.canParse…) into the client bundle
+// unconditionally — all natively supported by our browserslist targets
+// (chrome>=90/safari>=15/etc.). Alias the polyfill module to an empty file so
+// PageSpeed stops flagging "legacy JavaScript". Covers both bundlers.
+const emptyPolyfills = path.resolve(__dirname, 'lib/empty-polyfills.js');
+
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  // Standalone duplicates the entire .next tree (doubles disk use). Allow opting
+  // out for local validation builds via NEXT_NO_STANDALONE=1; production keeps it.
+  output: process.env.NEXT_NO_STANDALONE ? undefined : ('standalone' as const),
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
   productionBrowserSourceMaps: false,
@@ -16,6 +26,23 @@ const nextConfig: NextConfig = {
     // (the Tailwind 4 bundle was ~78KB gzip blocking LCP for ~1.8s)
     inlineCss: true,
   },
+
+  /* Drop Next's unconditional legacy polyfills (Turbopack path) */
+  turbopack: {
+    resolveAlias: {
+      'next/dist/build/polyfills/polyfill-module': emptyPolyfills,
+    },
+  },
+
+  /* Drop Next's unconditional legacy polyfills (webpack fallback path) */
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'next/dist/build/polyfills/polyfill-module': emptyPolyfills,
+    }
+    return config
+  },
+
   /* Image Optimization */
   images: {
     remotePatterns: [
