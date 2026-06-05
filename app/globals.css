@@ -322,6 +322,13 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-newsreader), Georgia, serif;
   }
+
+  /* Serif italic (blog/experience) uses the on-demand italic instance so the
+     critical Newsreader (normal) stays light. Falls back to Georgia italic. */
+  .font-serif.italic,
+  .font-serif[style*="italic"] {
+    font-family: var(--font-newsreader-italic), Georgia, serif;
+  }
 }
 
 @layer utilities {

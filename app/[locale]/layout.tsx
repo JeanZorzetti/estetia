@@ -21,13 +21,26 @@ const geistMono = Geist_Mono({
 })
 
 // Estetia CRM Identity — headline serif (preload:true = LCP element, o <h1> usa esta fonte)
+// Apenas 'normal' é preloadado: é o que o <h1>/<h2> da landing usam, mantendo a
+// cadeia crítica leve. O itálico (usado só em blog/experience) carrega on-demand abaixo.
 const newsreader = Newsreader({
   variable: '--font-newsreader',
   subsets: ['latin'],
   weight: ['400', '500', '600'],
-  style: ['normal', 'italic'],
+  style: ['normal'],
   display: 'swap',
   preload: true,
+})
+
+// Itálico serif — usado apenas em blog/experience-v2, fora do caminho crítico do LCP.
+// Compartilha a mesma CSS var, então classes `font-serif italic` continuam funcionando.
+const newsreaderItalic = Newsreader({
+  variable: '--font-newsreader-italic',
+  subsets: ['latin'],
+  weight: ['300', '400'],
+  style: ['italic'],
+  display: 'swap',
+  preload: false,
 })
 
 // Estetia CRM Identity — body sans
@@ -215,19 +228,21 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        {/* Preconnect to critical third-party origins */}
+        {/* Preconnect only to origins used early (GTM/GA load via lazyOnload/afterInteractive).
+            Sentry/PostHog load late, so dns-prefetch is enough — preconnect to them wastes
+            connections (PageSpeed flagged them as "unused preconnect"). Max 4 preconnects. */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" />
-        <link rel="preconnect" href="https://js.sentry-cdn.com" />
-        <link rel="preconnect" href="https://us.i.posthog.com" />
-        <link rel="preconnect" href="https://us-assets.i.posthog.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://js.sentry-cdn.com" />
+        <link rel="dns-prefetch" href="https://us.i.posthog.com" />
+        <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
         {/* Schema.org JSON-LD — locale-aware */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} ${manrope.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} ${newsreaderItalic.variable} ${manrope.variable} antialiased`}>
         {/* Google Tag Manager (noscript) */}
         {analyticsConfig.gtm.enabled && (
           <GoogleTagManagerNoScript gtmId={analyticsConfig.gtm.id} />
