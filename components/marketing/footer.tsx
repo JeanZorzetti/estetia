@@ -138,7 +138,7 @@ export function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16">
                     {Object.entries(FOOTER_LINKS).map(([col, links]) => (
                         <div key={col}>
-                            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/40 mb-5">{col}</h4>
+                            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/55 mb-5">{col}</h4>
                             <ul className="space-y-2.5">
                                 {links.map(link => (
                                     <li key={link.href}>
@@ -168,7 +168,7 @@ export function Footer() {
                             <span className="font-serif font-bold text-white text-sm">Estetia CRM</span>
                         </div>
                         <span className="hidden md:block text-white/20 text-xs">·</span>
-                        <span className="text-white/30 text-xs">© {new Date().getFullYear()} ROI Labs, Inc. Todos os direitos reservados.</span>
+                        <span className="text-white/55 text-xs">© {new Date().getFullYear()} ROI Labs, Inc. Todos os direitos reservados.</span>
                     </div>
 
                     {/* Social + legal links */}
@@ -197,7 +197,7 @@ export function Footer() {
 
                 {/* CNPJ */}
                 <div className="text-center pb-4">
-                    <p className="text-[10px] text-white/15">57.493.675 MARIA EDUARDA ROCHA MENDES - ME · CNPJ: 57.493.675/0001-37</p>
+                    <p className="text-[10px] text-white/50">57.493.675 MARIA EDUARDA ROCHA MENDES - ME · CNPJ: 57.493.675/0001-37</p>
                 </div>
             </div>
         </footer>

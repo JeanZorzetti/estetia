@@ -2,13 +2,14 @@ import { Metadata } from "next"
 import { AnnouncementBar } from "@/components/marketing/announcement-bar"
 import { Hero } from "@/components/marketing/hero"
 import { Logos } from "@/components/marketing/logos"
-import { SolutionsTabs } from "@/components/marketing/solutions-tabs"
-import { FeaturesExpanded } from "@/components/marketing/features-expanded"
-import { SocialProof } from "@/components/marketing/social-proof"
 import { HomepageJsonLd } from "@/components/marketing/homepage-json-ld"
 import { ScenarioCard } from "@/components/pricing/scenario-card"
 import dynamic from "next/dynamic"
 
+// Below-the-fold sections — lazy-loaded (ssr:true keeps SEO/SSR, splits JS off the critical path)
+const SolutionsTabs = dynamic(() => import("@/components/marketing/solutions-tabs").then(m => ({ default: m.SolutionsTabs })))
+const FeaturesExpanded = dynamic(() => import("@/components/marketing/features-expanded").then(m => ({ default: m.FeaturesExpanded })))
+const SocialProof = dynamic(() => import("@/components/marketing/social-proof").then(m => ({ default: m.SocialProof })))
 const StickyCTA = dynamic(() => import("@/components/marketing/sticky-cta").then(m => ({ default: m.StickyCTA })))
 import { blogPosts } from "@/lib/blog-data"
 import Image from "next/image"
