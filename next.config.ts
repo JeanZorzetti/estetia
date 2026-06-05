@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'date-fns', 'recharts'],
     staleTimes: { dynamic: 30, static: 180 },
+    // Inline critical CSS into <head> to remove the render-blocking CSS request
+    // (the Tailwind 4 bundle was ~78KB gzip blocking LCP for ~1.8s)
+    inlineCss: true,
   },
   /* Image Optimization */
   images: {
@@ -235,6 +238,34 @@ const nextConfig: NextConfig = {
       {
         source: '/features/analytics',
         destination: '/features/analytics-pro',
+        permanent: true,
+      },
+      // /fundadores → /about (página de fundadores não existe, about é o equivalente)
+      {
+        source: '/fundadores',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/en/founders',
+        destination: '/about',
+        permanent: true,
+      },
+      // /features/marketing e /features/agenda → /features (slugs inexistentes)
+      {
+        source: '/features/marketing',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/features/agenda',
+        destination: '/features',
+        permanent: true,
+      },
+      // /automated-sales (EN) → /vendas-automaticas (PT canônica)
+      {
+        source: '/automated-sales',
+        destination: '/vendas-automaticas',
         permanent: true,
       },
       // Literal [slug] / [category] crawled from broken HTML templates
