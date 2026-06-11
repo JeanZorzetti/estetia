@@ -34,7 +34,7 @@ export async function GET() {
       return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
-    const products = await (prisma as any).product.findMany({
+    const products = await prisma.product.findMany({
       where: { organizationId },
       orderBy: { createdAt: 'desc' },
     })
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     const body = await req.json()
     const data = productSchema.parse(body)
 
-    const product = await (prisma as any).product.create({
+    const product = await prisma.product.create({
       data: {
         name: data.name,
         description: data.description || null,

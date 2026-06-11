@@ -40,7 +40,7 @@ export async function PATCH(
     const body = await req.json()
     const data = updateSchema.parse(body)
 
-    const product = await (prisma as any).product.update({
+    const product = await prisma.product.update({
       where: { id, organizationId },
       data,
     })
@@ -66,7 +66,7 @@ export async function DELETE(
     }
 
     const { id } = await params
-    await (prisma as any).product.delete({ where: { id, organizationId } })
+    await prisma.product.delete({ where: { id, organizationId } })
     return NextResponse.json({ success: true })
   } catch (error: any) {
     console.error('[PRODUCTS_DELETE]', error?.message || error)

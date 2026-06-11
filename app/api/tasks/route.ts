@@ -93,6 +93,8 @@ export async function GET(request: Request) {
         },
       },
       orderBy: [{ status: { order: 'asc' } }, { order: 'asc' }],
+      // Safety cap — kanban renders all tasks; unbounded list OOMs on large orgs
+      take: 1000,
     })
 
     return NextResponse.json(tasks)

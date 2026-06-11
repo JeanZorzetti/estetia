@@ -31,7 +31,7 @@ export default async function ProductsPage({
     return <div>{t('errors.userNoOrg')}</div>
   }
 
-  const rawProducts = await (prisma as any).product.findMany({
+  const rawProducts = await prisma.product.findMany({
     where: { organizationId: user.organizationId },
     orderBy: { createdAt: 'desc' },
   })

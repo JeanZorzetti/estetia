@@ -38,24 +38,31 @@ export async function GET() {
 
     // 4. Get active connection to scope messages
     const activeConnection = connections.find(c => c.status === 'CONNECTED' || c.status === 'CONNECTING')
-    const messageFilter = activeConnection ? { connectionId: activeConnection.id } : {}
 
     // 5. Get distinct contactIds via raw SQL — groupBy/distinct on nullable fields
     // causes INSUFFICIENT_PATH in Prisma 5.x, raw SQL is the safe alternative
     const connectionIdFilter = activeConnection ? activeConnection.id : null
+    // Bounded to the 300 most recently active conversations — unbounded DISTINCT
+    // grew linearly with org history and froze the chat for large orgs.
     const rows = connectionIdFilter
       ? await prismaWa.$queryRaw<{ contact_id: string }[]>`
-          SELECT DISTINCT "contactId" AS contact_id
+          SELECT "contactId" AS contact_id
           FROM "WhatsAppMessage"
           WHERE "organizationId" = ${user.organizationId}
             AND "contactId" IS NOT NULL
             AND "connectionId" = ${connectionIdFilter}
+          GROUP BY "contactId"
+          ORDER BY MAX("sentAt") DESC
+          LIMIT 300
         `
       : await prismaWa.$queryRaw<{ contact_id: string }[]>`
-          SELECT DISTINCT "contactId" AS contact_id
+          SELECT "contactId" AS contact_id
           FROM "WhatsAppMessage"
           WHERE "organizationId" = ${user.organizationId}
             AND "contactId" IS NOT NULL
+          GROUP BY "contactId"
+          ORDER BY MAX("sentAt") DESC
+          LIMIT 300
         `
 
     const contactIds = rows.map(r => r.contact_id)
@@ -87,20 +94,29 @@ export async function GET() {
         })
       : []
 
-    // 7. Fetch last message per contact from WA DB
+    // 7. Fetch ONLY the last message per contact via DISTINCT ON — the previous
+    // findMany loaded every message of every conversation into memory.
+    type WaMessageRow = Record<string, unknown> & { contactId: string | null }
     const lastMessagesRaw = contactIds.length > 0
-      ? await prismaWa.whatsAppMessage.findMany({
-          where: {
-            organizationId: user.organizationId,
-            contactId: { in: contactIds },
-            ...messageFilter,
-          },
-          orderBy: { sentAt: 'desc' },
-        })
+      ? connectionIdFilter
+        ? await prismaWa.$queryRaw<WaMessageRow[]>`
+            SELECT DISTINCT ON ("contactId") *
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+              AND "connectionId" = ${connectionIdFilter}
+            ORDER BY "contactId", "sentAt" DESC
+          `
+        : await prismaWa.$queryRaw<WaMessageRow[]>`
+            SELECT DISTINCT ON ("contactId") *
+            FROM "WhatsAppMessage"
+            WHERE "organizationId" = ${user.organizationId}
+              AND "contactId" = ANY(${contactIds}::text[])
+            ORDER BY "contactId", "sentAt" DESC
+          `
       : []
 
-    // distinct + orderBy on different fields causes INSUFFICIENT_PATH — dedupe in JS
-    const lastMessageMap = new Map<string, typeof lastMessagesRaw[0]>()
+    const lastMessageMap = new Map<string, WaMessageRow>()
     for (const msg of lastMessagesRaw) {
       if (msg.contactId && !lastMessageMap.has(msg.contactId)) {
         lastMessageMap.set(msg.contactId, msg)
