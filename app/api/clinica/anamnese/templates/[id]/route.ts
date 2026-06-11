@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth'
+import { requireClinicalAccess } from '@/lib/clinica/access'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { createHash } from 'crypto'
@@ -32,23 +32,14 @@ const PatchTemplateSchema = z.object({
   ativo: z.boolean(),
 })
 
-async function getOrgUser(email: string) {
-  return prisma.user.findUnique({
-    where: { email },
-    select: { id: true, organizationId: true },
-  })
-}
-
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const user = await getOrgUser(session.user.email)
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const template = await prisma.anamnesisTemplate.findFirst({
     where: { id, organizationId: user.organizationId },
@@ -63,11 +54,9 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const user = await getOrgUser(session.user.email)
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const existing = await prisma.anamnesisTemplate.findFirst({
     where: { id, organizationId: user.organizationId },
@@ -104,11 +93,9 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const user = await getOrgUser(session.user.email)
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const existing = await prisma.anamnesisTemplate.findFirst({
     where: { id, organizationId: user.organizationId },
@@ -136,11 +123,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const user = await getOrgUser(session.user.email)
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const template = await prisma.anamnesisTemplate.findFirst({
     where: { id, organizationId: user.organizationId },

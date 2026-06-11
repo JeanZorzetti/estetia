@@ -125,7 +125,21 @@ export async function checkRateLimit(
   return null
 }
 
-export const authRateLimit         = (req: NextRequest) => checkRateLimit(req, 'auth',             { limit: 5,   windowSeconds: 15 * 60 })
+/**
+ * For Server Actions (no NextRequest available) — rate limit by an arbitrary
+ * key (usually the client IP from next/headers). Returns true when BLOCKED.
+ */
+export async function isRateLimitedByKey(
+  key: string,
+  prefix: string,
+  config: RateLimitConfig
+): Promise<boolean> {
+  const fullKey = `ratelimit:${prefix}:${key}`
+  const result = (await redisRateLimit(fullKey, config)) ?? memoryRateLimit(fullKey, config)
+  return !result.success
+}
+
+export const authRateLimit        = (req: NextRequest) => checkRateLimit(req, 'auth',             { limit: 5,   windowSeconds: 15 * 60 })
 export const agiRateLimit          = (req: NextRequest) => checkRateLimit(req, 'agi',              { limit: 200, windowSeconds: 60 * 60 })
 export const contactRateLimit      = (req: NextRequest) => checkRateLimit(req, 'contact',          { limit: 3,   windowSeconds: 60 * 60 })
 export const leadCaptureRateLimit  = (req: NextRequest) => checkRateLimit(req, 'lead',             { limit: 10,  windowSeconds: 60 * 60 })

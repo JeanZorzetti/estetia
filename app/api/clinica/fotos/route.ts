@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth'
+import { requireClinicalAccess } from '@/lib/clinica/access'
 import { prisma } from '@/lib/prisma'
 import { requireModule } from '@/lib/guards/require-module'
 import { z } from 'zod'
@@ -21,17 +21,12 @@ const CreateFotoSchema = z.object({
  */
 
 export async function GET(req: NextRequest) {
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const gate = await requireModule('fotos')
   if (!gate.allowed) return NextResponse.json({ error: 'Módulo não ativo' }, { status: 403 })
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { organizationId: true },
-  })
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
 
   const patientId = req.nextUrl.searchParams.get('patientId')
   if (!patientId) return NextResponse.json({ error: 'patientId required' }, { status: 400 })
@@ -51,17 +46,12 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const gate = await requireModule('fotos')
   if (!gate.allowed) return NextResponse.json({ error: 'Módulo não ativo' }, { status: 403 })
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { organizationId: true },
-  })
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
 
   const body = await req.json()
   const parsed = CreateFotoSchema.safeParse(body)

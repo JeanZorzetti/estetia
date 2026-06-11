@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth'
+import { requireClinicalAccess } from '@/lib/clinica/access'
 import { prisma } from '@/lib/prisma'
 import { getPhotoStream } from '@/lib/storage-photos'
 
@@ -12,16 +12,11 @@ export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await getSession()
-  if (!session?.user?.email) return new NextResponse('Unauthorized', { status: 401 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const { id } = await params
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { organizationId: true },
-  })
-  if (!user?.organizationId) return new NextResponse('Forbidden', { status: 403 })
 
   const photo = await prisma.patientPhoto.findFirst({
     where: { id, organizationId: user.organizationId },

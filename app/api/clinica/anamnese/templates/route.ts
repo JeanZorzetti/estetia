@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth'
+import { requireClinicalAccess } from '@/lib/clinica/access'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { createHash } from 'crypto'
@@ -37,14 +37,9 @@ const TemplateSchema = z.object({
  */
 
 export async function GET(req: NextRequest) {
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { organizationId: true },
-  })
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const templates = await prisma.anamnesisTemplate.findMany({
     where: { organizationId: user.organizationId, ativo: true },
@@ -65,14 +60,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { organizationId: true },
-  })
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const body = await req.json()
   const parsed = TemplateSchema.safeParse(body)

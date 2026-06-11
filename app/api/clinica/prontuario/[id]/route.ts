@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth'
+import { requireClinicalAccess } from '@/lib/clinica/access'
 import { prisma } from '@/lib/prisma'
 import { logMedicalAccess } from '@/lib/audit/medical-access-log'
 import { decrypt } from '@/lib/encryption'
@@ -20,14 +20,9 @@ export async function GET(
 ) {
   const { id } = await params
 
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { id: true, organizationId: true },
-  })
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const record = await prisma.medicalRecord.findFirst({
     where: { id, organizationId: user.organizationId },
@@ -69,14 +64,9 @@ export async function PATCH(
 ) {
   const { id } = await params
 
-  const session = await getSession()
-  if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { id: true, organizationId: true },
-  })
-  if (!user?.organizationId) return NextResponse.json({ error: 'No org' }, { status: 403 })
+  const access = await requireClinicalAccess()
+  if (!access.ok) return access.response
+  const { user } = access
 
   const record = await prisma.medicalRecord.findFirst({
     where: { id, organizationId: user.organizationId },

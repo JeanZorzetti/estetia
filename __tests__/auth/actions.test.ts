@@ -46,6 +46,15 @@ vi.mock('next/navigation', () => ({
   }),
 }))
 
+vi.mock('next/headers', () => ({
+  headers: vi.fn(async () => new Headers({ 'x-forwarded-for': '127.0.0.1' })),
+  cookies: vi.fn(async () => ({ get: vi.fn(), set: vi.fn(), delete: vi.fn() })),
+}))
+
+vi.mock('@/lib/ratelimit', () => ({
+  isRateLimitedByKey: vi.fn(async () => false),
+}))
+
 vi.mock('@/lib/logger', () => ({
   default: {
     info: vi.fn(),

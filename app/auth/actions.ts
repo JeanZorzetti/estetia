@@ -4,7 +4,8 @@ import { prisma } from '@/lib/prisma'
 import { hash, compare } from 'bcryptjs'
 import { login, logout } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
+import { isRateLimitedByKey } from '@/lib/ratelimit'
 import logger, { generateCorrelationId } from '@/lib/logger'
 import { sendWelcomeEmail, sendEmailAsync } from '@/lib/email-automations'
 
@@ -97,6 +98,18 @@ export async function registerAction(prevState: any, formData: FormData) {
     if (!name || !email || !password) {
         logger.warn({ correlationId, email }, 'Registration failed: missing fields')
         return { error: 'Preencha todos os campos.' }
+    }
+
+    // Brute-force / mass-signup protection (per IP)
+    const headersList = await headers()
+    const clientIp =
+        headersList.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+        headersList.get('x-real-ip') ||
+        'unknown'
+    const blocked = await isRateLimitedByKey(clientIp, 'register', { limit: 5, windowSeconds: 60 * 60 })
+    if (blocked) {
+        logger.warn({ correlationId, email, clientIp }, 'Registration rate limited')
+        return { error: 'Muitas tentativas de cadastro. Tente novamente em 1 hora.' }
     }
 
     // 1. Check if user exists
@@ -302,6 +315,21 @@ export async function loginAction(prevState: any, formData: FormData) {
     if (!email || !password) {
         logger.warn({ correlationId, email }, 'Login failed: missing fields')
         return { error: 'Preencha todos os campos.' }
+    }
+
+    // Brute-force protection: per IP and per target email
+    const headersList = await headers()
+    const clientIp =
+        headersList.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+        headersList.get('x-real-ip') ||
+        'unknown'
+    const [ipBlocked, emailBlocked] = await Promise.all([
+        isRateLimitedByKey(clientIp, 'login-ip', { limit: 10, windowSeconds: 15 * 60 }),
+        isRateLimitedByKey(email.toLowerCase(), 'login-email', { limit: 5, windowSeconds: 15 * 60 }),
+    ])
+    if (ipBlocked || emailBlocked) {
+        logger.warn({ correlationId, email, clientIp }, 'Login rate limited')
+        return { error: 'Muitas tentativas de login. Tente novamente em 15 minutos.' }
     }
 
     const user = await prisma.user.findUnique({
