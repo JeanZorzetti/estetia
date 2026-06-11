@@ -1,19 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { logMedicalAccess } from '@/lib/audit/medical-access-log'
+import { anonymizePatient } from '@/lib/lgpd/anonymize-patient'
 
 /**
  * POST /api/lgpd/delete
  * Body: { pacienteId, reason }
  *
  * LGPD Art. 18, VI — direito ao esquecimento.
- * Anonymizes patient PII while preserving:
- *   - financial/fiscal records (NFS-e compliance)
- *   - aggregate session counts (statistical integrity)
- *   - audit log entries (cannot be deleted — LGPD Art. 37)
- *
- * Does NOT physically delete rows. Uses anonymization pattern.
+ * Anonymization logic lives in lib/lgpd/anonymize-patient.ts
+ * (shared with the retention cron).
  */
 export async function POST(req: NextRequest) {
   const session = await getSession()
@@ -46,69 +42,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Patient not found' }, { status: 404 })
   }
 
-  // Generate anonymous identifier (deterministic per patient so no orphaned NFS-e refs)
-  const anonId = `Paciente Anonimizado #${pacienteId.slice(0, 8).toUpperCase()}`
-
-  await prisma.$transaction(async (tx: typeof prisma) => {
-    // 1. Anonymize patient PII
-    await tx.patient.update({
-      where: { id: pacienteId },
-      data: {
-        nome: anonId,
-        email: null,
-        telefone: null,
-        cpf: null,
-        dataNascimento: null,
-        fotoPerfil: null,
-        alergias: [],
-        medicacoesUso: [],
-        contraindicacoes: [],
-        tags: [],
-        origem: 'anonimizado',
-        consentLgpd: { anonimizadoEm: new Date().toISOString(), motivo: reason ?? 'direito_esquecimento' },
-      },
-    })
-
-    // 2. Wipe medical records content (keep row for fiscal integrity)
-    await tx.medicalRecord.updateMany({
-      where: { pacienteId, organizationId: user.organizationId },
-      data: {
-        queixaPrincipal: null,
-        historiaClinica: null,
-        examesAvaliados: null,
-        avaliacaoFisica: null,
-        hipoteseDiagnostica: null,
-        planoTratamento: null,
-        dadosCriptografados: null,
-      },
-    })
-
-    // 3. Wipe anamnesis answers (keep structural row)
-    await tx.anamnesis.updateMany({
-      where: { pacienteId, organizationId: user.organizationId },
-      data: {
-        respostas: JSON.stringify({ anonimizado: true }),
-        assinaturaDigital: null,
-        assinadoIp: null,
-      },
-    })
-
-    // 4. Revoke all active consents
-    await tx.consentLog.updateMany({
-      where: { pacienteId, organizationId: user.organizationId, revokedAt: null },
-      data: { revokedAt: new Date() },
-    })
-  })
-
-  // Log the anonymization (this entry itself is permanent)
-  await logMedicalAccess({
+  const { anonId } = await anonymizePatient({
+    pacienteId,
     organizationId: user.organizationId,
     userId: user.id,
-    pacienteId,
-    recordType: 'Patient',
-    recordId: pacienteId,
-    action: 'ANONYMIZE',
-    metadata: { reason: reason ?? 'LGPD Art. 18 VI — direito ao esquecimento', anonId },
+    reason: reason ?? 'LGPD Art. 18 VI — direito ao esquecimento',
+    source: 'manual',
   })
 
   return NextResponse.json({
