@@ -306,6 +306,14 @@ const nextConfig: NextConfig = {
         destination: '/:path*',
         permanent: true,
       },
+      // Sirius-niche ROI calculators removed (not relevant to aesthetics) →
+      // /ferramentas. Redirect in case Google already crawled these inherited
+      // URLs, avoiding new 404s.
+      {
+        source: '/ferramentas/calculadora-roi-:niche(agencias|consultores|corretores|energia-solar|representantes)',
+        destination: '/ferramentas',
+        permanent: true,
+      },
       // Sirius legacy slugs that GSC still crawls (404 cleanup 2026-06-01)
       {
         source: '/year',

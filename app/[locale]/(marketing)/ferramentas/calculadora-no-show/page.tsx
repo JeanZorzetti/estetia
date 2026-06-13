@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
+import { setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import { CalculadoraNoShow } from '@/components/calculadoras/calculadora-no-show'
 import { Link } from '@/i18n/routing'
@@ -40,7 +41,14 @@ const FACTS = [
   { stat: '70%', desc: 'de redução no no-show com recall automático ativado' },
 ]
 
-export default function CalculadoraNoShowPage() {
+export default async function CalculadoraNoShowPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   return (
     <>
       <Script

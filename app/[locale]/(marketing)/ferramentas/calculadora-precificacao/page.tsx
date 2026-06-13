@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
+import { setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import { CalculadoraPrecificacao } from '@/components/calculadoras/calculadora-precificacao'
 import { Link } from '@/i18n/routing'
@@ -40,7 +41,14 @@ const PRICING_TIPS = [
   { emoji: '📊', title: 'Reajustes sistemáticos', tip: 'Reajuste seus valores pelo menos uma vez por ano. Insumos e custos operacionais fixos sobem constantemente — seu faturamento precisa acompanhar.' },
 ]
 
-export default function CalculadoraPrecificacaoPage() {
+export default async function CalculadoraPrecificacaoPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   return (
     <>
       <Script

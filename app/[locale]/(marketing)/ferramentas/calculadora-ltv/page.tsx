@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
+import { setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import { CalculadoraLTV } from '@/components/calculadoras/calculadora-ltv'
 import { Link } from '@/i18n/routing'
@@ -40,7 +41,14 @@ const LTV_CONCEPTS = [
   { term: 'CAC máximo', def: 'Valor limite sugerido que você pode gastar para adquirir um novo paciente de forma saudável. Regra geral: LTV ÷ 3.' },
 ]
 
-export default function CalculadoraLTVPage() {
+export default async function CalculadoraLTVPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   return (
     <>
       <Script

@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import { CalculadoraROIClinica } from '@/components/calculadoras/calculadora-roi-clinica'
 import { Link } from '@/i18n/routing'
@@ -54,7 +54,14 @@ const HOW_IT_WORKS = [
   { step: '04', title: 'Veja o ganho potencial', desc: 'Diferença anual entre a receita atual e a projetada com gestão inteligente.' },
 ]
 
-export default function CalculadoraROIPage() {
+export default async function CalculadoraROIPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   return (
     <>
       <Script

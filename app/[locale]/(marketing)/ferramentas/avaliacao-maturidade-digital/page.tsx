@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
+import { setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import { QuizMaturidade } from '@/components/calculadoras/quiz-maturidade'
 import { Link } from '@/i18n/routing'
@@ -45,7 +46,14 @@ const DIMENSIONS = [
   { icon: '💰', title: 'Gestão & Compliance', desc: 'Fluxo de caixa inteligente, comissão e segurança sob a LGPD.' },
 ]
 
-export default function AvaliacaoMaturidadePage() {
+export default async function AvaliacaoMaturidadePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   return (
     <>
       <Script
