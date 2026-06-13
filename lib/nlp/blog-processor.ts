@@ -100,6 +100,12 @@ export async function processBlogPostsBatch(slugs?: string[]) {
  * Get all entities extracted from a specific blog post
  */
 export async function getPostEntities(slug: string) {
+  // At build time (Docker builder, no DATABASE_URL) the blog pages are
+  // prerendered (ISR), so this runs without a DB. Skip the query entirely
+  // instead of letting it throw + log on every post — that flooded the deploy
+  // log with ~50 PrismaClientInitializationError stacks. The ISR revalidation
+  // repopulates entities on the first runtime request, where the DB exists.
+  if (!process.env.DATABASE_URL) return []
   try {
     const contentEntities = await prisma.contentEntity.findMany({
       where: {
@@ -132,6 +138,11 @@ export async function getRelatedPostsByEntities(
   slug: string,
   limit = 3
 ): Promise<BlogPost[]> {
+  // No DB at build time: skip the knowledge-graph queries and use the same
+  // fallback (random sibling posts). Avoids the build-time Prisma error noise.
+  if (!process.env.DATABASE_URL) {
+    return blogPosts.filter((p) => p.slug !== slug).slice(0, limit)
+  }
   try {
     // Get entities from current post
     const postEntities = await getPostEntities(slug)

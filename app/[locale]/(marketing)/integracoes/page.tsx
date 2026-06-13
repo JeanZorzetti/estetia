@@ -102,13 +102,16 @@ export default async function IntegracoesPage({
     items: ALL_INTEGRATIONS.filter((i) => i.category === cat),
   })).filter((g) => g.items.length > 0)
 
+  // Probe FAQ keys with t.has() (silent existence check) instead of calling
+  // t() on possibly-missing keys, which logs MISSING_MESSAGE even inside a
+  // try/catch and flooded the deploy log.
+  const tHas = (t as unknown as { has?: (key: string) => boolean }).has
   const faqs: { q: string; a: string }[] = []
   for (let i = 1; i <= 6; i++) {
-    try {
-      const q = t(`faq.${i}.q` as any)
-      const a = t(`faq.${i}.a` as any)
-      if (q && a && !q.includes('.faq.')) faqs.push({ q, a })
-    } catch { break }
+    if (typeof tHas === 'function' && !(tHas(`faq.${i}.q`) && tHas(`faq.${i}.a`))) break
+    const q = t(`faq.${i}.q` as any)
+    const a = t(`faq.${i}.a` as any)
+    if (q && a && !q.includes('.faq.')) faqs.push({ q, a })
   }
 
   return (

@@ -59,9 +59,14 @@ export async function generateMetadata({
   }
 }
 
-type TFunc = (key: string, ...args: any[]) => string
+type TFunc = ((key: string, ...args: any[]) => string) & { has?: (key: string) => boolean }
 function tryTSafe(t: TFunc, key: string): string | null {
+  // Probe optional keys (benefits/useCases/faq loops) without triggering
+  // next-intl's MISSING_MESSAGE console.error: t.has() checks existence
+  // silently. Calling t() on a missing key logs even inside a try/catch —
+  // that flooded the deploy log with ~192 lines for the integrations probes.
   try {
+    if (typeof t.has === 'function' && !t.has(key)) return null
     const val = t(key as any)
     if (typeof val !== 'string') return null
     if (val === key) return null
