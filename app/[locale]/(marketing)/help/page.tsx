@@ -20,7 +20,7 @@ import {
   LifeBuoy,
 } from 'lucide-react'
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { getAllCategories } from '@/lib/help-articles'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
@@ -206,7 +206,14 @@ const faqItems = [
   },
 ]
 
-export default function HelpPage() {
+export default async function HelpPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

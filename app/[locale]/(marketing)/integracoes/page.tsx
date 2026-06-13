@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
@@ -78,7 +78,13 @@ const CATEGORY_ACCENT: Record<IntegrationCategory, { bg: string; text: string; b
   validacoes:        { bg: 'bg-teal-500/8 dark:bg-teal-500/12',     text: 'text-teal-600 dark:text-teal-400',     border: 'border-slate-100 hover:border-teal-500/30 dark:border-white/5 dark:hover:border-teal-500/30',     dot: 'bg-teal-500' },
 }
 
-export default async function IntegracoesPage() {
+export default async function IntegracoesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations('marketing.integrations')
 
   const breadcrumbSchema = {

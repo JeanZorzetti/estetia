@@ -1,4 +1,4 @@
-﻿import { getTranslations } from 'next-intl/server'
+﻿import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
 import Image from 'next/image'
 import Script from 'next/script'
@@ -36,6 +36,7 @@ export async function generateMetadata(
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'marketing.about' })
 
   const organizationSchema = {

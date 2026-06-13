@@ -3,7 +3,7 @@ import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 import { Users, MessageCircle, BookOpen, Github, Lightbulb, Trophy, Heart } from 'lucide-react'
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -88,7 +88,14 @@ const stats = [
   { value: '95%', label: 'Satisfação' },
 ]
 
-export default function CommunityPage() {
+export default async function CommunityPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

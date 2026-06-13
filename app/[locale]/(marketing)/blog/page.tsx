@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { blogPosts } from '@/lib/blog/index'
 import { Rss, ArrowRight } from 'lucide-react'
 import { BlogClientContent } from './blog-client'
@@ -10,6 +10,7 @@ export default async function BlogPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  setRequestLocale(locale)
   const t = await getTranslations('marketing.blog')
   const allCategoryLabel = t('categories.all')
 
