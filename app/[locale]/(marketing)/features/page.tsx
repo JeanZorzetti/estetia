@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Script from 'next/script'
@@ -91,7 +91,14 @@ function CellValue({ value, isPro }: { value: string | boolean; isPro?: boolean 
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default async function FeaturesPage() {
+export default async function FeaturesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const t = await getTranslations('marketing.features')
   const tSections = await getTranslations('marketing.features.sections')
 

@@ -6,14 +6,23 @@ import { NavDropdowns, SolucoesLink } from '@/components/marketing/nav-dropdowns
 import { FeaturesDropdown } from '@/components/marketing/features-dropdown'
 import { Footer } from '@/components/marketing/footer'
 import { Link } from '@/i18n/routing'
-import { useTranslations } from 'next-intl'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-export default function MarketingLayout({
+export default async function MarketingLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: Promise<{ locale: string }>
 }) {
-  const t = useTranslations('marketing.home.nav')
+  // This layout wraps every marketing page. It used useTranslations() without
+  // setRequestLocale, which opted the whole subtree into dynamic rendering and
+  // cancelled the static rendering enabled on the child pages. Enabling the
+  // request locale here (and using the async getTranslations) lets the pages
+  // prerender statically.
+  const { locale } = await params
+  setRequestLocale(locale)
+  const t = await getTranslations('marketing.home.nav')
 
   return (
     <div className="flex min-h-screen flex-col">

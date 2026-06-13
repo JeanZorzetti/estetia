@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import { Link } from '@/i18n/routing'
 import { ArrowRight, TrendingUp, Clock, Users, DollarSign, Zap } from 'lucide-react'
@@ -87,7 +87,14 @@ const breadcrumbSchema = {
   ],
 }
 
-export default function FerramentasPage() {
+export default async function FerramentasPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   return (
     <>
       <Script

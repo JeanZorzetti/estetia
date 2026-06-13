@@ -19,7 +19,7 @@ import {
   ChevronDown,
   DollarSign
 } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -47,7 +47,14 @@ export async function generateMetadata({
   }
 }
 
-export default function VendasAutomaticasPage() {
+export default async function VendasAutomaticasPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

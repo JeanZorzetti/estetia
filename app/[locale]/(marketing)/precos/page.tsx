@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
+import { setRequestLocale } from 'next-intl/server'
 import { prisma } from '@/lib/prisma'
 import { PricingBuilder } from '@/components/pricing/pricing-builder'
 import { ScenarioCard } from '@/components/pricing/scenario-card'
@@ -18,7 +19,14 @@ export const metadata: Metadata = {
   description: 'Calcule o preço do Estetia em tempo real. Pague apenas pelos módulos que sua clínica de estética usa. A partir de R$ 39/mês.',
 }
 
-export default async function PrecosPage() {
+export default async function PrecosPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const modules = await prisma.pricingModule.findMany({
     where: { ativo: true },
     orderBy: [{ category: 'asc' }, { ordem: 'asc' }],

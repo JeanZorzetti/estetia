@@ -1,7 +1,7 @@
 ﻿import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, Newsreader, Manrope } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, getTranslations } from 'next-intl/server'
+import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import type { Locale } from '@/i18n/config'
@@ -225,6 +225,11 @@ export default async function LocaleLayout({
   if (!routing.locales.includes(locale as Locale)) {
     notFound()
   }
+
+  // Habilita renderização estática com next-intl. Sem isto, qualquer chamada a
+  // getTranslations/getMessages opta a árvore inteira por renderização dinâmica
+  // (todas as páginas saíam como ƒ no build). Deve vir antes de getMessages.
+  setRequestLocale(locale)
 
   // Carrega as mensagens para o locale atual (passadas ao client via NextIntlClientProvider)
   const messages = await getMessages()

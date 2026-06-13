@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Check, MessageCircle, Star, Sparkles } from 'lucide-react'
 import { SOLUCOES } from '@/config/solucoes-data'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { setRequestLocale } from 'next-intl/server'
 
 export async function generateMetadata({
   params,
@@ -49,6 +50,7 @@ export default async function SolucoesPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  setRequestLocale(locale)
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
