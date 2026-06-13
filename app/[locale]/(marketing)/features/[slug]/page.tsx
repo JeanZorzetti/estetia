@@ -58,7 +58,11 @@ export async function generateMetadata({
 
 // Safely try a translation key — returns null if missing.
 function tryT(t: any, key: string): string | null {
+  // Probe optional keys (benefits/useCases/faq loops) without triggering
+  // next-intl's MISSING_MESSAGE console.error: t.has() checks existence
+  // silently. Calling t() on a missing key logs even inside a try/catch.
   try {
+    if (typeof t.has === 'function' && !t.has(key)) return null
     const val = t(key)
     if (typeof val !== 'string') return null
     if (val === key) return null
