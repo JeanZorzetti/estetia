@@ -11,12 +11,14 @@ import {
   getCategoryColor,
 } from '@/lib/blog/index'
 import { ArrowLeft, ArrowRight, Clock, BookOpen } from 'lucide-react'
+import { setRequestLocale } from 'next-intl/server'
+import { routing } from '@/i18n/routing'
 
 export function generateStaticParams() {
   const categories = getAllCategories()
-  return categories.map((category) => ({
-    category: slugifyCategory(category),
-  }))
+  return routing.locales.flatMap((locale) =>
+    categories.map((category) => ({ locale, category: slugifyCategory(category) }))
+  )
 }
 
 export async function generateMetadata({
@@ -52,6 +54,7 @@ export default async function BlogCategoryPage({
   params: Promise<{ locale: string; category: string }>
 }) {
   const { locale, category: categorySlug } = await params
+  setRequestLocale(locale)
   const categoryName = getCategoryFromSlug(categorySlug)
 
   if (!categoryName) notFound()

@@ -6,9 +6,13 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, ArrowLeft, Check, ChevronDown, MessageCircle, Quote } from 'lucide-react'
 import { SOLUCOES, getSolucaoBySlug, getAllSolucaoSlugs } from '@/config/solucoes-data'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { setRequestLocale } from 'next-intl/server'
+import { routing } from '@/i18n/routing'
 
 export function generateStaticParams() {
-  return getAllSolucaoSlugs().map((slug) => ({ slug }))
+  return routing.locales.flatMap((locale) =>
+    getAllSolucaoSlugs().map((slug) => ({ locale, slug }))
+  )
 }
 
 export async function generateMetadata({
@@ -40,7 +44,8 @@ export default async function SolucaoPage({
 }: {
   params: Promise<{ locale: string; slug: string }>
 }) {
-  const { slug } = await params
+  const { locale, slug } = await params
+  setRequestLocale(locale)
   const solucao = getSolucaoBySlug(slug)
   if (!solucao) notFound()
 

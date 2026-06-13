@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { setRequestLocale } from 'next-intl/server'
+import { routing } from '@/i18n/routing'
 import { blogPosts } from '@/lib/blog-data'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -12,6 +14,7 @@ import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClini
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
+import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import { Metadata } from 'next'
 import { ChevronLeft, ChevronRight, Calendar, Clock, User, ArrowRight } from 'lucide-react'
 import { getCategoryColor } from '@/lib/blog/index'
@@ -136,9 +139,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     title: `${post.title} | Estetia Blog`,
     description: aiOptimizedDescription,
     keywords: post.category,
-    alternates: {
-      canonical: url,
-    },
+    alternates: buildLocaleAlternates('pt-BR', `/blog/${slug}`),
     openGraph: {
       title: post.title,
       description: aiOptimizedDescription,
@@ -168,13 +169,14 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 }
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }))
+  return routing.locales.flatMap((locale) =>
+    blogPosts.map((post) => ({ locale, slug: post.slug }))
+  )
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug, locale } = await params
+  setRequestLocale(locale)
   const post = blogPosts.find((p) => p.slug === slug)
 
   if (!post) {

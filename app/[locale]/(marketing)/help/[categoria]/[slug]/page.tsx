@@ -15,13 +15,18 @@ import { getArticle, helpArticles } from "@/lib/help-articles";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { JsonLd } from "@/components/seo/json-ld";
+import { setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 
-// Gera páginas estáticas para todos os artigos no build
+// Gera páginas estáticas para todos os artigos no build (locale × artigo)
 export async function generateStaticParams() {
-  return helpArticles.map((article) => ({
-    categoria: article.categorySlug,
-    slug: article.slug,
-  }));
+  return routing.locales.flatMap((locale) =>
+    helpArticles.map((article) => ({
+      locale,
+      categoria: article.categorySlug,
+      slug: article.slug,
+    }))
+  );
 }
 
 // Força geração estática e retorna 404 para rotas não geradas
@@ -70,6 +75,7 @@ export default async function ArticlePage({
   params: Promise<{ locale: string; categoria: string; slug: string }>;
 }) {
   const { locale, categoria, slug } = await params;
+  setRequestLocale(locale);
   const article = getArticle(categoria, slug);
   const isEn = locale === 'en';
   const displayTitle = isEn && article?.titleEn ? article.titleEn : article?.title;

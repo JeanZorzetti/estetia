@@ -1,5 +1,6 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
+import { routing } from '@/i18n/routing'
 import type { Metadata } from 'next'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import Link from 'next/link'
@@ -24,7 +25,9 @@ import { ALL_FEATURES, FEATURE_CATEGORIES, getFeatureBySlug } from '@/config/fea
 import FeatureMockupSelector from '@/components/marketing/feature-mockups'
 
 export function generateStaticParams() {
-  return ALL_FEATURES.map((f) => ({ slug: f.slug }))
+  return routing.locales.flatMap((locale) =>
+    ALL_FEATURES.map((f) => ({ locale, slug: f.slug }))
+  )
 }
 
 export async function generateMetadata({
@@ -96,9 +99,10 @@ const PERSONA_ICONS = [User, Briefcase, Building2]
 export default async function FeatureDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }) {
-  const { slug } = await params
+  const { locale, slug } = await params
+  setRequestLocale(locale)
   const feature = getFeatureBySlug(slug)
   if (!feature) notFound()
 
