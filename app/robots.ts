@@ -1,5 +1,11 @@
 ﻿import { MetadataRoute } from 'next'
 
+// Serve robots.txt as a fully static asset. The app is otherwise dynamic, so
+// under load the route could time out instead of returning 200 — which makes
+// Googlebot treat robots.txt as "unavailable" and pause crawling of the whole
+// site (this showed up as 1.63% "robots.txt indisponível" in GSC Crawl Stats).
+export const dynamic = 'force-static'
+
 /**
  * Governança de Bots e Estratégia de Robots.txt para 2026
  *

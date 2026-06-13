@@ -3,6 +3,13 @@ import { blogPosts, getAllCategories, slugifyCategory } from '@/lib/blog-data'
 import { helpArticles } from '@/lib/help-articles'
 import { CALCULATOR_LAST_MODIFIED } from '@/config/calculator-metadata'
 
+// Render sitemap.xml statically (revalidated daily). All inputs are static
+// module data, so there's no reason to compute it per request — this removes
+// any chance of /sitemap.xml timing out under load and being flagged as a crawl
+// failure in GSC.
+export const dynamic = 'force-static'
+export const revalidate = 86400
+
 export default function sitemap(): MetadataRoute.Sitemap {
     const rawUrl = process.env.NEXT_PUBLIC_APP_URL || ''
     // Never use localhost in the sitemap — always fall back to the real domain

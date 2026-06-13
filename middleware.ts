@@ -9,11 +9,8 @@ const intlMiddleware = createMiddleware(routing)
 export async function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 
-    // 1. Redirect malformed URLs (SEO fix)
-    const malformedPatterns = ['/mês', '/mes', '/month']
-    if (malformedPatterns.some(pattern => pathname.includes(pattern))) {
-        return NextResponse.redirect(new URL('/', request.url))
-    }
+    // Note: billing-fragment redirects (/mês, /mes, /month) moved to
+    // next.config.ts `redirects()` so they emit a 301 instead of this 307.
 
     const sessionCookie = request.cookies.get('session')?.value
 

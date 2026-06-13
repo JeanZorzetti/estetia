@@ -8,8 +8,10 @@ import { FaqPricing } from '@/components/pricing/faq-pricing'
 import { Button } from '@/components/ui/button'
 import { Sparkles, ArrowRight, ShieldCheck } from 'lucide-react'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60
+// ISR: rendered statically and revalidated hourly. The pricing modules change
+// rarely, so we keep the Prisma query off the per-request crawl path (was
+// `force-dynamic`, which forced a DB hit on every Googlebot visit → 5-6s spikes).
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Preços transparentes — Estetia | Monte seu plano modular',

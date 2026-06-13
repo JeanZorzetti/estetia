@@ -177,27 +177,45 @@ const nextConfig: NextConfig = {
         destination: '/precos',
         permanent: true,
       },
-      // Pricing billing fragments crawled as paths
+      // Pricing billing fragments crawled as paths (definitive → 301).
+      // Moved here from middleware.ts, which emitted a 307 (temporary) and
+      // overlapped with /m%C3%AAs. Config redirects are cheaper (no middleware
+      // JS) and return a proper 301. Covers raw, accented and encoded variants.
       {
         source: '/ano',
         destination: '/precos',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/m%C3%AAs',
         destination: '/precos',
-        permanent: false,
+        permanent: true,
       },
-      // Malformed URLs crawled by Google
+      {
+        source: '/mês',
+        destination: '/precos',
+        permanent: true,
+      },
+      {
+        source: '/mes',
+        destination: '/precos',
+        permanent: true,
+      },
+      {
+        source: '/month',
+        destination: '/precos',
+        permanent: true,
+      },
+      // Malformed URLs crawled by Google (definitive → 301)
       {
         source: '/&',
         destination: '/',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/$',
         destination: '/',
-        permanent: false,
+        permanent: true,
       },
       // PT slugs from old links → actual EN routes (404 fixes from Ahrefs 2026-05-26)
       {
@@ -300,15 +318,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       // Literal [slug] / [category] crawled from broken HTML templates
+      // (these template paths are never valid → 301)
       {
         source: '/blog/:slug([\\[\\]]+.*)',
         destination: '/blog',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/help/:category([\\[\\]]+.*)/:slug*',
         destination: '/help',
-        permanent: false,
+        permanent: true,
       },
     ]
   },
