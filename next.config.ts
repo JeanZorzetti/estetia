@@ -250,8 +250,41 @@ const nextConfig: NextConfig = {
         destination: '/precos',
         permanent: true,
       },
-      // EN locale doesn't exist (site is PT-only) → redirect every /en/* path to its PT counterpart
-      // This replaces the prior narrow /en/help/:path* rule and also covers /en, /en/blog, /en/features, etc.
+      // EN locale doesn't exist (site is PT-only). The catch-all /en/:path* below
+      // only strips the /en prefix — but several inherited Sirius URLs also had
+      // ENGLISH path segments (tools/, solutions/, ltv-calculator…) that map to
+      // no PT route, so stripping /en still 404s. These specific rules (404
+      // cleanup from GSC Coverage Drilldown 2026-06-13) must come BEFORE the
+      // catch-all, since Next stops at the first matching redirect.
+      {
+        source: '/en/tools/ltv-calculator',
+        destination: '/ferramentas/calculadora-ltv',
+        permanent: true,
+      },
+      {
+        source: '/en/solutions/:slug*',
+        destination: '/solucoes/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/en/features/agenda',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/en/features/analytics',
+        destination: '/features/analytics-pro',
+        permanent: true,
+      },
+      // Old EN help tree (structure changed) → help index. Covers literal
+      // [category] template paths and every /en/help/* variant in one rule.
+      {
+        source: '/en/help/:path*',
+        destination: '/help',
+        permanent: true,
+      },
+      // EN locale doesn't exist (site is PT-only) → redirect every remaining
+      // /en/* path to its PT counterpart (slug already in PT, just strip prefix).
       {
         source: '/en',
         destination: '/',
