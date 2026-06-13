@@ -27,10 +27,21 @@ export default async function PrecosPage({
   const { locale } = await params
   setRequestLocale(locale)
 
-  const modules = await prisma.pricingModule.findMany({
-    where: { ativo: true },
-    orderBy: [{ category: 'asc' }, { ordem: 'asc' }],
-  })
+  // This page is ISR (revalidate above). At build time inside Docker there is
+  // no DATABASE_URL, so the query would throw a PrismaClientInitializationError
+  // and ABORT the whole build (no try/catch = fatal, unlike blog/[slug] whose
+  // helper swallows it). Guard it: build prerenders with [] (empty), then the
+  // first runtime request — where the DB is reachable — revalidates and fills
+  // the real modules. See memory: SSG/ISR + DB query at build time.
+  let modules: Awaited<ReturnType<typeof prisma.pricingModule.findMany>> = []
+  try {
+    modules = await prisma.pricingModule.findMany({
+      where: { ativo: true },
+      orderBy: [{ category: 'asc' }, { ordem: 'asc' }],
+    })
+  } catch (error) {
+    console.error('[PrecosPage] pricingModule.findMany failed (expected at build time without DB):', error)
+  }
 
   const modulesTyped = modules.map(m => ({
     slug: m.slug,
