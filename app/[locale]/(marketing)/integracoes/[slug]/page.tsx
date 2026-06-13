@@ -1,5 +1,6 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
+import { routing } from '@/i18n/routing'
 import type { Metadata } from 'next'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import Link from 'next/link'
@@ -27,7 +28,9 @@ import {
 import { IntegrationIcon } from '@/components/marketing/integration-icon-client'
 
 export function generateStaticParams() {
-  return DETAILED_INTEGRATIONS.map((i) => ({ slug: i.landingSlug }))
+  return routing.locales.flatMap((locale) =>
+    DETAILED_INTEGRATIONS.map((i) => ({ locale, slug: i.landingSlug }))
+  )
 }
 
 export async function generateMetadata({
@@ -95,9 +98,10 @@ const PERSONA_ICONS = [User, Briefcase, Building2]
 export default async function IntegrationDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }) {
-  const { slug } = await params
+  const { locale, slug } = await params
+  setRequestLocale(locale)
   const detailed = getDetailedBySlug(slug)
   if (!detailed) notFound()
 

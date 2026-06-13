@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { setRequestLocale } from 'next-intl/server'
 import Script from 'next/script'
 import { Check, X, ArrowRight } from 'lucide-react'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
@@ -66,7 +67,8 @@ export default async function VsClinicArePage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  await params
+  const { locale } = await params
+  setRequestLocale(locale)
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
