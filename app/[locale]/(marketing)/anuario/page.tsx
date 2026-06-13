@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -69,7 +69,13 @@ const breadcrumbSchema = {
   ],
 }
 
-export default function AnuarioPage() {
+export default async function AnuarioPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
   return (
     <>
       <Script

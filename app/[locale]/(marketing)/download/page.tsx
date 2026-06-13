@@ -1,7 +1,7 @@
 ﻿import { Metadata } from 'next'
 import Script from 'next/script'
 import { DownloadInstructions } from '@/components/marketing/download-instructions'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 
 export async function generateMetadata({
@@ -29,7 +29,13 @@ export async function generateMetadata({
   }
 }
 
-export default function DownloadPage() {
+export default async function DownloadPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
