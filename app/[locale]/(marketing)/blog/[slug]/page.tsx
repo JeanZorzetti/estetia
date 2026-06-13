@@ -22,6 +22,14 @@ import { getRelatedPostsByEntities, processBlogPost } from '@/lib/nlp/blog-proce
 import { RelatedLinksBar } from '@/components/blog/related-links-bar'
 import { NewsletterCTA } from '@/components/blog/newsletter-cta'
 
+// ISR (revalidate hourly) rather than pure SSG: the page is prerendered at
+// build time (in Docker, where DATABASE_URL is absent, so getRelatedPostsByEntities
+// returns [] via its try/catch), then re-rendered on the first runtime request —
+// where the DB IS reachable — repopulating the entity-based related posts and
+// caching them. Keeps the page static-fast for Googlebot without losing the
+// DB-backed related links that pure build-time SSG dropped.
+export const revalidate = 3600
+
 interface BlogPostPageProps {
   params: Promise<{
     locale: string
