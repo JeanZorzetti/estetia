@@ -1,5 +1,8 @@
 /**
  * Testes para feature gates (server-side enforcement)
+ *
+ * Pinam a matriz atual de PLAN_FEATURES: FREE 100 deals/2 users/1 pipeline,
+ * STARTER 500/5/5, PRO 2500/15/15, BUSINESS -1 (deals) /50/50.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
@@ -9,11 +12,11 @@ import {
   checkDealLimit,
   checkUserLimit,
   checkPipelineLimit,
+  checkAgiQuota,
   consumeAgiQuota,
-  consumeScrapingCredit,
+  checkAndConsumeScrapingCredits,
   LimitReachedError,
-  QuotaExceededError,
-  InsufficientCreditsError,
+  FeatureBlockedError,
 } from '../feature-gates'
 
 // Mock do Prisma
@@ -32,48 +35,48 @@ describe('Feature Gates', () => {
   describe('checkDealLimit', () => {
     it('should allow creating deal when under FREE limit', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
         tier: 'FREE',
         grandfatheredDealLimit: null,
+        grandfatheredAt: null,
       })
 
-      mockPrisma.deal.count.mockResolvedValue(30) // Abaixo de 50
+      mockPrisma.deal.count.mockResolvedValue(30) // Abaixo de 100
 
       await expect(checkDealLimit('org_1')).resolves.not.toThrow()
     })
 
-    it('should throw when FREE tier exceeds 50 deals', async () => {
+    it('should throw when FREE tier exceeds 100 deals', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
         tier: 'FREE',
         grandfatheredDealLimit: null,
+        grandfatheredAt: null,
       })
 
-      mockPrisma.deal.count.mockResolvedValue(50) // No limite
+      mockPrisma.deal.count.mockResolvedValue(100) // No limite
 
       await expect(checkDealLimit('org_1')).rejects.toThrow(LimitReachedError)
       await expect(checkDealLimit('org_1')).rejects.toThrow(
-        'Deal limit reached: 50/50 active deals'
+        'deals limit reached: 100/100'
       )
     })
 
     it('should respect grandfathered deal limit', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
         tier: 'FREE',
         grandfatheredDealLimit: 127, // Cliente antigo
+        grandfatheredAt: new Date(),
       })
 
-      mockPrisma.deal.count.mockResolvedValue(100) // Abaixo do grandfathered limit
+      mockPrisma.deal.count.mockResolvedValue(110) // Acima do tier, abaixo do grandfathered
 
       await expect(checkDealLimit('org_1')).resolves.not.toThrow()
     })
 
     it('should throw when exceeding grandfathered limit', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
         tier: 'FREE',
         grandfatheredDealLimit: 100,
+        grandfatheredAt: new Date(),
       })
 
       mockPrisma.deal.count.mockResolvedValue(100) // No limite
@@ -81,35 +84,35 @@ describe('Feature Gates', () => {
       await expect(checkDealLimit('org_1')).rejects.toThrow(LimitReachedError)
     })
 
-    it('should allow unlimited deals for STARTER tier', async () => {
+    it('should enforce STARTER limit of 500 deals', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
         tier: 'STARTER',
         grandfatheredDealLimit: null,
+        grandfatheredAt: null,
       })
 
       mockPrisma.deal.count.mockResolvedValue(10000) // Muito acima
 
-      await expect(checkDealLimit('org_1')).resolves.not.toThrow()
+      await expect(checkDealLimit('org_1')).rejects.toThrow(LimitReachedError)
     })
 
-    it('should allow unlimited deals for PRO tier', async () => {
+    it('should enforce PRO limit of 2500 deals', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
         tier: 'PRO',
         grandfatheredDealLimit: null,
+        grandfatheredAt: null,
       })
 
-      mockPrisma.deal.count.mockResolvedValue(5000)
+      mockPrisma.deal.count.mockResolvedValue(2000) // Abaixo de 2500
 
       await expect(checkDealLimit('org_1')).resolves.not.toThrow()
     })
 
     it('should allow unlimited deals for BUSINESS tier', async () => {
       mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
         tier: 'BUSINESS',
         grandfatheredDealLimit: null,
+        grandfatheredAt: null,
       })
 
       mockPrisma.deal.count.mockResolvedValue(20000)
@@ -127,275 +130,216 @@ describe('Feature Gates', () => {
   })
 
   describe('checkUserLimit', () => {
-    it('should allow 1 user for FREE tier', async () => {
-      mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
-        tier: 'FREE',
-      })
-
-      mockPrisma.user.count.mockResolvedValue(1) // Exatamente 1
+    it('should throw when FREE tier reaches 2 users', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'FREE' })
+      mockPrisma.user.count.mockResolvedValue(2)
 
       await expect(checkUserLimit('org_1')).rejects.toThrow(LimitReachedError)
-      await expect(checkUserLimit('org_1')).rejects.toThrow('User limit reached')
+      await expect(checkUserLimit('org_1')).rejects.toThrow('users limit reached')
     })
 
-    it('should allow adding first user to FREE tier', async () => {
-      mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
-        tier: 'FREE',
-      })
-
-      mockPrisma.user.count.mockResolvedValue(0)
-
-      await expect(checkUserLimit('org_1')).resolves.not.toThrow()
-    })
-
-    it('should allow 1 user for STARTER tier', async () => {
-      mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
-        tier: 'STARTER',
-      })
-
+    it('should allow adding user to FREE tier under the limit', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'FREE' })
       mockPrisma.user.count.mockResolvedValue(1)
 
+      await expect(checkUserLimit('org_1')).resolves.not.toThrow()
+    })
+
+    it('should enforce STARTER limit of 5 users', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'STARTER' })
+      mockPrisma.user.count.mockResolvedValue(5)
+
       await expect(checkUserLimit('org_1')).rejects.toThrow(LimitReachedError)
     })
 
-    it('should allow unlimited users for PRO tier', async () => {
-      mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
-        tier: 'PRO',
-      })
-
-      mockPrisma.user.count.mockResolvedValue(100)
+    it('should allow PRO tier up to 15 users', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'PRO' })
+      mockPrisma.user.count.mockResolvedValue(10)
 
       await expect(checkUserLimit('org_1')).resolves.not.toThrow()
     })
 
-    it('should allow unlimited users for BUSINESS tier', async () => {
-      mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
-        tier: 'BUSINESS',
-      })
-
+    it('should enforce BUSINESS limit of 50 users', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'BUSINESS' })
       mockPrisma.user.count.mockResolvedValue(500)
 
-      await expect(checkUserLimit('org_1')).resolves.not.toThrow()
+      await expect(checkUserLimit('org_1')).rejects.toThrow(LimitReachedError)
     })
   })
 
   describe('checkPipelineLimit', () => {
-    it('should allow 1 pipeline for FREE tier', async () => {
-      mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
-        tier: 'FREE',
-      })
-
+    it('should throw when FREE tier reaches 1 pipeline', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'FREE' })
       mockPrisma.pipeline.count.mockResolvedValue(1)
 
       await expect(checkPipelineLimit('org_1')).rejects.toThrow(LimitReachedError)
     })
 
     it('should allow creating first pipeline for FREE', async () => {
-      mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
-        tier: 'FREE',
-      })
-
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'FREE' })
       mockPrisma.pipeline.count.mockResolvedValue(0)
 
       await expect(checkPipelineLimit('org_1')).resolves.not.toThrow()
     })
 
-    it('should allow unlimited pipelines for PRO tier', async () => {
-      mockPrisma.organization.findUnique.mockResolvedValue({
-        id: 'org_1',
-        tier: 'PRO',
-      })
-
-      mockPrisma.pipeline.count.mockResolvedValue(50)
+    it('should allow PRO tier up to 15 pipelines', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'PRO' })
+      mockPrisma.pipeline.count.mockResolvedValue(10)
 
       await expect(checkPipelineLimit('org_1')).resolves.not.toThrow()
     })
   })
 
+  describe('checkAgiQuota', () => {
+    it('should deny FREE tier (quota 0 = sem acesso)', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({
+        tier: 'FREE',
+        agiQuota: null,
+      })
+
+      await expect(checkAgiQuota('org_1')).resolves.toBe(false)
+    })
+
+    it('should allow when under the monthly limit', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({
+        tier: 'STARTER',
+        agiQuota: {
+          monthlyLimit: 200,
+          usedThisMonth: 100,
+          lastReset: new Date(),
+        },
+      })
+
+      await expect(checkAgiQuota('org_1')).resolves.toBe(true)
+    })
+
+    it('should deny when monthly limit is used up', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({
+        tier: 'STARTER',
+        agiQuota: {
+          monthlyLimit: 200,
+          usedThisMonth: 200,
+          lastReset: new Date(),
+        },
+      })
+
+      await expect(checkAgiQuota('org_1')).resolves.toBe(false)
+    })
+
+    it('should create quota record on first use', async () => {
+      mockPrisma.organization.findUnique.mockResolvedValue({
+        tier: 'PRO',
+        agiQuota: null,
+      })
+      mockPrisma.agiQuota.create.mockResolvedValue({})
+
+      await expect(checkAgiQuota('org_1')).resolves.toBe(true)
+      expect(mockPrisma.agiQuota.create).toHaveBeenCalled()
+    })
+  })
+
   describe('consumeAgiQuota', () => {
-    it('should consume quota for FREE tier', async () => {
+    it('should increment usage when quota record exists', async () => {
       mockPrisma.agiQuota.findUnique.mockResolvedValue({
-        id: 'quota_1',
         organizationId: 'org_1',
-        monthlyLimit: 3,
-        usedThisMonth: 2,
+        monthlyLimit: 200,
+        usedThisMonth: 10,
         lastReset: new Date(),
       })
-
-      mockPrisma.agiQuota.update.mockResolvedValue({
-        id: 'quota_1',
-        organizationId: 'org_1',
-        monthlyLimit: 3,
-        usedThisMonth: 3,
-        lastReset: new Date(),
-      })
+      mockPrisma.agiQuota.update.mockResolvedValue({})
 
       await expect(consumeAgiQuota('org_1')).resolves.not.toThrow()
+      expect(mockPrisma.agiQuota.update).toHaveBeenCalledWith({
+        where: { organizationId: 'org_1' },
+        data: { usedThisMonth: { increment: 1 } },
+      })
     })
 
-    it('should throw when FREE tier exceeds quota', async () => {
-      mockPrisma.agiQuota.findUnique.mockResolvedValue({
-        id: 'quota_1',
-        organizationId: 'org_1',
-        monthlyLimit: 3,
-        usedThisMonth: 3, // Já usou tudo
-        lastReset: new Date(),
-      })
-
-      await expect(consumeAgiQuota('org_1')).rejects.toThrow(QuotaExceededError)
-      await expect(consumeAgiQuota('org_1')).rejects.toThrow(
-        'AGI quota exceeded: 3/3 used this month'
-      )
-    })
-
-    it('should allow unlimited consumption for PRO tier', async () => {
-      mockPrisma.agiQuota.findUnique.mockResolvedValue({
-        id: 'quota_1',
-        organizationId: 'org_1',
-        monthlyLimit: -1, // Ilimitado
-        usedThisMonth: 1000,
-        lastReset: new Date(),
-      })
-
-      mockPrisma.agiQuota.update.mockResolvedValue({
-        id: 'quota_1',
-        organizationId: 'org_1',
-        monthlyLimit: -1,
-        usedThisMonth: 1001,
-        lastReset: new Date(),
-      })
-
-      await expect(consumeAgiQuota('org_1')).resolves.not.toThrow()
-    })
-
-    it('should throw if quota record not found', async () => {
+    it('should create quota record with usage 1 when missing', async () => {
       mockPrisma.agiQuota.findUnique.mockResolvedValue(null)
+      mockPrisma.organization.findUnique.mockResolvedValue({ tier: 'STARTER' })
+      mockPrisma.agiQuota.create.mockResolvedValue({})
+
+      await expect(consumeAgiQuota('org_1')).resolves.not.toThrow()
+      expect(mockPrisma.agiQuota.create).toHaveBeenCalled()
+    })
+
+    it('should throw if quota missing and organization not found', async () => {
+      mockPrisma.agiQuota.findUnique.mockResolvedValue(null)
+      mockPrisma.organization.findUnique.mockResolvedValue(null)
 
       await expect(consumeAgiQuota('org_1')).rejects.toThrow(
-        'AGI quota not initialized'
+        'Organization not found'
       )
     })
   })
 
-  describe('consumeScrapingCredit', () => {
-    it('should consume 1 credit when available', async () => {
+  describe('checkAndConsumeScrapingCredits', () => {
+    it('should consume credits when balance is sufficient', async () => {
       mockPrisma.scrapingCredit.findUnique.mockResolvedValue({
-        id: 'credit_1',
         organizationId: 'org_1',
         balance: 10,
-        monthlyQuota: 50,
-        usedThisMonth: 40,
+        monthlyQuota: 75,
+        usedThisMonth: 65,
         lastRefill: new Date(),
       })
+      mockPrisma.scrapingCredit.update.mockResolvedValue({})
 
-      mockPrisma.scrapingCredit.update.mockResolvedValue({
-        id: 'credit_1',
-        organizationId: 'org_1',
-        balance: 9,
-        monthlyQuota: 50,
-        usedThisMonth: 41,
-        lastRefill: new Date(),
+      await expect(
+        checkAndConsumeScrapingCredits('org_1', 5)
+      ).resolves.not.toThrow()
+      expect(mockPrisma.scrapingCredit.update).toHaveBeenCalledWith({
+        where: { organizationId: 'org_1' },
+        data: {
+          balance: { decrement: 5 },
+          usedThisMonth: { increment: 5 },
+        },
       })
-
-      await expect(consumeScrapingCredit('org_1', 1)).resolves.not.toThrow()
     })
 
-    it('should consume multiple credits', async () => {
+    it('should throw LimitReachedError when balance is insufficient', async () => {
       mockPrisma.scrapingCredit.findUnique.mockResolvedValue({
-        id: 'credit_1',
-        organizationId: 'org_1',
-        balance: 100,
-        monthlyQuota: 50,
-        usedThisMonth: 0,
-        lastRefill: new Date(),
-      })
-
-      mockPrisma.scrapingCredit.update.mockResolvedValue({
-        id: 'credit_1',
-        organizationId: 'org_1',
-        balance: 90,
-        monthlyQuota: 50,
-        usedThisMonth: 10,
-        lastRefill: new Date(),
-      })
-
-      await expect(consumeScrapingCredit('org_1', 10)).resolves.not.toThrow()
-    })
-
-    it('should throw when insufficient credits', async () => {
-      mockPrisma.scrapingCredit.findUnique.mockResolvedValue({
-        id: 'credit_1',
         organizationId: 'org_1',
         balance: 5,
-        monthlyQuota: 50,
-        usedThisMonth: 45,
+        monthlyQuota: 75,
+        usedThisMonth: 70,
         lastRefill: new Date(),
       })
 
-      await expect(consumeScrapingCredit('org_1', 10)).rejects.toThrow(
-        InsufficientCreditsError
-      )
-      await expect(consumeScrapingCredit('org_1', 10)).rejects.toThrow(
-        'Insufficient scraping credits: need 10, have 5'
-      )
-    })
-
-    it('should throw when balance is zero', async () => {
-      mockPrisma.scrapingCredit.findUnique.mockResolvedValue({
-        id: 'credit_1',
-        organizationId: 'org_1',
-        balance: 0,
-        monthlyQuota: 50,
-        usedThisMonth: 50,
-        lastRefill: new Date(),
-      })
-
-      await expect(consumeScrapingCredit('org_1', 1)).rejects.toThrow(
-        InsufficientCreditsError
-      )
+      await expect(
+        checkAndConsumeScrapingCredits('org_1', 10)
+      ).rejects.toThrow(LimitReachedError)
+      expect(mockPrisma.scrapingCredit.update).not.toHaveBeenCalled()
     })
 
     it('should throw if credit record not found', async () => {
       mockPrisma.scrapingCredit.findUnique.mockResolvedValue(null)
 
-      await expect(consumeScrapingCredit('org_1', 1)).rejects.toThrow(
-        'Scraping credits not initialized'
+      await expect(checkAndConsumeScrapingCredits('org_1', 1)).rejects.toThrow(
+        'Scraping credits not found'
       )
     })
   })
 
   describe('Custom Error Types', () => {
     it('should create LimitReachedError correctly', () => {
-      const error = new LimitReachedError('deals', 50, 50)
+      const error = new LimitReachedError('deals', 100, 100)
       expect(error.name).toBe('LimitReachedError')
-      expect(error.message).toBe('Deal limit reached: 50/50 active deals')
+      expect(error.message).toBe('deals limit reached: 100/100')
       expect(error.resource).toBe('deals')
-      expect(error.limit).toBe(50)
-      expect(error.current).toBe(50)
+      expect(error.limit).toBe(100)
+      expect(error.current).toBe(100)
     })
 
-    it('should create QuotaExceededError correctly', () => {
-      const error = new QuotaExceededError('agi', 3, 3)
-      expect(error.name).toBe('QuotaExceededError')
-      expect(error.message).toBe('AGI quota exceeded: 3/3 used this month')
-      expect(error.quota).toBe('agi')
-      expect(error.limit).toBe(3)
-      expect(error.used).toBe(3)
-    })
-
-    it('should create InsufficientCreditsError correctly', () => {
-      const error = new InsufficientCreditsError(10, 5)
-      expect(error.name).toBe('InsufficientCreditsError')
-      expect(error.message).toBe('Insufficient scraping credits: need 10, have 5')
-      expect(error.needed).toBe(10)
-      expect(error.available).toBe(5)
+    it('should create FeatureBlockedError correctly', () => {
+      const error = new FeatureBlockedError('round_robin', 'PRO', 'BUSINESS')
+      expect(error.name).toBe('FeatureBlockedError')
+      expect(error.message).toBe(
+        "Feature 'round_robin' requires BUSINESS plan (you are on PRO)"
+      )
+      expect(error.feature).toBe('round_robin')
+      expect(error.currentTier).toBe('PRO')
+      expect(error.requiredTier).toBe('BUSINESS')
     })
   })
 })

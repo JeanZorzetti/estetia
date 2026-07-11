@@ -139,23 +139,22 @@ describe('Middleware', () => {
   })
 
   describe('Malformed URLs (SEO Fix)', () => {
-    // Nota: URL com caracteres especiais como /mês podem ser encodados diferentemente
-    // em diferentes ambientes. Testando apenas as variações ASCII.
+    // Os redirects de /mês, /mes e /month migraram do middleware para
+    // next.config.ts redirects() (301 permanente em vez de 307).
+    // O middleware NÃO deve mais interceptá-los.
 
-    it('should redirect malformed /mes to homepage', async () => {
+    it('should NOT redirect /mes in middleware (handled by next.config redirects)', async () => {
       const request = await createRequest('http://localhost:3000/mes')
       const response = await middleware(request)
 
-      expect(response?.status).toBe(307) // Redirect
-      expect(response?.headers.get('location')).toBe('http://localhost:3000/')
+      expect(response?.status).not.toBe(307)
     })
 
-    it('should redirect malformed /month to homepage', async () => {
+    it('should NOT redirect /month in middleware (handled by next.config redirects)', async () => {
       const request = await createRequest('http://localhost:3000/month')
       const response = await middleware(request)
 
-      expect(response?.status).toBe(307) // Redirect
-      expect(response?.headers.get('location')).toBe('http://localhost:3000/')
+      expect(response?.status).not.toBe(307)
     })
   })
 

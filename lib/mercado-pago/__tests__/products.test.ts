@@ -24,10 +24,11 @@ describe('Mercado Pago Products', () => {
     })
 
     it('should have correct pricing', () => {
+      // Estetia pricing (ver header de lib/mercado-pago/products.ts)
       expect(PLANS.FREE.price).toBe(0)
-      expect(PLANS.STARTER.price).toBe(67)
-      expect(PLANS.PRO.price).toBe(147)
-      expect(PLANS.BUSINESS.price).toBe(397)
+      expect(PLANS.STARTER.price).toBe(149)
+      expect(PLANS.PRO.price).toBe(297)
+      expect(PLANS.BUSINESS.price).toBe(597)
     })
 
     it('should have BRL currency for all plans', () => {
@@ -107,19 +108,19 @@ describe('Mercado Pago Products', () => {
 
     it('should return correct plan config for STARTER', () => {
       const config = getPlanConfig('STARTER')
-      expect(config.price).toBe(67)
+      expect(config.price).toBe(149)
       expect(config.name).toBe('Starter')
     })
 
     it('should return correct plan config for PRO', () => {
       const config = getPlanConfig('PRO')
-      expect(config.price).toBe(147)
-      expect(config.name).toBe('PRO')
+      expect(config.price).toBe(297)
+      expect(config.name).toBe('Pro')
     })
 
     it('should return correct plan config for BUSINESS', () => {
       const config = getPlanConfig('BUSINESS')
-      expect(config.price).toBe(397)
+      expect(config.price).toBe(597)
       expect(config.name).toBe('Business')
     })
   })
@@ -175,27 +176,27 @@ describe('Mercado Pago Products', () => {
 
   describe('calculateProrationAmount', () => {
     it('should calculate proration for upgrade', () => {
-      // STARTER (67) → PRO (147)
-      // Diferença: R$ 80
-      // 15 dias restantes: (80 / 30) * 15 = R$ 40
+      // STARTER (149) → PRO (297)
+      // Diferença: R$ 148
+      // 15 dias restantes: (148 / 30) * 15 = R$ 74
       const amount = calculateProrationAmount('STARTER', 'PRO', 15)
-      expect(amount).toBe(40)
+      expect(amount).toBe(74)
     })
 
     it('should calculate proration for full month', () => {
-      // STARTER (67) → PRO (147)
-      // Diferença: R$ 80
-      // 30 dias: R$ 80
+      // STARTER (149) → PRO (297)
+      // Diferença: R$ 148
+      // 30 dias: R$ 148
       const amount = calculateProrationAmount('STARTER', 'PRO', 30)
-      expect(amount).toBe(80)
+      expect(amount).toBe(148)
     })
 
     it('should calculate proration for PRO → BUSINESS', () => {
-      // PRO (147) → BUSINESS (397)
-      // Diferença: R$ 250
-      // 15 dias: (250 / 30) * 15 = R$ 125
+      // PRO (297) → BUSINESS (597)
+      // Diferença: R$ 300
+      // 15 dias: (300 / 30) * 15 = R$ 150
       const amount = calculateProrationAmount('PRO', 'BUSINESS', 15)
-      expect(amount).toBe(125)
+      expect(amount).toBe(150)
     })
 
     it('should return 0 for same tier', () => {
@@ -209,37 +210,40 @@ describe('Mercado Pago Products', () => {
     })
 
     it('should handle 1 day remaining', () => {
-      // STARTER → PRO: (80 / 30) * 1 = R$ 2.67
+      // STARTER → PRO: (148 / 30) * 1 = R$ 4.93
       const amount = calculateProrationAmount('STARTER', 'PRO', 1)
-      expect(amount).toBe(2.67)
+      expect(amount).toBe(4.93)
     })
 
     it('should round to 2 decimal places', () => {
-      // FREE (0) → STARTER (67): (67 / 30) * 7 = 15.63333...
+      // FREE (0) → STARTER (149): (149 / 30) * 7 = 34.7666...
       const amount = calculateProrationAmount('FREE', 'STARTER', 7)
-      expect(amount).toBe(15.63)
+      expect(amount).toBe(34.77)
     })
   })
 
   describe('formatPrice', () => {
+    // Intl pt-BR usa NBSP (U+00A0) entre "R$" e o valor — normalizar p/ comparar
+    const norm = (s: string) => s.replace(/ /g, ' ')
+
     it('should format price in BRL', () => {
-      expect(formatPrice(67)).toBe('R$ 67,00')
-      expect(formatPrice(147)).toBe('R$ 147,00')
-      expect(formatPrice(397)).toBe('R$ 397,00')
+      expect(norm(formatPrice(149))).toBe('R$ 149,00')
+      expect(norm(formatPrice(297))).toBe('R$ 297,00')
+      expect(norm(formatPrice(597))).toBe('R$ 597,00')
     })
 
     it('should format decimals correctly', () => {
-      expect(formatPrice(29.9)).toBe('R$ 29,90')
-      expect(formatPrice(99.9)).toBe('R$ 99,90')
+      expect(norm(formatPrice(29.9))).toBe('R$ 29,90')
+      expect(norm(formatPrice(99.9))).toBe('R$ 99,90')
     })
 
     it('should format zero', () => {
-      expect(formatPrice(0)).toBe('R$ 0,00')
+      expect(norm(formatPrice(0))).toBe('R$ 0,00')
     })
 
     it('should format large numbers', () => {
-      expect(formatPrice(1000)).toBe('R$ 1.000,00')
-      expect(formatPrice(12345.67)).toBe('R$ 12.345,67')
+      expect(norm(formatPrice(1000))).toBe('R$ 1.000,00')
+      expect(norm(formatPrice(12345.67))).toBe('R$ 12.345,67')
     })
   })
 

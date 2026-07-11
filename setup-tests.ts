@@ -13,6 +13,15 @@ process.env.NEXT_PUBLIC_APP_URL = 'http://localhost:3000'
 
 // NODE_ENV is set by Vitest automatically
 
+// happy-dom não implementa as APIs de pointer capture / scrollIntoView
+// que o Radix UI (Select, etc.) usa — polyfill mínimo para os testes
+if (typeof Element !== 'undefined') {
+  Element.prototype.hasPointerCapture ??= () => false
+  Element.prototype.setPointerCapture ??= () => {}
+  Element.prototype.releasePointerCapture ??= () => {}
+  Element.prototype.scrollIntoView ??= () => {}
+}
+
 // Mock Next.js router
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -25,5 +34,8 @@ vi.mock('next/navigation', () => ({
   }),
   usePathname: () => '/',
   useSearchParams: () => new URLSearchParams(),
+  useParams: () => ({}),
   redirect: vi.fn(),
+  permanentRedirect: vi.fn(),
+  notFound: vi.fn(),
 }))

@@ -156,7 +156,8 @@ describe('QualificationDashboard', () => {
                 />
             )
 
-            const checkIcons = container.querySelectorAll('.lucide-check-circle')
+            // lucide renomeia o ícone entre versões (check-circle → circle-check-big)
+            const checkIcons = container.querySelectorAll('svg[class*="check-circle"], svg[class*="circle-check"]')
             expect(checkIcons.length).toBe(3)
         })
     })

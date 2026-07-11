@@ -60,10 +60,12 @@ describe('Entitlements Hooks', () => {
 
       const { result } = renderHook(() => useEntitlements())
 
+      // tier default é 'FREE' antes do fetch — esperar o loading terminar
       await waitFor(() => {
-        expect(result.current.tier).toBe('FREE')
+        expect(result.current.loading).toBe(false)
       })
 
+      expect(result.current.tier).toBe('FREE')
       expect(result.current.canUseAutomation).toBe(false)
       expect(result.current.canUseAgi).toBe(true)
       expect(result.current.dealLimit).toBe(50)

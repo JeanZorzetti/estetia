@@ -98,8 +98,9 @@ describe('PricingComparison', () => {
                 />
             )
 
-            const contactsRow = screen.getByText('Contatos').closest('div')
-            const agiRow = screen.getByText('Estetia IA').closest('div')
+            // o destaque fica na LINHA (div.grid-cols-3); closest('div') pegava a célula
+            const contactsRow = screen.getByText('Contatos').closest('div.grid-cols-3')
+            const agiRow = screen.getByText('Estetia IA').closest('div.grid-cols-3')
 
             expect(contactsRow).toHaveClass('bg-yellow-50')
             expect(agiRow).toHaveClass('bg-yellow-50')
@@ -113,7 +114,7 @@ describe('PricingComparison', () => {
                 />
             )
 
-            const pipelinesRow = screen.getByText('Pipelines').closest('div')
+            const pipelinesRow = screen.getByText('Pipelines').closest('div.grid-cols-3')
             expect(pipelinesRow).not.toHaveClass('bg-yellow-50')
         })
     })
@@ -167,9 +168,9 @@ describe('PricingComparison', () => {
         it('should display text values correctly', () => {
             render(<PricingComparison {...defaultProps} />)
 
-            // Check text values
-            expect(screen.getByText('100')).toBeInTheDocument() // FREE contacts
-            expect(screen.getByText('Ilimitados')).toBeInTheDocument() // PRO contacts
+            // Check text values (matriz atual: FREE = 250 contatos)
+            expect(screen.getByText('250')).toBeInTheDocument() // FREE contacts
+            expect(screen.getAllByText('Ilimitados').length).toBeGreaterThan(0) // PRO
             expect(screen.getByText('Email')).toBeInTheDocument() // FREE support
             expect(screen.getByText('Prioritário')).toBeInTheDocument() // PRO support
         })
@@ -178,14 +179,12 @@ describe('PricingComparison', () => {
             const { container } = render(<PricingComparison {...defaultProps} />)
 
             // API Access: FREE = false (X icon), PRO = true (Check icon)
-            const apiRow = screen.getByText('Acesso à API').closest('div')?.parentElement
+            // layout é grid de divs, sem role de tabela — validar pelos ícones
+            const apiRow = screen.getByText('Acesso à API').closest('div.grid-cols-3')
 
-            if (apiRow) {
-                const cells = within(apiRow).getAllByRole('cell', { hidden: true })
-                // Should have X icon for FREE and Check icon for PRO
-                expect(apiRow.querySelector('.lucide-x')).toBeInTheDocument()
-                expect(apiRow.querySelector('.lucide-check')).toBeInTheDocument()
-            }
+            expect(apiRow).not.toBeNull()
+            expect(apiRow!.querySelector('.lucide-x')).toBeInTheDocument()
+            expect(apiRow!.querySelector('.lucide-check')).toBeInTheDocument()
         })
     })
 

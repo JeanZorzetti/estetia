@@ -147,6 +147,11 @@ describe('DemoScheduler', () => {
             delete process.env.NEXT_PUBLIC_CALENDLY_URL
         })
 
+        afterEach(() => {
+            // garante que fake timers de um teste falho não vazem p/ os próximos
+            vi.useRealTimers()
+        })
+
         it('should show fallback form when Calendly not configured', () => {
             render(<DemoScheduler eventType="demo_30min" />)
 
@@ -198,8 +203,8 @@ describe('DemoScheduler', () => {
         })
 
         it('should show success state after submission', async () => {
-            vi.useFakeTimers()
-            const user = userEvent.setup({ delay: null })
+            // timers reais: o delay simulado do componente é 1,5s
+            const user = userEvent.setup()
             const prefill = {
                 name: 'John',
                 email: 'john@example.com',
@@ -210,15 +215,10 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            // Fast-forward timer for simulation delay
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(screen.getByTestId('demo-scheduler-success')).toBeInTheDocument()
                 expect(screen.getByText('Demo Agendada!')).toBeInTheDocument()
-            })
-
-            vi.useRealTimers()
+            }, { timeout: 3000 })
         })
     })
 
@@ -295,16 +295,11 @@ describe('DemoScheduler', () => {
 
     describe('Auto CRM Trigger', () => {
         beforeEach(() => {
-            vi.useFakeTimers()
             delete process.env.NEXT_PUBLIC_CALENDLY_URL
         })
 
-        afterEach(() => {
-            vi.useRealTimers()
-        })
-
         it('should create deal when autoTriggerCRM is true', async () => {
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const prefill = {
                 name: 'John',
                 email: 'john@example.com',
@@ -316,8 +311,6 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(global.fetch).toHaveBeenCalledWith(
                     '/api/v1/deals',
@@ -326,11 +319,11 @@ describe('DemoScheduler', () => {
                         body: expect.stringContaining('Demo - ACME'),
                     })
                 )
-            })
+            }, { timeout: 3000 })
         })
 
         it('should not create deal when autoTriggerCRM is false', async () => {
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const prefill = {
                 name: 'John',
                 email: 'john@example.com',
@@ -341,17 +334,15 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(screen.getByTestId('demo-scheduler-success')).toBeInTheDocument()
-            })
+            }, { timeout: 3000 })
 
             expect(global.fetch).not.toHaveBeenCalled()
         })
 
         it('should show auto-CRM confirmation in success state', async () => {
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const prefill = {
                 name: 'John',
                 email: 'john@example.com',
@@ -362,26 +353,19 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(screen.getByText('Deal criado automaticamente no CRM')).toBeInTheDocument()
-            })
+            }, { timeout: 3000 })
         })
     })
 
     describe('Interaction Callbacks', () => {
         beforeEach(() => {
-            vi.useFakeTimers()
             delete process.env.NEXT_PUBLIC_CALENDLY_URL
         })
 
-        afterEach(() => {
-            vi.useRealTimers()
-        })
-
         it('should call onInteraction when demo scheduled', async () => {
-            const user = userEvent.setup({ delay: null })
+            const user = userEvent.setup()
             const mockOnInteraction = vi.fn()
             const prefill = {
                 name: 'John',
@@ -400,8 +384,6 @@ describe('DemoScheduler', () => {
             const submitButton = screen.getByRole('button', { name: /Solicitar Agendamento/i })
             await user.click(submitButton)
 
-            vi.advanceTimersByTime(1500)
-
             await waitFor(() => {
                 expect(mockOnInteraction).toHaveBeenCalledWith(
                     'demo_scheduled',
@@ -413,7 +395,7 @@ describe('DemoScheduler', () => {
                         company: 'ACME',
                     })
                 )
-            })
+            }, { timeout: 3000 })
         })
     })
 

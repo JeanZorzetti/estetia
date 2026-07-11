@@ -36,13 +36,11 @@ jobs:
       - run: npx prisma validate
       - run: npx next build
 
-  # Non-blocking for now: suite has ~109 pre-existing failures (2026-06-11).
-  # Flip continue-on-error to false once the suite is green.
+  # Blocking since 2026-07-11: suite went 109 failing → 0 (644 passing).
   test:
-    name: Unit tests (informative)
+    name: Unit tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

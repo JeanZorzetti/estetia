@@ -80,13 +80,14 @@ describe('AgiQuotaDisplay Component', () => {
   })
 
   it('should show warning when near limit', () => {
+    // branch de aviso só ativa com percentage >= 80
     vi.mocked(hooks.useAgiQuotaStatus).mockReturnValue({
       hasAccess: true,
       isUnlimited: false,
-      limit: 3,
-      used: 2,
+      limit: 5,
+      used: 4,
       remaining: 1,
-      percentage: 66.67,
+      percentage: 80,
       isExceeded: false,
     })
 
@@ -109,7 +110,7 @@ describe('AgiQuotaDisplay Component', () => {
     render(<AgiQuotaDisplay />)
 
     expect(screen.getByText('Quota excedida')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /upgrade para ilimitado/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /ver planos com cota ilimitada/i })).toBeInTheDocument()
   })
 })
 
@@ -225,7 +226,7 @@ describe('QuotaDashboard Component', () => {
       hasAccess: true,
       balance: 25,
       monthlyQuota: 50,
-      used: 25,
+      used: 10, // diferente do balance para o getByText('25') ser único
     })
 
     render(<QuotaDashboard />)
@@ -326,7 +327,8 @@ describe('Quota Display Accessibility', () => {
 
     render(<AgiQuotaDisplay />)
 
-    expect(screen.getByRole('heading', { level: 3 })).toBeInTheDocument()
+    // CardTitle do shadcn renderiza como div — validar pelo texto visível
+    expect(screen.getByText('IA (Estetia IA)')).toBeInTheDocument()
   })
 
   it('should have proper aria labels for scraping credits', () => {
@@ -339,6 +341,6 @@ describe('Quota Display Accessibility', () => {
 
     render(<ScrapingCreditsDisplay />)
 
-    expect(screen.getByRole('heading', { level: 3 })).toBeInTheDocument()
+    expect(screen.getByText('Créditos de Prospecção')).toBeInTheDocument()
   })
 })
