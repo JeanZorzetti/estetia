@@ -385,7 +385,12 @@ function evaluateRule(rule: TriggerRule, context: TriggerContext): ComponentTrig
     reason: reasons.join('; '),
     requiredData: rule.requiredEntities,
     missingData,
-    canRender: missingData.length === 0 && score >= 50,
+    // minLeadScore é um gate duro: penalidade de score sozinha deixava
+    // componentes de fundo de funil (DemoScheduler) dispararem p/ lead frio
+    canRender:
+      missingData.length === 0 &&
+      score >= 50 &&
+      context.leadScore >= rule.minLeadScore,
   }
 }
 

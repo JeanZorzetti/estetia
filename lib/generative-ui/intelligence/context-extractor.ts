@@ -237,7 +237,7 @@ const INTENT_PATTERNS: Record<UserIntent, RegExp[]> = {
   ],
   demo_request: [
     /quero\s+(ver|uma?)\s+demo/i,
-    /agendar?\s+(demo|demonstra)/i,
+    /agendar?\s+(uma\s+)?(demo|demonstra)/i,
     /mostrar?\s+(como\s+funciona|na\s+prática)/i,
     /ver\s+funcionando/i,
     /marcar\s+(reunião|call|demo)/i,
@@ -270,7 +270,8 @@ const INTENT_PATTERNS: Record<UserIntent, RegExp[]> = {
     /pitch/i,
   ],
   qualification_check: [
-    /sirius\s+(é\s+)?pra\s+mim/i,
+    // "sirius" mantido por compatibilidade com o fork de origem
+    /(estetia|sirius)\s+(é\s+)?pra\s+mim/i,
     /meu\s+perfil/i,
     /se\s+encaixa/i,
     /faz\s+sentido/i,
@@ -286,7 +287,7 @@ const INTENT_PATTERNS: Record<UserIntent, RegExp[]> = {
   closing_intent: [
     /vamos\s+fechar/i,
     /pronto\s+para\s+(come[çc]ar|contratar)/i,
-    /pode\s+mandar\s+(contrato|proposta)/i,
+    /pode\s+mandar\s+([oa]\s+)?(contrato|proposta)/i,
     /onde\s+assino/i,
   ],
   general_question: [

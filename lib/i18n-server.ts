@@ -29,7 +29,14 @@ export function invalidateLocaleCache(userId: string) {
 
 export async function resolveRequestLocale(req?: NextRequest): Promise<Locale> {
   // 1. Authenticated user's saved locale
-  const session = await getSession()
+  // getSession lê cookies(); fora de request scope isso lança e derrubaria
+  // o caminho de ERRO das rotas (apiError) — degradar p/ detecção via req
+  let session: Awaited<ReturnType<typeof getSession>> = null
+  try {
+    session = await getSession()
+  } catch {
+    // no request scope (ex.: testes) — segue para URL/Accept-Language
+  }
   if (session?.user?.id) {
     try {
       return await resolveUserLocale(session.user.id)

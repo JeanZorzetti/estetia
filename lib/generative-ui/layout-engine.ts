@@ -71,8 +71,12 @@ export function validateLayout(layout: MultiComponentLayout): {
 
     // Validate grid spans
     if (layout.type === 'grid') {
-        const totalSpan = layout.components.reduce((sum, c) => sum + (c.span || 12), 0)
-        if (totalSpan > 12 * Math.ceil(layout.components.length / (layout.columns || 2))) {
+        // sem span explícito, cada componente ocupa 1 célula (12/columns),
+        // espelhando generateGridClasses — o default 12 estourava a conta
+        const columns = layout.columns || Math.min(layout.components.length, 3)
+        const defaultSpan = 12 / columns
+        const totalSpan = layout.components.reduce((sum, c) => sum + (c.span || defaultSpan), 0)
+        if (totalSpan > 12 * Math.ceil(layout.components.length / columns)) {
             errors.push('Total grid span exceeds available columns')
         }
     }

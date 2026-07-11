@@ -119,6 +119,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true })
   } catch (error) {
     logger.error({ error }, 'Error in forgot-password')
-    return await apiError(ERR.FORGOT_PASSWORD, 500)
+    return await apiError(ERR.FORGOT_PASSWORD, 500, { req: request })
   }
 }

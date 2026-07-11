@@ -258,8 +258,19 @@ export function DealFormGenerator({
                   id="value"
                   type="number"
                   placeholder="0"
-                  {...register('value', { valueAsNumber: true })}
+                  {...register('value', {
+                    // input vazio não pode virar NaN (valueAsNumber) — o zod
+                    // rejeitaria e o form travaria a submissão sem erro visível
+                    setValueAs: (v) =>
+                      v === '' || v === null || Number.isNaN(Number(v))
+                        ? undefined
+                        : Number(v),
+                  })}
+                  className={errors.value ? 'border-destructive' : ''}
                 />
+                {errors.value && (
+                  <p className="text-sm text-destructive">{errors.value.message}</p>
+                )}
                 {prefill?.value && (
                   <p className="text-xs text-muted-foreground">
                     Sugerido: {formatCurrency(prefill.value)}
