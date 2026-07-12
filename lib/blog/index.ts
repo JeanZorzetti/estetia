@@ -40,8 +40,10 @@ import { post as precificacaoPost } from './posts/precificacao-procedimentos-est
 import { post as inadimplenciaPost } from './posts/inadimplencia-parcelamento-clinica-estetica'
 import { post as expansaoPost } from './posts/expansao-segunda-unidade-clinica-estetica'
 import { post as capitalGiroPost } from './posts/capital-de-giro-saude-financeira-clinica-estetica'
+import { post as tissTussPost } from './posts/tiss-tuss-clinica-estetica-convenios'
 
 export const blogPosts: BlogPost[] = [
+  tissTussPost,
   comparasSistemaPost,
   migrarCrmPost,
   quantoCustaCrmPost,

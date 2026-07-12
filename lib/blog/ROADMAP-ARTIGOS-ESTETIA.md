@@ -25,6 +25,10 @@
 | Quanto Custa um CRM para Clínica de Estética em 2026 | `quanto-custa-crm-clinica-estetica` | ✅ Publicado |
 | Como Migrar para CRM Clínico sem Perder Dados | `como-migrar-crm-clinica-estetica` | ✅ Publicado |
 | Sistema de Gestão para Clínica de Estética: Como Comparar | `comparar-sistema-gestao-clinica-estetica` | ✅ Publicado |
+| TISS e TUSS para Clínicas de Estética e Dermatologia | `tiss-tuss-clinica-estetica-convenios` | ✅ Publicado (2026-07-12) |
+
+> **Próximo em ordem:** Tier 2, item 14 (`recall-recompra-clinica-estetica-fidelizacao`). Tier 1 está completo — o item 11 (TISS/TUSS) era o último pendente.
+> Itens do roadmap já cobertos por outros posts publicados fora da ordem original: #18 (`fluxo-de-caixa-clinica-estetica-gestao-financeira`), #21 (`precificacao-procedimentos-esteticos-margem-lucro`), #20 parcialmente (`expansao-segunda-unidade-clinica-estetica`).
 
 ---
 

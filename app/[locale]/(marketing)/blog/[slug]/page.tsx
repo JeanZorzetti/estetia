@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ShareButtons } from '@/components/blog/share-buttons'
 import { TableOfContents } from '@/components/blog/table-of-contents'
 import { BlogContentWrapper } from '@/components/blog/blog-content-wrapper'
-import { generateFAQSchema, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, enzimasPapadaFAQs, radiofrequenciaFAQs, micropigmentacaoFAQs, tratamentoCapilarFAQs, drenagemLinfaticaFAQs, recepcionistaFAQs, comissaoProfissionaisFAQs, gestaoEstoqueFAQs, produtividadeEquipeFAQs, gestaoSalasFAQs, fluxoCaixaFAQs, precificacaoFAQs, inadimplenciaFAQs, expansaoFAQs, capitalGiroFAQs, FAQItem } from '@/lib/faq-schema'
+import { generateFAQSchema, tissTussFAQs, spinSellingClinicaFAQs, noShowClinicaFAQs, lgpdClinicaFAQs, anamneseDigitalFAQs, kpisClinicaFAQs, estetiaHomepageFAQs, crmClinicaEsteticaFAQs, softwareDermatologiaFAQs, prontuarioEletronicoFAQs, agendamentoOnlineFAQs, whatsappBusinessClinicaFAQs, melhorCrmClinicaFAQs, roiCrmClinicaFAQs, quantoCustaCrmFAQs, migrarCrmClinicaFAQs, compararSistemaClinicaFAQs, toxinaBotulinicaFAQs, preenchimentoAhFAQs, harmonizacaoFacialFAQs, depilacaoLaserFAQs, limpezaPeleFAQs, bioestimuladoresFAQs, criolipoliseFAQs, microagulhamentoFAQs, peelingQuimicoFAQs, fiosPdoFAQs, enzimasPapadaFAQs, radiofrequenciaFAQs, micropigmentacaoFAQs, tratamentoCapilarFAQs, drenagemLinfaticaFAQs, recepcionistaFAQs, comissaoProfissionaisFAQs, gestaoEstoqueFAQs, produtividadeEquipeFAQs, gestaoSalasFAQs, fluxoCaixaFAQs, precificacaoFAQs, inadimplenciaFAQs, expansaoFAQs, capitalGiroFAQs, FAQItem } from '@/lib/faq-schema'
 import { generateArticleSchema, COMMON_WIKIDATA_ENTITIES, createGeoConfig } from '@/lib/geo/schema-generator'
 import { getHowToSchema } from '@/lib/howto-schemas'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -843,6 +843,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ],
       author: estetiaAuthor,
     })
+  } else if (slug === 'tiss-tuss-clinica-estetica-convenios') {
+    geoConfig = createGeoConfig.dermatology({
+      mentions: [
+        COMMON_WIKIDATA_ENTITIES.DERMATOLOGY,
+        COMMON_WIKIDATA_ENTITIES.AESTHETIC_MEDICINE,
+        COMMON_WIKIDATA_ENTITIES.HEALTHCARE,
+        COMMON_WIKIDATA_ENTITIES.INSURANCE,
+        COMMON_WIKIDATA_ENTITIES.ELECTRONIC_HEALTH_RECORD,
+        COMMON_WIKIDATA_ENTITIES.BRAZIL,
+      ],
+      about: [COMMON_WIKIDATA_ENTITIES.HEALTHCARE, COMMON_WIKIDATA_ENTITIES.INSURANCE],
+      citations: [
+        'https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss',
+        'https://www.planalto.gov.br/ccivil_03/leis/l9656.htm',
+      ],
+      author: estetiaAuthor,
+    })
   }
 
   const articleSchema = generateArticleSchema(post, {
@@ -864,6 +881,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // FAQ Schema for posts with FAQ sections (for Featured Snippets)
   const faqDataMap: Record<string, FAQItem[]> = {
+    'tiss-tuss-clinica-estetica-convenios': tissTussFAQs,
     'spin-selling-para-clinicas-de-estetica': spinSellingClinicaFAQs,
     'como-reduzir-no-show-em-clinicas-de-estetica': noShowClinicaFAQs,
     'lgpd-para-clinicas-de-estetica-guia-2026': lgpdClinicaFAQs,

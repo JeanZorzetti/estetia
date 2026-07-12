@@ -1248,3 +1248,49 @@ export const capitalGiroFAQs: FAQItem[] = [
     answer: 'Para investimento com ROI calculado, reforma que aumenta capacidade, ou capital de giro temporário em crise com plano claro de recuperação. Não usar para cobrir prejuízo crônico (problema de modelo, não de liquidez). Linhas do Sebrae e BNDES têm taxas mais acessíveis que o crédito bancário convencional.',
   },
 ]
+
+/**
+ * FAQ data for TISS/TUSS e Convênios blog post
+ */
+export const tissTussFAQs: FAQItem[] = [
+  {
+    question: 'O que é TISS?',
+    answer: 'TISS (Troca de Informação em Saúde Suplementar) é o padrão da ANS que define como prestadores e operadoras de plano de saúde trocam informação de atendimento e cobrança: quais guias existem, quais campos elas têm, em que formato o arquivo é enviado e como o dado é protegido. É obrigatório na comunicação eletrônica entre clínica credenciada e convênio.',
+  },
+  {
+    question: 'Qual a diferença entre TISS e TUSS?',
+    answer: 'O TISS é o padrão de troca — como a informação viaja até a operadora. O TUSS (Terminologia Unificada da Saúde Suplementar) é a tabela de códigos que nomeia cada procedimento, material ou medicamento — o que foi feito. O TUSS é um componente do TISS, não um padrão paralelo.',
+  },
+  {
+    question: 'Clínica de estética precisa de TISS?',
+    answer: 'Clínica de estética pura, não. Procedimentos com finalidade exclusivamente estética são excluídos da cobertura obrigatória pela Lei 9.656/1998 (art. 10, inciso II) — não há convênio para faturar. TISS é necessário para clínicas de dermatologia, clínicas híbridas e qualquer clínica credenciada que realize atendimento com indicação terapêutica.',
+  },
+  {
+    question: 'Convênio cobre harmonização facial ou botox?',
+    answer: 'Não, quando a finalidade é estética. A mesma substância pode ter cobertura em indicação terapêutica documentada, mas aí a cobertura decorre da doença tratada e do rol aplicável — não do procedimento estético. Rejuvenescimento, preenchimento e harmonização facial são atendimento particular.',
+  },
+  {
+    question: 'O que é glosa e quais são os tipos?',
+    answer: 'Glosa é a recusa total ou parcial de pagamento pela operadora. Há três tipos: administrativa (erro de forma — campo faltando, dado divergente, prazo perdido), técnica (a operadora questiona o mérito clínico do que foi cobrado) e linear (corte percentual sobre a conta, que precisa ser contestado item a item).',
+  },
+  {
+    question: 'Como evitar glosas no faturamento TISS?',
+    answer: 'Cinco medidas resolvem a maior parte: conferir elegibilidade antes do atendimento; obter e registrar a autorização prévia quando exigida; codificar o TUSS a partir do prontuário (nunca de memória); registrar a indicação clínica por escrito; e validar o XML contra o schema antes de enviar. Além disso, nomear um responsável por recorrer de toda glosa dentro do prazo.',
+  },
+  {
+    question: 'Qual a versão atual do padrão TISS?',
+    answer: 'O padrão é versionado e atualizado periodicamente pela ANS por Instrução Normativa — o Estetia opera na versão 4.01.00. Como cada operadora tem seu calendário de adoção, confirme a versão vigente na ANS e a aceita pela operadora antes de gerar o lote: versão incorreta causa rejeição do arquivo inteiro.',
+  },
+  {
+    question: 'O que acontece se eu enviar a guia fora do prazo?',
+    answer: 'O prazo de apresentação da conta é contratual, definido no credenciamento. Guia enviada fora dele costuma ser glosada por prazo — e é uma das glosas mais difíceis de reverter, porque o erro é da clínica e é objetivo. Por isso o faturamento precisa ter data fixa de fechamento no mês.',
+  },
+  {
+    question: 'Preciso de software específico para faturar TISS?',
+    answer: 'Precisa de um sistema capaz de gerar a guia e o lote XML no padrão da ANS e validá-lo antes do envio. Fazer isso em planilha é insustentável: o XML tem estrutura rígida, o padrão muda e o volume de campos torna o erro humano quase inevitável. O ganho real aparece quando a guia nasce do prontuário, sem redigitação.',
+  },
+  {
+    question: 'Clínica híbrida pode atender convênio e particular no mesmo espaço?',
+    answer: 'Pode, e é o modelo mais comum em dermatologia. O cuidado é operacional e contábil: separar o atendimento coberto (com guia, autorização e prontuário sustentando a cobrança) da venda particular (com contrato, política de pagamento e recibo). Misturar os dois fluxos no mesmo registro gera glosa, erro fiscal e conflito com o paciente.',
+  },
+]
