@@ -2,27 +2,69 @@
   "permissions": {
     "allow": [
       "Bash(git add:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nstyle\\(blog\\): enhance typography, spacing and table design\n\n- Increase paragraph spacing with better line height for readability\n- Style list markers in blue with larger size and improved spacing\n- Redesign tables with blue borders, gradient headers and hover effects\n- Align BANT framework with color-coded initial letters\n- Maintain bold text in blue color scheme throughout\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(npm run build:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nstyle\\(blog\\): enhance readability and BANT framework styling\n\n- Increase paragraph spacing from mb-8 to mb-10 for better readability\n- Improve line height from 1.8 to 2.0 for enhanced reading experience\n- Style ordered list markers \\(1., 2., 3.\\) in blue with larger size and bold\n- Add increased spacing between ordered list items \\(space-y-4\\)\n- Change BANT framework letter colors from blue to green \\(#16a34a\\)\n- Clean up legacy claude prompt files from repository\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix\\(blog\\): apply blue styling to ordered list markers\n\n- Use [&_ol>li::marker] selector to properly target ordered list markers\n- Ensure numbered lists \\(1., 2., 3.\\) display in blue with larger size\n- Maintain bold font-weight for better visibility\n- Fix Tailwind CSS specificity issues with prose markers\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix\\(blog\\): use important modifier for ordered list marker styling\n\n- Apply !important modifier to force blue color on numbered list markers\n- Use canonical Tailwind syntax \\(text-blue-600! instead of !text-blue-600\\)\n- Ensure markers display with larger size and bold font weight\n- Override default prose styling with higher specificity\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit:*)",
-      "Bash(npx tsx:*)",
-      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run test:*)",
       "Bash(npm test:*)",
-      "Bash(npx tsc:*)",
-      "Bash(cat:*)",
       "Bash(npx vitest:*)",
-      "Bash(node -e:*)",
-      "Bash(npx prisma migrate dev:*)",
-      "Bash(npx shadcn@latest add:*)",
-      "Bash(npx playwright install)",
-      "Bash(npx playwright test:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx prisma:*)",
+      "Bash(npx playwright:*)",
       "Bash(npm run test:e2e:*)",
+      "Bash(npx shadcn@latest:*)",
+      "Bash(cat:*)",
+      "Bash(node:*)",
       "Bash(mkdir:*)",
       "Bash(grep:*)"
     ]
-  }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_response.filePath // .tool_input.file_path' | { read -r f; if [[ \"$f\" =~ \\.(tsx?|jsx?)$ ]]; then npx prettier --write \"$f\" 2>/dev/null || true; fi; }",
+            "statusMessage": "Formatting code...",
+            "timeout": 15,
+            "if": "Edit|Write"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | { read -r f; if [[ \"$f\" =~ \\.(tsx?|jsx?)$ && ! \"$f\" =~ node_modules ]]; then npx tsc --noEmit 2>&1 | head -20 || true; fi; }",
+            "statusMessage": "Type-checking...",
+            "timeout": 30,
+            "if": "Edit"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command' | grep -qE '^npm run (build|test:e2e)' && (npx tsc --noEmit 2>&1 | grep -c 'error' || echo '0') | { read errors; if [ \"$errors\" -gt 0 ]; then echo '{\"systemMessage\": \"⚠️ TypeScript errors detected. Fix before running this command.\", \"continue\": false}'; else echo '{\"continue\": true}'; fi; } || echo '{\"continue\": true}'",
+            "statusMessage": "Pre-flight type check...",
+            "timeout": 30,
+            "if": "Bash(npm run build:*)|Bash(npm run test:e2e:*)"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "claude-haiku-4-5-20251001",
+  "verbose": false,
+  "autoCompactEnabled": true
 }
