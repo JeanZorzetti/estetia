@@ -39,6 +39,6 @@ Drift código-vs-teste acumulado do fork: matriz de planos antiga (FREE 50 deals
 
 ## Gotchas
 - Repo tem ~750 linhas de erro TS pré-existentes (`tsc --noEmit` falha; build ignora). Gate prático: tsc + filtrar pelos arquivos tocados. Grande parte é falta dos types do vitest nos arquivos de teste (candidato barato: `"types": ["vitest/globals"]` no tsconfig).
-- **Working tree tem trabalho de SEO NÃO COMMITADO desde ~05/06** e ainda não deployado: `config/solucoes-data.ts` (títulos/keywords de dermatologia) e 6 posts do blog (`lastModified` bumpado, títulos reescritos, internal links). Parece completo e coerente — alguém começou e não fechou. **Decidir: commitar ou descartar.** Não foi tocado nas sessões de 11/07 e 12/07.
+- ~~Working tree com trabalho de SEO não commitado desde ~05/06~~ — **RESOLVIDO 12/07** (`745b983`): commitado e deployado. A página `/solucoes/dermatologia` agora mira "sistema/software para dermatologia" (title novo verificado em prod) e os 6 posts saíram com títulos/links revisados. Working tree limpo.
 - `formatPrice` (Intl pt-BR) emite **NBSP** entre R$ e o valor — comparar strings de moeda exige normalização.
 - happy-dom: sem `disableIframePageLoading` ele faz fetch REAL do src de iframes nos testes.
