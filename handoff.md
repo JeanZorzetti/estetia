@@ -1,6 +1,17 @@
-# Handoff — Pendências da auditoria 06/2026 (2026-07-11, atualizado à tarde)
+# Handoff — Estetia CRM (atualizado 2026-07-12)
 
-## Feito — manhã (cron LGPD)
+## Feito — 2026-07-12 (cadência de blog da agenda do ROI Hub)
+
+- **Artigo publicado e verificado em prod** (`1549e42`): [TISS e TUSS para Clínicas de Estética e Dermatologia](https://estetiacrm.com.br/blog/tiss-tuss-clinica-estetica-convenios) — HTTP 200, schema `BlogPosting` + `FAQPage`, listado em `/blog`, presente no `sitemap.xml`. Blog vai a **41 posts**.
+- **Por que esse tema:** era o **item 11 do `lib/blog/ROADMAP-ARTIGOS-ESTETIA.md`** — o último Tier 1 (alto intent comercial) ainda não publicado. Casa com o TISS 4.01.00 que o produto já implementa (Sprint 4), então é diferencial real, não conteúdo genérico.
+- **Ângulo honesto (importante para não canibalizar):** o artigo diz explicitamente que clínica de **estética pura não fatura convênio** (Lei 9.656/1998, art. 10, II exclui procedimento com finalidade estética) e que TISS só interessa a **dermatologia / clínica híbrida**. Isso reforça a fronteira de keywords com o projeto Estetia (fábrica): Doc-CRM = DENTRO da clínica; Estetia = FORA (site/captação).
+- Wiring completo conforme `lib/blog/CLAUDE.md`: post em `lib/blog/posts/`, registrado no `index.ts`, 10 FAQs em `lib/faq-schema.ts`, branch de `geoConfig` (entidades Wikidata + citações ANS/Planalto) e `faqDataMap` na page do slug.
+
+### Próximo artigo (em ordem)
+
+**Tier 1 está completo.** O próximo em ordem é o **Tier 2, item 14**: `recall-recompra-clinica-estetica-fidelizacao`. Itens do roadmap já cobertos fora de ordem por outros posts (não refazer): #18 (fluxo de caixa), #21 (precificação), #20 parcialmente (expansão/segunda unidade).
+
+## Feito — 2026-07-11 manhã (cron LGPD)
 - **Cron LGPD retention agendado** (`8694ce4`): a rota `/api/cron/lgpd-retention-cleanup` existia desde a auditoria mas nunca foi agendada no cron-job.org. Em vez de serviço externo, agendado **in-process** em `instrumentation.ts` com `node-cron` (dependência que já estava instalada e sem uso): mensal, dia 1 às 04:00 UTC, produção-only, chama a própria rota via localhost com `CRON_SECRET`.
 - **Validação em prod** (pré-deploy, `dryRun=1`): HTTP 200, 6 orgs checadas, 0 erros.
 
@@ -28,6 +39,6 @@ Drift código-vs-teste acumulado do fork: matriz de planos antiga (FREE 50 deals
 
 ## Gotchas
 - Repo tem ~750 linhas de erro TS pré-existentes (`tsc --noEmit` falha; build ignora). Gate prático: tsc + filtrar pelos arquivos tocados. Grande parte é falta dos types do vitest nos arquivos de teste (candidato barato: `"types": ["vitest/globals"]` no tsconfig).
-- Working tree mantém sujeira pré-existente não relacionada (blog posts modificados, `docs/GSC/` etc.) — não commitada.
+- **Working tree tem trabalho de SEO NÃO COMMITADO desde ~05/06** e ainda não deployado: `config/solucoes-data.ts` (títulos/keywords de dermatologia) e 6 posts do blog (`lastModified` bumpado, títulos reescritos, internal links). Parece completo e coerente — alguém começou e não fechou. **Decidir: commitar ou descartar.** Não foi tocado nas sessões de 11/07 e 12/07.
 - `formatPrice` (Intl pt-BR) emite **NBSP** entre R$ e o valor — comparar strings de moeda exige normalização.
 - happy-dom: sem `disableIframePageLoading` ele faz fetch REAL do src de iframes nos testes.
