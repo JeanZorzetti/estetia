@@ -253,10 +253,10 @@ export const SOLUCOES: SolucaoData[] = [
     color: '#0A1F3D',
     colorLight: '#0A1F3D15',
     hero: {
-      badge: 'Para dermatologistas e clínicas dermatológicas',
-      headline: 'Prontuário eletrônico e gestão clínica para dermatologia',
+      badge: 'Sistema para dermatologistas e clínicas dermatológicas',
+      headline: 'Software de gestão para dermatologia: prontuário, TISS e fotos evolutivas',
       subheadline:
-        'Mapeamento corporal, fotos evolutivas integradas, prescrição digital e conformidade TISS — tudo em uma plataforma desenvolvida para as exigências da dermatologia clínica e estética.',
+        'Sistema completo para dermatologistas — mapeamento corporal, fotos evolutivas integradas, prescrição digital e conformidade TISS. Desenvolvido para as exigências da dermatologia clínica e estética no Brasil.',
     },
     benefits: [
       {
@@ -391,13 +391,16 @@ export const SOLUCOES: SolucaoData[] = [
       },
     ],
     seo: {
-      title: 'CRM para Dermatologia | Prontuário Eletrônico e TISS | Estetia',
+      title: 'Sistema para Dermatologia | Software de Gestão para Dermatologistas | Estetia',
       description:
-        'Software médico para dermatologistas: prontuário eletrônico CFM-compliant, fotos evolutivas, prescrição digital, faturamento TISS e conformidade LGPD.',
+        'Sistema para dermatologia e software de gestão para dermatologistas: prontuário eletrônico CFM-compliant, mapeamento de lesões com fotos evolutivas, prescrição digital, faturamento TISS/TUSS e conformidade LGPD. Específico para dermatologistas e clínicas dermatológicas no Brasil.',
       keywords: [
+        'sistema para dermatologia',
+        'sistema para dermatologista',
+        'software para dermatologia',
+        'software para dermatologista',
         'crm dermatologia',
         'prontuario eletronico dermatologia',
-        'software dermatologia',
         'sistema clinica dermatologica',
         'tiss dermatologia',
         'gestao clinica dermatologica',

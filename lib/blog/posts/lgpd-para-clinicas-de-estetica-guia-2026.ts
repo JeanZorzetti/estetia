@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'LGPD para Clínicas de Estética: Guia Prático 2026 (Checklist + Templates)',
   excerpt: 'A ANPD pode multar clínicas em até 2% do faturamento. Guia completo com 6 pontos críticos, checklist de conformidade e templates prontos para fotos antes/depois, prontuários e gestão de consentimento.',
   date: '2026-05-06',
-  lastModified: '2026-05-06',
+  lastModified: '2026-06-05',
   category: 'Compliance & LGPD',
   image: 'https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1200&q=80',
   imageAlt: 'Proteção de dados e conformidade LGPD em clínicas de estética — guia prático 2026',

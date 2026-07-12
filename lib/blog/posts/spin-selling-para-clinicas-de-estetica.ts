@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'SPIN Selling para Clínicas de Estética: Como Vender Procedimentos sem Parecer Vendedor',
   excerpt: 'Aprenda a aplicar o SPIN Selling na consulta de avaliação inicial — 12 perguntas-modelo que aumentam a conversão de avaliações em até 40% sem pressão de venda.',
   date: '2026-05-10',
-  lastModified: '2026-05-10',
+  lastModified: '2026-06-05',
   category: 'Marketing & Captação',
   image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&q=80',
   imageAlt: 'Profissional de estética em consulta de avaliação com cliente — SPIN Selling para clínicas de estética',

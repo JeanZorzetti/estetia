@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'Os 7 KPIs Essenciais de Clínicas de Estética: LTV, Retenção, No-Show e Mais',
   excerpt: 'LTV, taxa de retorno em 90 dias, custo de aquisição, receita por hora de cadeira — 7 métricas que a maioria das clínicas não monitora, com benchmarks brasileiros, fórmulas e como melhorar cada uma.',
   date: '2026-05-02',
-  lastModified: '2026-05-02',
+  lastModified: '2026-06-05',
   category: 'KPIs & Crescimento',
   image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80',
   imageAlt: 'Dashboard com KPIs e métricas de clínica de estética — LTV, taxa de retenção e no-show',

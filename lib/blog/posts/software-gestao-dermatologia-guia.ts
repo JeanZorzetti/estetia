@@ -5,14 +5,14 @@ export const post: BlogPost = {
   title: 'Software de Gestão para Dermatologia: O Guia Definitivo 2026',
   excerpt: 'Como escolher o melhor software de gestão para dermatologia: prontuário eletrônico, TISS, LGPD e integração com convênios. Comparativo de funcionalidades essenciais para consultórios e clínicas de dermato.',
   date: '2026-05-29',
-  lastModified: '2026-05-29',
+  lastModified: '2026-06-05',
   category: 'Gestão Clínica',
   image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80',
   imageAlt: 'Dermatologista consultando prontuário eletrônico em tablet — software de gestão para dermatologia',
   author: 'Equipe Estetia',
   relatedSlugs: [
     'lgpd-para-clinicas-de-estetica-guia-2026',
-    'anamnese-digital-clinica-de-estetica',
+    'prontuario-eletronico-clinica-estetica',
     'crm-para-clinica-de-estetica-guia-completo',
   ],
   content: `
@@ -128,6 +128,10 @@ export const post: BlogPost = {
 
 <h3>Para a Rede de Clínicas de Dermato</h3>
 <p>Redes com múltiplas unidades precisam de visão consolidada de KPIs, pacientes que transitam entre unidades, protocolos padronizados e faturamento separado por unidade. O módulo multi-unidade com relatórios consolidados é essencial.</p>
+
+<div class="callout-tip">
+  <strong>Veja na prática:</strong> Conheça como o <a href="/solucoes/dermatologia">Estetia CRM para dermatologia</a> implementa prontuário CFM-compliant, mapeamento de lesões, faturamento TISS e recall automático em uma plataforma integrada — desenvolvida especificamente para dermatologistas e clínicas dermatológicas.
+</div>
 
 <div class="callout-success">
   <strong>Case de sucesso:</strong> Uma rede de 3 clínicas de dermatologia em São Paulo reduziu o tempo de faturamento TISS de 18 horas/semana para 4 horas/semana após implementar o módulo de convênios do Estetia CRM — uma economia de mais de 2 dias de trabalho administrativo por semana.

@@ -2,10 +2,10 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'como-reduzir-no-show-em-clinicas-de-estetica',
-  title: 'Como Reduzir No-Show em Clínicas de Estética em até 70% [Guia 2026]',
-  excerpt: 'No-show médio de 18-25% no setor estético representa R$ 8-15k/mês perdidos. 5 estratégias comprovadas — confirmação automatizada, lista de espera, recall preditivo — para reduzir faltas em até 70%.',
+  title: 'Redução de No-Show em Clínicas de Estética: Como Evitar Faltas em até 70% [Guia 2026]',
+  excerpt: 'No-show médio de 18-25% no setor estético representa R$ 8-15k/mês perdidos. Como reduzir e evitar no-show de pacientes com 5 estratégias comprovadas — confirmação automatizada, lista de espera e recall preditivo.',
   date: '2026-05-08',
-  lastModified: '2026-05-08',
+  lastModified: '2026-06-05',
   category: 'Gestão Clínica',
   image: 'https://images.unsplash.com/photo-1552693673-1bf958298935?w=1200&q=80',
   imageAlt: 'Recepcionista de clínica de estética gerenciando agenda de agendamentos — como reduzir no-show',

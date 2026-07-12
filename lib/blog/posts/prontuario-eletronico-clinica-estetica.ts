@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'Prontuário Eletrônico para Clínica de Estética: Tudo que Você Precisa Saber',
   excerpt: 'Prontuário eletrônico para clínica de estética: obrigatoriedade legal, validade jurídica, diferença entre anamnese e prontuário, LGPD e como implementar em 2026 sem complicação.',
   date: '2026-05-29',
-  lastModified: '2026-05-29',
+  lastModified: '2026-06-05',
   category: 'Gestão Clínica',
   image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200&q=80',
   imageAlt: 'Profissional de saúde acessando prontuário eletrônico em tablet em clínica de estética',
@@ -13,7 +13,7 @@ export const post: BlogPost = {
   relatedSlugs: [
     'anamnese-digital-clinica-de-estetica',
     'lgpd-para-clinicas-de-estetica-guia-2026',
-    'crm-para-clinica-de-estetica-guia-completo',
+    'software-gestao-dermatologia-guia',
   ],
   content: `
 <p>Prontuário eletrônico para clínicas de estética deixou de ser diferencial competitivo e se tornou requisito de operação segura. Com a LGPD em vigor e as resoluções dos Conselhos de Medicina e Biomedicina atualizadas em 2026, clínicas que ainda operam com fichas físicas enfrentam riscos jurídicos reais — além de perder eficiência operacional significativa. Este guia apresenta tudo que você precisa saber sobre prontuário eletrônico: o que é, se é obrigatório, como funciona na prática e como implementar.</p>
