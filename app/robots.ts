@@ -114,10 +114,15 @@ export default function robots(): MetadataRoute.Robots {
       // REGRA GERAL (Todos os outros bots)
       // ========================================
 
+      // /_next/static/chunks/: 41,6% do crawl budget ia para "Other file type" e
+      // 23,5% para JavaScript, contra 16,9% de HTML (GSC Crawl Stats, 22/07). Os
+      // chunks têm hash no nome, então cada deploy gera um conjunto novo que o
+      // Googlebot rebaixa em 85% de Refresh. O conteúdo das páginas de marketing
+      // é server-rendered, então não depende deles.
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/dashboard/', '/api/', '/admin/'],
+        disallow: ['/dashboard/', '/api/', '/admin/', '/_next/static/chunks/'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
