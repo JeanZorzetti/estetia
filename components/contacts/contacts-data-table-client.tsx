@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Loader2 } from 'lucide-react'
+import logger from '@/lib/logger'
 
 // Lazy-load — só carrega o modal quando o usuário abre
 const ContactProfileModal = dynamic(
@@ -74,22 +75,12 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
 
   useEffect(() => {
     const elapsed = performance.now() - firstRenderTimeRef.current
-    console.log(
-      `%c[PERF-CLIENT] ContactsDataTableClient hydrated`,
-      'color: #4f46e5; font-weight: bold',
-      `\n  rows: ${data.length}`,
-      `\n  hydration time: ${elapsed.toFixed(1)}ms`,
-      `\n  render count: ${renderCountRef.current}`
-    )
+    logger.info({ data1: 'color: #4f46e5; font-weight: bold', data2: `\n  rows: ${data.length}`, data3: `\n  hydration time: ${elapsed.toFixed(1)}ms`, data4: `\n  render count: ${renderCountRef.current}` }, `%c[PERF-CLIENT] ContactsDataTableClient hydrated`)
   }, [])
 
   useEffect(() => {
     if (renderCountRef.current > 1) {
-      console.log(
-        `%c[PERF-CLIENT] ContactsDataTableClient re-rendered`,
-        'color: #f59e0b',
-        `count: ${renderCountRef.current}`
-      )
+      logger.info({ data1: 'color: #f59e0b', data2: `count: ${renderCountRef.current}` }, `%c[PERF-CLIENT] ContactsDataTableClient re-rendered`)
     }
   })
 
@@ -108,7 +99,7 @@ export function ContactsDataTableClient({ data }: ContactsDataTableClientProps) 
   const columns = useMemo(() => {
     const t0 = performance.now()
     const cols = getColumns({ onOpenProfile: handleOpenProfile, onEdit: handleEdit, onDelete: handleDelete, t: (key: string) => t(key as Parameters<typeof t>[0]) })
-    console.log(`%c[PERF-CLIENT] getColumns()`, 'color: #6366f1', `${(performance.now() - t0).toFixed(1)}ms`)
+    logger.info({ data1: 'color: #6366f1', data2: `${(performance.now() - t0).toFixed(1)}ms` }, `%c[PERF-CLIENT] getColumns()`)
     return cols
   }, [handleOpenProfile, handleEdit, handleDelete])
 

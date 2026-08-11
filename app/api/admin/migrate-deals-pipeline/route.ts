@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import logger from '@/lib/logger'
 
 // POST /api/admin/migrate-deals-pipeline?token=estetia-migrate-2024
 // Moves deals from Roilabs Lead+Prospecção into pipeline "antigo" / stage "clientes antigos"
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
       deals: dealsToMigrate.map(d => d.title),
     })
   } catch (error) {
-    console.error('[migrate-deals-pipeline]', error)
+    logger.error({ error }, '[migrate-deals-pipeline]')
     return NextResponse.json({ error: String(error) }, { status: 500 })
   }
 }

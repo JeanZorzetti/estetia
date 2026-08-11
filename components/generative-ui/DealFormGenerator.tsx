@@ -44,6 +44,7 @@ import {
   X,
   Plus
 } from 'lucide-react'
+import logger from '@/lib/logger'
 
 // Form validation schema
 const dealFormSchema = z.object({
@@ -152,7 +153,7 @@ export function DealFormGenerator({
         throw new Error('Failed to create deal')
       }
     } catch (error) {
-      console.error('Error creating deal:', error)
+      logger.error({ error }, 'Error creating deal:')
       onInteraction?.('deal_creation_failed', 'DealFormGenerator', {
         error: String(error),
       })

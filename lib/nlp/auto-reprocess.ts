@@ -131,7 +131,7 @@ export async function handleReprocessWebhook(payload: ReprocessWebhookPayload) {
       trigger,
     }
   } catch (error) {
-    console.error('[Reprocess Webhook] Error:', error)
+    logger.error({ error }, '[Reprocess Webhook] Error:')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

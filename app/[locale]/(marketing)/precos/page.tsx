@@ -8,6 +8,7 @@ import { CompetitorComparison } from '@/components/pricing/competitor-comparison
 import { FaqPricing } from '@/components/pricing/faq-pricing'
 import { Button } from '@/components/ui/button'
 import { Sparkles, ArrowRight, ShieldCheck } from 'lucide-react'
+import logger from '@/lib/logger'
 
 // ISR: rendered statically and revalidated hourly. The pricing modules change
 // rarely, so we keep the Prisma query off the per-request crawl path (was
@@ -40,7 +41,7 @@ export default async function PrecosPage({
       orderBy: [{ category: 'asc' }, { ordem: 'asc' }],
     })
   } catch (error) {
-    console.error('[PrecosPage] pricingModule.findMany failed (expected at build time without DB):', error)
+    logger.error({ error }, '[PrecosPage] pricingModule.findMany failed (expected at build time without DB):')
   }
 
   const modulesTyped = modules.map(m => ({

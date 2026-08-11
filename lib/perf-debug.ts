@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * Performance Debug Utilities
  *
@@ -43,8 +44,8 @@ export class PerfTimer {
     }))
 
     if (isServer) {
-      console.log(`${prefix} ${this.label} — ${total.toFixed(1)}ms`)
-      console.log(rows.map(r => `  ${r.step}: ${r['at(ms)']}ms (+${r['delta(ms)']}ms)`).join('\n'))
+      logger.info(`${prefix} ${this.label} — ${total.toFixed(1)}ms`)
+      logger.info(rows.map(r => `  ${r.step}: ${r['at(ms)']}ms (+${r['delta(ms)']}ms)`).join('\n'))
     } else {
       console.groupCollapsed(`${prefix} ${this.label} — ${total.toFixed(1)}ms`)
       console.table(rows)

@@ -3,6 +3,7 @@
  * ✅ FASE 14: Lazy init para não quebrar build quando RESEND_API_KEY não está definida.
  */
 import { Resend } from 'resend'
+import logger from '@/lib/logger'
 
 let _resend: Resend | null = null
 
@@ -42,13 +43,13 @@ export async function sendEmail({
     })
 
     if (error) {
-      console.error('Failed to send email:', error)
+      logger.error({ error }, 'Failed to send email:')
       return { success: false, error }
     }
 
     return { success: true, data }
   } catch (error) {
-    console.error('Email sending error:', error)
+    logger.error({ error }, 'Email sending error:')
     return { success: false, error }
   }
 }
@@ -71,13 +72,13 @@ export async function sendHtmlEmail({
     })
 
     if (error) {
-      console.error('Failed to send email:', error)
+      logger.error({ error }, 'Failed to send email:')
       return { success: false, error }
     }
 
     return { success: true, data }
   } catch (error) {
-    console.error('Email sending error:', error)
+    logger.error({ error }, 'Email sending error:')
     return { success: false, error }
   }
 }

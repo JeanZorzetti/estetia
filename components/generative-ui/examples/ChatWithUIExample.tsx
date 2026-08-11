@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Send, Sparkles } from 'lucide-react'
 import type { StreamChunk, ComponentInteraction } from '@/lib/generative-ui/types'
+import logger from '@/lib/logger'
 
 interface Message {
   id: string
@@ -154,14 +155,14 @@ export function ChatWithUIExample({
               }
             })
           } catch (e) {
-            console.error('Failed to parse chunk:', line, e)
+            logger.error({ line, e }, 'Failed to parse chunk:')
           }
         }
       }
 
       setCurrentThinkingState(null)
     } catch (error) {
-      console.error('Chat error:', error)
+      logger.error({ error }, 'Chat error:')
 
       // Add error message
       setMessages((prev) => [

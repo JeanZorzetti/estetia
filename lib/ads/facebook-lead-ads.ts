@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 const GRAPH_API_VERSION = 'v21.0'
 const GRAPH_API_BASE = `https://graph.facebook.com/${GRAPH_API_VERSION}`
 
@@ -25,7 +26,7 @@ export async function fetchLeadData(
     )
 
     if (!res.ok) {
-      console.error('[FacebookLeadAds] API error fetching lead:', await res.text())
+      logger.error({ data: await res.text() }, '[FacebookLeadAds] API error fetching lead:')
       return null
     }
 
@@ -45,7 +46,7 @@ export async function fetchLeadData(
       rawFields,
     }
   } catch (err) {
-    console.error('[FacebookLeadAds] Unexpected error:', err)
+    logger.error({ err }, '[FacebookLeadAds] Unexpected error:')
     return null
   }
 }

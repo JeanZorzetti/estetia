@@ -126,7 +126,7 @@ export async function getPostEntities(slug: string) {
       context: ce.context,
     }))
   } catch (error) {
-    console.error(`[getPostEntities] Error for ${slug}:`, error)
+    logger.error({ error }, `[getPostEntities] Error for ${slug}:`)
     return []
   }
 }
@@ -198,7 +198,7 @@ export async function getRelatedPostsByEntities(
 
     return relatedPosts
   } catch (error) {
-    console.error(`[getRelatedPostsByEntities] Error for ${slug}:`, error)
+    logger.error({ error }, `[getRelatedPostsByEntities] Error for ${slug}:`)
     // Fallback to random posts
     return blogPosts.filter((p) => p.slug !== slug).slice(0, limit)
   }
@@ -261,7 +261,7 @@ export async function getBlogProcessingStats() {
       recentExtractions,
     }
   } catch (error) {
-    console.error('[getBlogProcessingStats] Error:', error)
+    logger.error({ error }, '[getBlogProcessingStats] Error:')
     return {
       totalPosts: blogPosts.length,
       processedPosts: 0,

@@ -19,6 +19,7 @@
  */
 
 import { openDB, type IDBPDatabase, type DBSchema } from 'idb'
+import logger from '@/lib/logger'
 
 const DB_NAME = 'sirius-cache'
 const DB_VERSION = 1
@@ -96,7 +97,7 @@ export async function cachePutMany<T extends { id: string }>(
     )
     await tx.done
   } catch (err) {
-    console.warn(`[offline-cache] failed to put ${store}:`, err)
+    logger.warn({ err }, `[offline-cache] failed to put ${store}:`)
   }
 }
 
@@ -116,7 +117,7 @@ export async function cacheGetAll<T>(
       .filter((r) => !maxAgeMs || r.cachedAt >= cutoff)
       .map((r) => r.data as T)
   } catch (err) {
-    console.warn(`[offline-cache] failed to read ${store}:`, err)
+    logger.warn({ err }, `[offline-cache] failed to read ${store}:`)
     return []
   }
 }

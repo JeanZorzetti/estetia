@@ -314,7 +314,7 @@ export async function mergeEntities(
 
     return { success: true }
   } catch (error) {
-    console.error('[Disambiguation] Merge failed:', error)
+    logger.error({ error }, '[Disambiguation] Merge failed:')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',

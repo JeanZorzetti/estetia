@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import logger from '@/lib/logger'
 
 const VERTEX_SHADER = `
   attribute vec2 position;
@@ -105,7 +106,7 @@ export default function DistortionCanvas() {
     gl.compileShader(frag)
 
     if (!gl.getShaderParameter(frag, gl.COMPILE_STATUS)) {
-      console.error('[DistortionCanvas] Shader error:', gl.getShaderInfoLog(frag))
+      logger.error({ data: gl.getShaderInfoLog(frag) }, '[DistortionCanvas] Shader error:')
       return
     }
 

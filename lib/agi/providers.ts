@@ -38,7 +38,7 @@ async function callGroq(
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('[Groq] API Error:', errorText);
+            logger.error({ errorText }, '[Groq] API Error:');
             throw new Error(`Groq API returned ${response.status}: ${errorText}`);
         }
 
@@ -46,7 +46,7 @@ async function callGroq(
         const content = data.choices?.[0]?.message?.content || '';
 
         if (!content) {
-            console.error('[Groq] Empty response:', data);
+            logger.error({ data }, '[Groq] Empty response:');
             throw new Error('Groq returned empty response');
         }
 
@@ -59,7 +59,7 @@ async function callGroq(
             model: config.model,
         };
     } catch (error) {
-        console.error('[Groq] Error:', error);
+        logger.error({ error }, '[Groq] Error:');
         throw error;
     }
 }

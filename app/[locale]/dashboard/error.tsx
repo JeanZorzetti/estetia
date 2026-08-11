@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, RotateCcw, LayoutDashboard } from 'lucide-react'
+import logger from '@/lib/logger'
 
 export default function DashboardError({
   error,
@@ -13,7 +14,7 @@ export default function DashboardError({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error('Dashboard error:', error)
+    logger.error({ error }, 'Dashboard error:')
   }, [error])
 
   return (

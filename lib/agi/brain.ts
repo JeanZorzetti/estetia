@@ -142,7 +142,7 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
         model: response.model,
       };
     } catch (error) {
-      console.error('Error communicating with LLM:', error);
+      logger.error({ error }, 'Error communicating with LLM:');
 
       if (error instanceof Error && error.name === 'AbortError') {
         throw new Error('AGI está demorando muito para responder. Por favor, tente novamente com uma pergunta mais simples ou contate o suporte.');
@@ -233,7 +233,7 @@ Você é a melhor consultora de vendas. Seja breve e precisa.`;
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      console.error('Error in streaming:', error);
+      logger.error({ error }, 'Error in streaming:');
       throw new Error(`Failed to stream response: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }

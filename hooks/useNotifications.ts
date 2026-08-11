@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
+import logger from '@/lib/logger'
 
 export interface Notification {
   id: string;
@@ -69,7 +70,7 @@ export function useNotifications(): UseNotificationsReturn {
       setNotifications(data.notifications);
       setUnreadCount(data.unreadCount);
     } catch (error) {
-      console.error("Error fetching notifications:", error);
+      logger.error({ error }, "Error fetching notifications:");
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +93,7 @@ export function useNotifications(): UseNotificationsReturn {
       );
       setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch (error) {
-      console.error("Error marking notification as read:", error);
+      logger.error({ error }, "Error marking notification as read:");
     }
   }, []);
 
@@ -115,7 +116,7 @@ export function useNotifications(): UseNotificationsReturn {
       );
       setUnreadCount(0);
     } catch (error) {
-      console.error("Error marking all notifications as read:", error);
+      logger.error({ error }, "Error marking all notifications as read:");
     }
   }, []);
 
@@ -137,7 +138,7 @@ export function useNotifications(): UseNotificationsReturn {
         return prev.filter((n) => n.id !== id);
       });
     } catch (error) {
-      console.error("Error deleting notification:", error);
+      logger.error({ error }, "Error deleting notification:");
     }
   }, []);
 
@@ -151,7 +152,7 @@ export function useNotifications(): UseNotificationsReturn {
     eventSourceRef.current = eventSource;
 
     eventSource.onopen = () => {
-      console.log("SSE connection established");
+      logger.info("SSE connection established");
       setIsConnected(true);
     };
 
@@ -160,7 +161,7 @@ export function useNotifications(): UseNotificationsReturn {
         const data = JSON.parse(event.data);
 
         if (data.type === "connected") {
-          console.log("Connected to notification stream");
+          logger.info("Connected to notification stream");
         } else if (data.type === "notifications" && data.data) {
           // Merge new notifications with existing ones
           setNotifications((prev) => {
@@ -172,15 +173,15 @@ export function useNotifications(): UseNotificationsReturn {
           setUnreadCount(data.data.length);
         } else if (data.type === "heartbeat") {
           // Keep-alive heartbeat
-          console.debug("Heartbeat received");
+          logger.debug("Heartbeat received");
         }
       } catch (error) {
-        console.error("Error parsing SSE message:", error);
+        logger.error({ error }, "Error parsing SSE message:");
       }
     };
 
     eventSource.onerror = () => {
-      console.error("SSE connection error");
+      logger.error("SSE connection error");
       setIsConnected(false);
     };
 

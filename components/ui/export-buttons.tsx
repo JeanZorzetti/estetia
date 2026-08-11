@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Download, FileSpreadsheet, FileText, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import logger from '@/lib/logger'
 
 interface ExportButtonsProps {
   resourceType: "contacts" | "companies" | "deals";
@@ -65,7 +66,7 @@ export function ExportButtons({
 
       toast.success(`Arquivo ${format.toUpperCase()} exportado com sucesso!`);
     } catch (error) {
-      console.error("Export error:", error);
+      logger.error({ error }, "Export error:");
       toast.error(
         error instanceof Error ? error.message : "Erro ao exportar arquivo"
       );

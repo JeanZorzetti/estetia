@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
@@ -109,7 +110,7 @@ export function ChatInterface({
         }
       }
     } catch (error) {
-      console.error('[CHAT] fetchConversations error:', error)
+      logger.error({ error }, '[CHAT] fetchConversations error:')
       setIsSyncing(false)
     } finally {
       setIsRefreshing(false)
@@ -151,7 +152,7 @@ export function ChatInterface({
         setConnections(data)
       }
     } catch (error) {
-      console.error('[CHAT] fetchConnections error:', error)
+      logger.error({ error }, '[CHAT] fetchConnections error:')
     }
   }, [])
 

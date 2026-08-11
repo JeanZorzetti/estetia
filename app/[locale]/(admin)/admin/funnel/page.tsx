@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { TrendingUp, DollarSign, Users, AlertCircle, Target, Sparkles, Filter, MousePointer, Activity } from 'lucide-react'
 import { RevenueSimulator } from '@/components/admin/revenue-simulator'
 import { Loader2 } from 'lucide-react'
+import logger from '@/lib/logger'
 
 export const metadata: Metadata = {
   title: 'Ultimate Funnel Command Center | Estetia Admin',
@@ -37,7 +38,7 @@ async function FunnelContent({ searchParams }: { searchParams: { from?: string; 
       endDate: searchParams.to,
     })
   } catch (e) {
-    console.error('Error fetching Funnel metrics:', e)
+    logger.error({ e }, 'Error fetching Funnel metrics:')
     error = e instanceof Error ? e.message : 'Failed to fetch Funnel data'
   }
 

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { Loader2, Zap, MessageSquare, Check } from 'lucide-react'
+import logger from '@/lib/logger'
 
 interface Addon {
   id: string
@@ -64,7 +65,7 @@ export default function AddonsPage() {
         setActiveAddons(await res.json())
       }
     } catch (error) {
-      console.error('Error fetching addons:', error)
+      logger.error({ error }, 'Error fetching addons:')
     } finally {
       setLoading(false)
     }

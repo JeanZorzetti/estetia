@@ -16,6 +16,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import logger from '@/lib/logger'
 
 // Lazy-init para evitar erros de build sem env var
 function getGroqClient() {
@@ -106,7 +107,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({ transcript: transcription.text ?? '' })
     } catch (err) {
-      console.error('[voice-command] transcribe error:', err)
+      logger.error({ err }, '[voice-command] transcribe error:')
       return NextResponse.json({ error: 'Erro na transcrição' }, { status: 500 })
     }
   }
@@ -152,7 +153,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ transcript, action })
   } catch (err) {
-    console.error('[voice-command] intent error:', err)
+    logger.error({ err }, '[voice-command] intent error:')
     return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

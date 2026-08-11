@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import logger from '@/lib/logger'
 
 interface User {
   id: string
@@ -38,7 +39,7 @@ export function ConversationFilters({ currentUserId, onFilterChange }: Conversat
           setUsers(data)
         }
       } catch (error) {
-        console.error('Error fetching users:', error)
+        logger.error({ error }, 'Error fetching users:')
       }
     }
     fetchUsers()

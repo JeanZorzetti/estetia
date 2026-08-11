@@ -37,6 +37,7 @@ import {
   ExternalLink,
   Sparkles
 } from 'lucide-react'
+import logger from '@/lib/logger'
 
 interface DemoSchedulerComponentProps extends DemoSchedulerProps {
   onInteraction?: (action: string, component: string, data: Record<string, unknown>) => void
@@ -108,7 +109,7 @@ export function DemoScheduler({
           }),
         })
       } catch (error) {
-        console.error('Error creating deal:', error)
+        logger.error({ error }, 'Error creating deal:')
       }
     }
 

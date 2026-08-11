@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import logger from '@/lib/logger'
 
 export default function IAError({
   error,
@@ -10,7 +11,7 @@ export default function IAError({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error('[IA Error Boundary]', error)
+    logger.error({ error }, '[IA Error Boundary]')
   }, [error])
 
   return (

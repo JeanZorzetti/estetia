@@ -24,6 +24,7 @@ import {
   getPaidOrganizations,
   toggleTestAccount,
 } from './actions'
+import logger from '@/lib/logger'
 
 export function AdminAnalyticsClient() {
   const [loading, setLoading] = useState(true)
@@ -68,7 +69,7 @@ export function AdminAnalyticsClient() {
           setPaidOrganizations(orgsResult.data || [])
         }
       } catch (error) {
-        console.error('Error fetching admin analytics data:', error)
+        logger.error({ error }, 'Error fetching admin analytics data:')
       } finally {
         setLoading(false)
       }
@@ -89,7 +90,7 @@ export function AdminAnalyticsClient() {
         window.location.reload()
       }
     } catch (error) {
-      console.error('Error toggling test account:', error)
+      logger.error({ error }, 'Error toggling test account:')
     } finally {
       setTogglingOrgId(null)
     }

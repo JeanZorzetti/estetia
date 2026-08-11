@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import logger from '@/lib/logger'
 
 interface PerfMonitorProps {
   pageLabel: string
@@ -37,7 +38,7 @@ export function PerfMonitor({ pageLabel, rowCount }: PerfMonitorProps) {
       : {}
 
     console.group(`%c[PERF-CLIENT] ${pageLabel} — ${rowCount} rows`, 'background: #4f46e5; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold')
-    console.log('Mount duration (since module load):', mountDuration.toFixed(1), 'ms')
+    logger.info({ data1: mountDuration.toFixed(1), data2: 'ms' }, 'Mount duration (since module load):')
     console.table(navTimings)
     console.groupEnd()
 
@@ -52,11 +53,7 @@ export function PerfMonitor({ pageLabel, rowCount }: PerfMonitorProps) {
             name: entry.name,
           })
           if (entry.duration > 100) {
-            console.warn(
-              `%c[PERF-CLIENT] ⚠ Long Task ${entry.duration.toFixed(0)}ms`,
-              'color: #ef4444; font-weight: bold',
-              `at ${entry.startTime.toFixed(0)}ms (name: ${entry.name})`
-            )
+            logger.warn({ data1: 'color: #ef4444; font-weight: bold', data2: `at ${entry.startTime.toFixed(0)}ms (name: ${entry.name})` }, `%c[PERF-CLIENT] ⚠ Long Task ${entry.duration.toFixed(0)}ms`)
           }
         }
       })
@@ -72,11 +69,7 @@ export function PerfMonitor({ pageLabel, rowCount }: PerfMonitorProps) {
         for (const entry of list.getEntries()) {
           const e = entry as PerformanceEntry & { interactionId?: number; processingStart?: number; processingEnd?: number }
           if (e.duration > 50) {
-            console.warn(
-              `%c[PERF-CLIENT] ⚠ Slow Interaction ${e.duration.toFixed(0)}ms`,
-              'color: #f59e0b; font-weight: bold',
-              { name: e.name, duration: e.duration, processingDelay: (e.processingStart ?? 0) - e.startTime }
-            )
+            logger.warn({ data1: 'color: #f59e0b; font-weight: bold', data2: { name: e.name, duration: e.duration, processingDelay: (e.processingStart ?? 0) - e.startTime } }, `%c[PERF-CLIENT] ⚠ Slow Interaction ${e.duration.toFixed(0)}ms`)
           }
         }
       })
@@ -90,9 +83,9 @@ export function PerfMonitor({ pageLabel, rowCount }: PerfMonitorProps) {
       ;(window as any).__perfReport = () => {
         const tasks = longTasksRef.current.slice().sort((a, b) => b.duration - a.duration)
         console.group(`%c[PERF-REPORT] ${pageLabel}`, 'background: #16a34a; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold')
-        console.log('Total long tasks:', tasks.length)
-        console.log('Sum of long tasks:', tasks.reduce((s, t) => s + t.duration, 0).toFixed(0), 'ms')
-        console.log('Top 10 longest tasks:')
+        logger.info({ length: tasks.length }, 'Total long tasks:')
+        logger.info({ data1: tasks.reduce((s, t) => s + t.duration, 0).toFixed(0), data2: 'ms' }, 'Sum of long tasks:')
+        logger.info('Top 10 longest tasks:')
         console.table(tasks.slice(0, 10).map(t => ({
           'duration(ms)': t.duration.toFixed(0),
           'startTime(ms)': t.startTime.toFixed(0),
@@ -101,7 +94,7 @@ export function PerfMonitor({ pageLabel, rowCount }: PerfMonitorProps) {
         console.groupEnd()
         return tasks
       }
-      console.log('%c[PERF] Run window.__perfReport() to see long task breakdown', 'color: #6366f1')
+      logger.info({ data: 'color: #6366f1' }, '%c[PERF] Run window.__perfReport() to see long task breakdown')
     }
 
     return () => {

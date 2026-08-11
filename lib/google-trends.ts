@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * Google Trends API Integration (Unofficial)
  *
@@ -114,7 +115,7 @@ export async function getInterestOverTime(
 
     return mockData
   } catch (error) {
-    console.error('Erro ao buscar interest over time:', error)
+    logger.error({ error }, 'Erro ao buscar interest over time:')
     return {
       error: error instanceof Error ? error.message : 'Erro desconhecido'
     }
@@ -138,7 +139,7 @@ export async function getRelatedQueries(
 
     return mockData
   } catch (error) {
-    console.error('Erro ao buscar related queries:', error)
+    logger.error({ error }, 'Erro ao buscar related queries:')
     return {
       error: error instanceof Error ? error.message : 'Erro desconhecido'
     }
@@ -158,7 +159,7 @@ export async function getTrendingSearches(
 
     return mockData
   } catch (error) {
-    console.error('Erro ao buscar trending searches:', error)
+    logger.error({ error }, 'Erro ao buscar trending searches:')
     return {
       error: error instanceof Error ? error.message : 'Erro desconhecido'
     }

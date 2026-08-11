@@ -9,6 +9,7 @@ import { prisma } from '@/lib/prisma'
 import { Decimal } from '@prisma/client/runtime/library'
 import { calculateLTV, calculateCAC, calculateChurnRate } from '@/lib/analytics/kpis'
 import { calculateRevenueForecasts } from '@/lib/analytics/forecasting'
+import logger from '@/lib/logger'
 
 /**
  * Cria snapshot diário de todos os deals de uma organização
@@ -132,7 +133,7 @@ export async function createDailyDealSnapshot(organizationId: string, date: Date
 
     return snapshot
   } catch (error) {
-    console.error(`Error creating deal snapshot for org ${organizationId}:`, error)
+    logger.error({ error }, `Error creating deal snapshot for org ${organizationId}:`)
     throw error
   }
 }
@@ -168,7 +169,7 @@ export async function createDailyDealSnapshotsForAllOrgs(date: Date = new Date()
       results,
     }
   } catch (error) {
-    console.error('Error creating daily snapshots for all orgs:', error)
+    logger.error({ error }, 'Error creating daily snapshots for all orgs:')
     throw error
   }
 }
@@ -268,7 +269,7 @@ export async function createMonthlyRevenueSnapshot(year: number, month: number) 
 
     return globalSnapshot
   } catch (error) {
-    console.error('Error creating monthly revenue snapshot:', error)
+    logger.error({ error }, 'Error creating monthly revenue snapshot:')
     throw error
   }
 }
@@ -300,7 +301,7 @@ export async function trackUserActivity(params: {
     return activity
   } catch (error) {
     // Não falhar a request principal se analytics falhar
-    console.error('Error tracking user activity:', error)
+    logger.error({ error }, 'Error tracking user activity:')
     return null
   }
 }
@@ -312,6 +313,6 @@ export async function trackUserActivity(params: {
 export function trackActivityAsync(params: Parameters<typeof trackUserActivity>[0]) {
   // Fire and forget - não espera retorno
   trackUserActivity(params).catch((error) => {
-    console.error('Failed to track activity async:', error)
+    logger.error({ error }, 'Failed to track activity async:')
   })
 }

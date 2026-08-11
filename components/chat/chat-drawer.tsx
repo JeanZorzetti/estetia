@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import { ConversationList } from './conversation-list'
 import { MessageArea } from './message-area'
 import { toast } from 'sonner'
+import logger from '@/lib/logger'
 
 interface Contact {
   id: string
@@ -73,7 +74,7 @@ export function ChatDrawer({ userId, userName, organizationId }: ChatDrawerProps
         setConnections(connectionsData)
       }
     } catch (error) {
-      console.error('Error fetching chat data:', error)
+      logger.error({ error }, 'Error fetching chat data:')
     }
   }, [])
 

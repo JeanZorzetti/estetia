@@ -12,6 +12,7 @@ import { QuickActions } from "@/components/dashboard/clinic/quick-actions"
 import { PendingAnamneses } from "@/components/dashboard/clinic/pending-anamneses"
 import { RecallSuggestions } from "@/components/dashboard/clinic/recall-suggestions"
 import { ClinicOnboardingChecklist } from "@/components/dashboard/clinic-onboarding-checklist"
+import logger from '@/lib/logger'
 
 export async function generateMetadata({
   params,
@@ -69,7 +70,7 @@ export default async function DashboardPage({
       })
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Erro desconhecido"
-      console.error("[DASHBOARD_PAGE] Falha ao buscar usuário:", message)
+      logger.error({ message }, "[DASHBOARD_PAGE] Falha ao buscar usuário:")
       return (
         <div className="p-8">
           <h1 className="text-xl font-bold text-red-600">Erro ao carregar Dashboard</h1>
@@ -323,7 +324,7 @@ export default async function DashboardPage({
       throw error
     }
     const message = error instanceof Error ? error.message : "Erro desconhecido"
-    console.error("[DASHBOARD_PAGE] Erro critico:", message)
+    logger.error({ message }, "[DASHBOARD_PAGE] Erro critico:")
     return (
       <div className="p-8">
         <h1 className="text-2xl font-bold text-red-600 mb-4">

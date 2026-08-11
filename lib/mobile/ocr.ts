@@ -8,6 +8,7 @@
  */
 
 import { isNativePlatform } from './platform'
+import logger from '@/lib/logger'
 
 export interface ParsedContact {
   name?: string
@@ -117,7 +118,7 @@ export async function scanBusinessCard(): Promise<ParsedContact | null> {
 
     return parseContactFromText(text)
   } catch (err) {
-    console.error('OCR scan failed:', err)
+    logger.error({ err }, 'OCR scan failed:')
     return null
   }
 }

@@ -8,6 +8,7 @@
 
 import { useState, useEffect } from 'react';
 import { Sparkles, TrendingUp, AlertCircle, CheckCircle2, Loader2, RefreshCw, X } from 'lucide-react';
+import logger from '@/lib/logger'
 
 interface Insight {
     id: string;
@@ -41,7 +42,7 @@ export function DealInsightsPanel({ dealId }: DealInsightsPanelProps) {
                 setInsights(data.insights || []);
             }
         } catch (err) {
-            console.error('Failed to load insights:', err);
+            logger.error({ err }, 'Failed to load insights:');
         }
     };
 
@@ -88,7 +89,7 @@ export function DealInsightsPanel({ dealId }: DealInsightsPanelProps) {
 
             setInsights(prev => prev.filter(i => i.id !== insightId));
         } catch (err) {
-            console.error('Failed to dismiss insight:', err);
+            logger.error({ err }, 'Failed to dismiss insight:');
         }
     };
 
@@ -106,7 +107,7 @@ export function DealInsightsPanel({ dealId }: DealInsightsPanelProps) {
 
             setInsights(prev => prev.filter(i => i.id !== insightId));
         } catch (err) {
-            console.error('Failed to apply insight:', err);
+            logger.error({ err }, 'Failed to apply insight:');
         }
     };
 

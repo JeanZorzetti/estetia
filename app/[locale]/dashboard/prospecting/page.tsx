@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Search, Loader2, Users, CreditCard, AlertTriangle, ExternalLink } from 'lucide-react'
 import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import logger from '@/lib/logger'
 
 interface ScrapingJob {
   id: string
@@ -44,7 +45,7 @@ export default function ProspectingPage() {
         setCredits(data)
       }
     } catch (error) {
-      console.error('Error fetching credits:', error)
+      logger.error({ error }, 'Error fetching credits:')
     }
   }
 
@@ -68,7 +69,7 @@ export default function ProspectingPage() {
         setJobs(data.jobs)
       }
     } catch (error) {
-      console.error('Error fetching jobs:', error)
+      logger.error({ error }, 'Error fetching jobs:')
     }
   }
 

@@ -2,6 +2,7 @@
 
 import { Share2, Linkedin, Link2 } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import logger from '@/lib/logger'
 
 interface ShareButtonsProps {
   title: string
@@ -24,7 +25,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
-      console.error('Failed to copy:', err)
+      logger.error({ err }, 'Failed to copy:')
     }
   }
 
@@ -33,7 +34,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
       try {
         await navigator.share({ title, text: `Confira: ${title}`, url })
       } catch (err) {
-        if ((err as Error).name !== 'AbortError') console.error('Error sharing:', err)
+        if ((err as Error).name !== 'AbortError') logger.error({ err }, 'Error sharing:')
       }
     }
   }

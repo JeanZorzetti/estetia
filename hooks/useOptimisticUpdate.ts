@@ -17,6 +17,7 @@ import {
     type OptimisticUpdate,
     type OptimisticUpdateOptions,
 } from '@/lib/generative-ui/optimistic-updates'
+import logger from '@/lib/logger'
 
 export interface UseOptimisticUpdateResult<TData> {
     /**
@@ -85,11 +86,11 @@ export interface UseOptimisticUpdateResult<TData> {
  *         {
  *           originalData: todos,
  *           onSuccess: () => setTodos(newTodos),
- *           onRollback: () => console.log('Todo creation failed, rolled back')
+ *           onRollback: () => logger.info('Todo creation failed, rolled back')
  *         }
  *       )
  *     } catch (error) {
- *       console.error('Failed to add todo:', error)
+ *       logger.error({ error }, 'Failed to add todo:')
  *     }
  *   }
  *   

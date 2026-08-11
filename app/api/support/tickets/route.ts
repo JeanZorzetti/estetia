@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getSupportUser } from '@/lib/support-auth'
 import { publishTicketEvent } from '@/lib/support-events'
 import { sendEmail } from '@/lib/email'
+import logger from '@/lib/logger'
 import NewTicketStaffEmail from '@/lib/email-templates/support/new-ticket-staff'
 
 const RATE_LIMIT_MAP = new Map<string, { count: number; resetAt: number }>()
@@ -116,7 +117,7 @@ export async function POST(request: NextRequest) {
     to: 'suporte@roilabs.com.br',
     subject: `[Novo Ticket #${ticket.id.slice(0, 8)}] ${subject}`,
     react: NewTicketStaffEmail({ ticket, userEmail: ctx.email }),
-  }).catch(console.error)
+  }).catch((err) => logger.error({ err }, '[support/tickets] new-ticket email failed'))
 
   return NextResponse.json({ ticket }, { status: 201 })
 }

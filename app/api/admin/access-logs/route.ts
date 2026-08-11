@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import logger from '@/lib/logger'
 
 // Adoption score: 0–100
 // - Sessions last N days:       35%  (capped at 60 sessions = 100%)
@@ -156,7 +157,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ organizations: result, days, since })
   } catch (error) {
-    console.error('access-logs error', error)
+    logger.error({ error }, 'access-logs error')
     return await apiError(ERR.INTERNAL_ERROR, 500)
   }
 }

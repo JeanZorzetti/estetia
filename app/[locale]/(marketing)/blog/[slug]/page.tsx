@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { setRequestLocale } from 'next-intl/server'
@@ -199,7 +200,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // This ensures all posts are eventually processed without manual intervention
   if (process.env.NODE_ENV === 'production' && process.env.ENABLE_AUTO_NLP === 'true') {
     processBlogPost(slug).catch((error) => {
-      console.error(`[Auto-NLP] Failed to process ${slug}:`, error)
+      logger.error({ error }, `[Auto-NLP] Failed to process ${slug}:`)
     })
   }
 

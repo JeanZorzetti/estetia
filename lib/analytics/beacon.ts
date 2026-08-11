@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * Beacon API: Garantindo a Captura de Dados na Saída
  *
@@ -37,7 +38,7 @@ export async function sendAnalyticsBeacon(
   data: BeaconPayload
 ): Promise<boolean> {
   if (typeof window === 'undefined') {
-    console.warn('[Beacon] Not available in server environment')
+    logger.warn('[Beacon] Not available in server environment')
     return false
   }
 
@@ -50,7 +51,7 @@ export async function sendAnalyticsBeacon(
       if (sent) {
         return true
       } else {
-        console.warn('[Beacon] sendBeacon failed, falling back to fetch')
+        logger.warn('[Beacon] sendBeacon failed, falling back to fetch')
       }
     }
 
@@ -67,11 +68,11 @@ export async function sendAnalyticsBeacon(
     if (response.ok) {
       return true
     } else {
-      console.error('[Beacon] Fetch failed:', response.status, response.statusText)
+      logger.error({ status: response.status, statusText: response.statusText }, '[Beacon] Fetch failed:')
       return false
     }
   } catch (error) {
-    console.error('[Beacon] Error sending analytics:', error)
+    logger.error({ error }, '[Beacon] Error sending analytics:')
     return false
   }
 }
@@ -166,7 +167,7 @@ export class BeaconEventQueue {
 
     const failed = results.filter((r) => r.status === 'rejected').length
     if (failed > 0) {
-      console.warn(`[BeaconQueue] ${failed} events failed to send`)
+      logger.warn(`[BeaconQueue] ${failed} events failed to send`)
     }
   }
 

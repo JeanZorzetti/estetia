@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { SegmentSchema } from '@/lib/marketing-campaigns/schema'
+import logger from '@/lib/logger'
 
 async function getOrgId() {
   const session = await getSession()
@@ -50,7 +51,7 @@ export async function POST(
 
   // TODO: Integrate real WhatsApp/Email sending engine here.
   // When ready, loop over patients and call WhatsApp Cloud API or Resend.
-  console.log(`[STUB] Enviaria ${totalDestinatarios} mensagens via ${campaign.canal} para campanha "${campaign.nome}"`)
+  logger.info(`[STUB] Enviaria ${totalDestinatarios} mensagens via ${campaign.canal} para campanha "${campaign.nome}"`)
 
   const updated = await prisma.marketingCampaign.update({
     where: { id },

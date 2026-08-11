@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DynamicUIComponent } from '@/components/generative-ui/DynamicUIComponent'
 import { validateLayout, type MultiComponentLayout } from '@/lib/generative-ui/layout-engine'
 import { cn } from '@/lib/utils'
+import logger from '@/lib/logger'
 
 export interface TabsLayoutProps {
     layout: MultiComponentLayout
@@ -116,7 +117,7 @@ class ErrorBoundary extends React.Component<
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-        console.error(`[TabsLayout] Component error in ${this.props.componentId}:`, error, errorInfo)
+        logger.error({ error, errorInfo }, `[TabsLayout] Component error in ${this.props.componentId}:`)
         this.props.onError?.(this.props.componentId, error)
     }
 

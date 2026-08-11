@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getSupportUser } from '@/lib/support-auth'
 import { publishTicketEvent } from '@/lib/support-events'
 import { sendEmail } from '@/lib/email'
+import logger from '@/lib/logger'
 import TicketResolvedEmail from '@/lib/email-templates/support/ticket-resolved'
 
 export async function GET(
@@ -121,7 +122,7 @@ export async function PATCH(
       to: ticket.createdByUser.email,
       subject: `Seu ticket foi resolvido`,
       react: TicketResolvedEmail({ ticket: updated, staffName: ctx.email }),
-    }).catch(console.error)
+    }).catch((err) => logger.error({ err }, '[support/tickets] resolved email failed'))
   }
 
   return NextResponse.json({ ticket: updated })

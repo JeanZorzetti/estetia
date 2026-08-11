@@ -7,6 +7,7 @@ import { AgentActionCard } from './agent-action-card'
 import { IASetupProgress } from './ia-setup-progress'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import logger from '@/lib/logger'
 
 interface Action {
   id: string
@@ -84,7 +85,7 @@ export function IAFeed({ actions: initialActions, stats, organizationId, enabled
         ))
       }
     } catch (err) {
-      console.error('Review failed:', err)
+      logger.error({ err }, 'Review failed:')
     }
   }, [])
 

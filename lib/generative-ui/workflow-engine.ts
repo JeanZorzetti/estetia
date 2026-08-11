@@ -5,6 +5,7 @@
  */
 
 import { z } from 'zod'
+import logger from '@/lib/logger'
 
 // ============================================================================
 // Types & Schemas
@@ -199,7 +200,7 @@ export class WorkflowEngine {
             try {
                 await currentStep.onComplete(stepData, state.data)
             } catch (error) {
-                console.error(`[WorkflowEngine] onComplete error for step ${currentStep.id}:`, error)
+                logger.error({ error }, `[WorkflowEngine] onComplete error for step ${currentStep.id}:`)
             }
         }
 
@@ -215,7 +216,7 @@ export class WorkflowEngine {
                 try {
                     await definition.onComplete(state.data)
                 } catch (error) {
-                    console.error(`[WorkflowEngine] onComplete error for workflow ${workflowId}:`, error)
+                    logger.error({ error }, `[WorkflowEngine] onComplete error for workflow ${workflowId}:`)
                 }
             }
         } else {
@@ -365,7 +366,7 @@ export class WorkflowEngine {
             const data = Array.from(this.states.entries())
             localStorage.setItem(this.storageKey, JSON.stringify(data))
         } catch (error) {
-            console.error('[WorkflowEngine] Failed to save to localStorage:', error)
+            logger.error({ error }, '[WorkflowEngine] Failed to save to localStorage:')
         }
     }
 
@@ -379,7 +380,7 @@ export class WorkflowEngine {
                 this.states = new Map(entries)
             }
         } catch (error) {
-            console.error('[WorkflowEngine] Failed to load from localStorage:', error)
+            logger.error({ error }, '[WorkflowEngine] Failed to load from localStorage:')
         }
     }
 }

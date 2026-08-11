@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, Home, RotateCcw } from 'lucide-react'
+import logger from '@/lib/logger'
 
 export default function Error({
   error,
@@ -13,7 +14,7 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error('Page error:', error)
+    logger.error({ error }, 'Page error:')
   }, [error])
 
   return (

@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * AI Traffic Detection & Tracking
  *
@@ -45,7 +46,7 @@ const AI_ENGINES_MAP: Record<string, AiEngine> = {
  * ```ts
  * const aiData = detectAiReferrer(document.referrer)
  * if (aiData) {
- *   console.log(`Tráfego vindo de ${aiData.engine}`)
+ *   logger.info(`Tráfego vindo de ${aiData.engine}`)
  * }
  * ```
  */
@@ -115,7 +116,7 @@ export function storeAiDetection(data: AiReferrerData): void {
     localStorage.setItem(storageKey, JSON.stringify(data))
     localStorage.setItem(expiryKey, expiryTime.toString())
   } catch (error) {
-    console.warn('Failed to store AI detection:', error)
+    logger.warn({ error }, 'Failed to store AI detection:')
   }
 }
 
@@ -143,7 +144,7 @@ export function getStoredAiDetection(): AiReferrerData | null {
 
     return JSON.parse(stored)
   } catch (error) {
-    console.warn('Failed to get stored AI detection:', error)
+    logger.warn({ error }, 'Failed to get stored AI detection:')
     return null
   }
 }
@@ -158,7 +159,7 @@ export function clearStoredAiDetection(): void {
     localStorage.removeItem('sirius_ai_referrer')
     localStorage.removeItem('sirius_ai_referrer_expiry')
   } catch (error) {
-    console.warn('Failed to clear AI detection:', error)
+    logger.warn({ error }, 'Failed to clear AI detection:')
   }
 }
 

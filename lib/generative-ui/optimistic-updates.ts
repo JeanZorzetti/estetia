@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * Optimistic Updates System for Generative UI
  * 
@@ -160,8 +161,8 @@ function sleep(ms: number): Promise<void> {
  *   },
  *   {
  *     originalData: items,
- *     onSuccess: (result) => console.log('Item created:', result),
- *     onError: (error) => console.error('Failed to create item:', error)
+ *     onSuccess: (result) => logger.info({ result }, 'Item created:'),
+ *     onError: (error) => logger.error({ error }, 'Failed to create item:')
  *   }
  * )
  * ```

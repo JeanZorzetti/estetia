@@ -4,6 +4,7 @@ import React from 'react'
 import { DynamicUIComponent } from '@/components/generative-ui/DynamicUIComponent'
 import { generateFlexClasses, validateLayout, type MultiComponentLayout } from '@/lib/generative-ui/layout-engine'
 import { cn } from '@/lib/utils'
+import logger from '@/lib/logger'
 
 export interface FlexLayoutProps {
     layout: MultiComponentLayout
@@ -88,7 +89,7 @@ class ErrorBoundary extends React.Component<
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-        console.error(`[FlexLayout] Component error in ${this.props.componentId}:`, error, errorInfo)
+        logger.error({ error, errorInfo }, `[FlexLayout] Component error in ${this.props.componentId}:`)
         this.props.onError?.(this.props.componentId, error)
     }
 

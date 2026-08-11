@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { chunkText } from '@/lib/rag/chunker'
 import { embedText } from '@/lib/rag/embeddings'
+import logger from '@/lib/logger'
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024 // 5 MB
 
@@ -117,7 +118,7 @@ export async function POST(request: NextRequest) {
   })
 
   // Embed chunks asynchronously — respond immediately
-  embedChunks(doc.id, content).catch(console.error)
+  embedChunks(doc.id, content).catch((err) => logger.error({ err }, '[knowledge] embedChunks failed'))
 
   return NextResponse.json({ document: { ...doc, _count: { chunks: 0 } } }, { status: 201 })
 }
@@ -142,7 +143,7 @@ async function embedChunks(documentId: string, content: string) {
         )
       `
     } catch (err) {
-      console.error(`[RAG] Failed to embed chunk ${i} for doc ${documentId}:`, err)
+      logger.error({ err }, `[RAG] Failed to embed chunk ${i} for doc ${documentId}:`)
     }
   }
 }

@@ -49,6 +49,7 @@ import { DealInsightsPanel, ScriptGenerator } from '@/components/agi'
 import { Wand2 } from 'lucide-react'
 import { ContactCombobox, ProductCombobox } from './deal-comboboxes'
 import { NoteItem, ActivityItem } from './deal-timeline-items'
+import logger from '@/lib/logger'
 
 type SimpleDeal = {
     id: string
@@ -144,7 +145,7 @@ export function EditDealDialog({
                 })
                 .catch((err) => {
                     if (!cancelled) {
-                        console.error("Failed to fetch deal details:", err)
+                        logger.error({ err }, "Failed to fetch deal details:")
                         alert("Deal não encontrado ou você não tem permissão para acessá-lo.")
                         onOpenChange(false)
                     }
@@ -261,7 +262,7 @@ export function EditDealDialog({
                 }
             }
         } catch (error) {
-            console.error('Error updating deal:', error)
+            logger.error({ error }, 'Error updating deal:')
             alert("Erro ao atualizar negócio")
 
             // Sync to get correct data
@@ -302,7 +303,7 @@ export function EditDealDialog({
                 }
             }
         } catch (error) {
-            console.error('Error deleting deal:', error)
+            logger.error({ error }, 'Error deleting deal:')
             alert("Erro ao excluir negócio")
 
             // Sync to restore deal
@@ -322,7 +323,7 @@ export function EditDealDialog({
                 const fresh = await getDealDetails(initialDeal.id)
                 setFullDeal(fresh)
             } catch (err) {
-                console.error("Failed to add note:", err)
+                logger.error({ err }, "Failed to add note:")
                 alert("Erro ao adicionar observação. O deal pode não existir mais.")
             }
         })

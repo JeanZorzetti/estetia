@@ -5,6 +5,7 @@
  */
 
 import { trackOfflineSync } from './pwa-analytics'
+import logger from '@/lib/logger'
 
 interface QueuedAction {
   id: string
@@ -72,7 +73,7 @@ export async function queueAction(
       // Register background sync if available
       if ('serviceWorker' in navigator && 'sync' in ServiceWorkerRegistration.prototype) {
         navigator.serviceWorker.ready.then((registration: any) => {
-          registration.sync.register('sync-offline-actions').catch(console.error)
+          registration.sync.register('sync-offline-actions').catch((err: unknown) => logger.error({ err }, '[offline-queue] sync registration failed'))
         })
       }
 

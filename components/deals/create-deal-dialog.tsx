@@ -27,6 +27,7 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 import { createDeal } from '@/app/[locale]/dashboard/actions'
+import logger from '@/lib/logger'
 
 type Stage = {
     id: string
@@ -191,7 +192,7 @@ export function CreateDealDialog({
                 }
             }
         } catch (error) {
-            console.error('Error creating deal:', error)
+            logger.error({ error }, 'Error creating deal:')
 
             // Rollback on error
             if (onRollback) {

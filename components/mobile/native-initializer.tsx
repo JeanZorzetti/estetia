@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
+import logger from '@/lib/logger'
 
 function isBusinessHours(): boolean {
   const now = new Date()
@@ -78,7 +79,7 @@ export function NativeInitializer() {
           const { syncOfflineQueue } = await import('@/lib/mobile/offline')
           const { synced, failed } = await syncOfflineQueue()
           if (synced > 0) {
-            console.log(`[Offline sync] ${synced} synced${failed > 0 ? `, ${failed} failed` : ''}`)
+            logger.info(`[Offline sync] ${synced} synced${failed > 0 ? `, ${failed} failed` : ''}`)
           }
         } catch {}
       }

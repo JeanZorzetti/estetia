@@ -31,6 +31,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { useTranslations } from 'next-intl'
+import logger from '@/lib/logger'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -66,14 +67,7 @@ export function DataTable<TData extends { id: string }, TValue>({
 
   const tableInitRef = useRef(performance.now())
   useEffect(() => {
-    console.log(
-      `%c[PERF-CLIENT] DataTable mounted`,
-      'color: #4f46e5; font-weight: bold',
-      `\n  rows: ${data.length}`,
-      `\n  columns: ${columns.length}`,
-      `\n  init→mount: ${(performance.now() - tableInitRef.current).toFixed(1)}ms`,
-      `\n  virtualized: ${data.length >= VIRTUALIZE_THRESHOLD}`
-    )
+    logger.info({ data1: 'color: #4f46e5; font-weight: bold', data2: `\n  rows: ${data.length}`, data3: `\n  columns: ${columns.length}`, data4: `\n  init→mount: ${(performance.now() - tableInitRef.current).toFixed(1)}ms`, data5: `\n  virtualized: ${data.length >= VIRTUALIZE_THRESHOLD}` }, `%c[PERF-CLIENT] DataTable mounted`)
   }, [])
 
   const table = useReactTable({

@@ -17,6 +17,7 @@
  */
 
 import { isNativePlatform } from './platform'
+import logger from '@/lib/logger'
 
 export type OfflineActionType =
   | 'CREATE_DEAL'
@@ -172,7 +173,7 @@ export async function syncOfflineQueue(): Promise<{
 
     const endpoint = resolveEndpoint(action)
     if (!endpoint) {
-      console.warn('[offline] unknown action type, dropping:', action.type)
+      logger.warn({ type: action.type }, '[offline] unknown action type, dropping:')
       dropped++
       continue
     }
@@ -189,10 +190,7 @@ export async function syncOfflineQueue(): Promise<{
       } else {
         // 4xx (exceto 429) é erro do cliente — não adianta retry
         if (res.status >= 400 && res.status < 500 && res.status !== 429) {
-          console.warn(
-            `[offline] action ${action.type} got ${res.status}, dropping:`,
-            await res.text().catch(() => ''),
-          )
+          logger.warn({ data: await res.text().catch(() => '') }, `[offline] action ${action.type} got ${res.status}, dropping:`)
           dropped++
         } else {
           failed++
@@ -209,7 +207,7 @@ export async function syncOfflineQueue(): Promise<{
   const finalQueue: OfflineAction[] = []
   for (const action of remaining) {
     if (action.attempts >= MAX_ATTEMPTS) {
-      console.warn('[offline] action exceeded max attempts, dropping:', action.type, action.id)
+      logger.warn({ type: action.type, id: action.id }, '[offline] action exceeded max attempts, dropping:')
       dropped++
     } else {
       finalQueue.push(action)

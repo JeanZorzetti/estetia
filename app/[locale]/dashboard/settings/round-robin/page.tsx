@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { toast } from 'sonner'
 import { Loader2, Users, RotateCw, Building2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import logger from '@/lib/logger'
 
 interface User {
   id: string
@@ -63,7 +64,7 @@ export default function RoundRobinSettingsPage() {
         setIsBusiness(entitlements.tier === 'BUSINESS')
       }
     } catch (error) {
-      console.error('Error fetching data:', error)
+      logger.error({ error }, 'Error fetching data:')
     } finally {
       setLoading(false)
     }

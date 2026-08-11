@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Loader2, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
+import logger from '@/lib/logger'
 
 interface QuickReply {
   id: string
@@ -54,7 +55,7 @@ export function QuickReplyPicker({
           setQuickReplies(data)
         }
       } catch (error) {
-        console.error('Error fetching quick replies:', error)
+        logger.error({ error }, 'Error fetching quick replies:')
       } finally {
         setLoading(false)
       }

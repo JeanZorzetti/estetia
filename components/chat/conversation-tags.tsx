@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useTranslations } from 'next-intl'
+import logger from '@/lib/logger'
 
 interface Tag {
   id: string
@@ -70,7 +71,7 @@ export function ConversationTags({ contactId, contactTags, onTagsUpdate }: Conve
         }
       }
     } catch (error) {
-      console.error('Error fetching tags:', error)
+      logger.error({ error }, 'Error fetching tags:')
     }
   }
 
@@ -88,7 +89,7 @@ export function ConversationTags({ contactId, contactTags, onTagsUpdate }: Conve
       )
       setAllTags(createdTags)
     } catch (error) {
-      console.error('Error creating default tags:', error)
+      logger.error({ error }, 'Error creating default tags:')
     }
   }
 

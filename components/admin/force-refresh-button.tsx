@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react'
 import { forceRefreshFunnel } from '@/app/[locale]/(admin)/admin/funnel/actions'
 import { useRouter } from 'next/navigation'
+import logger from '@/lib/logger'
 
 export function ForceRefreshButton() {
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -16,7 +17,7 @@ export function ForceRefreshButton() {
       await forceRefreshFunnel()
       router.refresh()
     } catch (error) {
-      console.error('Error refreshing funnel:', error)
+      logger.error({ error }, 'Error refreshing funnel:')
     } finally {
       setIsRefreshing(false)
     }

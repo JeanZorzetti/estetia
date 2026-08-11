@@ -8,6 +8,7 @@ import {
   setupNetworkListeners,
   processOfflineQueue,
 } from '@/lib/offline-queue'
+import logger from '@/lib/logger'
 
 export function OfflineStatus() {
   const [online, setOnline] = useState(true)
@@ -46,7 +47,7 @@ export function OfflineStatus() {
       const stats = await getQueueStats()
       setQueueStats(stats)
     } catch (error) {
-      console.error('Failed to get queue stats:', error)
+      logger.error({ error }, 'Failed to get queue stats:')
     }
   }
 
@@ -56,7 +57,7 @@ export function OfflineStatus() {
       await processOfflineQueue()
       await updateQueueStats()
     } catch (error) {
-      console.error('Failed to sync:', error)
+      logger.error({ error }, 'Failed to sync:')
     } finally {
       setIsSyncing(false)
     }

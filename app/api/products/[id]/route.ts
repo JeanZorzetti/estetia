@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import logger from '@/lib/logger'
 
 const updateSchema = z.object({
   name: z.string().min(1).optional(),
@@ -47,7 +48,7 @@ export async function PATCH(
 
     return NextResponse.json(product)
   } catch (error: any) {
-    console.error('[PRODUCTS_PATCH]', error?.message || error)
+    logger.error({ data: error?.message || error }, '[PRODUCTS_PATCH]')
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: (error as any).errors?.[0]?.message ?? 'Dados inválidos' }, { status: 400 })
     }
@@ -69,7 +70,7 @@ export async function DELETE(
     await prisma.product.delete({ where: { id, organizationId } })
     return NextResponse.json({ success: true })
   } catch (error: any) {
-    console.error('[PRODUCTS_DELETE]', error?.message || error)
+    logger.error({ data: error?.message || error }, '[PRODUCTS_DELETE]')
     return NextResponse.json({ error: error?.message || 'Erro interno' }, { status: 500 })
   }
 }

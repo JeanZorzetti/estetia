@@ -15,6 +15,7 @@ import { AlertCircle, RefreshCw, ChevronDown, Bug } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
+import logger from '@/lib/logger'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -57,7 +58,7 @@ export class GenUIErrorBoundary extends Component<ErrorBoundaryProps, ErrorBound
     const { componentName, onError } = this.props
 
     // Log error
-    console.error(`[GenUIErrorBoundary] Error in ${componentName || 'unknown'}:`, error, errorInfo)
+    logger.error({ error, errorInfo }, `[GenUIErrorBoundary] Error in ${componentName || 'unknown'}:`)
 
     // Update state with error info
     this.setState({ errorInfo })

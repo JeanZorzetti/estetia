@@ -12,6 +12,7 @@
  */
 
 import { google } from 'googleapis'
+import logger from '@/lib/logger'
 
 // ============================================================================
 // TYPES
@@ -215,7 +216,7 @@ export async function inspectURL(
     return inspection
 
   } catch (error) {
-    console.error('Error inspecting URL:', error)
+    logger.error({ error }, 'Error inspecting URL:')
     return {
       error: error instanceof Error ? error.message : 'Unknown error during URL inspection',
     }

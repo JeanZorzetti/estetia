@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 ﻿/**
  * Chrome UX Report (CrUX) API Integration
  *
@@ -268,7 +269,7 @@ export async function getCrUXMetrics(
       fetchedAt: new Date().toISOString(),
     }
   } catch (error) {
-    console.error('Erro ao buscar CrUX Report:', error)
+    logger.error({ error }, 'Erro ao buscar CrUX Report:')
     return {
       error: error instanceof Error ? error.message : 'Erro desconhecido ao buscar CrUX',
     }

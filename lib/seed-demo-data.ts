@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { addDays, subDays } from 'date-fns'
+import logger from '@/lib/logger'
 
 /**
  * Seeds demo data for a new user to showcase CRM functionality
@@ -249,7 +250,7 @@ export async function seedDemoData(userId: string, organizationId: string) {
       }
     }
   } catch (error) {
-    console.error('Error seeding demo data:', error)
+    logger.error({ error }, 'Error seeding demo data:')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -281,7 +282,7 @@ export async function clearDemoData(userId: string, organizationId: string) {
 
     return { success: true }
   } catch (error) {
-    console.error('Error clearing demo data:', error)
+    logger.error({ error }, 'Error clearing demo data:')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

@@ -6,6 +6,7 @@
  */
 
 import { lazy, ComponentType } from 'react'
+import logger from '@/lib/logger'
 
 /**
  * Type for lazy loader functions
@@ -90,7 +91,7 @@ export function getLazyComponent(name: string): ComponentType<any> | null {
 
   const loader = componentLoaders[name]
   if (!loader) {
-    console.warn(`[LazyComponents] No loader found for component: ${name}`)
+    logger.warn(`[LazyComponents] No loader found for component: ${name}`)
     return null
   }
 
@@ -110,14 +111,14 @@ export function getLazyComponent(name: string): ComponentType<any> | null {
 export async function preloadComponent(name: string): Promise<void> {
   const loader = componentLoaders[name]
   if (!loader) {
-    console.warn(`[LazyComponents] Cannot preload unknown component: ${name}`)
+    logger.warn(`[LazyComponents] Cannot preload unknown component: ${name}`)
     return
   }
 
   try {
     await loader()
   } catch (error) {
-    console.error(`[LazyComponents] Failed to preload ${name}:`, error)
+    logger.error({ error }, `[LazyComponents] Failed to preload ${name}:`)
   }
 }
 

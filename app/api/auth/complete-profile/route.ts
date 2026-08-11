@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import logger from '@/lib/logger'
 
 async function enrollAsLead({ name, email, phone, companyName, jobTitle, segment }: {
   name: string, email: string, phone: string | null, companyName: string | null, jobTitle: string | null, segment: string | null
@@ -138,7 +139,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true })
   } catch (error: any) {
-    console.error('[complete-profile] Error:', error)
+    logger.error({ error }, '[complete-profile] Error:')
     return await apiError(ERR.INTERNAL_ERROR, 500, { req })
   }
 }

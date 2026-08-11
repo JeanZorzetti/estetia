@@ -33,6 +33,7 @@ import {
   Eye,
   Code
 } from 'lucide-react'
+import logger from '@/lib/logger'
 
 interface EmailPreviewComponentProps extends EmailPreviewProps {
   onInteraction?: (action: string, component: string, data: Record<string, unknown>) => void
@@ -73,7 +74,7 @@ export function EmailPreview({
       onInteraction?.('email_copied', 'EmailPreview', {})
       setTimeout(() => setCopied(false), 2000)
     } catch (error) {
-      console.error('Failed to copy:', error)
+      logger.error({ error }, 'Failed to copy:')
     }
   }, [processedSubject, processedBody, onInteraction])
 

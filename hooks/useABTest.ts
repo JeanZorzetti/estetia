@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import type { Variant } from '@/lib/generative-ui/ab-testing'
+import logger from '@/lib/logger'
 
 export interface UseABTestOptions {
     /** Auto-track impression on mount (default: true) */
@@ -155,7 +156,7 @@ export function useABTest(
                 }),
             })
         } catch (err) {
-            console.error('[useABTest] Failed to track impression:', err)
+            logger.error({ err }, '[useABTest] Failed to track impression:')
         }
     }, [variant, experimentId, userId])
 
@@ -177,7 +178,7 @@ export function useABTest(
                     }),
                 })
             } catch (err) {
-                console.error('[useABTest] Failed to track interaction:', err)
+                logger.error({ err }, '[useABTest] Failed to track interaction:')
             }
         },
         [variant, experimentId, userId]
@@ -201,7 +202,7 @@ export function useABTest(
                     }),
                 })
             } catch (err) {
-                console.error('[useABTest] Failed to track conversion:', err)
+                logger.error({ err }, '[useABTest] Failed to track conversion:')
             }
         },
         [variant, experimentId, userId]

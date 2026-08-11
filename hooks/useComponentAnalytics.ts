@@ -6,6 +6,7 @@
  */
 
 import { useCallback, useEffect, useRef } from 'react'
+import logger from '@/lib/logger'
 
 interface AnalyticsContext {
   component: string
@@ -121,10 +122,10 @@ export function useComponentAnalytics(context: AnalyticsContext): ComponentAnaly
 
       // Log in development
       if (process.env.NODE_ENV === 'development') {
-        console.log('[Analytics] Component rendered:', {
+        logger.info({ data: {
           ...context,
           ...event,
-        })
+        } }, '[Analytics] Component rendered:')
       }
     },
     [context]
@@ -149,10 +150,10 @@ export function useComponentAnalytics(context: AnalyticsContext): ComponentAnaly
 
       // Log in development
       if (process.env.NODE_ENV === 'development') {
-        console.log('[Analytics] Interaction:', {
+        logger.info({ data: {
           ...context,
           ...event,
-        })
+        } }, '[Analytics] Interaction:')
       }
     },
     [context]
@@ -175,10 +176,10 @@ export function useComponentAnalytics(context: AnalyticsContext): ComponentAnaly
 
       // Log in development
       if (process.env.NODE_ENV === 'development') {
-        console.log('[Analytics] Conversion:', {
+        logger.info({ data: {
           ...context,
           ...event,
-        })
+        } }, '[Analytics] Conversion:')
       }
     },
     [context]
@@ -216,11 +217,11 @@ export function useComponentAnalytics(context: AnalyticsContext): ComponentAnaly
 
       // Log in development
       if (process.env.NODE_ENV === 'development') {
-        console.error('[Analytics] Error:', {
+        logger.error({ data: {
           ...context,
           error: error.message,
           ...additionalContext,
-        })
+        } }, '[Analytics] Error:')
       }
     },
     [context]

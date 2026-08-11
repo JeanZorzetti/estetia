@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { analytics } from '@/lib/posthog'
 import { ImportContactsModal } from '@/components/onboarding/import-contacts-modal'
+import logger from '@/lib/logger'
 
 interface WelcomeModalProps {
   open: boolean
@@ -85,7 +86,7 @@ export function WelcomeModal({ open, onClose, userName }: WelcomeModalProps) {
         window.location.href = '/dashboard'
       }
     } catch (error) {
-      console.error('Error handling choice:', error)
+      logger.error({ error }, 'Error handling choice:')
       toast.error('Erro ao processar sua escolha', {
         description: 'Por favor, tente novamente.'
       })

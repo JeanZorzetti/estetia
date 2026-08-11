@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import logger from '@/lib/logger'
 
 export async function GET(request: NextRequest) {
   try {
@@ -93,7 +94,7 @@ export async function GET(request: NextRequest) {
       tasks,
     })
   } catch (error) {
-    console.error('[search/global] error:', error)
+    logger.error({ error }, '[search/global] error:')
     return NextResponse.json({ contacts: [], deals: [], conversations: [], tasks: [] })
   }
 }

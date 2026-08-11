@@ -104,7 +104,7 @@ export async function createContact(formData: FormData) {
             }
         }
     } catch (error: any) {
-        console.error('[CREATE_CONTACT] Error:', error?.message, error?.stack)
+        logger.error({ data1: error?.message, data2: error?.stack }, '[CREATE_CONTACT] Error:')
         logger.error({ err: error }, 'Failed to create contact')
         return { success: false, error: `Failed to create contact: ${error?.message || 'Unknown error'}` }
     }
@@ -193,7 +193,7 @@ export async function updateContact(contactId: string, formData: FormData) {
 
         return { success: true }
     } catch (error: any) {
-        console.error('[UPDATE_CONTACT] Error:', error?.message, error?.stack)
+        logger.error({ data1: error?.message, data2: error?.stack }, '[UPDATE_CONTACT] Error:')
         logger.error({ err: error }, 'Failed to update contact')
         return { success: false, error: `Falha ao atualizar contato: ${error?.message || 'Erro desconhecido'}` }
     }
@@ -234,7 +234,7 @@ export async function bulkDeleteContacts(contactIds: string[]) {
 
         return { success: true, deleted: contacts.length }
     } catch (error: any) {
-        console.error('[BULK_DELETE_CONTACTS] Error:', error?.message)
+        logger.error({ data: error?.message }, '[BULK_DELETE_CONTACTS] Error:')
         return { success: false, error: `Falha ao excluir contatos: ${error?.message || 'Erro desconhecido'}` }
     }
 }
@@ -289,7 +289,7 @@ export async function deleteContact(contactId: string) {
 
         return { success: true }
     } catch (error: any) {
-        console.error('[DELETE_CONTACT] Error:', error?.message, error?.stack)
+        logger.error({ data1: error?.message, data2: error?.stack }, '[DELETE_CONTACT] Error:')
         logger.error({ err: error }, 'Failed to delete contact')
         return { success: false, error: `Falha ao excluir contato: ${error?.message || 'Erro desconhecido'}` }
     }

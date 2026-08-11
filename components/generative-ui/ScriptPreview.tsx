@@ -31,6 +31,7 @@ import {
   Presentation,
   Shield
 } from 'lucide-react'
+import logger from '@/lib/logger'
 
 interface ScriptPreviewComponentProps extends ScriptPreviewProps {
   onInteraction?: (action: string, component: string, data: Record<string, unknown>) => void
@@ -66,7 +67,7 @@ export function ScriptPreview({
       onInteraction?.('script_copied', 'ScriptPreview', { scriptType })
       setTimeout(() => setCopied(false), 2000)
     } catch (error) {
-      console.error('Failed to copy:', error)
+      logger.error({ error }, 'Failed to copy:')
     }
   }, [editedContent, scriptType, onInteraction])
 

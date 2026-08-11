@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { getSupportUser } from '@/lib/support-auth'
 import { publishTicketEvent } from '@/lib/support-events'
 import { sendEmail } from '@/lib/email'
+import logger from '@/lib/logger'
 import NewMessageUserEmail from '@/lib/email-templates/support/new-message-user'
 import NewMessageStaffEmail from '@/lib/email-templates/support/new-message-staff'
 
@@ -118,7 +119,7 @@ export async function POST(
           ticket,
           message: { content, authorName: ctx.email },
         }),
-      }).catch(console.error)
+      }).catch((err) => logger.error({ err }, '[support/tickets] new-message user email failed'))
     } else {
       // Notify staff (assigned or default)
       const staffEmail = ticket.assignedStaff?.email || 'suporte@roilabs.com.br'
@@ -129,13 +130,13 @@ export async function POST(
           ticket,
           message: { content, authorName: ticket.createdByUser.name || ticket.createdByUser.email },
         }),
-      }).catch(console.error)
+      }).catch((err) => logger.error({ err }, '[support/tickets] new-message staff email failed'))
     }
 
     prisma.supportTicket.update({
       where: { id },
       data: { lastEmailSentAt: new Date() },
-    }).catch(console.error)
+    }).catch((err) => logger.error({ err }, '[support/tickets] lastEmailSentAt update failed'))
   }
 
   return NextResponse.json({ message }, { status: 201 })

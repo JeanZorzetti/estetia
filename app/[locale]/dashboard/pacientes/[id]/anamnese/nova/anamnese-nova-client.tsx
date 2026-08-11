@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AnamnesisFormBuilder, type AnamnesisTemplate } from '@/components/anamnese/form-builder'
+import logger from '@/lib/logger'
 
 interface Props {
   patientId: string
@@ -32,7 +33,7 @@ export function AnamnesesNovaClient({ patientId, template, templateHash }: Props
       router.push(`/dashboard/pacientes/${patientId}/anamnese`)
       router.refresh()
     } catch (err) {
-      console.error(err)
+      logger.error({ err }, 'Erro ao salvar anamnese')
       alert('Erro ao salvar anamnese. Tente novamente.')
     } finally {
       setLoading(false)

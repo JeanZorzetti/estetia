@@ -23,6 +23,7 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { Plus, Loader2, Check, AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import logger from '@/lib/logger'
 
 interface Organization {
   id: string
@@ -66,7 +67,7 @@ export function CreateUserModal() {
         setOrganizations(data.organizations || [])
       }
     } catch (err) {
-      console.error('Error fetching organizations:', err)
+      logger.error({ err }, 'Error fetching organizations:')
     } finally {
       setLoadingOrgs(false)
     }

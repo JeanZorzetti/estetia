@@ -213,7 +213,7 @@ export async function extractEntities(
     return result
   } catch (error) {
     const processingTime = Date.now() - startTime
-    console.error('[NLP] Entity extraction failed:', error)
+    logger.error({ error }, '[NLP] Entity extraction failed:')
 
     // Return empty result on error
     return {

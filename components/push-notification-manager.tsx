@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Bell, BellOff, X } from 'lucide-react'
 import { trackPushPermission } from '@/lib/pwa-analytics'
+import logger from '@/lib/logger'
 
 export function PushNotificationManager() {
   const tCommon = useTranslations('common')
@@ -49,7 +50,7 @@ export function PushNotificationManager() {
       const subscription = await registration.pushManager.getSubscription()
       setIsSubscribed(!!subscription)
     } catch (error) {
-      console.error('Error checking push subscription:', error)
+      logger.error({ error }, 'Error checking push subscription:')
     }
   }
 
@@ -115,7 +116,7 @@ export function PushNotificationManager() {
       // Send test notification
       await fetch('/api/push/test', { method: 'POST' })
     } catch (error) {
-      console.error('Error subscribing to push notifications:', error)
+      logger.error({ error }, 'Error subscribing to push notifications:')
       alert('Erro ao ativar notificações. Tente novamente.')
     } finally {
       setIsLoading(false)
@@ -151,7 +152,7 @@ export function PushNotificationManager() {
 
       setIsSubscribed(false)
     } catch (error) {
-      console.error('Error unsubscribing from push notifications:', error)
+      logger.error({ error }, 'Error unsubscribing from push notifications:')
       alert('Erro ao desativar notificações. Tente novamente.')
     } finally {
       setIsLoading(false)
@@ -258,7 +259,7 @@ export function PushNotificationSettings() {
       const subscription = await registration.pushManager.getSubscription()
       setIsSubscribed(!!subscription)
     } catch (error) {
-      console.error('Error checking push subscription:', error)
+      logger.error({ error }, 'Error checking push subscription:')
     }
   }
 
@@ -325,7 +326,7 @@ export function PushNotificationSettings() {
       // Send test notification
       await fetch('/api/push/test', { method: 'POST' })
     } catch (error) {
-      console.error('Error subscribing to push notifications:', error)
+      logger.error({ error }, 'Error subscribing to push notifications:')
       alert('Erro ao ativar notificações. Tente novamente.')
     } finally {
       setIsLoading(false)
@@ -359,7 +360,7 @@ export function PushNotificationSettings() {
 
       setIsSubscribed(false)
     } catch (error) {
-      console.error('Error unsubscribing from push notifications:', error)
+      logger.error({ error }, 'Error unsubscribing from push notifications:')
       alert('Erro ao desativar notificações. Tente novamente.')
     } finally {
       setIsLoading(false)

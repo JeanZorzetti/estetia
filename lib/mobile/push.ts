@@ -19,6 +19,7 @@
  */
 
 import { isNativePlatform } from './platform'
+import logger from '@/lib/logger'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tipos
@@ -214,12 +215,12 @@ export async function registerPushNotifications(): Promise<void> {
       })
 
       PushNotifications.addListener('registrationError', (err) => {
-        console.error('Push registration error:', err)
+        logger.error({ err }, 'Push registration error:')
       })
 
       PushNotifications.addListener('pushNotificationReceived', (notification) => {
         // Foreground delivery — poderia exibir um toast in-app aqui
-        console.log('[push] received in foreground:', notification.title)
+        logger.info({ title: notification.title }, '[push] received in foreground:')
       })
 
       PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
@@ -236,6 +237,6 @@ export async function registerPushNotifications(): Promise<void> {
       await saveTokenToServer('web-push-' + Date.now(), 'WEB')
     }
   } catch (err) {
-    console.error('Push notification setup failed:', err)
+    logger.error({ err }, 'Push notification setup failed:')
   }
 }

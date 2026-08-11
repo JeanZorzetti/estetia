@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * Facebook / Meta Ads API Client
  *
@@ -51,7 +52,7 @@ export async function fetchFacebookAdsCampaigns(
     )
 
     if (!res.ok) {
-      console.error('[FacebookAds] API error:', await res.text())
+      logger.error({ data: await res.text() }, '[FacebookAds] API error:')
       return []
     }
 
@@ -75,7 +76,7 @@ export async function fetchFacebookAdsCampaigns(
       }
     })
   } catch (err) {
-    console.error('[FacebookAds] Unexpected error:', err)
+    logger.error({ err }, '[FacebookAds] Unexpected error:')
     return []
   }
 }

@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import logger from '@/lib/logger'
 
 const productSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -41,7 +42,7 @@ export async function GET() {
 
     return NextResponse.json(products)
   } catch (error: any) {
-    console.error('[PRODUCTS_GET]', error?.message || error)
+    logger.error({ data: error?.message || error }, '[PRODUCTS_GET]')
     return await apiError(ERR.FAILED_FETCH, 500)
   }
 }
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(product, { status: 201 })
   } catch (error: any) {
-    console.error('[PRODUCTS_POST]', error?.message || error)
+    logger.error({ data: error?.message || error }, '[PRODUCTS_POST]')
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: (error as any).errors?.[0]?.message ?? 'Dados inválidos' }, { status: 400 })
     }

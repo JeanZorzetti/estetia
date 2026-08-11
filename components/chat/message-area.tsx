@@ -34,6 +34,7 @@ import {
   getBubblePos, bubbleRadius, getMediaTypeFromText, getMediaCaption, isMediaLoaded,
 } from './message-helpers'
 import { MediaBubble } from './media-bubble'
+import logger from '@/lib/logger'
 
 interface MessageAreaProps {
   contact: Contact; connections: Connection[]
@@ -177,7 +178,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
         setContactData(data)
       }
     } catch (error) {
-      console.error('Error fetching contact data:', error)
+      logger.error({ error }, 'Error fetching contact data:')
     }
   }, [contact.id])
 
@@ -206,7 +207,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           setUsers(data)
         }
       } catch (error) {
-        console.error('Error fetching users:', error)
+        logger.error({ error }, 'Error fetching users:')
       }
     }
     fetchUsers()
@@ -236,7 +237,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
           body: JSON.stringify({ contactId: contact.id }),
         })
       } catch (error) {
-        console.error('Error marking messages as read:', error)
+        logger.error({ error }, 'Error marking messages as read:')
       }
     }
     markAsRead()
@@ -309,7 +310,7 @@ export function MessageArea({ contact, connections, organizationId, userId, user
       fetchMsgs()
       setShowReactionBar(null)
     } catch (error) {
-      console.error('Error reacting:', error)
+      logger.error({ error }, 'Error reacting:')
       toast.error('Erro ao reagir à mensagem')
     }
   }

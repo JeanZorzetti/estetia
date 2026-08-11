@@ -8,6 +8,7 @@
 
 import { useState } from 'react';
 import { X, Wand2, Loader2, Copy, Check } from 'lucide-react';
+import logger from '@/lib/logger'
 
 type ScriptType = 'cold_call' | 'cold_email' | 'follow_up' | 'demo_pitch' | 'objection_handling';
 
@@ -91,7 +92,7 @@ export function ScriptGenerator({ isOpen, onClose, dealId }: ScriptGeneratorProp
             const data = await res.json();
             setGeneratedScript(data.script);
         } catch (error) {
-            console.error('Script generation error:', error);
+            logger.error({ error }, 'Script generation error:');
             setGeneratedScript(
                 `❌ Erro ao gerar script: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             );

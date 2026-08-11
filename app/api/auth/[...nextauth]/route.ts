@@ -27,6 +27,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
+import logger from '@/lib/logger'
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -79,7 +80,7 @@ export const authOptions: NextAuthOptions = {
             return token
         },
         async redirect({ url, baseUrl }) {
-            console.log('[nextauth] redirect callback:', { url, baseUrl })
+            logger.info({ data: { url, baseUrl } }, '[nextauth] redirect callback:')
             // After Google OAuth, always go to bridge that creates custom JWT
             if (url.includes('/api/auth/google-session')) return url
             if (url.startsWith('/')) return `${baseUrl}/api/auth/google-session`

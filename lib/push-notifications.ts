@@ -1,5 +1,6 @@
 import webpush from 'web-push'
 import { prisma } from '@/lib/prisma'
+import logger from '@/lib/logger'
 
 // Configure VAPID keys
 if (process.env.VAPID_PRIVATE_KEY && process.env.VAPID_EMAIL) {
@@ -148,7 +149,7 @@ async function sendNotificationToSubscriptions(
 
         return { success: true, subscriptionId: subscription.id }
       } catch (error: any) {
-        console.error('Failed to send push notification:', error)
+        logger.error({ error }, 'Failed to send push notification:')
 
         // If subscription is no longer valid (410 Gone or 404), mark as inactive
         if (error.statusCode === 410 || error.statusCode === 404) {
@@ -231,7 +232,7 @@ export async function subscribeToPushNotifications(
 
     return { success: true, subscriptionId: newSubscription.id }
   } catch (error) {
-    console.error('Failed to subscribe to push notifications:', error)
+    logger.error({ error }, 'Failed to subscribe to push notifications:')
     return { success: false }
   }
 }
@@ -250,7 +251,7 @@ export async function unsubscribeFromPushNotifications(
 
     return { success: true }
   } catch (error) {
-    console.error('Failed to unsubscribe from push notifications:', error)
+    logger.error({ error }, 'Failed to unsubscribe from push notifications:')
     return { success: false }
   }
 }

@@ -3,6 +3,7 @@
 import Script from 'next/script'
 import { useEffect } from 'react'
 import { analyticsConfig } from '@/lib/analytics-config'
+import logger from '@/lib/logger'
 
 /**
  * Microsoft Clarity Component with Error Handling
@@ -26,7 +27,7 @@ export function MicrosoftClarity() {
         message.includes('POST https://i.clarity.ms/collect')
       ) {
         // Log silencioso opcional (remova o comentário se quiser logar)
-        // console.debug('[Clarity] Supressed error:', message)
+        // logger.debug({ message }, '[Clarity] Supressed error:')
         return
       }
 
@@ -49,7 +50,7 @@ export function MicrosoftClarity() {
       strategy="lazyOnload"
       onError={(error) => {
         // Silenciosamente logar erro de carregamento do script
-        console.debug('[Clarity] Script load error:', error.message)
+        logger.debug({ message: error.message }, '[Clarity] Script load error:')
       }}
     >
       {`

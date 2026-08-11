@@ -448,10 +448,10 @@ export function sendEmailAsync(emailPromise: Promise<any>) {
       if (result.success) {
         logger.info({ emailId: result.data?.id }, 'Email sent successfully')
       } else {
-        console.error('❌ Failed to send email:', result.error)
+        logger.error({ error: result.error }, '❌ Failed to send email:')
       }
     })
     .catch((error) => {
-      console.error('❌ Email sending crashed:', error)
+      logger.error({ error }, '❌ Email sending crashed:')
     })
 }

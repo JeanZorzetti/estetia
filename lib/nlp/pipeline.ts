@@ -161,7 +161,7 @@ export async function processContentNLP(
     }
   } catch (error) {
     const processingTimeMs = Date.now() - startTime
-    console.error('[NLP Pipeline] Processing failed:', error)
+    logger.error({ error }, '[NLP Pipeline] Processing failed:')
 
     return {
       success: false,

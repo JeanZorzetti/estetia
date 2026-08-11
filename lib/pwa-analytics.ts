@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * PWA Analytics Tracking
  * Client-side library for tracking PWA events
@@ -40,7 +41,7 @@ export async function trackPWAEvent(
     })
   } catch (error) {
     // Silently fail - don't break the user experience
-    console.error('Failed to track PWA event:', error)
+    logger.error({ error }, 'Failed to track PWA event:')
   }
 }
 

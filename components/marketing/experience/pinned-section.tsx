@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger, registerGsap } from '@/lib/animation/gsap'
+import logger from '@/lib/logger'
 
 interface PinnedSectionProps {
   /** Quantas viewports de altura o wrapper externo tem (define quanto tempo a seção fica pinada).
@@ -64,12 +65,12 @@ export function PinnedSection({
 
     if (process.env.NODE_ENV !== 'production') {
       // eslint-disable-next-line no-console
-      console.log(`[PinnedSection:${label}] created`, {
+      logger.info({ data: {
         start: st.start,
         end: st.end,
         wrapperHeight: wrapperRef.current.offsetHeight,
         wrapperOffsetTop: wrapperRef.current.offsetTop,
-      })
+      } }, `[PinnedSection:${label}] created`)
     }
 
     const refreshTimers = [

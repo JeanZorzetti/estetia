@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 ﻿import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { prismaWa } from "@/lib/prisma-wa"
@@ -53,7 +54,7 @@ export default async function ChatPage({
       }
     })
   } catch (err: any) {
-    console.error("[CHAT_PAGE] Falha ao buscar usuário:", err.message)
+    logger.error({ message: err.message }, "[CHAT_PAGE] Falha ao buscar usuário:")
     return <div>{t('errors.fetchUser')}</div>
   }
 
@@ -90,7 +91,7 @@ export default async function ChatPage({
       orderBy: { createdAt: 'desc' },
     })
   } catch (err: any) {
-    console.error("[CHAT_PAGE] Falha ao buscar conexões:", err.message)
+    logger.error({ message: err.message }, "[CHAT_PAGE] Falha ao buscar conexões:")
     return <div>{t('errors.fetchUser')}</div>
   }
 
@@ -232,7 +233,7 @@ export default async function ChatPage({
       }
     }
   } catch (err: any) {
-    console.error("[CHAT_PAGE] Falha ao buscar contatos:", err.message)
+    logger.error({ message: err.message }, "[CHAT_PAGE] Falha ao buscar contatos:")
     return <div>{t('errors.fetchUser')}</div>
   }
 

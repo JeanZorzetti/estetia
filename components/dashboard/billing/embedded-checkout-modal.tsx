@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
 import { CreditCard, Loader2 } from "lucide-react"
+import logger from '@/lib/logger'
 
 export function EmbeddedCheckoutModal() {
     const tCommon = useTranslations('common')
@@ -29,7 +30,7 @@ export function EmbeddedCheckoutModal() {
             window.location.href = data.checkoutUrl
 
         } catch (error) {
-            console.error('Erro ao criar checkout:', error)
+            logger.error({ error }, 'Erro ao criar checkout:')
             const message = error instanceof Error ? error.message : 'Não foi possível criar o checkout. Tente novamente.'
             alert(message)
             setIsLoading(false)

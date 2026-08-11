@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * Google Ads API Client
  *
@@ -54,7 +55,7 @@ export async function fetchGoogleAdsCampaigns(
     })
 
     if (!tokenRes.ok) {
-      console.error('[GoogleAds] Failed to refresh access token:', await tokenRes.text())
+      logger.error({ data: await tokenRes.text() }, '[GoogleAds] Failed to refresh access token:')
       return []
     }
 
@@ -90,7 +91,7 @@ export async function fetchGoogleAdsCampaigns(
     )
 
     if (!gadsRes.ok) {
-      console.error('[GoogleAds] API error:', await gadsRes.text())
+      logger.error({ data: await gadsRes.text() }, '[GoogleAds] API error:')
       return []
     }
 
@@ -106,7 +107,7 @@ export async function fetchGoogleAdsCampaigns(
       date: row.segments?.date ?? startDate,
     }))
   } catch (err) {
-    console.error('[GoogleAds] Unexpected error:', err)
+    logger.error({ err }, '[GoogleAds] Unexpected error:')
     return []
   }
 }

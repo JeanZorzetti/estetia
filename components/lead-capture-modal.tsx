@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Mail, Building2, User, Loader2, CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
+import logger from '@/lib/logger'
 
 interface LeadCaptureModalProps {
   open: boolean
@@ -76,7 +77,7 @@ export function LeadCaptureModal({
 
       onSuccess?.()
     } catch (error) {
-      console.error('Error capturing lead:', error)
+      logger.error({ error }, 'Error capturing lead:')
       toast.error('Erro ao enviar. Tente novamente.')
     } finally {
       setIsLoading(false)

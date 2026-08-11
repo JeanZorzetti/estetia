@@ -11,6 +11,7 @@ import { usePathname } from 'next/navigation';
 import { X, MessageSquare, Send, Loader2, Sparkles, Mic } from 'lucide-react';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { VoiceRecorder, isWebSpeechSupported, isMediaRecorderSupported } from '@/lib/mobile/voice';
+import logger from '@/lib/logger'
 
 interface Message {
     role: 'user' | 'assistant';
@@ -72,7 +73,7 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
                 setUsage(data);
             }
         } catch (error) {
-            console.error('Failed to fetch usage:', error);
+            logger.error({ error }, 'Failed to fetch usage:');
         }
     };
 
@@ -122,7 +123,7 @@ export function AgiChatSidebar({ dealId, pipelineId, context }: AgiChatSidebarPr
             // Update usage
             fetchUsage();
         } catch (error) {
-            console.error('Chat error:', error);
+            logger.error({ error }, 'Chat error:');
             const errorMessage: Message = {
                 role: 'assistant',
                 content: `❌ ${error instanceof Error ? error.message : 'Erro desconhecido'}`,

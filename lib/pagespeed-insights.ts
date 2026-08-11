@@ -1,3 +1,4 @@
+import logger from '@/lib/logger'
 /**
  * PageSpeed Insights API Integration
  *
@@ -187,7 +188,7 @@ export async function getPageSpeedMetrics(
       fetchedAt: new Date().toISOString(),
     }
   } catch (error) {
-    console.error('Erro ao buscar PageSpeed Insights:', error)
+    logger.error({ error }, 'Erro ao buscar PageSpeed Insights:')
     return {
       error: error instanceof Error ? error.message : 'Erro desconhecido',
       code: 'FETCH_ERROR',

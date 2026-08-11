@@ -5,6 +5,7 @@ import { logMedicalAccess } from '@/lib/audit/medical-access-log'
 import { encrypt, decrypt } from '@/lib/encryption'
 import { createHash } from 'crypto'
 import { z } from 'zod'
+import logger from '@/lib/logger'
 
 const CreateAnamnesisSchema = z.object({
   pacienteId: z.string().uuid(),
@@ -82,7 +83,7 @@ export async function POST(req: NextRequest) {
   try {
     respostasEncrypted = encrypt(JSON.stringify(respostas))
   } catch (err) {
-    console.error('[anamnese POST] encrypt error:', err)
+    logger.error({ err }, '[anamnese POST] encrypt error:')
     return NextResponse.json({ error: 'Encryption unavailable' }, { status: 500 })
   }
 

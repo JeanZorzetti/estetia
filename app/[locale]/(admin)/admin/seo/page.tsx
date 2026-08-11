@@ -55,6 +55,7 @@ import {
 } from '@/lib/ml/content-decay'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Search, MousePointer, Eye, TrendingUp, AlertCircle, Loader2, Sparkles, TrendingDown, Minus, Target } from 'lucide-react'
+import logger from '@/lib/logger'
 
 export const metadata: Metadata = {
   title: 'SEO Command Center - Admin',
@@ -161,7 +162,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
           coverageSummary = generateCoverageSummary(inspectionResults)
         }
       } catch (inspectionError) {
-        console.error('Error inspecting URLs:', inspectionError)
+        logger.error({ inspectionError }, 'Error inspecting URLs:')
         // Don't fail the whole page if URL inspection fails
       }
     }
@@ -176,7 +177,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
           devices || undefined
         )
       } catch (anomalyError) {
-        console.error('Error detecting anomalies:', anomalyError)
+        logger.error({ anomalyError }, 'Error detecting anomalies:')
       }
     }
 
@@ -185,7 +186,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       try {
         rankingPredictions = predictRankingOpportunities(metrics.keywords)
       } catch (rankingError) {
-        console.error('Error predicting rankings:', rankingError)
+        logger.error({ rankingError }, 'Error predicting rankings:')
       }
     }
 
@@ -194,7 +195,7 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       try {
         keywordClusters = clusterKeywords(metrics.keywords, metrics.pages)
       } catch (clusterError) {
-        console.error('Error clustering keywords:', clusterError)
+        logger.error({ clusterError }, 'Error clustering keywords:')
       }
     }
 
@@ -203,11 +204,11 @@ async function SEOContent({ searchParams }: { searchParams: { from?: string; to?
       try {
         contentDecay = predictContentDecay(metrics.pages, metrics.history)
       } catch (decayError) {
-        console.error('Error predicting content decay:', decayError)
+        logger.error({ decayError }, 'Error predicting content decay:')
       }
     }
   } catch (e) {
-    console.error('Error fetching SEO metrics:', e)
+    logger.error({ e }, 'Error fetching SEO metrics:')
     error = e instanceof Error ? e.message : 'Failed to fetch SEO data'
   }
 
