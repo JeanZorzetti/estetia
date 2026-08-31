@@ -26,6 +26,32 @@ const threshold =
   LEVELS[(process.env.LOG_LEVEL as Level)] ?? LEVELS.info
 const isDev = process.env.NODE_ENV === 'development'
 
+/**
+ * LGPD: this is a clinic CRM — contact e-mails, patient names and phone numbers
+ * reach ~65 log call sites. Identify records by id (contactId, dealId, orgId),
+ * never by the person. Credentials are redacted for the obvious reason.
+ */
+const REDACT = new Set([
+  'email',
+  'name',
+  'nome',
+  'phone',
+  'telefone',
+  'whatsapp',
+  'cpf',
+  'cep',
+  'address',
+  'endereco',
+  'birthDate',
+  'dataNascimento',
+  'password',
+  'senha',
+  'token',
+  'apiKey',
+  'secret',
+  'authorization',
+])
+
 function isError(v: unknown): v is Error {
   // instanceof fails across realms (worker/vm), so sniff the shape too
   return (
@@ -45,7 +71,10 @@ function isError(v: unknown): v is Error {
 function safeStringify(record: unknown): string {
   const seen = new WeakSet<object>()
   try {
-    return JSON.stringify(record, (_key, value) => {
+    return JSON.stringify(record, (key, value) => {
+      if (REDACT.has(key) && value !== undefined && value !== null) {
+        return '[redacted]'
+      }
       if (isError(value)) {
         return {
           type: value.name,
@@ -114,10 +143,13 @@ function emit(level: Level, bindings: Fields, args: any[]) {
 
   // ponytail: console IS the sink — Next standalone and the browser both
   // forward it to stdout/devtools. No transport, no worker, nothing to break.
+  const line = safeStringify(record)
   if (isDev) {
-    sink(`[${level}] ${msg ?? ''}`, ...(Object.keys(fields).length ? [fields] : []), ...extras)
+    // same serialization (so redaction and Error stacks behave identically in dev),
+    // just handed to devtools as an object instead of a raw line
+    sink(`[${level}] ${msg ?? ''}`, JSON.parse(line))
   } else {
-    sink(safeStringify(record))
+    sink(line)
   }
 }
 

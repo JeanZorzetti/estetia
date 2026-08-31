@@ -70,8 +70,70 @@ describe('logger', () => {
     expect(captured(err).err.message).toBe('naked')
   })
 
+  it('redacts PII and credentials by key (LGPD — clinic CRM)', () => {
+    logger.info(
+      { email: 'paciente@x.com', name: 'Fulana', contactId: 'c-1', token: 'abc' },
+      'contact synced'
+    )
+    const rec = captured(log)
+    expect(rec.email).toBe('[redacted]')
+    expect(rec.name).toBe('[redacted]')
+    expect(rec.token).toBe('[redacted]')
+    expect(rec.contactId).toBe('c-1')
+  })
+
+  it('redacts PII nested inside an object', () => {
+    logger.info({ contact: { id: 'c-1', email: 'p@x.com' } }, 'nested')
+    const rec = captured(log)
+    expect(rec.contact.email).toBe('[redacted]')
+    expect(rec.contact.id).toBe('c-1')
+  })
+
   it('keeps trailing extra args (logger.error("msg:", value))', () => {
     logger.error('tool error:', { code: 42 })
     expect(captured(err).args).toEqual([{ code: 42 }])
+  })
+})
+
+/**
+ * Guard: runtime code logs through the logger, not console. Without this the
+ * ~222 console.* calls that commit 3de3464 migrated just grow back one PR at a
+ * time. scripts/ is deliberately out of scope — readable stdout is correct for
+ * a CLI.
+ */
+describe('no console.* in runtime code', () => {
+  const ALLOWED = new Set([
+    // the logger IS the console sink
+    'lib/logger.ts',
+    // intentionally monkey-patches console.error to mute Clarity noise, plus a
+    // console.debug inside the injected browser <script> string
+    'components/microsoft-clarity.tsx',
+    // console.log lives in a JSDoc usage example, not in the code
+    'app/api/notifications/stream/route.ts',
+  ])
+
+  it('only the allowlisted files call console directly', async () => {
+    const fs = await import('node:fs')
+    const path = await import('node:path')
+    const offenders: string[] = []
+
+    const walk = (dir: string) => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name)
+        if (entry.isDirectory()) {
+          if (entry.name === 'node_modules' || entry.name === '.next' || entry.name === '__tests__') continue
+          walk(full)
+        } else if (/\.tsx?$/.test(entry.name) && !/\.(test|spec)\./.test(entry.name)) {
+          const rel = full.split(path.sep).join('/')
+          if (ALLOWED.has(rel)) continue
+          if (/(^|[^.\w])console\.(log|error|warn|info|debug)\s*\(/m.test(fs.readFileSync(full, 'utf8'))) {
+            offenders.push(rel)
+          }
+        }
+      }
+    }
+
+    for (const dir of ['app', 'components', 'lib', 'hooks']) walk(dir)
+    expect(offenders).toEqual([])
   })
 })
