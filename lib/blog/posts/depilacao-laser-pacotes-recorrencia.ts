@@ -99,7 +99,7 @@ export const post: BlogPost = {
 <p><strong>Pacote combo de áreas (melhor para ticket médio):</strong> Áreas complementares com desconto por volume. Ex.: "Pacote Axilas + Virilha — R$ 2.000 (vs. R$ 2.400 separados)". Aumenta o ticket médio da venda inicial e reduz o custo por sessão de atendimento por concentrar áreas no mesmo horário.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O módulo de pacotes controla o saldo de sessões de cada paciente por área, exibe o próximo agendamento recomendado conforme o cronograma e avisa a recepção quando um paciente está atrasado no protocolo. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O módulo de pacotes controla o saldo de sessões de cada paciente por área, exibe o próximo agendamento recomendado conforme o cronograma e avisa a recepção quando um paciente está atrasado no protocolo. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>O Problema do No-Show em Depilação e Como Resolver</h2>
@@ -162,6 +162,6 @@ export const post: BlogPost = {
 <h3>O que é manutenção de depilação a laser e quando é necessária?</h3>
 <p>Após o protocolo inicial (6–8 sessões), a maioria dos pelos é eliminada, mas pelos em fase de crescimento diferente ou pelos mais finos podem surgir ao longo dos meses. A manutenção é uma sessão anual (ou a cada 12–18 meses) para eliminar esses pelos residuais e manter o resultado. É muito menos intensa que as sessões do protocolo inicial — geralmente 1 sessão por ano é suficiente para a grande maioria dos pacientes.</p>
 
-<p>Quer implementar gestão de pacotes de depilação laser com controle de cronograma, recall automático de sessões e manutenção anual? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer implementar gestão de pacotes de depilação laser com controle de cronograma, recall automático de sessões e manutenção anual? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

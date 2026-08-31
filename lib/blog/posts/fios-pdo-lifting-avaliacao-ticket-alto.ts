@@ -192,7 +192,7 @@ export const post: BlogPost = {
 <p>LTV em 24 meses para um paciente de Full Face bem fidelizado: <strong>R$ 20.000–29.000</strong>.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure recall de fios por tipo (mono/cog/PLLA), fotodocumentação por sessão e plano de tratamento progressivo no prontuário. O histórico completo fica disponível em cada consulta, permitindo apresentar o resultado de forma visual e convincente na avaliação de manutenção. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure recall de fios por tipo (mono/cog/PLLA), fotodocumentação por sessão e plano de tratamento progressivo no prontuário. O histórico completo fica disponível em cada consulta, permitindo apresentar o resultado de forma visual e convincente na avaliação de manutenção. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Métricas de Gestão para Fios de PDO</h2>
@@ -219,6 +219,6 @@ export const post: BlogPost = {
 <h3>Como a clínica deve registrar o protocolo de fios no prontuário?</h3>
 <p>O prontuário de fios de PDO deve incluir: tipo e quantidade de fios por área, técnica utilizada, fotos padronizadas pré e pós-procedimento, termo de consentimento informado específico para o procedimento, orientações pós-procedimento entregues ao paciente e data de recall configurada. Sem esse registro completo, a continuidade do tratamento na próxima sessão fica comprometida — e a documentação tem valor legal em caso de questionamentos.</p>
 
-<p>Quer configurar gestão de protocolos de fios de PDO com fotodocumentação, recall automático por tipo de fio e plano de tratamento integrado ao prontuário? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer configurar gestão de protocolos de fios de PDO com fotodocumentação, recall automático por tipo de fio e plano de tratamento integrado ao prontuário? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

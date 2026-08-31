@@ -89,7 +89,7 @@ export const post: BlogPost = {
 <p>Criolipólise + procedimento de remodelamento complementar (radiofrequência, ultrassom microfocado ou drenagem linfática) vendidos como protocolo integrado. A combinação potencializa o resultado — e aumenta o ticket e a frequência de visitas à clínica.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure pacotes corporais com saldo de sessões por área. A recepção vê em tempo real quantas sessões cada paciente ainda tem disponíveis, e o sistema alerta quando está chegando a hora da próxima sessão conforme o cronograma configurado. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure pacotes corporais com saldo de sessões por área. A recepção vê em tempo real quantas sessões cada paciente ainda tem disponíveis, e o sistema alerta quando está chegando a hora da próxima sessão conforme o cronograma configurado. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Gestão de Cronograma: O Principal Problema de Criolipólise</h2>
@@ -158,6 +158,6 @@ export const post: BlogPost = {
 <h3>Criolipólise tem manutenção?</h3>
 <p>As células de gordura destruídas pela criolipólise são eliminadas permanentemente — elas não voltam. Porém, se o paciente ganhar peso, outras células de gordura podem se acumular na região. A manutenção anual (1 sessão por área) é uma boa prática para pacientes que querem garantir o resultado a longo prazo, e representa uma receita recorrente estruturada para a clínica.</p>
 
-<p>Quer implementar gestão de pacotes de criolipólise com controle de sessões por área, cronograma automático e recall de recompra? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer implementar gestão de pacotes de criolipólise com controle de sessões por área, cronograma automático e recall de recompra? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

@@ -87,7 +87,7 @@ export const post: BlogPost = {
 <p>Link de agendamento de avaliação gratuita diretamente no perfil do Instagram e no artigo do blog. "Avaliação gratuita para descobrir qual peeling é indicado para sua pele" tem taxa de conversão muito maior do que "Agendar sessão de peeling" — porque remove a barreira de compromisso com um procedimento específico que o paciente ainda não conhece.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure o link de agendamento online para avaliação de peeling com formulário de pré-triagem (tipo de pele, queixa principal, histórico de procedimentos). O profissional chega à avaliação já com essas informações — e pode focar na consulta consultiva, não em coletar dados básicos. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure o link de agendamento online para avaliação de peeling com formulário de pré-triagem (tipo de pele, queixa principal, histórico de procedimentos). O profissional chega à avaliação já com essas informações — e pode focar na consulta consultiva, não em coletar dados básicos. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>A Consulta de Avaliação para Peeling: Roteiro que Converte</h2>
@@ -194,6 +194,6 @@ export const post: BlogPost = {
 <h3>Peeling químico pode ser feito em pele negra ou morena escura?</h3>
 <p>Sim, mas com escolha criteriosa do ácido e concentração. Fototipos IV–VI (peles morenas escuras e negras) têm maior risco de hiperpigmentação pós-inflamatória com peelings mais agressivos. Ácidos mandélico, lático e fítico têm melhor perfil de segurança para fototipos altos. A avaliação prévia do fototipo (escala de Fitzpatrick) e o preparo da pele com despigmentantes antes do peeling são práticas essenciais nesse perfil de paciente.</p>
 
-<p>Quer estruturar a captação e a jornada de pacientes de peeling químico com agendamento online, recall automático por ácido e protocolo integrado ao prontuário? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer estruturar a captação e a jornada de pacientes de peeling químico com agendamento online, recall automático por ácido e protocolo integrado ao prontuário? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

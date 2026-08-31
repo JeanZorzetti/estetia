@@ -154,7 +154,7 @@ export const post: BlogPost = {
 <p>Crie uma planilha simples com as 6 dimensões acima, cada uma com nota de 1-5. Some os pontos. O sistema com maior pontuação nos critérios que mais importam para a sua clínica é a escolha certa — independentemente de qual pareceu mais impressionante na demonstração de vendas.</p>
 
 <div class="callout-success">
-  <strong>Atalho:</strong> Use nossa <a href="/pt-BR/features">página de funcionalidades do Estetia CRM</a> como referência de checklist — ela lista todos os critérios que um CRM clínico completo deve ter. Compare cada sistema finalista contra essa lista para identificar gaps rapidamente.
+  <strong>Atalho:</strong> Use nossa <a href="/features">página de funcionalidades do Estetia CRM</a> como referência de checklist — ela lista todos os critérios que um CRM clínico completo deve ter. Compare cada sistema finalista contra essa lista para identificar gaps rapidamente.
 </div>
 
 <h2>Sistemas Especializados vs. Plataformas Horizontais: A Decisão Definitiva</h2>
@@ -177,9 +177,9 @@ export const post: BlogPost = {
 <p>Faça o trial sem passar pela demo de vendas primeiro. Acesse o sistema e tente executar os 3 fluxos mais críticos da sua clínica sem ajuda: agendar uma consulta, registrar um procedimento no prontuário e configurar um recall automático. O que você não consegue fazer sozinho é o que vai travar sua equipe no dia a dia. A facilidade de uso real supera qualquer argumento de vendas.</p>
 
 <h3>Preciso contratar um sistema diferente para dermatologia e estética na mesma clínica?</h3>
-<p>Não. Sistemas verticais modernos como o Estetia CRM atendem ambas as especialidades com configurações específicas para cada fluxo. Para dermatologia, há campos específicos de prontuário (mapeamento de lesões, fotodocumentação sistemática por data), convênios TISS e controle de biopsias — tudo na mesma plataforma. Veja mais em <a href="/pt-BR/solucoes/dermatologia">nossa solução para dermatologia</a>.</p>
+<p>Não. Sistemas verticais modernos como o Estetia CRM atendem ambas as especialidades com configurações específicas para cada fluxo. Para dermatologia, há campos específicos de prontuário (mapeamento de lesões, fotodocumentação sistemática por data), convênios TISS e controle de biopsias — tudo na mesma plataforma. Veja mais em <a href="/solucoes/dermatologia">nossa solução para dermatologia</a>.</p>
 
 <h3>Um sistema mais caro é necessariamente melhor para minha clínica?</h3>
-<p>Não. O critério é aderência ao seu fluxo clínico, não preço. Um sistema de R$349/mês que resolve seus 3 principais problemas operacionais é infinitamente mais valioso que um de R$1.200/mês com funcionalidades que você nunca vai usar. Calcule o ROI específico para o volume e ticket médio da sua clínica, não compare preços absolutos. <a href="/pt-BR/register">Teste grátis por 14 dias →</a></p>
+<p>Não. O critério é aderência ao seu fluxo clínico, não preço. Um sistema de R$349/mês que resolve seus 3 principais problemas operacionais é infinitamente mais valioso que um de R$1.200/mês com funcionalidades que você nunca vai usar. Calcule o ROI específico para o volume e ticket médio da sua clínica, não compare preços absolutos. <a href="/register">Teste grátis por 14 dias →</a></p>
 `,
 }

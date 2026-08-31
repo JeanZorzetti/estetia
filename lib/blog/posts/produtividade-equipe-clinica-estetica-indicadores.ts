@@ -58,7 +58,7 @@ export const post: BlogPost = {
 <p><strong>Por que importa:</strong> Permite comparar profissionais com mix de procedimentos diferentes. Uma profissional que faz principalmente toxina gera mais faturamento por hora do que uma que faz principalmente limpeza de pele — mas ambas podem ser igualmente produtivas dentro do seu nicho. O KPI serve para decisões de mix de agenda (agendar mais procedimentos de maior valor por hora).</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O dashboard de KPIs exibe todos esses indicadores por profissional em tempo real, com comparativo entre profissionais e evolução histórica mês a mês. A gestora vê imediatamente qual profissional está com taxa de ocupação abaixo da meta e qual tem taxa de conversão em queda. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O dashboard de KPIs exibe todos esses indicadores por profissional em tempo real, com comparativo entre profissionais e evolução histórica mês a mês. A gestora vê imediatamente qual profissional está com taxa de ocupação abaixo da meta e qual tem taxa de conversão em queda. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Como Usar os KPIs em Reuniões de Resultado com a Equipe</h2>
@@ -146,6 +146,6 @@ export const post: BlogPost = {
 <h3>O que fazer quando um profissional consistentemente não atinge as metas?</h3>
 <p>Primeiro, entender a causa: é habilidade técnica? Habilidade de comunicação/conversão? Problema de agenda (perfil de pacientes diferentes)? Problema pessoal temporário? Cada causa exige uma resposta diferente. Treinamento funciona para habilidade; coaching para comunicação; ajuste de agenda para mix de pacientes. Se após 3 meses com suporte e metas claras o resultado não muda, é uma decisão de gestão de pessoas — não um problema de KPI.</p>
 
-<p>Quer um dashboard de produtividade com todos os KPIs por profissional, metas configuráveis e relatório mensal automático? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer um dashboard de produtividade com todos os KPIs por profissional, metas configuráveis e relatório mensal automático? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

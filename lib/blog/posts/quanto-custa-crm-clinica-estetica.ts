@@ -198,7 +198,7 @@ export const post: BlogPost = {
 </ol>
 
 <div class="callout-success">
-  <strong>Estetia CRM — preços transparentes:</strong> Starter R$149/mês (1 profissional, 300 pacientes), Pro R$349/mês (3 profissionais, 1.500 pacientes, no-show predictor IA), Business R$799/mês (profissionais ilimitados, multi-unidade, convênios TISS). Todos os módulos incluídos em cada plano, sem add-ons obrigatórios. <a href="/pt-BR/precos">Ver planos completos →</a>
+  <strong>Estetia CRM — preços transparentes:</strong> Starter R$149/mês (1 profissional, 300 pacientes), Pro R$349/mês (3 profissionais, 1.500 pacientes, no-show predictor IA), Business R$799/mês (profissionais ilimitados, multi-unidade, convênios TISS). Todos os módulos incluídos em cada plano, sem add-ons obrigatórios. <a href="/precos">Ver planos completos →</a>
 </div>
 
 <h2>Vale a Pena o Plano Anual com Desconto?</h2>
@@ -227,6 +227,6 @@ export const post: BlogPost = {
 <p>A maioria dos sistemas tem cláusula de reajuste anual indexada ao IGP-M ou INPC. Típico: 5-12% ao ano. Verifique o índice de reajuste no contrato antes de assinar. Sistemas sérios publicam a política de reajuste na página de preços.</p>
 
 <h3>Posso começar no plano básico e upgrade depois?</h3>
-<p>Sim, e é a abordagem recomendada. Comece pelo plano que atende suas necessidades atuais. Faça upgrade quando: (a) atingir o limite de profissionais ou pacientes, ou (b) precisar de funcionalidades do plano superior (no-show predictor IA, multi-unidade, convênios). No Estetia CRM, o upgrade preserva 100% dos dados e histórico — sem migração manual.  <a href="/pt-BR/register">Começar teste grátis →</a></p>
+<p>Sim, e é a abordagem recomendada. Comece pelo plano que atende suas necessidades atuais. Faça upgrade quando: (a) atingir o limite de profissionais ou pacientes, ou (b) precisar de funcionalidades do plano superior (no-show predictor IA, multi-unidade, convênios). No Estetia CRM, o upgrade preserva 100% dos dados e histórico — sem migração manual.  <a href="/register">Começar teste grátis →</a></p>
 `,
 }

@@ -185,11 +185,11 @@ export const post: BlogPost = {
 
 <h2>Anamnese Digital e LGPD</h2>
 
-<p>A anamnese digital, quando implementada corretamente, é mais segura do ponto de vista da LGPD do que o papel. Dados coletados digitalmente ficam em servidor criptografado com controle de acesso — muito mais seguro do que formulários de papel em gavetas da recepção. Para saber mais sobre as obrigações de LGPD para clínicas, veja nosso <a href="/pt-BR/blog/lgpd-para-clinicas-de-estetica-guia-2026">Guia LGPD para Clínicas de Estética</a>.</p>
+<p>A anamnese digital, quando implementada corretamente, é mais segura do ponto de vista da LGPD do que o papel. Dados coletados digitalmente ficam em servidor criptografado com controle de acesso — muito mais seguro do que formulários de papel em gavetas da recepção. Para saber mais sobre as obrigações de LGPD para clínicas, veja nosso <a href="/blog/lgpd-para-clinicas-de-estetica-guia-2026">Guia LGPD para Clínicas de Estética</a>.</p>
 
 <h2>O Módulo de Anamnese Digital do Estetia</h2>
 
-<p>O <a href="/pt-BR/features/anamnese-digital">módulo de anamnese do Estetia CRM</a> já vem com templates pré-configurados para os principais procedimentos estéticos (botox, preenchimento, laser, limpeza de pele, peeling, harmonização facial) e permite customização completa para protocolos específicos. O link é enviado automaticamente via WhatsApp e os dados chegam estruturados no prontuário — com alergias e contraindicações destacadas em vermelho para o profissional.</p>
+<p>O <a href="/features/anamnese-digital">módulo de anamnese do Estetia CRM</a> já vem com templates pré-configurados para os principais procedimentos estéticos (botox, preenchimento, laser, limpeza de pele, peeling, harmonização facial) e permite customização completa para protocolos específicos. O link é enviado automaticamente via WhatsApp e os dados chegam estruturados no prontuário — com alergias e contraindicações destacadas em vermelho para o profissional.</p>
 
 <h2>Perguntas Frequentes</h2>
 

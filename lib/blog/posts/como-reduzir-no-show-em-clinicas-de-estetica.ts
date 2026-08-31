@@ -166,7 +166,7 @@ export const post: BlogPost = {
 
 <h2>O Papel do Estetia CRM na Redução de No-Show</h2>
 
-<p>O <a href="/pt-BR/features/recall-automatico">sistema de recall automatizado do Estetia</a> integra todas as 5 estratégias acima em um único fluxo: confirmações por WhatsApp, lista de espera por procedimento, anamnese pré-consulta e análise de padrões por profissional e horário. Em clínicas que implementaram o sistema completo, a taxa de no-show caiu de 22% para 7% em média nos primeiros 60 dias.</p>
+<p>O <a href="/features/recall-automatico">sistema de recall automatizado do Estetia</a> integra todas as 5 estratégias acima em um único fluxo: confirmações por WhatsApp, lista de espera por procedimento, anamnese pré-consulta e análise de padrões por profissional e horário. Em clínicas que implementaram o sistema completo, a taxa de no-show caiu de 22% para 7% em média nos primeiros 60 dias.</p>
 
 <div class="callout-tip">
   <strong>Próximo passo:</strong> Calcule sua taxa de no-show atual (faltas ÷ total de agendamentos × 100) e use a fórmula acima para quantificar o impacto financeiro. Esse número vai motivar qualquer mudança de processo.

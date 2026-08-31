@@ -146,7 +146,7 @@ export const post: BlogPost = {
 
 <h2>Como o Estetia CRM Suporta a Venda Consultiva</h2>
 
-<p>A venda consultiva começa antes da consulta e continua depois. Com o <a href="/pt-BR/features/anamnese-digital">formulário de anamnese digital do Estetia</a>, você coleta informações de situação ainda antes da avaliação presencial — o paciente preenche no celular com as principais queixas, histórico de tratamentos e expectativas.</p>
+<p>A venda consultiva começa antes da consulta e continua depois. Com o <a href="/features/anamnese-digital">formulário de anamnese digital do Estetia</a>, você coleta informações de situação ainda antes da avaliação presencial — o paciente preenche no celular com as principais queixas, histórico de tratamentos e expectativas.</p>
 
 <p>Na consulta, o profissional já chega com o contexto mapeado e pode ir direto para as perguntas de Problema e Implicação. Depois, o histórico de cada paciente fica registrado no prontuário digital, permitindo follow-up personalizado e campanhas de recall baseadas em procedimentos que o paciente demonstrou interesse mas não fechou.</p>
 

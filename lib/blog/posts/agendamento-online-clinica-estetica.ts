@@ -41,7 +41,7 @@ export const post: BlogPost = {
 <p>Antes de implementar qualquer solução, é importante entender o diagnóstico. A taxa de ocupação baixa tem causas distintas com soluções distintas:</p>
 
 <h3>Causa 1: No-show (25-40% dos casos de ocupação baixa)</h3>
-<p>No-show médio em clínicas de estética no Brasil é de 18-25%. Cada horário vago por no-show representa receita irrecuperável. A solução é confirmação automática + no-show predictor. Para o guia completo de redução de no-show, veja <a href="/pt-BR/blog/como-reduzir-no-show-em-clinicas-de-estetica">nosso artigo dedicado ao tema</a>.</p>
+<p>No-show médio em clínicas de estética no Brasil é de 18-25%. Cada horário vago por no-show representa receita irrecuperável. A solução é confirmação automática + no-show predictor. Para o guia completo de redução de no-show, veja <a href="/blog/como-reduzir-no-show-em-clinicas-de-estetica">nosso artigo dedicado ao tema</a>.</p>
 
 <h3>Causa 2: Dificuldade de agendamento (20-30% dos casos)</h3>
 <p>Se o paciente precisa ligar no horário comercial, esperar resposta no WhatsApp ou ir pessoalmente para agendar, você perde pacientes que desistiriam antes de conseguir marcar. O agendamento online 24/7 elimina essa barreira completamente.</p>
@@ -141,7 +141,7 @@ export const post: BlogPost = {
 <p>Quando o paciente responde ao WhatsApp de confirmação, a resposta é registrada no sistema. Se confirmar, o agendamento é marcado como confirmado. Se cancelar, a lista de espera é ativada automaticamente. Se perguntar algo, a mensagem aparece na caixa de entrada unificada do Estetia CRM para a recepção responder.</p>
 
 <div class="callout-tip">
-  <strong>Teste grátis por 14 dias:</strong> Configure agendamento online e confirmações automáticas na sua clínica sem cartão de crédito. <a href="/pt-BR/register">Começar agora →</a>
+  <strong>Teste grátis por 14 dias:</strong> Configure agendamento online e confirmações automáticas na sua clínica sem cartão de crédito. <a href="/register">Começar agora →</a>
 </div>
 
 <h2>Taxa de Ocupação: Como Medir e Quais as Metas</h2>
@@ -185,7 +185,7 @@ export const post: BlogPost = {
 
 <p>Taxa consistentemente acima de 90% é sinal de que a clínica precisa expandir capacidade (mais profissionais ou mais horários). Abaixo de 60% por mais de 30 dias indica problema estrutural — de captação, no-show ou mix de procedimentos.</p>
 
-<p>Para os 7 KPIs essenciais que toda clínica deve monitorar, veja <a href="/pt-BR/blog/kpis-essenciais-clinica-de-estetica">nosso guia completo de métricas clínicas</a>.</p>
+<p>Para os 7 KPIs essenciais que toda clínica deve monitorar, veja <a href="/blog/kpis-essenciais-clinica-de-estetica">nosso guia completo de métricas clínicas</a>.</p>
 
 <h2>Passo a Passo: Implementar Agendamento Online em 7 Dias</h2>
 

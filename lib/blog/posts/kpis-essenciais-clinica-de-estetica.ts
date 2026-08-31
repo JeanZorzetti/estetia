@@ -108,7 +108,7 @@ export const post: BlogPost = {
 
 <h3>KPI 4: Taxa de No-Show por Profissional e Horário</h3>
 
-<p>A taxa de no-show geral esconde padrões. Quando você segmenta por profissional, horário e procedimento, encontra as causas — e as soluções específicas. Para um guia completo de redução de no-show, veja <a href="/pt-BR/blog/como-reduzir-no-show-em-clinicas-de-estetica">nosso artigo dedicado ao tema</a>.</p>
+<p>A taxa de no-show geral esconde padrões. Quando você segmenta por profissional, horário e procedimento, encontra as causas — e as soluções específicas. Para um guia completo de redução de no-show, veja <a href="/blog/como-reduzir-no-show-em-clinicas-de-estetica">nosso artigo dedicado ao tema</a>.</p>
 
 <p><strong>Fórmula:</strong></p>
 <blockquote>Taxa de no-show = (Agendamentos com falta ÷ Total de agendamentos) × 100</blockquote>
@@ -201,7 +201,7 @@ export const post: BlogPost = {
 
 <p>A maior barreira para o monitoramento de KPIs em clínicas não é a falta de dados — é a falta de sistema. Com dados em papel ou em planilhas desconectadas, calcular LTV por paciente leva horas. Com um sistema integrado, leva segundos.</p>
 
-<p>O <a href="/pt-BR/features/analytics-pro">painel de analytics do Estetia CRM</a> (disponível no plano Pro) calcula automaticamente todos os 7 KPIs acima e os exibe em um dashboard atualizado em tempo real. Você define os benchmarks da sua clínica, e o sistema alerta quando um KPI sai da faixa desejada — sem precisar calcular manualmente.</p>
+<p>O <a href="/features/analytics-pro">painel de analytics do Estetia CRM</a> (disponível no plano Pro) calcula automaticamente todos os 7 KPIs acima e os exibe em um dashboard atualizado em tempo real. Você define os benchmarks da sua clínica, e o sistema alerta quando um KPI sai da faixa desejada — sem precisar calcular manualmente.</p>
 
 <div class="callout-tip">
   <strong>Por onde começar:</strong> Se você está começando agora, priorize LTV, taxa de retorno em 90 dias e no-show. São os 3 KPIs com maior impacto imediato na receita e mais fáceis de mover com ações específicas.

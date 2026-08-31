@@ -82,7 +82,7 @@ export const post: BlogPost = {
 </table>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O módulo de agenda de equipe exibe a taxa de ocupação por profissional e por sala em tempo real, com relatório de horas ociosas por período. A gestora vê imediatamente qual sala está subocupada e em qual horário — e pode tomar decisões de escala com base em dados. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O módulo de agenda de equipe exibe a taxa de ocupação por profissional e por sala em tempo real, com relatório de horas ociosas por período. A gestora vê imediatamente qual sala está subocupada e em qual horário — e pode tomar decisões de escala com base em dados. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Estratégias para Aumentar a Taxa de Ocupação de Salas</h2>
@@ -139,6 +139,6 @@ export const post: BlogPost = {
 <h3>Quando vale a pena abrir horário noturno ou no sábado?</h3>
 <p>Vale quando a demanda existe mas não é atendida no horário atual. Avalie: quantas solicitações de horário noturno ou de sábado foram recusadas no último mês? Se o número for significativo (mais de 15–20 por mês), há demanda reprimida que justifica expansão de horário. O custo incremental (energia, 1–2 horas adicionais de equipe) geralmente é coberto com 2–3 atendimentos adicionais por noite.</p>
 
-<p>Quer um painel de ocupação de salas em tempo real, com taxa de utilização por sala e por equipamento, gestão de lista de espera e relatórios de horas ociosas? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer um painel de ocupação de salas em tempo real, com taxa de utilização por sala e por equipamento, gestão de lista de espera e relatórios de horas ociosas? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

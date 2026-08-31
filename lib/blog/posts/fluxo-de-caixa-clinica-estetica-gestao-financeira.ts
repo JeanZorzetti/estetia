@@ -127,7 +127,7 @@ export const post: BlogPost = {
 <p>O segredo não é a planilha — é a disciplina de atualizá-la semanalmente. Uma planilha perfeita desatualizada não serve para nada.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O módulo financeiro registra automaticamente entradas (pagamentos dos pacientes) e permite categorizar saídas, gerando o fluxo de caixa consolidado sem necessidade de planilha manual. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O módulo financeiro registra automaticamente entradas (pagamentos dos pacientes) e permite categorizar saídas, gerando o fluxo de caixa consolidado sem necessidade de planilha manual. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Sazonalidade no Setor de Estética: Como Prever e Preparar</h2>
@@ -214,6 +214,6 @@ export const post: BlogPost = {
 <h3>Devo misturar a conta da clínica com a minha conta pessoal?</h3>
 <p>Nunca. A mistura de contas é um dos erros mais comuns e prejudiciais. Impossibilita saber se a clínica é lucrativa, dificulta a declaração de IR PJ, cria passivos tributários e torna qualquer análise financeira inviável. Abra uma conta PJ, defina um pró-labore fixo mensal e transfira apenas esse valor para sua conta pessoal — é a base da saúde financeira de qualquer empresa.</p>
 
-<p>Quer ter o fluxo de caixa da sua clínica atualizado automaticamente com os pagamentos dos pacientes integrados? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer ter o fluxo de caixa da sua clínica atualizado automaticamente com os pagamentos dos pacientes integrados? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

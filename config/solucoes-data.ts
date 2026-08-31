@@ -253,10 +253,10 @@ export const SOLUCOES: SolucaoData[] = [
     color: '#0A1F3D',
     colorLight: '#0A1F3D15',
     hero: {
-      badge: 'Sistema para dermatologistas e clínicas dermatológicas',
-      headline: 'Software de gestão para dermatologia: prontuário, TISS e fotos evolutivas',
+      badge: 'Estetia para dermatologia clínica e estética',
+      headline: 'Estetia para dermatologia: prontuário CFM, TISS e mapeamento de lesões',
       subheadline:
-        'Sistema completo para dermatologistas — mapeamento corporal, fotos evolutivas integradas, prescrição digital e conformidade TISS. Desenvolvido para as exigências da dermatologia clínica e estética no Brasil.',
+        'Mapeamento corporal de lesões, fotos evolutivas integradas, prescrição digital e faturamento TISS sem glosa. A plataforma da Estetia configurada para as exigências da dermatologia clínica e estética no Brasil.',
     },
     benefits: [
       {
@@ -391,17 +391,18 @@ export const SOLUCOES: SolucaoData[] = [
       },
     ],
     seo: {
-      title: 'Sistema para Dermatologia | Software de Gestão para Dermatologistas | Estetia',
+      title: 'Estetia para Dermatologia | Prontuário CFM, TISS e Fotos Evolutivas',
       description:
-        'Sistema para dermatologia e software de gestão para dermatologistas: prontuário eletrônico CFM-compliant, mapeamento de lesões com fotos evolutivas, prescrição digital, faturamento TISS/TUSS e conformidade LGPD. Específico para dermatologistas e clínicas dermatológicas no Brasil.',
+        'Conheça a plataforma da Estetia para clínicas de dermatologia: prontuário eletrônico CFM-compliant, mapeamento de lesões com fotos evolutivas, prescrição digital, faturamento TISS/TUSS e conformidade LGPD. Teste 14 dias sem cartão.',
+      // O termo-cabeça ('sistema/software para dermatologia(-ista)') é do guia do blog, que o
+      // Google já rankeia em ~pos 18. Duplicá-lo aqui dividiu o sinal: em 90 dias essas 4 queries
+      // deram 1.079 impressões e ZERO clique, com esta página em pos 41-61. Aqui fica marca + cauda.
       keywords: [
-        'sistema para dermatologia',
-        'sistema para dermatologista',
-        'software para dermatologia',
-        'software para dermatologista',
+        'estetia dermatologia',
         'crm dermatologia',
         'prontuario eletronico dermatologia',
-        'sistema clinica dermatologica',
+        'mapeamento de lesoes prontuario',
+        'fotos evolutivas dermatologia',
         'tiss dermatologia',
         'gestao clinica dermatologica',
       ],

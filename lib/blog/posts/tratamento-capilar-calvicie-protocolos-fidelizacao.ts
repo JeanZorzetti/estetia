@@ -98,7 +98,7 @@ export const post: BlogPost = {
 <p>Configure recall mensal ou bimestral conforme o protocolo. A manutenção é o que garante que os resultados se sustentam a longo prazo. Essa fase é a mais rentável porque o custo de atendimento é menor (sessão mais simples, menos tempo) e a recorrência é previsível.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure fases distintas do protocolo capilar no CRM — ataque (mensal por 4 meses) e manutenção (bimestral indefinida). O sistema alerta sobre transições de fase e dispara recalls adequados para cada etapa. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure fases distintas do protocolo capilar no CRM — ataque (mensal por 4 meses) e manutenção (bimestral indefinida). O sistema alerta sobre transições de fase e dispara recalls adequados para cada etapa. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Como a IA Ajuda na Gestão do Protocolo Capilar</h2>
@@ -146,6 +146,6 @@ export const post: BlogPost = {
 <h3>Quanto tempo leva para ver resultado no tratamento capilar?</h3>
 <p>A estabilização da queda costuma ocorrer em 60–90 dias após o início do protocolo. O crescimento de novos fios fica visível em 4–6 meses. O resultado completo do protocolo de ataque é avaliado no final da fase (mês 4–5). Pacientes que esperam resultado em semanas ficam frustrados — a gestão de expectativas antes da primeira sessão é o fator mais importante para satisfação e adesão ao protocolo.</p>
 
-<p>Quer estruturar o protocolo capilar com gestão de fases, recall automático por etapa e engajamento inteligente do paciente ao longo dos meses? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer estruturar o protocolo capilar com gestão de fases, recall automático por etapa e engajamento inteligente do paciente ao longo dos meses? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

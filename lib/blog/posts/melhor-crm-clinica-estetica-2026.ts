@@ -168,7 +168,7 @@ export const post: BlogPost = {
 <p>O preço da assinatura é apenas uma parte do custo. Considere: custo de migração de dados, tempo de treinamento da equipe, custo de integrações adicionais necessárias e custo de suporte. Um sistema mais barato que exige 3 integrações pagas extras (WhatsApp, agenda, prontuário) pode custar 2-3x mais no total.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Todos os 12 critérios do checklist acima estão incluídos no plano base, sem integrações extras pagas. O trial de 14 dias inclui onboarding guiado com migração de base de pacientes e configuração das automações de WhatsApp. <a href="/pt-BR/register">Começar teste grátis →</a>
+  <strong>No Estetia CRM:</strong> Todos os 12 critérios do checklist acima estão incluídos no plano base, sem integrações extras pagas. O trial de 14 dias inclui onboarding guiado com migração de base de pacientes e configuração das automações de WhatsApp. <a href="/register">Começar teste grátis →</a>
 </div>
 
 <h2>Como Fazer o Trial de Um CRM de Forma Inteligente</h2>

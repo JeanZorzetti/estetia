@@ -170,7 +170,7 @@ export const post: BlogPost = {
 
 <h2>Como o Estetia CRM Suporta a Conformidade LGPD</h2>
 
-<p>O <a href="/pt-BR/features/prontuario-digital">prontuário digital do Estetia</a> foi desenvolvido com compliance LGPD nativo: log de auditoria completo, controle de acesso por perfil (recepcionista, profissional, gestor), criptografia de dados e gestão de consentimentos integrada ao fluxo de anamnese. O plano Business inclui relatório de auditoria exportável para demonstrar conformidade em inspeções.</p>
+<p>O <a href="/features/prontuario-eletronico">prontuário digital do Estetia</a> foi desenvolvido com compliance LGPD nativo: log de auditoria completo, controle de acesso por perfil (recepcionista, profissional, gestor), criptografia de dados e gestão de consentimentos integrada ao fluxo de anamnese. O plano Business inclui relatório de auditoria exportável para demonstrar conformidade em inspeções.</p>
 
 <div class="callout-warning">
   <strong>Atenção:</strong> Este guia é informativo e não substitui assessoria jurídica especializada. Para situações específicas, consulte um advogado com experiência em LGPD na área de saúde.

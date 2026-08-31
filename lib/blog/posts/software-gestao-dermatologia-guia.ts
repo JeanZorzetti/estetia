@@ -2,10 +2,10 @@ import { BlogPost } from '../../blog-types'
 
 export const post: BlogPost = {
   slug: 'software-gestao-dermatologia-guia',
-  title: 'Software de Gestão para Dermatologia: O Guia Definitivo 2026',
-  excerpt: 'Como escolher o melhor software de gestão para dermatologia: prontuário eletrônico, TISS, LGPD e integração com convênios. Comparativo de funcionalidades essenciais para consultórios e clínicas de dermato.',
+  title: 'Sistema para Dermatologia: Guia do Software para Dermatologistas 2026',
+  excerpt: 'Como escolher o sistema para dermatologia certo: prontuário eletrônico, TISS, LGPD e integração com convênios. Comparativo de funcionalidades essenciais para consultórios e clínicas de dermato.',
   date: '2026-05-29',
-  lastModified: '2026-06-05',
+  lastModified: '2026-08-31',
   category: 'Gestão Clínica',
   image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80',
   imageAlt: 'Dermatologista consultando prontuário eletrônico em tablet — software de gestão para dermatologia',
@@ -48,7 +48,7 @@ export const post: BlogPost = {
 <h3>1. Prontuário Eletrônico com Mapeamento Dermatológico</h3>
 <p>O prontuário deve ter template específico para dermato, com diagrama corporal para marcação e documentação de lesões. A fotodocumentação com comparação before/after (meses ou anos) é fundamental para acompanhamento de tratamentos como acne, melasma e rosácea.</p>
 
-<p>A validade jurídica do prontuário eletrônico é garantida pela Lei 14.063/2020, que regulamenta assinaturas eletrônicas em saúde. Veja o <a href="/pt-BR/blog/anamnese-digital-clinica-de-estetica">guia completo sobre anamnese digital e validade legal</a>.</p>
+<p>A validade jurídica do prontuário eletrônico é garantida pela Lei 14.063/2020, que regulamenta assinaturas eletrônicas em saúde. Veja o <a href="/blog/anamnese-digital-clinica-de-estetica">guia completo sobre anamnese digital e validade legal</a>.</p>
 
 <h3>2. Anamnese Digital com Contraindicações Dermatológicas</h3>
 <p>A anamnese para dermatologia deve incluir campos específicos: histórico de neoplasias de pele, uso de isotretinoína, fotossensibilidade, histórico familiar de melanoma, tipo de pele (Fitzpatrick), medicamentos fotossensibilizantes. Esses campos ativam alertas antes de procedimentos com laser, peeling ou luz intensa pulsada.</p>
@@ -63,7 +63,7 @@ export const post: BlogPost = {
 <p>A agenda de dermato precisa distinguir: consulta rápida (15-20min), consulta de retorno (30min), procedimento de biópsia (45min), laser/procedimento estético (60-90min). Blocos de tempo diferentes, salas diferentes, confirmações diferentes. Um software de agendamento genérico não gerencia essa complexidade adequadamente.</p>
 
 <div class="callout-tip">
-  <strong>Teste grátis:</strong> O Estetia CRM tem módulo específico para dermatologia com prontuário especializado, fotodocumentação e integração TISS. <a href="/pt-BR/register">Testar 14 dias sem cartão →</a>
+  <strong>Teste grátis:</strong> O Estetia CRM tem módulo específico para dermatologia com prontuário especializado, fotodocumentação e integração TISS. <a href="/register">Testar 14 dias sem cartão →</a>
 </div>
 
 <h3>6. Controle de Resultados de Exames e Biopsias</h3>
@@ -72,7 +72,7 @@ export const post: BlogPost = {
 <h3>7. Conformidade LGPD para Dados Sensíveis</h3>
 <p>Dados dermatológicos (diagnósticos, fotos de lesões, resultados de biopsias) são classificados como dados sensíveis de saúde pela LGPD Art. 11. O software deve ter criptografia AES-256, consentimento digital específico para fotodocumentação e audit trail de todos os acessos ao prontuário.</p>
 
-<p>Para o guia completo de LGPD para clínicas de saúde, veja <a href="/pt-BR/blog/lgpd-para-clinicas-de-estetica-guia-2026">nosso artigo completo sobre o tema</a>.</p>
+<p>Para o guia completo de LGPD para clínicas de saúde, veja <a href="/blog/lgpd-para-clinicas-de-estetica-guia-2026">nosso artigo completo sobre o tema</a>.</p>
 
 <h2>Software Genérico vs. Software Especializado para Dermato</h2>
 
@@ -169,5 +169,9 @@ export const post: BlogPost = {
 
 <h3>O software de gestão para dermato é compatível com receituário digital?</h3>
 <p>Sim. O Estetia CRM gera receituário digital com assinatura eletrônica válida via certificado digital ICP-Brasil. O paciente recebe o receituário por WhatsApp ou email, com autenticidade verificável. O CFM homologou o receituário digital via Res. 2.299/2021.</p>
+
+<div class="callout-tip">
+  <strong>Próximo passo:</strong> se você já sabe o que precisa, veja como o <a href="/solucoes/dermatologia">Estetia para dermatologia</a> entrega prontuário CFM-compliant, mapeamento de lesões, faturamento TISS e recall automático por diagnóstico — ou <a href="/register">comece o teste de 14 dias</a> sem cartão.
+</div>
 `,
 }

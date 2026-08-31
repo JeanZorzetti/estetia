@@ -49,7 +49,7 @@ export const post: BlogPost = {
 <p>Tudo isso deve ser registrado na anamnese digital antes da sessão (preenchida pelo paciente via WhatsApp) e no prontuário durante o atendimento. Sem esse registro, a informação se perde — e a próxima sessão começa do zero.</p>
 
 <div class="callout-tip">
-  <strong>Anamnese digital integrada:</strong> No Estetia CRM, o paciente preenche a anamnese via WhatsApp antes de chegar à clínica. O profissional acessa o histórico completo antes da sessão, sem perguntar o que já foi respondido. Cada sessão acumula dados que personalizam o atendimento seguinte. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>Anamnese digital integrada:</strong> No Estetia CRM, o paciente preenche a anamnese via WhatsApp antes de chegar à clínica. O profissional acessa o histórico completo antes da sessão, sem perguntar o que já foi respondido. Cada sessão acumula dados que personalizam o atendimento seguinte. <a href="/register">Testar grátis →</a>
 </div>
 
 <h3>Momento 2: O Recall de 30 Dias (Primeira Recompra)</h3>
@@ -169,6 +169,6 @@ export const post: BlogPost = {
 <h3>Limpeza de pele tem boa margem para a clínica?</h3>
 <p>A margem bruta da limpeza de pele é razoável (50–65%), mas o que justifica estrategicamente o procedimento não é a margem isolada — é o LTV do paciente que ela origina. Um paciente que paga R$ 120/mês em limpeza e migra para protocolos de R$ 500–800/mês em 6 meses representa R$ 6.000–9.000/ano de receita. Sem a limpeza como porta de entrada, esse paciente nunca teria chegado à clínica ou teria chegado por um canal muito mais caro.</p>
 
-<p>Quer implementar recall automático segmentado por tipo de pele, anamnese digital acumulada e progressão automatizada de protocolos de skincare? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer implementar recall automático segmentado por tipo de pele, anamnese digital acumulada e progressão automatizada de protocolos de skincare? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

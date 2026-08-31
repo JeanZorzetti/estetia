@@ -120,7 +120,7 @@ export const post: BlogPost = {
 </ul>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure os dois protocolos separadamente — HIFU com recall anual e RF com recall mensal. O dashboard mostra quais pacientes estão em cada fase do protocolo e alerta sobre sessões atrasadas. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure os dois protocolos separadamente — HIFU com recall anual e RF com recall mensal. O dashboard mostra quais pacientes estão em cada fase do protocolo e alerta sobre sessões atrasadas. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Cronograma e Gestão de Sessões de Aparelho</h2>
@@ -203,6 +203,6 @@ export const post: BlogPost = {
 <h3>Radiofrequência e HIFU podem ser feitos juntos?</h3>
 <p>Podem ser combinados como protocolo complementar, mas geralmente em momentos diferentes: HIFU para lifting profundo e radiofrequência para manutenção e tratamento de camadas mais superficiais. Na mesma sessão, a combinação requer planejamento técnico cuidadoso — decisão do profissional habilitado. Como protocolo ao longo do ano, a combinação é altamente eficaz e é a oferta premium de muitas clínicas de referência.</p>
 
-<p>Quer gerenciar pacotes de radiofrequência e HIFU com controle de sessões, recall automático por tecnologia e dashboard de utilização de aparelhos? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer gerenciar pacotes de radiofrequência e HIFU com controle de sessões, recall automático por tecnologia e dashboard de utilização de aparelhos? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

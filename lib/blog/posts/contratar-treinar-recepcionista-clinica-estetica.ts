@@ -96,7 +96,7 @@ export const post: BlogPost = {
 <p>Defina antes da contratação quais métricas serão avaliadas nos 90 dias de experiência: taxa de conversão de ligações (meta: acima de 60%), taxa de confirmação de consultas (meta: acima de 85%), avaliação de NPS pós-atendimento. Avalie com dados, não com impressão subjetiva.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O dashboard de recepção exibe em tempo real as métricas de conversão de ligações, taxa de confirmação e no-show por recepcionista — permitindo avaliação de desempenho baseada em dados, não em percepção. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O dashboard de recepção exibe em tempo real as métricas de conversão de ligações, taxa de confirmação e no-show por recepcionista — permitindo avaliação de desempenho baseada em dados, não em percepção. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Onboarding: As Primeiras 2 Semanas Determinam Tudo</h2>
@@ -151,6 +151,6 @@ export const post: BlogPost = {
 <h3>Como avaliar o desempenho da recepcionista?</h3>
 <p>Com métricas, não com impressão. Defina antes da contratação os KPIs que serão medidos: taxa de conversão de ligações, taxa de confirmação, índice de no-show, taxa de preenchimento da lista de espera e NPS de atendimento. Revise mensalmente, com conversa de feedback baseada nos números. Gestoras que avaliam a recepção por "como ela parece" perdem as mais importantes sinalizações de desempenho.</p>
 
-<p>Quer ter métricas de desempenho da recepção em tempo real, com taxa de conversão, no-show e NPS por profissional no dashboard? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer ter métricas de desempenho da recepção em tempo real, com taxa de conversão, no-show e NPS por profissional no dashboard? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

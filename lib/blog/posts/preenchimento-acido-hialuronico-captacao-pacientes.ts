@@ -97,7 +97,7 @@ export const post: BlogPost = {
 </ul>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O link de agendamento online integrado ao Instagram permite que o paciente escolha data, hora e procedimento sem passar pela recepção. Reduz o tempo de conversão de interesse para agendamento de 2–3 dias para minutos. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O link de agendamento online integrado ao Instagram permite que o paciente escolha data, hora e procedimento sem passar pela recepção. Reduz o tempo de conversão de interesse para agendamento de 2–3 dias para minutos. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>A Consulta de Avaliação que Converte: Estrutura em 5 Etapas</h2>
@@ -203,6 +203,6 @@ export const post: BlogPost = {
 <h3>Com que frequência devo fazer follow-up com pacientes que avaliaram mas não agendaram?</h3>
 <p>Dois follow-ups no máximo: um no dia seguinte da avaliação ("Ficou alguma dúvida?") e um após 7 dias ("Ainda estou à disposição se quiser conversar"). Mais do que isso, a percepção muda de "atendimento" para "pressão". Se o paciente não respondeu após dois contatos, mova-o para a lista de recall de longo prazo (3–6 meses) com conteúdo educativo — não abandone, mas também não pressione.</p>
 
-<p>Quer estruturar seu funil de captação para preenchimento com ácido hialurônico com agendamento online integrado, follow-up automático e recall por área tratada? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer estruturar seu funil de captação para preenchimento com ácido hialurônico com agendamento online integrado, follow-up automático e recall por área tratada? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

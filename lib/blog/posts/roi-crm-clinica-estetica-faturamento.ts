@@ -182,7 +182,7 @@ export const post: BlogPost = {
 <p>Mesmo em cenários conservadores (metade dos ganhos esperados), o ROI de um CRM clínico vertical é extraordinariamente positivo para clínicas com mais de 30 consultas por semana.</p>
 
 <div class="callout-tip">
-  <strong>Calculadora interativa:</strong> Use nossa <a href="/pt-BR/ferramentas/calculadora-roi">Calculadora de ROI de CRM</a> para calcular o retorno específico para a sua clínica com os seus dados reais.
+  <strong>Calculadora interativa:</strong> Use nossa <a href="/ferramentas/calculadora-roi">Calculadora de ROI de CRM</a> para calcular o retorno específico para a sua clínica com os seus dados reais.
 </div>
 
 <h2>Payback: Em Quanto Tempo o CRM se Paga?</h2>

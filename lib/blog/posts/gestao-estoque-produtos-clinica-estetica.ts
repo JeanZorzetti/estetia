@@ -86,7 +86,7 @@ export const post: BlogPost = {
 <p>Para cada produto, defina o estoque mínimo (ponto de reposição). Quando o estoque atingir esse nível, o pedido de reposição deve ser disparado automaticamente — sem depender de alguém perceber que o produto acabou. Para toxina botulínica especificamente, o ponto de reposição deve considerar o prazo de entrega do fornecedor (geralmente 2–5 dias) mais uma margem de segurança de 1 semana de consumo.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O módulo de estoque registra produtos por lote e validade, alerta sobre vencimentos próximos, calcula o custo de insumo por procedimento automaticamente e dispara notificação quando o estoque atinge o ponto de reposição configurado. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O módulo de estoque registra produtos por lote e validade, alerta sobre vencimentos próximos, calcula o custo de insumo por procedimento automaticamente e dispara notificação quando o estoque atinge o ponto de reposição configurado. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Rastreabilidade por Lote: Por Que É Obrigatória</h2>
@@ -131,6 +131,6 @@ export const post: BlogPost = {
 <h3>Qual é o custo médio de insumos como percentual do faturamento em clínicas de estética?</h3>
 <p>O parâmetro saudável é de 15–25% do faturamento em insumos, dependendo do mix de procedimentos. Clínicas com alto volume de injetáveis (toxina, preenchimento, bioestimuladores) tendem para a faixa de 20–25%; clínicas com foco em aparelhos (RF, HIFU, laser) tendem para 10–18%, pois o custo direto é menor (principalmente descartáveis e consumíveis de aparelho). Custos de insumo acima de 30% indicam precificação abaixo do custo ou perdas de estoque significativas.</p>
 
-<p>Quer controlar estoque por lote e validade, calcular custo por procedimento automaticamente e receber alertas de reposição? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer controlar estoque por lote e validade, calcular custo por procedimento automaticamente e receber alertas de reposição? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

@@ -101,7 +101,7 @@ export const post: BlogPost = {
 </ul>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O módulo multi-unidade permite gerenciar agenda, equipe, financeiro e estoque de todas as unidades em um único dashboard. O proprietário vê em tempo real o desempenho de cada unidade sem precisar estar presente fisicamente. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O módulo multi-unidade permite gerenciar agenda, equipe, financeiro e estoque de todas as unidades em um único dashboard. O proprietário vê em tempo real o desempenho de cada unidade sem precisar estar presente fisicamente. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Gestão Multi-Unidade: Como Manter a Qualidade à Distância</h2>
@@ -147,6 +147,6 @@ export const post: BlogPost = {
 <h3>Devo abrir a segunda unidade com a mesma marca?</h3>
 <p>Em geral, sim — especialmente se a marca já tem reconhecimento no mercado local. A mesma marca na segunda unidade aproveita a reputação construída e facilita o cross-referral (pacientes de uma unidade que recomendam a outra). A exceção é quando você quer atingir um posicionamento diferente (premium vs. popular) ou uma especialidade diferente (estética vs. dermatologia clínica) — nesse caso, marcas separadas fazem sentido.</p>
 
-<p>Quer gerenciar múltiplas unidades com dashboard integrado de KPIs, agenda e financeiro em tempo real? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer gerenciar múltiplas unidades com dashboard integrado de KPIs, agenda e financeiro em tempo real? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

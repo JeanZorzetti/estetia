@@ -150,7 +150,7 @@ export const post: BlogPost = {
 <p>Suspender agendamentos até regularização. Oferecer renegociação com condições claras. Para valores acima de R$500, considerar ferramenta de cobrança online (Serasa, SPC) para inadimplências persistentes.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure alertas automáticos de vencimento de parcelas de pacotes, com disparo de WhatsApp preventivo. O sistema vincula o status financeiro do paciente ao liberação de agendamentos. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure alertas automáticos de vencimento de parcelas de pacotes, com disparo de WhatsApp preventivo. O sistema vincula o status financeiro do paciente ao liberação de agendamentos. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Contratos de Pacote: A Base Legal para Cobrança</h2>
@@ -180,6 +180,6 @@ export const post: BlogPost = {
 <h3>Devo aceitar parcelamento longo (10×, 12×) em pacotes de procedimentos?</h3>
 <p>O parcelamento longo cria dois problemas: (1) taxa de maquininha alta (5–8% em 12×), que corrói diretamente a margem; (2) risco de inadimplência alto ao longo de um ano. A alternativa mais segura é limitar o parcelamento a 3–6× e, para pacientes que precisam de prazo maior, usar cartão de crédito próprio do paciente (onde o risco de inadimplência é do banco, não da clínica). Pacotes de maior valor podem ser negociados com entrada maior para reduzir o número de parcelas.</p>
 
-<p>Quer automatizar lembretes de vencimento, vincular sessões ao pagamento e ter controle completo de recebíveis da clínica? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer automatizar lembretes de vencimento, vincular sessões ao pagamento e ter controle completo de recebíveis da clínica? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

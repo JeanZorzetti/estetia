@@ -166,6 +166,6 @@ export const post: BlogPost = {
 <p>Para a maioria das clínicas, não. O onboarding guiado do Estetia CRM inclui uma chamada dedicada de 2-3 horas com um especialista que executa a importação e configura as automações junto com você. Para redes com 5+ unidades ou bases acima de 3.000 pacientes, um onboarding dedicado premium (consultoria específica) é recomendado.</p>
 
 <h3>Como garantir que nenhum paciente se perca na migração?</h3>
-<p>Três ações garantem isso: (1) exportação completa do sistema antigo como backup; (2) importação e validação com amostra de 50-100 pacientes antes de fazer a importação completa; (3) operação em paralelo por 48-72 horas conferindo agendamentos dos próximos 7 dias em ambos os sistemas. Se qualquer paciente aparecer em um sistema e não no outro, corrija manualmente antes de desligar o sistema antigo. <a href="/pt-BR/register">Iniciar migração grátis por 14 dias →</a></p>
+<p>Três ações garantem isso: (1) exportação completa do sistema antigo como backup; (2) importação e validação com amostra de 50-100 pacientes antes de fazer a importação completa; (3) operação em paralelo por 48-72 horas conferindo agendamentos dos próximos 7 dias em ambos os sistemas. Se qualquer paciente aparecer em um sistema e não no outro, corrija manualmente antes de desligar o sistema antigo. <a href="/register">Iniciar migração grátis por 14 dias →</a></p>
 `,
 }

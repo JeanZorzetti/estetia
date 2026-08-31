@@ -144,7 +144,7 @@ export const post: BlogPost = {
 <p>O que <strong>não</strong> deve fazer: reduzir o preço abaixo do seu custo para "competir". Isso é rota direta para o fechamento.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O módulo de estoque calcula automaticamente o custo de insumo por procedimento com base nos produtos registrados. Combinado com o módulo financeiro, você tem o custo direto real de cada atendimento para calcular sua margem corretamente. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O módulo de estoque calcula automaticamente o custo de insumo por procedimento com base nos produtos registrados. Combinado com o módulo financeiro, você tem o custo direto real de cada atendimento para calcular sua margem corretamente. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Revisão de Preços: Quando e Como Reajustar</h2>
@@ -171,6 +171,6 @@ export const post: BlogPost = {
 <h3>Como comunicar aumento de preço para pacientes fiéis?</h3>
 <p>Com antecedência e transparência. Avise com 30–45 dias de antecedência, explique o contexto (reajuste de insumos, atualização de equipamentos, melhoria na estrutura) e ofereça condições especiais para pacientes que agendarem antes do reajuste. Pacientes fiéis que confiam na clínica geralmente aceitam reajustes bem comunicados — o que não aceitam é descobrir na hora do pagamento que o preço subiu sem aviso.</p>
 
-<p>Quer calcular automaticamente o custo de insumo por procedimento e monitorar a margem real da sua clínica? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer calcular automaticamente o custo de insumo por procedimento e monitorar a margem real da sua clínica? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

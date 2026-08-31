@@ -80,7 +80,7 @@ export const post: BlogPost = {
 </table>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure o protocolo de microagulhamento com o número de sessões e intervalos por indicação. O sistema controla o saldo de sessões do paciente, alerta sobre a próxima sessão no timing certo e dispara recall automático quando o paciente atrasa. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure o protocolo de microagulhamento com o número de sessões e intervalos por indicação. O sistema controla o saldo de sessões do paciente, alerta sobre a próxima sessão no timing certo e dispara recall automático quando o paciente atrasa. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Drug Delivery: Como Aumentar o Ticket de Cada Sessão</h2>
@@ -193,6 +193,6 @@ export const post: BlogPost = {
 <h3>Microagulhamento pode ser feito em qualquer tipo de pele?</h3>
 <p>O microagulhamento tem boa tolerância em diferentes fototipos, mas requer cuidado especial em fototipos mais altos (IV–VI) pelo risco de hiperpigmentação pós-inflamatória. As contraindicações absolutas incluem: acne ativa em crise intensa, dermatites ativas na área, uso atual de isotretinoína e feridas abertas. A avaliação pré-protocolo é essencial para identificar contraindicações e personalizar a abordagem.</p>
 
-<p>Quer estruturar protocolos de microagulhamento com controle de sessões, recall automático e sugestão inteligente de drug delivery integrada ao prontuário? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer estruturar protocolos de microagulhamento com controle de sessões, recall automático e sugestão inteligente de drug delivery integrada ao prontuário? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

@@ -83,7 +83,7 @@ export const post: BlogPost = {
   </tbody>
 </table>
 
-<p>A anamnese alimenta o prontuário — ela se torna parte do histórico do paciente. Para um guia completo sobre anamnese digital, veja <a href="/pt-BR/blog/anamnese-digital-clinica-de-estetica">nosso artigo dedicado ao tema</a>.</p>
+<p>A anamnese alimenta o prontuário — ela se torna parte do histórico do paciente. Para um guia completo sobre anamnese digital, veja <a href="/blog/anamnese-digital-clinica-de-estetica">nosso artigo dedicado ao tema</a>.</p>
 
 <h2>Validade Jurídica do Prontuário Eletrônico</h2>
 
@@ -155,7 +155,7 @@ export const post: BlogPost = {
 <h3>Controle de Acesso</h3>
 <p>Nem todo profissional da clínica precisa ver todos os prontuários. O sistema deve ter perfis de acesso: recepcionista vê agenda e cadastro, técnico vê anamnese do seu paciente, médico tem acesso completo, gestor tem visão analítica. Cada acesso deve ser registrado em audit trail.</p>
 
-<p>Para o guia completo de LGPD para clínicas de estética, veja <a href="/pt-BR/blog/lgpd-para-clinicas-de-estetica-guia-2026">nosso artigo dedicado ao tema</a>.</p>
+<p>Para o guia completo de LGPD para clínicas de estética, veja <a href="/blog/lgpd-para-clinicas-de-estetica-guia-2026">nosso artigo dedicado ao tema</a>.</p>
 
 <h2>Fotodocumentação Clínica: Como Fazer Corretamente</h2>
 
@@ -171,7 +171,7 @@ export const post: BlogPost = {
 <p>Fotos de pacientes não podem ser armazenadas em WhatsApp pessoal, Google Photos ou iCloud da clínica. Devem estar em sistema com criptografia e controle de acesso. Vazamento de fotos antes/depois é uma das infrações mais graves da LGPD para clínicas de estética.</p>
 
 <div class="callout-success">
-  <strong>Experimente grátis:</strong> O Estetia CRM tem prontuário eletrônico LGPD-compliant com fotodocumentação padronizada, anamnese digital e assinatura eletrônica. <a href="/pt-BR/register">Testar 14 dias sem cartão →</a>
+  <strong>Experimente grátis:</strong> O Estetia CRM tem prontuário eletrônico LGPD-compliant com fotodocumentação padronizada, anamnese digital e assinatura eletrônica. <a href="/register">Testar 14 dias sem cartão →</a>
 </div>
 
 <h2>Como Implementar Prontuário Eletrônico na Prática</h2>

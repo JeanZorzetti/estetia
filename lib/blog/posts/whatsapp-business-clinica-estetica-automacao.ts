@@ -75,7 +75,7 @@ export const post: BlogPost = {
 <p>A API é gratuita para conversas iniciadas pelo usuário (service conversations). Conversas iniciadas pela empresa (utility conversations — como confirmações) têm custo por mensagem que varia conforme o volume, mas para a maioria das clínicas o custo é irrisório (R$ 0,05–0,15 por conversa).</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> A integração com WhatsApp Business API já está pronta — você conecta o número da clínica em menos de 10 minutos e todas as automações funcionam via API oficial, sem risco de bloqueio. <a href="/pt-BR/register">Testar grátis por 14 dias →</a>
+  <strong>No Estetia CRM:</strong> A integração com WhatsApp Business API já está pronta — você conecta o número da clínica em menos de 10 minutos e todas as automações funcionam via API oficial, sem risco de bloqueio. <a href="/register">Testar grátis por 14 dias →</a>
 </div>
 
 <h2>5 Automações Essenciais de WhatsApp para Clínicas de Estética</h2>
@@ -157,7 +157,7 @@ export const post: BlogPost = {
 <h3>Não Enviar para Números Não Cadastrados</h3>
 <p>O envio de WhatsApp deve ser exclusivamente para pacientes que forneceram o número à clínica e estão cadastrados no sistema. Comprar listas de contatos ou fazer envio em massa para números não relacionados a pacientes ativos é infração grave da LGPD.</p>
 
-<p>Para o guia completo de LGPD para clínicas de estética, veja <a href="/pt-BR/blog/lgpd-para-clinicas-de-estetica-guia-2026">nosso artigo detalhado</a>.</p>
+<p>Para o guia completo de LGPD para clínicas de estética, veja <a href="/blog/lgpd-para-clinicas-de-estetica-guia-2026">nosso artigo detalhado</a>.</p>
 
 <h2>Como Configurar WhatsApp Business API no Estetia CRM</h2>
 

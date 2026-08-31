@@ -139,7 +139,7 @@ export const post: BlogPost = {
 <p>Se o paciente aceitar: agende já na consulta a próxima sessão de retorno (geralmente 30–45 dias). Se o paciente precisar de tempo: "O que posso fazer é reservar o horário para daqui 7 dias — se decidir não ir, é só avisar com 24h de antecedência."</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O prontuário de harmonização inclui campos específicos para registro fotográfico por terço facial, evolução de procedimentos por sessão e plano de tratamento futuro. O histórico fica disponível na próxima consulta sem precisar refazer toda a anamnese. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O prontuário de harmonização inclui campos específicos para registro fotográfico por terço facial, evolução de procedimentos por sessão e plano de tratamento futuro. O histórico fica disponível na próxima consulta sem precisar refazer toda a anamnese. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Gestão do Relacionamento Pós-Harmonização</h2>
@@ -177,6 +177,6 @@ export const post: BlogPost = {
 <h3>Qual é o papel do CRM na gestão de pacientes de harmonização?</h3>
 <p>Para harmonização especificamente, o CRM precisa registrar: protocolo proposto completo (com itens e quantidades), o que foi feito em cada sessão, fotos de evolução por data, recall configurado por componente, e plano de próximas sessões. Sem esse registro sistemático, o profissional depende de memória para atender o mesmo paciente em sessões diferentes — o que compromete a experiência e a continuidade do tratamento.</p>
 
-<p>Quer estruturar a gestão de pacientes de harmonização facial com prontuário fotográfico, plano de tratamento e recall automático por componente? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer estruturar a gestão de pacientes de harmonização facial com prontuário fotográfico, plano de tratamento e recall automático por componente? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

@@ -121,7 +121,7 @@ export const post: BlogPost = {
 </table>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O módulo financeiro calcula automaticamente a comissão por profissional com base no faturamento individual, descontando o custo de produtos registrados no estoque. O relatório mensal de comissão é gerado automaticamente. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O módulo financeiro calcula automaticamente a comissão por profissional com base no faturamento individual, descontando o custo de produtos registrados no estoque. O relatório mensal de comissão é gerado automaticamente. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Como Definir Metas que Motivam (sem Criar Pressão Tóxica)</h2>
@@ -173,6 +173,6 @@ export const post: BlogPost = {
 <h3>Qual modelo funciona melhor para clínica de estética — CLT ou parceria?</h3>
 <p>Depende do perfil do profissional e da relação de trabalho. CLT é obrigatório quando há subordinação, horário fixo e exclusividade — tentar enquadrar essa relação como parceria é risco trabalhista. Parceria legítima funciona quando o profissional tem autonomia real: define seus horários, atende sua própria cartela, pode trabalhar em outros locais. Consulte advogado trabalhista antes de definir o formato — o custo de uma auditoria prévia é muito menor que o de um processo trabalhista.</p>
 
-<p>Quer calcular automaticamente a comissão de cada profissional com base no faturamento individual e no custo de produtos? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer calcular automaticamente a comissão de cada profissional com base no faturamento individual e no custo de produtos? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

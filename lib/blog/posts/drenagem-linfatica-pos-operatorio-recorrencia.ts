@@ -83,7 +83,7 @@ export const post: BlogPost = {
 <p>A venda do pacote completo (não sessão avulsa) é fundamental no pós-operatório. O cirurgião recomenda um número de sessões; o pacote fecha esse compromisso desde o início e garante a recorrência para a clínica. Pacientes que compram sessões avulsas tendem a desistir após a melhora inicial do edema — antes de completar o protocolo ideal.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure pacotes de pós-operatório por tipo de cirurgia. O sistema controla o saldo de sessões, alerta a recepção quando o paciente está atrasando o cronograma e facilita o controle para clínicas com alto volume de pós-operatório. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure pacotes de pós-operatório por tipo de cirurgia. O sistema controla o saldo de sessões, alerta a recepção quando o paciente está atrasando o cronograma e facilita o controle para clínicas com alto volume de pós-operatório. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Como Construir Parcerias com Cirurgiões Plásticos</h2>
@@ -149,6 +149,6 @@ export const post: BlogPost = {
 <h3>Drenagem linfática pós-operatória pode ser feita em casa?</h3>
 <p>Há opções de atendimento domiciliar para pacientes que têm dificuldade de locomoção nas primeiras semanas pós-cirurgia. Do ponto de vista da gestão, o atendimento domiciliar pode ser oferecido como serviço premium (ticket maior) especialmente nas primeiras semanas, quando o deslocamento é mais difícil para o paciente. Após a 2ª ou 3ª semana, a maioria dos pacientes consegue se deslocar à clínica.</p>
 
-<p>Quer estruturar o sistema de parcerias com cirurgiões, pacotes de drenagem por tipo de cirurgia e conversão de pacientes de pós-op para clientes regulares? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer estruturar o sistema de parcerias com cirurgiões, pacotes de drenagem por tipo de cirurgia e conversão de pacientes de pós-op para clientes regulares? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

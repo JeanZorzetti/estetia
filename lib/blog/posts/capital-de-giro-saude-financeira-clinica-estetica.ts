@@ -157,6 +157,6 @@ export const post: BlogPost = {
 <h3>Vale a pena contratar um contador especializado em clínicas de estética?</h3>
 <p>Sim, especialmente para a escolha do regime tributário (Simples Nacional vs. Lucro Presumido) que pode representar diferença de 8–15% no imposto pago sobre o faturamento. Para uma clínica com faturamento de R$50.000/mês, a escolha errada de regime tributário pode custar R$4.000–7.500/mês a mais em impostos — muito mais do que os honorários de um contador especializado.</p>
 
-<p>Quer monitorar os indicadores de saúde financeira da sua clínica com dashboard em tempo real e relatórios mensais automáticos? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer monitorar os indicadores de saúde financeira da sua clínica com dashboard em tempo real e relatórios mensais automáticos? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

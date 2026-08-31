@@ -130,7 +130,7 @@ export const post: BlogPost = {
 </table>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure o protocolo de bioestimulador como um pacote com X sessões — o sistema controla o saldo de sessões, alerta a recepção sobre a próxima sessão programada e dispara recall de manutenção no timing certo para cada produto. <a href="/pt-BR/register">Testar grátis por 14 dias →</a>
+  <strong>No Estetia CRM:</strong> Configure o protocolo de bioestimulador como um pacote com X sessões — o sistema controla o saldo de sessões, alerta a recepção sobre a próxima sessão programada e dispara recall de manutenção no timing certo para cada produto. <a href="/register">Testar grátis por 14 dias →</a>
 </div>
 
 <h2>Gestão do Ciclo de Sessões: O Que Mais Impacta o Resultado</h2>
@@ -223,6 +223,6 @@ export const post: BlogPost = {
 <h3>Bioestimulador pode ser combinado com outros procedimentos?</h3>
 <p>Sim, e a combinação é muito comum: bioestimulador para restaurar o volume e estimular colágeno, toxina botulínica para relaxar musculatura de expressão, e preenchimento com ácido hialurônico para correção pontual de sulcos ou volume labial. Cada procedimento age em uma camada diferente — a sinergia melhora o resultado global. Clinicamente, o planejamento da ordem de aplicação é decisão do profissional qualificado.</p>
 
-<p>Quer configurar o controle de sessões de bioestimulador, recall automático por produto e fotodocumentação de evolução em uma plataforma integrada? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer configurar o controle de sessões de bioestimulador, recall automático por produto e fotodocumentação de evolução em uma plataforma integrada? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

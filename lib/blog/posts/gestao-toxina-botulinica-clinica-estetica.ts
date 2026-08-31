@@ -40,7 +40,7 @@ export const post: BlogPost = {
 </ul>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O módulo de recall configura o tempo de retorno por procedimento. Para toxina botulínica, configure em 90 dias — a mensagem chega quando o efeito começa a diminuir, não quando já desapareceu completamente. <a href="/pt-BR/register">Testar grátis por 14 dias →</a>
+  <strong>No Estetia CRM:</strong> O módulo de recall configura o tempo de retorno por procedimento. Para toxina botulínica, configure em 90 dias — a mensagem chega quando o efeito começa a diminuir, não quando já desapareceu completamente. <a href="/register">Testar grátis por 14 dias →</a>
 </div>
 
 <h2>Timing de Recall por Região Tratada: O Guia Definitivo</h2>
@@ -187,7 +187,7 @@ export const post: BlogPost = {
 </ul>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> O dashboard de KPIs clínicos exibe todos esses indicadores em tempo real, segmentados por procedimento. Configure alertas para quando o churn de botox ultrapassar o limiar definido pela clínica. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> O dashboard de KPIs clínicos exibe todos esses indicadores em tempo real, segmentados por procedimento. Configure alertas para quando o churn de botox ultrapassar o limiar definido pela clínica. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Fluxo de Atendimento de Alta Conversão para Toxina Botulínica</h2>
@@ -222,6 +222,6 @@ export const post: BlogPost = {
   <strong>Resultado esperado:</strong> Clínicas que implementam recall automático segmentado por região de toxina botulínica, combinado com fotodocumentação e plano de tratamento progressivo, reportam aumento de 30–45% na receita recorrente de botox em 6 meses, segundo dados de adoção do Estetia CRM (2025).
 </div>
 
-<p>Quer implementar recall automático de toxina botulínica com segmentação por região tratada e dashboard de LTV? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer implementar recall automático de toxina botulínica com segmentação por região tratada e dashboard de LTV? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

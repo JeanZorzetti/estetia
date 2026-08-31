@@ -93,7 +93,7 @@ export const post: BlogPost = {
 
 <p>A agenda é o coração da operação clínica. Um CRM clínico transforma a agenda em um ativo ativo — não apenas um calendário passivo. A confirmação automática via WhatsApp (48h, 24h e 2h antes) é a funcionalidade com ROI mais rápido: reduz no-show sem exigir nenhum esforço da recepção.</p>
 
-<p>Para um guia completo de redução de no-show, veja <a href="/pt-BR/blog/como-reduzir-no-show-em-clinicas-de-estetica">nosso artigo dedicado ao tema</a>.</p>
+<p>Para um guia completo de redução de no-show, veja <a href="/blog/como-reduzir-no-show-em-clinicas-de-estetica">nosso artigo dedicado ao tema</a>.</p>
 
 <h3>2. Prontuário Eletrônico com Histórico Completo</h3>
 
@@ -103,7 +103,7 @@ export const post: BlogPost = {
 
 <p>A anamnese digital enviada por link (antes da consulta via WhatsApp) reduz o tempo de recepção e elimina o papel. O diferencial de um CRM clínico é o alerta automático de contraindicação: se um paciente informa gravidez em um agendamento de laser, o sistema alerta o profissional antes do atendimento.</p>
 
-<p>Veja o guia completo de anamnese digital em <a href="/pt-BR/blog/anamnese-digital-clinica-de-estetica">nosso artigo sobre o tema</a>.</p>
+<p>Veja o guia completo de anamnese digital em <a href="/blog/anamnese-digital-clinica-de-estetica">nosso artigo sobre o tema</a>.</p>
 
 <h3>4. No-Show Predictor com Inteligência Artificial</h3>
 
@@ -121,20 +121,20 @@ export const post: BlogPost = {
 
 <p>Um CRM clínico de qualidade exibe os KPIs essenciais em tempo real: taxa de ocupação da agenda, no-show do dia, receita do período, ticket médio, taxa de recompra e LTV por paciente. Sem dashboard, o gestor opera no escuro. Com o dashboard, decisões de contratação, precificação e marketing se baseiam em dados, não em intuição.</p>
 
-<p>Veja os 7 KPIs essenciais que toda clínica deve monitorar em <a href="/pt-BR/blog/kpis-essenciais-clinica-de-estetica">nosso guia de métricas clínicas</a>.</p>
+<p>Veja os 7 KPIs essenciais que toda clínica deve monitorar em <a href="/blog/kpis-essenciais-clinica-de-estetica">nosso guia de métricas clínicas</a>.</p>
 
 <h3>7. Conformidade LGPD para Dados de Saúde</h3>
 
 <p>Dados clínicos são classificados como sensíveis pela LGPD (Art. 11), com exigências mais rígidas do que dados pessoais comuns. Um CRM clínico deve incluir: criptografia de prontuários, coleta de consentimento digital específico, audit trail de acessos e ferramentas para responder solicitações de titulares (acesso, portabilidade, exclusão).</p>
 
-<p>Para entender todos os requisitos LGPD para clínicas, veja <a href="/pt-BR/blog/lgpd-para-clinicas-de-estetica-guia-2026">nosso guia completo de LGPD</a>.</p>
+<p>Para entender todos os requisitos LGPD para clínicas, veja <a href="/blog/lgpd-para-clinicas-de-estetica-guia-2026">nosso guia completo de LGPD</a>.</p>
 
 <h3>8. Integração com WhatsApp Business</h3>
 
 <p>WhatsApp é o canal de comunicação dominante no Brasil. Um CRM clínico deve integrar nativamente com o WhatsApp Business para: envio de confirmações, lembretes, recalls, links de anamnese e respostas a dúvidas. A integração via API oficial garante conformidade com as políticas do WhatsApp e escalabilidade sem bloqueio de número.</p>
 
 <div class="callout-tip">
-  <strong>Acesse o Estetia CRM grátis:</strong> Explore todas as 8 funcionalidades acima com 14 dias gratuitos, sem cartão de crédito. <a href="/pt-BR/register">Começar agora →</a>
+  <strong>Acesse o Estetia CRM grátis:</strong> Explore todas as 8 funcionalidades acima com 14 dias gratuitos, sem cartão de crédito. <a href="/register">Começar agora →</a>
 </div>
 
 <h2>Como Escolher o CRM Certo para sua Clínica de Estética</h2>
@@ -187,7 +187,7 @@ export const post: BlogPost = {
   </tbody>
 </table>
 
-<p>O Estetia CRM oferece planos a partir de R$ 149/mês com período de teste gratuito de 14 dias. <a href="/pt-BR/precos">Ver todos os planos →</a></p>
+<p>O Estetia CRM oferece planos a partir de R$ 149/mês com período de teste gratuito de 14 dias. <a href="/precos">Ver todos os planos →</a></p>
 
 <div class="callout-stat">
   <strong>ROI típico:</strong> Uma clínica com ticket médio de R$ 350 e 20% de no-show (100 consultas/semana) perde R$ 7.000/semana em receita não realizada. Reduzir o no-show para 8% com CRM recupera R$ 4.200/semana — o investimento no sistema se paga em menos de 30 dias.
@@ -226,7 +226,7 @@ export const post: BlogPost = {
   <li>Total de impacto potencial: R$ 5.600/mês sobre investimento de R$ 149/mês</li>
 </ul>
 
-<p><a href="/pt-BR/ferramentas/calculadora-roi">Calcule o ROI do CRM para sua clínica →</a></p>
+<p><a href="/ferramentas/calculadora-roi">Calcule o ROI do CRM para sua clínica →</a></p>
 
 <h2>Perguntas Frequentes sobre CRM para Clínica de Estética</h2>
 

@@ -62,7 +62,7 @@ export const post: BlogPost = {
 <p>Avaliação gratuita para papada com link de agendamento online. "Descubra se você é candidato ao tratamento de papada com enzimas — avaliação gratuita em [cidade]." Taxa de conversão de avaliação gratuita para papada é alta porque a queixa é objetiva e o paciente já chegou com intenção.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure o link de agendamento online para avaliação de papada com formulário de pré-triagem (IMC aproximado, histórico de procedimentos, expectativa). O profissional chega à avaliação com o perfil do paciente já mapeado. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure o link de agendamento online para avaliação de papada com formulário de pré-triagem (IMC aproximado, histórico de procedimentos, expectativa). O profissional chega à avaliação com o perfil do paciente já mapeado. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>A Avaliação de Papada que Converte: Roteiro Prático</h2>
@@ -158,6 +158,6 @@ export const post: BlogPost = {
 <h3>Qualquer profissional pode aplicar enzimas para papada?</h3>
 <p>Não. O procedimento envolve injeções, o que exige habilitação profissional específica conforme as regulamentações do CFM (médicos), CRO (cirurgiões-dentistas) e CREFITO (fisioterapeutas com habilitação). A clínica deve verificar a habilitação do profissional aplicador e manter documentação atualizada. Produtos utilizados também precisam ter registro na ANVISA para a via de administração indicada.</p>
 
-<p>Quer estruturar a captação e gestão de protocolos de papada com agendamento online, recall automático e fotodocumentação integrada? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer estruturar a captação e gestão de protocolos de papada com agendamento online, recall automático e fotodocumentação integrada? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

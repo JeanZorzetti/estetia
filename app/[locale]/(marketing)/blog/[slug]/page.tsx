@@ -75,7 +75,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   } else if (slug === 'crm-para-clinica-de-estetica-guia-completo') {
     aiOptimizedDescription = 'CRM para clínica de estética: sistema que centraliza prontuário eletrônico, agenda com confirmação automática WhatsApp, no-show predictor IA, recall automático por procedimento e KPIs clínicos. Reduz no-show em 35%, aumenta recompra em 28%. Planos a partir de R$149/mês com 14 dias grátis.'
   } else if (slug === 'software-gestao-dermatologia-guia') {
-    aiOptimizedDescription = 'Software de gestão para dermatologia: prontuário com mapeamento de lesões, fotodocumentação por data, controle de biopsias, fototerapia com dose acumulada, integração TISS/TUSS para convênios e conformidade LGPD Art. 11. Específico para dermatologistas e clínicas de dermato no Brasil.'
+    aiOptimizedDescription = 'Sistema para dermatologia e software para dermatologistas: prontuário com mapeamento de lesões, fotodocumentação por data, controle de biopsias, fototerapia com dose acumulada, integração TISS/TUSS para convênios e conformidade LGPD Art. 11. Específico para dermatologistas e clínicas de dermato no Brasil.'
   } else if (slug === 'prontuario-eletronico-clinica-estetica') {
     aiOptimizedDescription = 'Prontuário eletrônico para estética: validade jurídica pela Lei 14.063/2020, guarda obrigatória de 20 anos (CFM), assinatura eletrônica simples para anamneses, criptografia AES-256 para LGPD Art. 11. Diferença entre anamnese e prontuário: anamnese é preenchida antes, prontuário registra o que foi feito.'
   } else if (slug === 'agendamento-online-clinica-estetica') {

@@ -70,7 +70,7 @@ export const post: BlogPost = {
   <li><strong>A clínica é credenciada (ou pretende se credenciar) a alguma operadora?</strong> Sem contrato de credenciamento, não existe faturamento — TISS não é um canal aberto a qualquer prestador.</li>
 </ol>
 
-<p>Clínica de estética pura — que faz protocolos faciais e corporais com finalidade estética — responde "não" às três. Nesse caso o caminho é outro: precificação, pacotes e recorrência particular, assunto que tratamos no <a href="/pt-BR/blog/crm-para-clinica-de-estetica-guia-completo">guia de CRM para clínica de estética</a>.</p>
+<p>Clínica de estética pura — que faz protocolos faciais e corporais com finalidade estética — responde "não" às três. Nesse caso o caminho é outro: precificação, pacotes e recorrência particular, assunto que tratamos no <a href="/blog/crm-para-clinica-de-estetica-guia-completo">guia de CRM para clínica de estética</a>.</p>
 
 <p>Já a <strong>clínica de dermatologia</strong> — ou a clínica híbrida, que faz dermato clínica no convênio e estética no particular — responde "sim" e precisa levar TISS a sério, porque parte relevante do faturamento passa por ali. Esse cenário híbrido é, aliás, o mais comum no Brasil, e é o que mais gera confusão contábil: o mesmo paciente, na mesma cadeira, pode gerar uma guia de convênio de manhã e uma venda particular à tarde.</p>
 
@@ -92,7 +92,7 @@ export const post: BlogPost = {
   <strong>Onde as clínicas perdem sem perceber:</strong> a glosa não é o único custo do convênio. O convênio paga <em>menos</em> por procedimento que o particular e paga <em>mais tarde</em> (o prazo é contratual, e não é curto). Some a isso o custo administrativo de operar o ciclo acima. Uma agenda cheia de convênio pode faturar mais e sobrar menos — quem decide isso é a sua margem, não o seu movimento.
 </div>
 
-<p><a href="/pt-BR/register">Teste o Estetia CRM grátis por 14 dias →</a> — geração de guias e lote TISS 4.01.00 a partir do prontuário, sem redigitar nada.</p>
+<p><a href="/register">Teste o Estetia CRM grátis por 14 dias →</a> — geração de guias e lote TISS 4.01.00 a partir do prontuário, sem redigitar nada.</p>
 
 <h2>Glosas: por que a operadora simplesmente não paga</h2>
 
@@ -135,11 +135,11 @@ export const post: BlogPost = {
 
 <h2>O prontuário eletrônico é a base do TISS — não um item separado</h2>
 
-<p>Quase toda glosa técnica nasce de uma lacuna no registro clínico. A operadora não glosa porque o procedimento não foi feito; glosa porque <em>não dá para provar</em> que foi feito, com aquela indicação, naquele paciente. É por isso que faturamento de convênio e <a href="/pt-BR/blog/prontuario-eletronico-clinica-estetica">prontuário eletrônico</a> não são dois projetos: são o mesmo projeto.</p>
+<p>Quase toda glosa técnica nasce de uma lacuna no registro clínico. A operadora não glosa porque o procedimento não foi feito; glosa porque <em>não dá para provar</em> que foi feito, com aquela indicação, naquele paciente. É por isso que faturamento de convênio e <a href="/blog/prontuario-eletronico-clinica-estetica">prontuário eletrônico</a> não são dois projetos: são o mesmo projeto.</p>
 
 <p>Quando a guia é gerada a partir do prontuário, três coisas acontecem sozinhas: o procedimento executado vira o código TUSS correto, a justificativa clínica já está escrita, e a data e o profissional executante batem com o registro. Quando a guia é digitada à mão em uma planilha, cada um desses três vira uma chance de erro.</p>
 
-<p>E há o outro lado: dado de saúde é dado pessoal sensível. Trafegar guia por e-mail, WhatsApp ou planilha compartilhada é problema de LGPD, não só de eficiência — o assunto está detalhado no <a href="/pt-BR/blog/lgpd-para-clinicas-de-estetica-guia-2026">guia de LGPD para clínicas</a>.</p>
+<p>E há o outro lado: dado de saúde é dado pessoal sensível. Trafegar guia por e-mail, WhatsApp ou planilha compartilhada é problema de LGPD, não só de eficiência — o assunto está detalhado no <a href="/blog/lgpd-para-clinicas-de-estetica-guia-2026">guia de LGPD para clínicas</a>.</p>
 
 <h2>Convênio vale a pena? A conta que quase ninguém faz</h2>
 
@@ -152,7 +152,7 @@ export const post: BlogPost = {
   <li><strong>Valor estratégico</strong> do convênio como porta de entrada: o paciente que chega pelo plano para uma consulta dermatológica pode virar paciente particular de estética depois. Para muitas clínicas híbridas, esse é o verdadeiro ROI do convênio — e ele só existe se houver um processo de conversão, não sorte.</li>
 </ul>
 
-<p>Se a conta der negativa em todos os itens, credenciar-se é comprar trabalho. Rode os números na <a href="/pt-BR/ferramentas/calculadora-roi">calculadora de ROI</a> antes de decidir.</p>
+<p>Se a conta der negativa em todos os itens, credenciar-se é comprar trabalho. Rode os números na <a href="/ferramentas/calculadora-roi">calculadora de ROI</a> antes de decidir.</p>
 
 <h2>Perguntas Frequentes sobre TISS e TUSS</h2>
 
@@ -186,6 +186,6 @@ export const post: BlogPost = {
 <h3>Clínica híbrida pode atender convênio e particular no mesmo espaço?</h3>
 <p>Pode, e é o modelo mais comum em dermatologia. O cuidado é operacional e contábil: separar claramente o que é atendimento coberto (com guia, autorização e prontuário sustentando a cobrança) do que é venda particular (com contrato, política de pagamento e recibo). Misturar os dois fluxos no mesmo registro é a origem de glosa, de erro fiscal e de conflito com o paciente sobre o que ele deve pagar.</p>
 
-<p>Quer gerar guias e lotes TISS 4.01.00 direto do prontuário, com código TUSS sugerido pelo procedimento e controle de glosa por operadora? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer gerar guias e lotes TISS 4.01.00 direto do prontuário, com código TUSS sugerido pelo procedimento e controle de glosa por operadora? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }

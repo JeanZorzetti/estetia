@@ -117,7 +117,7 @@ export const post: BlogPost = {
 <p>Recall enviado quando o pigmento ainda está presente (70–80% da intensidade original) tem taxa de conversão 2–3× maior do que quando o pigmento já desbotou completamente — porque a cliente ainda quer manter, não reconstruir.</p>
 
 <div class="callout-tip">
-  <strong>No Estetia CRM:</strong> Configure recall automático por técnica realizada. O sistema registra a técnica no prontuário e dispara o lembrete no timing certo para cada cliente. <a href="/pt-BR/register">Testar grátis →</a>
+  <strong>No Estetia CRM:</strong> Configure recall automático por técnica realizada. O sistema registra a técnica no prontuário e dispara o lembrete no timing certo para cada cliente. <a href="/register">Testar grátis →</a>
 </div>
 
 <h2>Precificação de Retoques: Como Não Perder Margem</h2>
@@ -208,6 +208,6 @@ export const post: BlogPost = {
 <h3>Micropigmentação pode ser feita em qualquer tipo de pele?</h3>
 <p>Sim, com adaptações de técnica por tipo de pele. Peles oleosas retêm menos pigmento e exigem técnica mais densa e retoques mais frequentes — ombre costuma ter melhor resultado do que fio a fio em peles muito oleosas. Peles maduras com menos elasticidade se beneficiam de nanopigmentação ou técnicas híbridas. A avaliação prévia da pele é essencial para escolher a técnica mais adequada e definir expectativas corretas.</p>
 
-<p>Quer estruturar o calendário de retoques, recall automático por técnica e programa de indicações para sua clínica de micropigmentação? <a href="/pt-BR/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
+<p>Quer estruturar o calendário de retoques, recall automático por técnica e programa de indicações para sua clínica de micropigmentação? <a href="/register">Comece seu teste gratuito de 14 dias no Estetia CRM →</a></p>
 `,
 }
