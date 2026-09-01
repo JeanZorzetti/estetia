@@ -4,6 +4,7 @@ import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
 import { captureLeadFromCalculator } from '@/lib/email-marketing'
 import { leadCaptureRateLimit } from '@/lib/ratelimit'
+import { sendLeadToRoihub } from '@/lib/roihub-crm'
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,6 +41,16 @@ export async function POST(request: NextRequest) {
       ticketMedio,
       perdaMensal,
       origem
+    })
+
+    // Ate aqui o lead virava so contato no Resend, que o funil do hub nao le. `origem` do
+    // corpo (a superficie de onde a calculadora foi aberta) desce para o metadata: a origem
+    // do CRM e a do canal, e misturar as duas quebra a leitura por canal.
+    sendLeadToRoihub({
+      nome: nome || email,
+      email,
+      origem: 'estetiacrm:calculadora-roi',
+      metadata: { origemNoSite: origem, empresa: empresa ?? null, volumeLeads, ticketMedio, perdaMensal },
     })
 
     return NextResponse.json({
