@@ -1,5 +1,6 @@
 import { after } from 'next/server'
 import { createHash } from 'node:crypto'
+import logger from '@/lib/logger'
 
 // O CRM de vendas da Estetia CRM e o do roihub (hub.roilabs.com.br) — nao este produto, que e
 // o CRM DO CLIENTE. Ate 01/09/2026 os formularios do site so disparavam e-mail (contato) e
@@ -46,7 +47,7 @@ export function sendLeadToRoihub(input: RoihubLeadInput): void {
       const baseUrl = process.env.ROIHUB_CRM_URL
       const secret = process.env.ROIHUB_CRM_SECRET
       if (!baseUrl || !secret) {
-        console.error('[roihub-crm] ROIHUB_CRM_URL/ROIHUB_CRM_SECRET ausente')
+        logger.error('[roihub-crm] ROIHUB_CRM_URL/ROIHUB_CRM_SECRET ausente')
         return
       }
 
@@ -65,9 +66,9 @@ export function sendLeadToRoihub(input: RoihubLeadInput): void {
         }),
       })
 
-      if (!res.ok) console.error(`[roihub-crm] roihub retornou ${res.status}`)
+      if (!res.ok) logger.error({ status: res.status }, '[roihub-crm] roihub recusou o lead')
     } catch (err) {
-      console.error('[roihub-crm] falha ao enviar lead:', err)
+      logger.error({ err }, '[roihub-crm] falha ao enviar lead')
     }
   })
 }
@@ -93,7 +94,7 @@ export function avisarTicketNoRoihub(input: RoihubAvisoTicket): void {
       const baseUrl = process.env.ROIHUB_CRM_URL
       const secret = process.env.ROIHUB_CRM_SECRET
       if (!baseUrl || !secret) {
-        console.error('[roihub-crm] ROIHUB_CRM_URL/ROIHUB_CRM_SECRET ausente')
+        logger.error('[roihub-crm] ROIHUB_CRM_URL/ROIHUB_CRM_SECRET ausente')
         return
       }
 
@@ -111,9 +112,9 @@ export function avisarTicketNoRoihub(input: RoihubAvisoTicket): void {
         }),
       })
 
-      if (!res.ok) console.error(`[roihub-crm] aviso de ticket: roihub retornou ${res.status}`)
+      if (!res.ok) logger.error({ status: res.status }, '[roihub-crm] roihub recusou o aviso de ticket')
     } catch (err) {
-      console.error('[roihub-crm] falha ao avisar ticket:', err)
+      logger.error({ err }, '[roihub-crm] falha ao avisar ticket')
     }
   })
 }
