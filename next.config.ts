@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
   // out for local validation builds via NEXT_NO_STANDALONE=1; production keeps it.
   output: process.env.NEXT_NO_STANDALONE ? undefined : ('standalone' as const),
   typescript: { ignoreBuildErrors: true },
-  eslint: { ignoreDuringBuilds: true },
+  // Next 16.3 dropped the built-in ESLint step, so `eslint` is no longer a config key
   productionBrowserSourceMaps: false,
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'date-fns', 'recharts'],
@@ -59,7 +59,8 @@ const nextConfig: NextConfig = {
         hostname: '*.easypanel.host',
       },
     ],
-    formats: ['image/webp', 'image/avif'], // Modern formats for better compression
+    // No AVIF: sharp's libheif had an unauthenticated RCE (GHSA-2xp9-vwfh-vxw4)
+    formats: ['image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840], // Responsive breakpoints
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Icon sizes
     minimumCacheTTL: 60 * 60 * 24 * 365, // Cache for 1 year (3600 * 24 * 365)
