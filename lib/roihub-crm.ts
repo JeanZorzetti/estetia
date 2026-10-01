@@ -13,7 +13,11 @@ import logger from '@/lib/logger'
  * `<slug>:<superficie>` — e a `origem` que separa canal no CRM. Uniao fechada de proposito:
  * origem digitada a mao nasce divergente e a leitura por canal fica impossivel depois.
  */
-export type RoihubOrigem = 'estetiacrm:contato' | 'estetiacrm:calculadora-roi'
+export type RoihubOrigem =
+  | 'estetiacrm:contato'
+  | 'estetiacrm:calculadora-roi'
+  | 'estetiacrm:ficha-digital' // interest in the digital anamnesis form
+  | 'estetiacrm:ficha-com-logo' // paid: form with the buyer's logo, delivered by hand
 
 type RoihubLeadInput = {
   nome: string

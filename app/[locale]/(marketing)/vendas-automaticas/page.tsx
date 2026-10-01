@@ -87,12 +87,7 @@ export default async function VendasAutomaticasPage({
       "priceValidUntil": "2027-12-31",
       "availability": "https://schema.org/InStock"
     },
-    "description": "CRM self-service para organizar vendas em 5 minutos. Pipeline visual, automações e WhatsApp integrado.",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "12"
-    }
+    "description": "CRM self-service para organizar vendas em 5 minutos. Pipeline visual, automações e WhatsApp integrado."
   }
 
   return (

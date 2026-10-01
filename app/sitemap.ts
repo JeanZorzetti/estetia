@@ -2,6 +2,7 @@
 import { blogPosts, getAllCategories, slugifyCategory } from '@/lib/blog-data'
 import { helpArticles } from '@/lib/help-articles'
 import { CALCULATOR_LAST_MODIFIED } from '@/config/calculator-metadata'
+import { FICHAS, FICHAS_ATUALIZADO_EM, FICHAS_BASE_PATH, fichaPath } from '@/config/fichas-anamnese'
 
 // Render sitemap.xml statically (revalidated daily). All inputs are static
 // module data, so there's no reason to compute it per request — this removes
@@ -74,6 +75,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
     }))
 
+    const fichaPages = [FICHAS_BASE_PATH, ...FICHAS.map((f) => fichaPath(f.slug))].map((route) => ({
+        url: `${baseUrl}${route}`,
+        lastModified: new Date(FICHAS_ATUALIZADO_EM),
+        changeFrequency: 'monthly' as const,
+        priority: 0.9,
+    }))
+
     const blogCategoryPages = getAllCategories().map((category) => {
         const slug = slugifyCategory(category)
         return {
@@ -110,6 +118,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...blogCategoryPages,
         ...helpArticlePages,
         ...calculatorPages,
+        ...fichaPages,
         ...solucaoPages,
         ...featurePages,
     ]

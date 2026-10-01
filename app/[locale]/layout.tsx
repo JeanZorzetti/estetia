@@ -174,13 +174,6 @@ function buildSchemaOrg() {
           priceCurrency: 'BRL',
           availability: 'https://schema.org/InStock',
         },
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: '5.0',
-          ratingCount: '12',
-          bestRating: '5',
-          worstRating: '1',
-        },
         provider: { '@id': `${baseUrl}/#organization` },
         description: 'CRM intuitivo para gestão de clínicas de estética. Agenda inteligente, anamnese digital, WhatsApp integrado, recall automático e métricas em tempo real.',
         featureList: [

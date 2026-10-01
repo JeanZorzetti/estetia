@@ -124,11 +124,6 @@ export default async function FeaturesPage({
       highPrice: '397',
       offerCount: '4',
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      ratingCount: '120',
-    },
     description: 'Sistema completo para clínicas de estética: agenda inteligente, prontuário eletrônico, anamnese digital, WhatsApp Business, recall automático, TISS e LGPD.',
     featureList: ALL_FEATURES.map((f) => f.slug),
   }

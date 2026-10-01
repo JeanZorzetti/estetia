@@ -34,3 +34,23 @@ export function signPayload(payload: string, secret: string): string {
   const hmac = crypto.createHmac('sha256', secret).update(payload).digest('hex')
   return `sha256=${hmac}`
 }
+
+/**
+ * Validates a Stripe webhook signature (header `Stripe-Signature: t=<unix>,v1=<hex>`).
+ * The signed payload is `<t>.<raw body>`; events older than the tolerance are rejected (replay).
+ */
+export function validateStripeSignature(
+  payload: string,
+  header: string | null,
+  secret: string,
+  toleranceSeconds = 300,
+  now = Date.now()
+): boolean {
+  if (!header) return false
+  const parts = header.split(',').map((p) => p.trim().split('='))
+  const t = parts.find(([k]) => k === 't')?.[1]
+  const assinaturas = parts.filter(([k]) => k === 'v1').map(([, v]) => v)
+  if (!t || !assinaturas.length) return false
+  if (Math.abs(now / 1000 - Number(t)) > toleranceSeconds) return false
+  return assinaturas.some((v1) => validateHmac(`${t}.${payload}`, v1, secret))
+}

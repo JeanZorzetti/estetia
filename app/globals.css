@@ -998,3 +998,34 @@ body.dragging * {
   .print-header { display: block !important; }
 }
 .print-header { display: none; }
+
+/* =============================================
+   FICHAS DE ANAMNESE — only the sheet prints
+   (/ferramentas/fichas-de-anamnese/[slug]; markup in components/fichas/ficha-folha.tsx)
+   ============================================= */
+.ficha-titulo-secao {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(10 31 61 / 0.25);
+  padding-bottom: 0.125rem;
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+@page ficha { size: A4; margin: 12mm; }
+@media print {
+  body:has(.ficha-folha) footer { display: none !important; }
+  body:has(.ficha-folha) main { padding-top: 0 !important; }
+  /* The whole document uses the A4 page: a named page on the sheet alone forces a
+     page-type break after it and prints a blank third page. */
+  html:has(.ficha-folha) { page: ficha; }
+  .ficha-folha {
+    max-width: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    /* Buyers of printed pads complain about tiny type: keep this at 10.5pt or more. */
+    font-size: 10.5pt;
+  }
+  .ficha-secao { break-inside: avoid; }
+}

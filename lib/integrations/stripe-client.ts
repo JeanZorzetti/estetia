@@ -64,6 +64,8 @@ export async function createCheckoutSession(
     successUrl: string
     cancelUrl: string
     customerEmail?: string
+    /** Raw extra Checkout Session params, already in Stripe form encoding ('metadata[key]'). */
+    extra?: Record<string, string | number>
   }
 ): Promise<StripeCheckoutSession> {
   const body = encodeForm({
@@ -75,6 +77,7 @@ export async function createCheckoutSession(
     success_url: params.successUrl,
     cancel_url: params.cancelUrl,
     ...(params.customerEmail ? { customer_email: params.customerEmail } : {}),
+    ...params.extra,
   })
 
   return stripeRequest<StripeCheckoutSession>(config, '/checkout/sessions', {

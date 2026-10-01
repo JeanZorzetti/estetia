@@ -20,13 +20,6 @@ const softwareSchema = {
     offerCount: '4',
     availability: 'https://schema.org/InStock',
   },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: 4.8,
-    reviewCount: 127,
-    bestRating: 5,
-    worstRating: 1,
-  },
   featureList: [
     'Agenda inteligente com confirmação automática',
     'Anamnese digital com alertas de contraindicação',
@@ -58,13 +51,6 @@ const productSchema = {
     offerCount: '4',
     availability: 'https://schema.org/InStock',
     url: `${BASE_URL}/pricing`,
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: 4.8,
-    reviewCount: 127,
-    bestRating: 5,
-    worstRating: 1,
   },
   review: [
     {

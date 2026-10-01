@@ -5,7 +5,7 @@ export const post: BlogPost = {
   title: 'Anamnese Digital em Clínicas de Estética: Como Digitalizar sem Perder Tempo na Recepção',
   excerpt: 'Recepcionistas perdem 15-25 min por paciente com anamnese em papel. Com anamnese digital por WhatsApp, o paciente preenche antes de chegar e alergias aparecem destacadas automaticamente para o profissional.',
   date: '2026-05-04',
-  lastModified: '2026-05-04',
+  lastModified: '2026-09-30',
   category: 'Tecnologia & IA',
   image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1200&q=80',
   imageAlt: 'Anamnese digital em clínica de estética via tablet — digitalização de fichas de pacientes',
@@ -21,6 +21,10 @@ export const post: BlogPost = {
 
 <div class="callout-stat">
   <strong>Tempo perdido:</strong> Em média, recepcionistas gastam 15-25 minutos por paciente com anamnese presencial (preenchimento + conferência + digitação no sistema). Em uma clínica com 6 atendimentos por dia, isso são até 2,5 horas diárias — 50 horas por mês — em trabalho que pode ser eliminado.
+</div>
+
+<div class="callout-tip">
+  <strong>Procura o modelo em papel?</strong> Veja as <a href="/ferramentas/fichas-de-anamnese">fichas de anamnese para imprimir</a>, uma por procedimento, em PDF grátis e sem cadastro.
 </div>
 
 <h2>O que é Anamnese Digital e Como Funciona</h2>

@@ -3,7 +3,7 @@ import Script from 'next/script'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
 import { Link } from '@/i18n/routing'
-import { ArrowRight, TrendingUp, Clock, Users, DollarSign, Zap } from 'lucide-react'
+import { ArrowRight, TrendingUp, Clock, Users, DollarSign, Zap, ClipboardList } from 'lucide-react'
 
 export async function generateMetadata({
   params,
@@ -31,6 +31,15 @@ export async function generateMetadata({
 }
 
 const TOOLS = [
+  {
+    href: '/ferramentas/fichas-de-anamnese',
+    icon: ClipboardList,
+    color: '#0A1F3D',
+    label: 'Fichas',
+    title: 'Fichas de Anamnese para Imprimir',
+    description: 'Modelos em PDF por procedimento: estética, sobrancelha, cílios, depilação, podologia e mais. Grátis, sem cadastro.',
+    badge: 'Novo',
+  },
   {
     href: '/ferramentas/calculadora-roi',
     icon: TrendingUp,
